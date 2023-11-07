@@ -1,0 +1,99 @@
+<!-- <ul>
+    <li *ngFor="let role of roles">
+      <p>Nombre del Rol: {{ role.nombre_rol }}</p>
+      <p>Estado del Rol: {{ role.estado_rol ? 'Activo' : 'Inactivo' }}</p>
+      <p>Permisos del Rol:</p>
+      <ul>
+        <li *ngFor="let permiso of role.permisos_rol">
+          {{ permiso.nombre_permiso }}
+        </li>
+      </ul>
+    </li>
+  </ul> 
+  -->
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <div class="my-2">
+            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewRoleDialog()"></button>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+    </ng-template>
+</p-toolbar>
+  <p-table #dt [value]="roles" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedRoles" selectionMode="multiple" dataKey="_id">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h4 class="m-0">Listado de Roles</h4>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Nombre</th>
+            <th pSortableColumn="name">Permisos</th>
+            <th pSortableColumn="name">Estado</th>
+            <th pSortableColumn="name">Aciones</th>
+            
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-role>
+        <tr>
+            
+            <td style="width:30%; min-width:10rem;">
+                {{ role.nombre_rol }}
+            </td>
+            <td style="width:30%; min-width:10rem;">
+                <ul>
+                    <li *ngFor="let permiso of role.permisos_rol">
+                        {{ permiso.nombre_permiso }}
+                    </li>
+                </ul>
+            </td>
+            <td style="width:25%; min-width:10rem;">
+                {{ role.estado_rol ? 'Activo' : 'Inactivo' }}
+            </td>
+            <td>
+                <div class="flex">
+                    <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2" (click)="editProduct(product)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="roleDialog" [style]="{ width: '450px' }" header="Create Role" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Agrega los campos del formulario para la creación del rol -->
+        <div class="field">
+            <label for="nombre_rol">Nombre del Rol</label>
+            <input type="text" pInputText id="nombre_rol" [(ngModel)]="newRole.nombre_rol" required autofocus
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newRole.nombre_rol }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newRole.nombre_rol">Nombre del Rol es requerido.</small>
+        </div>
+
+        <div class="field">
+            <label for="estado_rol">Estado del Rol</label>
+            <p-dropdown [(ngModel)]="newRole.estado_rol" inputId="estado_rol" [options]="estadoOptions" placeholder="Seleccionar">
+            </p-dropdown>
+        </div>
+
+        <div class="field">
+            <label for="permisos_rol">Permisos del Rol</label>
+            <div *ngFor="let permiso of permisosOptions">
+                <p-checkbox name="permisos_rol" [value]="permiso.value" label="{{ permiso.label }}"
+                    [(ngModel)]="newRole.permisos_rol"></p-checkbox>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideRoleDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveRole()"></button>
+    </ng-template>
+</p-dialog>
+
