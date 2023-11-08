@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class RolesService {
-  private apiUrl = 'http://localhost:3000/api/roles';
+export class ClientesService {
+  private apiUrl = 'http://localhost:3000/api/clientes';
 
   constructor(private http: HttpClient) { }
 
-  getRoles() {
+  getClientes() {
     return this.http.get<any[]>(this.apiUrl);
   }
-}
+} 
