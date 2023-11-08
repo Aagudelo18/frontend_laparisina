@@ -9,6 +9,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
             {
                 path: '', component: AppLayoutComponent,
                 children: [
+                    { path: 'clientes', loadChildren: () => import('./demo/components/pages/clientes/clientes.module').then(m => m.ClientesModule)},
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
