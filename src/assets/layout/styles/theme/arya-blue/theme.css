@@ -1999,7 +1999,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   margin: 0;
 }
 .p-button.p-button-icon-only.p-button-rounded {
-  border-radius: 50%;
+  border-radius: 15%;
   height: 2.357rem;
 }
 .p-button.p-button-sm {
