@@ -1,0 +1,41 @@
+<div class="card">
+    <h1>CREAR PEDIDO</h1>
+    <div class="grid p-fluid mt-3">
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input type="text" id="nombre_cliente" pInputText [(ngModel)]="pedido.nombre_cliente">
+                <label for="inputtext">Nombre cliente</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input type="text" id="nombre_cliente" pInputText [(ngModel)]="pedido.nombre_recibe">
+                <label for="inputtext">Nombre Quien Recibe</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-inputNumber inputId="inputnumber" [(ngModel)]="pedido.telefono"></p-inputNumber>
+                <label for="inputnumber">Telefono</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input type="text" id="direccion" pInputText [(ngModel)]="pedido.direccion">
+                <label for="inputtext">Dirección</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-4">
+            <span class="p-float-label">
+                <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" [options]="cities" [(ngModel)]="pedido.edificio_apto_barrio" optionLabel="name"></p-dropdown>
+                <label for="dropdown">Lugar de Entrega</label>
+            </span>
+        </div>
+        
+        
+        
+      
+       
+    </div>
+</div>
+
