@@ -58,7 +58,7 @@
             
             <td>
                 <div class="flex">
-                    <p-inputSwitch [(ngModel)]="valSwitch"></p-inputSwitch>
+                    <p-inputSwitch [(ngModel)]="valSwitch" (click)="cambiarEstadoRol()"></p-inputSwitch>
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
                 </div>
             </td>

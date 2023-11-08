@@ -12,4 +12,9 @@ export class RolesService {
   getRoles() {
     return this.http.get<any[]>(this.apiUrl);
   }
+
+  cambiarEstadoRol(id: string) {
+    return this.http.put<void>(`${this.apiUrl}/${id}/cambiarEstado`, {});
+  }
 }
+
