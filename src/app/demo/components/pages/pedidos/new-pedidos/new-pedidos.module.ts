@@ -14,6 +14,14 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FloatlabelDemoRoutingModule } from '../../../uikit/floatlabel/floatlabeldemo-routing.module';
 import { NewPedidosComponent } from './new-pedidos.component';
+import { ButtonModule } from 'primeng/button';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { RatingModule } from 'primeng/rating';
+import { RippleModule } from 'primeng/ripple';
+import { SliderModule } from 'primeng/slider';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 
 @NgModule({
@@ -32,7 +40,15 @@ import { NewPedidosComponent } from './new-pedidos.component';
 	CascadeSelectModule,
 	MultiSelectModule,
 	InputTextareaModule,
-	InputTextModule
+	InputTextModule,
+	TableModule,
+	RatingModule,
+	ButtonModule,
+	SliderModule,
+	ToggleButtonModule,
+	RippleModule,
+	ProgressBarModule,
+	ToastModule	
   ],
   declarations: [NewPedidosComponent],
 })
