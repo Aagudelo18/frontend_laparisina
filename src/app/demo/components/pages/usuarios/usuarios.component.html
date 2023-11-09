@@ -73,46 +73,36 @@
         </tr>
     </ng-template>
 </p-table>
-<p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Create Usuario" [modal]="true"
-    class="p-fluid">
+<p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Create Usuario" [modal]="true" class="p-fluid">
     <ng-template pTemplate="content">
-        <!-- Agrega los campos del formulario para la creación del rol -->
-        <div class="field">
-            <label for="correo_electronico">Correo electronico</label>
-            <input type="text" pInputText id="correo_electronico" [(ngModel)]="newUsuario.correo_electronico" required
-                autofocus [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newUsuario.correo_electronico }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newUsuario.correo_electronico">Correo electronico
-                del usuario requerido.</small>
-        </div>
-        
-        <div class="field">
-            <label for="ccontrasena_usuario">Contraseña</label>
-            <input type="text" pInputText id="contrasena_usuario" [(ngModel)]="newUsuario.correo_electronico" required
-                autofocus [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newUsuario.correo_electronico }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newUsuario.correo_electronico">Contraseña
-                del usuario, es requerida.</small>
-        </div>
-
-        <div class="field">
-            <label for="estado_usuario">Estado del Usuario</label>
-            <p-dropdown [(ngModel)]="newUsuario.estado_usuario" inputId="estado_usuario" [options]="estadoOptions"
-                placeholder="Seleccionar">
-            </p-dropdown>
-        </div>
-
-        <div class="field">
-            <label for="permisos_rol">Rol del usuario</label>
-            <div *ngFor="let permiso of permisosOptions">
-                <p-checkbox name="permisos_rol" [value]="permiso.value" label="{{ permiso.label }}"
-                    [(ngModel)]="newUsuario.permisos_rol"></p-checkbox>
+        <form [formGroup]="formularioUsuario" (ngSubmit)="crearUsuario()">
+            <div class="field">
+                <label for="correo_electronico">Correo electrónico</label>
+                <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico"
+                    placeholder="Correo Electrónico" />
+                <small *ngIf="formularioUsuario.get('correo_electronico').hasError('required')">Correo electrónico requerido.</small>
+                <small *ngIf="formularioUsuario.get('correo_electronico').hasError('email')">Correo electrónico no válido.</small>
             </div>
-        </div>
+
+            <div class="field">
+                <label for="contrasena_usuario">Contraseña</label>
+                <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario"
+                    placeholder="Contraseña" />
+                <small *ngIf="formularioUsuario.get('contrasena_usuario').hasError('required')">Contraseña requerida.</small>
+                <small *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')">La contraseña debe tener al menos 6 caracteres.</small>
+            </div>
+
+            <div class="field">
+                <label for="estado_usuario">Estado del Usuario</label>
+                <p-dropdown formControlName="estado_usuario" inputId="estado_usuario" [options]="estadoOptions" placeholder="Seleccionar"></p-dropdown>
+            </div>
+
+
+            <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+        </form>
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-            (click)="hideUsuarioDialog()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
-            (click)="saveUsuario()"></button>
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideUsuarioDialog()"></button>
     </ng-template>
 </p-dialog>
