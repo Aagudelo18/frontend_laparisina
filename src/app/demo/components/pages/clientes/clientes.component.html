@@ -11,7 +11,7 @@
             
                 
             </p-toolbar>
-              <p-table #dt [value]="clientes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedClientes" selectionMode="multiple" dataKey="_id">
+              <p-table class="dt-responsive" #dt [value]="clientes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedClientes" selectionMode="multiple" dataKey="_id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h4 class="m-0">Listado de Clientes</h4>
@@ -28,7 +28,6 @@
                         <th pSortableColumn="name">documento cliente</th>
                         <th pSortableColumn="name">nombre contacto</th>
                         <th pSortableColumn="name">celular cliente</th>
-                        <th pSortableColumn="name">Estado</th>
                         <th pSortableColumn="name">Aciones</th>
                         
                     </tr>
@@ -51,9 +50,6 @@
                         <td style="width:10%; min-width:10rem;">
                             {{ clientes.celular_cliente }}
                         </td>
-                        <td style="width:10%; min-width:10rem;">
-                            {{ clientes.estado_cliente ? 'Activo' : 'Inactivo' }}
-                        </td>
                         
                         <td>
                             <div class="flex">
@@ -67,3 +63,4 @@
         </div>
     </div>
 </div>
+
