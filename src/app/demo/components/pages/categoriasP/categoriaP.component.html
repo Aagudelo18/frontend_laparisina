@@ -37,24 +37,24 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-categoriaP>
                     <tr>                        
-                        <td style="width:15%; min-width:5rem;"><span class="p-column-title">Tipo</span>
+                        <td style="width:15%; min-width:5rem;"><span class="p-column-title">Nombre</span>
                             {{ categoriaP.nombre_categoria_producto }}
                         </td>
                         <td style="width:40%; min-width:10rem;">
-                            <span class="p-column-title">N° Identificación</span>
+                            <span class="p-column-title">Descripción</span>
                             {{ categoriaP.descripcion_categoria_producto }}
                         </td>                        
                         <td style="width:20%; min-width:8rem;">
-                            <span class="p-column-title">Razon Social</span>
+                            <span class="p-column-title">Imagen</span>
                             {{ categoriaP.imagen_categoria_producto }}
                         </td>
                         <td style="width:10%; min-width:10rem;">
-                            <span class="p-column-title">Telefono</span>
+                            <span class="p-column-title">Estado</span>
                             {{ categoriaP.estado_categoria_producto ? 'Activo' : 'Inactivo' }}
                         </td>  
                         <td style="width:30%; min-width:10rem;">
                             <div class="flex">
-                                <p-inputSwitch class="mr-2" [(ngModel)]="valSwitch"></p-inputSwitch>
+                                <p-inputSwitch class="mr-2" [ngModel]="categoriaP.estado_categoria_producto"></p-inputSwitch>
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarCategoriaP(categoriaP._id)"></button>                                
                             </div>
                         </td>
@@ -64,7 +64,7 @@
         </div>
 
         <p-dialog [(visible)]="crearCategoriaPDialog" [style]="{width: '400px'}" header="Crear Categoría" [modal]="true" class="p-fluid">            
-                <form [formGroup]="formCategoriaP" (ngSubmit)="addCategoriaP()">
+                <form [formGroup]="formCategoriaP" (ngSubmit)="crearCategoriaP()">
                     <div class="formgrid grid">
                         <div class="field col">
                             <span class="p-float-label">
@@ -101,9 +101,9 @@
                         </div>
                     </div>
 
-                    <div class="formgrid mt-3">                   
+                    <!-- <div class="formgrid mt-3">                   
                         <p-dropdown formControlName="estado_categoria_producto" [options]="estado" [(ngModel)]="selectedEstado" placeholder="Estado" [showClear]="true" [style]="{'width': '48%'}"></p-dropdown>                   
-                    </div>
+                    </div> -->
 
                     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearCategoriaPDialog = false"></button>
@@ -114,7 +114,7 @@
 
 
         <p-dialog [(visible)]="editarCategoriaPDialog" [style]="{width: '400px'}" header="Editar Categoría" [modal]="true" class="p-fluid">            
-            <form [formGroup]="formCategoriaP" (ngSubmit)="addCategoriaP()">
+            <form [formGroup]="formCategoriaP" (ngSubmit)="actualizarCategoriaP()">
                 <div class="formgrid grid">
                     <div class="field col">
                         <span class="p-float-label">

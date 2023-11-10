@@ -16,8 +16,6 @@ export class CategoriaPComponent implements OnInit {
     categoriaP: CategoriaP = {}
     formCategoriaP:FormGroup;
     id: string = '';
-
-    valSwitch: boolean = false;
     
     cols:any[] = [
       { field: 'id', header: 'ID' },
@@ -82,42 +80,90 @@ export class CategoriaPComponent implements OnInit {
     }
 
 
-    addCategoriaP(){
-      const categoriaP : CategoriaP = {
-       nombre_categoria_producto: this.formCategoriaP.value.nombre_categoria_producto,
-       descripcion_categoria_producto: this.formCategoriaP.value.descripcion_categoria_producto,
-       imagen_categoria_producto: this.formCategoriaP.value.imagen_categoria_producto,
-       estado_categoria_producto: this.formCategoriaP.value.estado_categoria_producto,
-      }
+    // addCategoriaP(){
+    //   const categoriaP : CategoriaP = {
+    //    nombre_categoria_producto: this.formCategoriaP.value.nombre_categoria_producto,
+    //    descripcion_categoria_producto: this.formCategoriaP.value.descripcion_categoria_producto,
+    //    imagen_categoria_producto: this.formCategoriaP.value.imagen_categoria_producto,
+    //    estado_categoria_producto: this.formCategoriaP.value.estado_categoria_producto,
+    //   }
  
-      if(this.id != ''){
-       categoriaP._id = this.id;
-       this.categoriaPService.putCategoriaP(this.id,categoriaP).subscribe(() => {
-        alert('Categoria actualizada con éxito')    
+    //   if(this.id != ''){
+    //    categoriaP._id = this.id;
+    //    this.categoriaPService.putCategoriaP(this.id,categoriaP).subscribe(() => {
+    //     alert('Categoria actualizada con éxito')    
+    //     this.messageService.add({
+    //         severity: 'info', //'success', 'info', 'warn' o 'error'
+    //         summary: `La categoría fue actualizada con éxito`,
+    //         detail: 'Categoría actualizada',
+    //         life: 6000 // La duración del mensaje en milisegundos
+    //       });
+    //       this.getListCategoriasP();
+    //       this.editarCategoriaPDialog = false;  
+    //    })
+    //   } else {            
+    //    this.categoriaPService.postCategoriaP(categoriaP).subscribe(() => {
+    //     alert('Categoría creada con éxito')
+    //     this.messageService.add({
+    //         severity: 'success', //'success', 'info', 'warn' o 'error'
+    //         summary: 'La categoría fue creada con éxito',
+    //         detail: 'Categoría creada',
+    //         life: 6000 // La duración del mensaje en milisegundos
+    //     });
+    //     this.getListCategoriasP();
+    //     this.crearCategoriaPDialog = false;     
+    //    })
+    //   }
+      
+    // }
+
+    // Función para crear una categoría
+    crearCategoriaP() {
+      const nuevaCategoriaP: CategoriaP = {
+        nombre_categoria_producto: this.formCategoriaP.value.nombre_categoria_producto,
+        descripcion_categoria_producto: this.formCategoriaP.value.descripcion_categoria_producto,
+        imagen_categoria_producto: this.formCategoriaP.value.imagen_categoria_producto,
+        estado_categoria_producto: true,
+      };
+
+      this.categoriaPService.postCategoriaP(nuevaCategoriaP).subscribe(() => {
+        alert('Categoría creada con éxito');
         this.messageService.add({
-            severity: 'info', //'success', 'info', 'warn' o 'error'
-            summary: `La categoría fue actualizada con éxito`,
-            detail: 'Categoría actualizada',
-            life: 6000 // La duración del mensaje en milisegundos
-          });
-          this.getListCategoriasP();
-          this.editarCategoriaPDialog = false;  
-       })
-      } else {            
-       this.categoriaPService.postCategoriaP(categoriaP).subscribe(() => {
-        alert('Categoría creada con éxito')
-        this.messageService.add({
-            severity: 'success', //'success', 'info', 'warn' o 'error'
-            summary: 'La categoría fue creada con éxito',
-            detail: 'Categoría creada',
-            life: 6000 // La duración del mensaje en milisegundos
+          severity: 'success',
+          summary: 'La categoría fue creada con éxito',
+          detail: 'Categoría creada',
+          life: 6000
         });
         this.getListCategoriasP();
-        this.crearCategoriaPDialog = false;     
-       })
-      }
-      
+        this.crearCategoriaPDialog = false;
+      });
     }
+
+    // Función para actualizar una categoría
+    actualizarCategoriaP() {
+      const categoriaPActualizada: CategoriaP = {
+        nombre_categoria_producto: this.formCategoriaP.value.nombre_categoria_producto,
+        descripcion_categoria_producto: this.formCategoriaP.value.descripcion_categoria_producto,
+        imagen_categoria_producto: this.formCategoriaP.value.imagen_categoria_producto,
+        estado_categoria_producto: this.formCategoriaP.value.estado_categoria_producto,
+      };
+
+      if (this.id !== '') {
+        categoriaPActualizada._id = this.id;
+        this.categoriaPService.putCategoriaP(this.id, categoriaPActualizada).subscribe(() => {
+          alert('Categoría actualizada con éxito');
+          this.messageService.add({
+            severity: 'info',
+            summary: 'La categoría fue actualizada con éxito',
+            detail: 'Categoría actualizada',
+            life: 6000
+          });
+          this.getListCategoriasP();
+          this.editarCategoriaPDialog = false;
+        });
+      }
+    }
+
 
     openNew() {
         this.id = '';                
