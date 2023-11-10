@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
         { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule)},
         { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)},
         { path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) },
+        { path: 'categoriasP', loadChildren: () => import('./categoriasP/categoriaP.module').then(m => m.CategoriaPModule) },
+        { path: 'productos', loadChildren: () => import('./productos/producto.module').then(m => m.ProductoModule) },
         { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule) },
         { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },

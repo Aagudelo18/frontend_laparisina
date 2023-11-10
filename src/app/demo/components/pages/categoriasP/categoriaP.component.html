@@ -1,0 +1,165 @@
+<div class="grid">
+    <div class="col-12">
+
+        <div class="card px-6 py-6">            
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Crear Categoría" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>                        
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Importar" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="listCategoriasP" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre_categoria_producto']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Lista de Categorias</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>                        
+                        <th pSortableColumn="nombre_categoria_producto">Nombre<p-sortIcon field="nombre_categoria_producto"></p-sortIcon></th>
+                        <th pSortableColumn="descripcion_categoria_producto">Descripción</th>                        
+                        <th pSortableColumn="">Imagen</th>
+                        <th pSortableColumn="estado_categoria_producto">Estado<p-sortIcon field="estado_categoria_producto"></p-sortIcon></th>
+                        <th pSortableColumn="estado_categoria_producto">Acciones</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-categoriaP>
+                    <tr>                        
+                        <td style="width:15%; min-width:5rem;"><span class="p-column-title">Tipo</span>
+                            {{ categoriaP.nombre_categoria_producto }}
+                        </td>
+                        <td style="width:40%; min-width:10rem;">
+                            <span class="p-column-title">N° Identificación</span>
+                            {{ categoriaP.descripcion_categoria_producto }}
+                        </td>                        
+                        <td style="width:20%; min-width:8rem;">
+                            <span class="p-column-title">Razon Social</span>
+                            {{ categoriaP.imagen_categoria_producto }}
+                        </td>
+                        <td style="width:10%; min-width:10rem;">
+                            <span class="p-column-title">Telefono</span>
+                            {{ categoriaP.estado_categoria_producto ? 'Activo' : 'Inactivo' }}
+                        </td>  
+                        <td style="width:30%; min-width:10rem;">
+                            <div class="flex">
+                                <p-inputSwitch class="mr-2" [(ngModel)]="valSwitch"></p-inputSwitch>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarCategoriaP(categoriaP._id)"></button>                                
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>            
+        </div>
+
+        <p-dialog [(visible)]="crearCategoriaPDialog" [style]="{width: '400px'}" header="Crear Categoría" [modal]="true" class="p-fluid">            
+                <form [formGroup]="formCategoriaP" (ngSubmit)="addCategoriaP()">
+                    <div class="formgrid grid">
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
+                                <label for="nombre_categoria_producto">Nombre</label>
+                            </span>
+                            <span *ngIf="formCategoriaP.get('nombre_categoria_producto')?.hasError('required') && formCategoriaP.get('nombre_categoria_producto')?.touched">
+                                El nombre es requerido
+                            </span>                       
+                        </div>
+                    </div>
+
+                    <div class="formgrid grid mt-4">
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
+                                <label for="descripcion_categoria_producto">Descripción</label>
+                            </span>
+                            <span *ngIf="formCategoriaP.get('descripcion_categoria_producto')?.hasError('required') && formCategoriaP.get('descripcion_categoria_producto')?.touched">
+                                La descripción es requerida
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="formgrid grid mt-4">
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <input formControlName="imagen_categoria_producto" id="imagen_categoria_producto" type="text" pInputText>
+                                <label for="imagen_categoria_producto">Imagen</label>
+                            </span>
+                            <span *ngIf="formCategoriaP.get('imagen_categoria_producto')?.hasError('required') && formCategoriaP.get('imagen_categoria_producto')?.touched">
+                                La imagen es requerida
+                            </span>                                               
+                        </div>
+                    </div>
+
+                    <div class="formgrid mt-3">                   
+                        <p-dropdown formControlName="estado_categoria_producto" [options]="estado" [(ngModel)]="selectedEstado" placeholder="Estado" [showClear]="true" [style]="{'width': '48%'}"></p-dropdown>                   
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearCategoriaPDialog = false"></button>
+                        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+                    </div>   
+                </form>             
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="editarCategoriaPDialog" [style]="{width: '400px'}" header="Editar Categoría" [modal]="true" class="p-fluid">            
+            <form [formGroup]="formCategoriaP" (ngSubmit)="addCategoriaP()">
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
+                            <label for="nombre_categoria_producto">Nombre</label>
+                        </span>
+                        <span *ngIf="formCategoriaP.get('nombre_categoria_producto')?.hasError('required') && formCategoriaP.get('nombre_categoria_producto')?.touched">
+                            El nombre es requerido
+                        </span>                       
+                    </div>
+                </div>
+
+                <div class="formgrid grid mt-4">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
+                            <label for="descripcion_categoria_producto">Descripción</label>
+                        </span>
+                        <span *ngIf="formCategoriaP.get('descripcion_categoria_producto')?.hasError('required') && formCategoriaP.get('descripcion_categoria_producto')?.touched">
+                            La descripción es requerida
+                        </span>
+                    </div>
+                </div>
+
+                <div class="formgrid grid mt-4">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input formControlName="imagen_categoria_producto" id="imagen_categoria_producto" type="text" pInputText>
+                            <label for="imagen_categoria_producto">Imagen</label>
+                        </span>
+                        <span *ngIf="formCategoriaP.get('imagen_categoria_producto')?.hasError('required') && formCategoriaP.get('imagen_categoria_producto')?.touched">
+                            La imagen es requerida
+                        </span>                                               
+                    </div>
+                </div>
+
+                <div class="formgrid mt-3">                   
+                    <p-dropdown formControlName="estado_categoria_producto" [options]="estado" [(ngModel)]="selectedEstado" placeholder="Estado" [showClear]="true" [style]="{'width': '48%'}"></p-dropdown>                   
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarCategoriaPDialog = false"></button>
+                    <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+                </div>   
+            </form>             
+    </p-dialog>
+    </div>
+</div>

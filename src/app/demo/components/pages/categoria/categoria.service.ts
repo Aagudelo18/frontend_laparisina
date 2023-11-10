@@ -7,12 +7,21 @@ import { Categoria } from './categoria.model'; // Define tu modelo de categoría
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:3000/api/categorias'; // URL de tu API
+  private apiUrl = 'http://localhost:3000/api'; // URL de tu API
 
   constructor(private http: HttpClient) {}
 
   getCategorias(): Observable<Categoria[]> {
-    return this.http.get<Categoria[]>(this.apiUrl);
+    return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`);
+  }
+
+  crearCategoria(categoria: Categoria): Observable<any> {
+    const formData = new FormData();
+    formData.append('nombre_categoria_producto', categoria.nombre_categoria_producto);
+    formData.append('descripcion_categoria_producto', categoria.descripcion_categoria_producto);
+    formData.append('imagen_categoria_producto', categoria.imagen_categoria_producto);
+
+    return this.http.post<any>(`${this.apiUrl}/categorias`, formData);
   }
 }
 
