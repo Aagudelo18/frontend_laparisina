@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RolesRoutingModule } from './roles-routing.module';
-import { RolesComponent } from './roles.component';
+import { CategoriaRoutingModule } from './categoria-routing.module';
+import { CategoriaComponent } from './categoria.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -19,12 +19,10 @@ import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 
 
-
 @NgModule({
     imports: [
         CommonModule,
-        InputSwitchModule,
-        RolesRoutingModule,
+        CategoriaRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -39,7 +37,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
+        InputSwitchModule
     ],
-    declarations: [RolesComponent],
+    declarations: [CategoriaComponent]
 })
-export class RolesModule { }
+export class CategoriaModule { }

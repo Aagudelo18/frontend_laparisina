@@ -20,8 +20,16 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/usuarios'] },
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
+                    { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
                     { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
+<<<<<<< HEAD
                     { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
+=======
+                    { label: 'Categorias', icon: 'pi pi-fw pi-user', routerLink: ['/pages/categorias'] },
+                    { label: 'Productos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/productos'] },
+                    { label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
+
+>>>>>>> isaac
                 ]
             },
         ]
