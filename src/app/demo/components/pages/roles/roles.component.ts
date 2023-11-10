@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RolesService } from './roles.service';
-import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
 
 
 @Component({ 

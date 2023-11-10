@@ -4,7 +4,11 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     imports: [RouterModule.forChild([
         { path: 'crud', loadChildren: () => import('./crud/crud.module').then(m => m.CrudModule) },
+        { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)},
         { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule)},
+        { path: 'pedidos', loadChildren: () => import('./pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule)},
+        //{ path: 'new-pedidos', loadChildren: () => import('./pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule)},
+        //{ path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)},
         { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)},
         { path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) },
         { path: 'categoriasP', loadChildren: () => import('./categoriasP/categoriaP.module').then(m => m.CategoriaPModule) },

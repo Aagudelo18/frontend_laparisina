@@ -18,6 +18,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 
+
+
 @NgModule({
     imports: [
         CommonModule,
@@ -36,8 +38,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
-        DialogModule
+        DialogModule,
     ],
-    declarations: [RolesComponent]
+    declarations: [RolesComponent],
 })
 export class RolesModule { }
