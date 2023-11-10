@@ -14,7 +14,7 @@
   <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
         <div class="my-2">
-            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" ></button>
+            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewCategoriaDialog()"></button>
             
         </div>
         
@@ -54,9 +54,58 @@
             <td style="width:15%; min-width:10rem;">
                 <div class="flex justify-between items-center">
                     <p-inputSwitch [(ngModel)]="rol.estado_rol" (change)="mostrarDialogConfirmacion($event, rol)"></p-inputSwitch>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(rol)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarCategoriaDialog(categoria)"></button>
                 </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
+
+<p-dialog [(visible)]="crearCategoriaDialog" [style]="{ width: '450px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Agrega los campos del formulario para la creación del rol -->
+        <div class="field">
+            <label for="nombre_categoria">Nombre del rol</label>
+            <input type="text" pInputText id="nombre_categoria" required autofocus
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newCategoria.nombre_categoria_producto }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newCategoria.nombre_categoria_producto">Nombre de la categoría es requerido.</small>
+        </div>
+
+    
+       
+
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="editarCategoriaDialog" [style]="{ width: '450px' }" header="Editar Cliente" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Agrega los campos del formulario para la creación del rol -->
+       
+        <div class="field">
+            <label for="nombre_categoria">Nombre del rol</label>
+            <input type="text" pInputText id="nombre_categoria" required autofocus
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newCategoria.nombre_categoria_producto }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newCategoria.nombre_categoria_producto">Nombre de la categoría es requerido.</small>
+        </div>
+
+    
+
+        <div class="formgrid grid">
+            <p-dropdown [options]="['Activo','Inactivo']" placeholder="Estado" class="mb-4 ml-3" required></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.estado_categoria_producto">El estado es requerido.</small>
+        </div>
+
+
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+    </ng-template>
+</p-dialog>

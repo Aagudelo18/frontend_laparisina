@@ -17,7 +17,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
     imports: [
@@ -25,7 +24,6 @@ import { CheckboxModule } from 'primeng/checkbox';
         InputSwitchModule,
         RolesRoutingModule,
         TableModule,
-        CheckboxModule,
         FileUploadModule,
         FormsModule,
         ButtonModule,

@@ -5,7 +5,7 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Crear Cliente" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewClientesDialog()"></button>
+                        <button pButton pRipple label="Crear cliente" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewClienteDialog()"></button>
                     </div>
                 </ng-template>
             
@@ -54,7 +54,7 @@
                         <td>
                             <div class="flex">
                                 <p-inputSwitch [(ngModel)]="valSwitch"></p-inputSwitch>
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteclientes(clientes)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarClienteDialog(clientes)"></button>
                             </div>
                         </td>
                     </tr>
@@ -63,4 +63,124 @@
         </div>
     </div>
 </div>
+<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '450px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="field">
+            <label for="codigo_cliente">Codigo del cliente:</label>
+            <input type="text" pInputText id="codigo_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.codigo_cliente" name="codigo_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.codigo_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.codigo_cliente">
+              Nombre de contacto es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <div style="display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;">
+              <div style="margin-bottom: 5px;">
+                <label for="tipo_cliente" class="mb-4 mb-3">Tipo de Cliente:</label>
+              </div>
+              <div class="input">
+                <p-dropdown [(ngModel)]="nuevoCliente.tipo_cliente" [options]="['Empresa','Persona natural']"
+                  placeholder="Selecciona una opción" name="tipo_cliente" required></p-dropdown>
+              </div>
+              <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.tipo_cliente">
+                El tipo de cliente es requerido.
+              </small>
+            </div>
+          </div>
+          
+        <div class="field">
+            <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
+            <input type="text" pInputText id="nombre_contacto" required autofocus
+              [(ngModel)]="nuevoCliente.nombre_contacto" name="nombre_contacto"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.nombre_contacto }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.nombre_contacto">
+              Nombre de contacto es requerido.
+            </small>
+          </div>
+
+          <div class="field">
+            <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
+            <input type="text" pInputText id="nombre_juridico" required autofocus
+              [(ngModel)]="nuevoCliente.nombre_juridico" name="nombre_juridico"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.nombre_juridico }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.nombre_juridico">
+              Nombre juridico es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
+            <input type="text" pInputText id="numero_documento_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.numero_documento_cliente" name="numero_documento_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.numero_documento_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.numero_documento_cliente">
+              Numero de documento es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
+            <input type="text" pInputText id="nit_empresa_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.nit_empresa_cliente" name="nit_empresa_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.nit_empresa_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.nit_empresa_cliente">
+              Nit de la empresa es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
+            <input type="text" pInputText id="correo_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.correo_cliente" name="correo_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.correo_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.correo_cliente">
+              El correo electronico es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <label for="celular_cliente" style="margin-bottom: 5px;">Celular:</label>
+            <input type="text" pInputText id="celular_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.celular_cliente" name="celular_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.celular_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.celular_cliente">
+              El celular es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
+            <input type="text" pInputText id="direccion_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.direccion_cliente" name="direccion_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.direccion_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.direccion_cliente">
+              La dirección es requerida.
+            </small>
+          </div>
+          <div class="field">
+            <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
+            <input type="text" pInputText id="barrio_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.barrio_cliente" name="barrio_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.barrio_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.barrio_cliente">
+              El barrio es requerido.
+            </small>
+          </div>
+          <div class="field">
+            <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
+            <input type="text" pInputText id="ciudad_cliente" required autofocus
+              [(ngModel)]="nuevoCliente.ciudad_cliente" name="ciudad_cliente"
+              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.ciudad_cliente }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.ciudad_cliente">
+              El barrio es requerido.
+            </small>
+          </div>
+
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"  ></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarCliente()"></button>
+    </ng-template>
+</p-dialog>
 

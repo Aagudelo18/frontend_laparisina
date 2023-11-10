@@ -1,0 +1,172 @@
+<div class="card">
+    <h1>CREAR PEDIDO</h1>
+    <div class="grid p-fluid mt-3">
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="nombre_cliente"
+                    pInputText
+                    [(ngModel)]="pedido.nombre_cliente"
+                />
+                <label for="inputtext">Nombre cliente</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="nombre_cliente"
+                    pInputText
+                    [(ngModel)]="pedido.nombre_recibe"
+                />
+                <label for="inputtext">Nombre Quien Recibe</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-inputNumber
+                    inputId="inputnumber"
+                    [(ngModel)]="pedido.telefono"
+                ></p-inputNumber>
+                <label for="inputnumber">Telefono</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="direccion"
+                    pInputText
+                    [(ngModel)]="pedido.direccion"
+                />
+                <label for="inputtext">Dirección</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-dropdown
+                    inputId="dropdown"
+                    [autoDisplayFirst]="false"
+                    [options]="cities"
+                    [(ngModel)]="pedido.edificio_apto_barrio"
+                    optionLabel="name"
+                ></p-dropdown>
+                <label for="dropdown">Lugar de Entrega</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="ciudad"
+                    pInputText
+                    [(ngModel)]="pedido.ciudad"
+                />
+                <label for="inputtext">Ciudad</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-calendar
+                    inputId="calendar"
+                    [(ngModel)]="pedido.fecha_entrega_pedido"
+                ></p-calendar>
+                <label for="calendar">Fecha Entrega</label>
+            </span>
+        </div>
+    </div>
+
+    <div class="grid p-fluid mt-3">
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <select class="p-element p-inputtext ng-star-inserted" [(ngModel)] = "categoriaSeleccionada" (ngModelChange) = "categoriaOnChange()">
+                    <option
+                        *ngFor="let categoria of categorias"
+                        [value]="categoria.nombre_categoria_producto">
+                        {{ categoria.nombre_categoria_producto }}
+                    </option>
+                </select>
+                <label for="categoria" style="margin-top: -40px;">Categoría</label>              
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-dropdown 
+                    inputId="productosCategoria"
+                    [autoDisplayFirst]="false"
+                    [options]="productosCategoria"
+                    [(ngModel)]="pedido.categoria"
+                    optionLabel="nombre_producto"
+                ></p-dropdown>
+                <label for="productos">Productos</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-inputNumber
+                    inputId="integeronly"
+                    [(ngModel)]="pedido.cantidad"
+                >
+                </p-inputNumber>
+                <label htmlFor="number-input">Cantidad</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-3">
+            <button
+                pButton
+                pRipple
+                label="Agregar Producto"
+                icon="pi pi-user-plus"
+                class="p-button-success mr-2"
+            ></button>
+        </div>
+
+    </div>
+    <div class="grid p-fluid mt-3">
+        <!-- #tabla productos -->
+
+        <p-table [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th colspan="12">Lista de Productos</th>
+                    <!-- Añade el título -->
+                </tr>
+                <tr>
+                    <th>Nombre Producto</th>
+                    <th>Descripción</th>
+                    <th>cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Precio total</th>
+                    <th>Accion</th>
+                    <!-- Agrega una columna para los botones de eliminación -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-producto>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td>
+                        
+                    </td>
+                </tr>
+                <br />
+            </ng-template>
+        </p-table>
+    </div>
+
+    <div class="my-2">
+        <button
+            pButton
+            pRipple
+            label="Crear Pedido"
+            icon="pi pi-user-plus"
+            class="p-button-success mr-2"
+        ></button>
+    </div>
+</div>
