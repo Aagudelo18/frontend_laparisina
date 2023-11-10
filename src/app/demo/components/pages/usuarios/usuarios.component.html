@@ -34,9 +34,11 @@
             <h4 class="m-0">Listado de Usuarios</h4>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                <input pInputText type="text" [(ngModel)]="correoBusqueda" placeholder="Buscar usuario"
                     class="w-full sm:w-auto" />
             </span>
+            <button pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-success ml-2"
+                (click)="onBuscar()"></button>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -98,10 +100,12 @@
             </div>
 
             <div class="field">
-                <label for="estado_usuario">Seleccione el rol del Usuario</label>
-            <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" [options]="rolesList"
-                [valueLabel]="_id" placeholder="Seleccionar"></p-dropdown>
+                <label for="rol_usuario">Seleccione el rol del Usuario</label>
+                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles" [(ngModel)]="selectedRol"
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
             </div>
+            
+
 
             <div class="field">
                 <label for="estado_usuario">Estado del Usuario</label>

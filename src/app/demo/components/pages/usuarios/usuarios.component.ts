@@ -11,24 +11,23 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class UsuariosComponent implements OnInit {
   usuarios: any[] = [];
   selectedUsuarios: any[] = [];
-  roles: any[] = []; //Se declara una lista para roles
-  rolesList: string[] = []; // Declaramos la propiedad rolesList
+  roles: any[] = []; // Se declara una lista para roles
   usuarioDialog: boolean = false;
   formularioUsuario: FormGroup;
+  selectedRol: any; // Variable para almacenar el rol seleccionado
+  correoBusqueda: string = '';
 
-  hideUsuarioDialog() {
-    this.usuarioDialog = false;
-  }
-
-
-  constructor(private usuarioService: UsuarioService, private rolesService: RolesService, private fb: FormBuilder) {
+  constructor(
+    private usuarioService: UsuarioService,
+    private rolesService: RolesService,
+    private fb: FormBuilder
+  ) {
     this.formularioUsuario = fb.group({
       correo_electronico: ['', [Validators.required, Validators.email]],
       contrasena_usuario: ['', [Validators.required, Validators.minLength(6)]],
       rol_usuario: ['', [Validators.required]],
       estado_usuario: [true, Validators.required], // Establece el valor predeterminado a "Activo"
     });
-    
   }
 
   ngOnInit() {
@@ -42,16 +41,8 @@ export class UsuariosComponent implements OnInit {
     this.rolesService.getRoles().subscribe((data: any[]) => {
       this.roles = data;
       console.log(data);
-
-      // Crea la lista de roles
-      const rolesList = this.roles.map((rol: any) => rol.nombre_rol);
-      
-      // Asigna la lista de roles a la propiedad roles
-      this.rolesList = rolesList;
-      console.log(rolesList);
     });
   }
-
 
   openNewUsuarioDialog() {
     this.usuarioDialog = true;
@@ -59,28 +50,43 @@ export class UsuariosComponent implements OnInit {
 
   estadoOptions = [
     { label: 'Activo', value: true },
-    { label: 'Inactivo', value: false }
+    { label: 'Inactivo', value: false },
   ];
 
+  //Metodo para buscar por medio del correo electrónico
+  onBuscar() {
+    // Obtener la lista completa de usuarios desde donde se esté almacenando
+    const usuariosCompletos = this.usuarios;
+
+    // Realizar la búsqueda por correo electrónico
+    this.usuarios = usuariosCompletos.filter(usuario =>
+      usuario.correo_electronico.toLowerCase().includes(this.correoBusqueda.toLowerCase())
+    );
+  }
 
   crearUsuario() {
     if (this.formularioUsuario.valid) {
       const nuevoUsuario = this.formularioUsuario.value;
 
-      // Obtiene el nombre del rol seleccionado
-      const rolSeleccionado = this.rolesList[this.formularioUsuario.get('rol_usuario').value];
+      // Asigna el objeto completo del rol seleccionado al objeto nuevoUsuario
+      nuevoUsuario.rol_usuario = this.selectedRol;
 
-      // Asigna el nombre del rol seleccionado al objeto nuevoUsuario
-      nuevoUsuario.rol_usuario = rolSeleccionado;
+      console.log('Rol seleccionado:', this.selectedRol);
+      console.log('Nuevo Usuario:', nuevoUsuario);
 
       this.usuarioService.createUsuario(nuevoUsuario).subscribe((response: any) => {
         console.log('Usuario creado con éxito:', response);
+
+        // Vuelve a cargar la lista de usuarios después de crear uno nuevo
+        this.usuarioService.getUsuarios().subscribe((data: any) => {
+          if (data && data.total) {
+            this.usuarios = data.total;
+            console.log(this.usuarios);
+          }
+        });
+
         this.usuarioDialog = false;
       });
     }
   }
-  
-  
-
-
 }
