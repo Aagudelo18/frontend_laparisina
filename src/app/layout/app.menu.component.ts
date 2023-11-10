@@ -20,10 +20,17 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                     //{ label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/usuarios'] },
-                    { label: 'Categorias', icon: 'pi pi-fw pi-sitemap', routerLink: ['/pages/categorias'] },
-                    { label: 'Clientes', icon: 'pi pi-fw pi-users', routerLink: ['/pages/clientes'] },
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
+<<<<<<<<< Temporary merge branch 1
                     { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
-                    { label: 'Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pages/pedidos'] },
+                    { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
+                    { label: 'Categorias', icon: 'pi pi-fw pi-user', routerLink: ['/pages/categorias'] },
+                    { label: 'Productos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/productos'] },
+                    { label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
+=========
+                    { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
+                    { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
+>>>>>>>>> Temporary merge branch 2
                 ]
             },
         ]

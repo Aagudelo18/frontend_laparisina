@@ -37,10 +37,9 @@
                 {{ categoria.descripcion_categoria_producto }}
             </td>
             <td style="width:30%; min-width:10rem;">
-                <img src="http://localhost:3000/uploads/{{ categoria.imagen_categoria_producto }}" alt="Imagen de la categoría">
-
-                
+                <img [src]="'http://localhost:3000/uploads/' + categoria.imagen_categoria_producto" alt="Imagen de la categoría">
             </td>
+            
             <td style="width:10%; min-width:10rem;">
                 {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }}
             </td>

@@ -7,7 +7,7 @@ import { Empleado } from './empleado.model';
   providedIn: 'root'
 })
 export class EmpleadosService {
-  private apiUrl = 'http://localhost:3000/api'; // Reemplaza con la URL real de tu API
+  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api'; // Reemplaza con la URL real de tu API
 
   constructor(private http: HttpClient) {}
 

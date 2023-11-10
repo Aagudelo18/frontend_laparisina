@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UsuariosRoutingModule } from './usuarios-routing.module';
-import { UsuariosComponent } from './usuarios.component';
+import { ProductoRoutingModule } from './producto-routing.module';
+import { ProductoComponent } from './producto.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,12 +16,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { ProductoService } from './producto.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { AutoCompleteModule } from "primeng/autocomplete";
+
 
 @NgModule({
     imports: [
         CommonModule,
-        UsuariosRoutingModule,
+        ProductoRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -36,8 +40,13 @@ import { ReactiveFormsModule } from '@angular/forms';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        InputSwitchModule,
+        AutoCompleteModule,
     ],
-    declarations: [UsuariosComponent]
+    declarations: [ProductoComponent],
+    providers: [
+        ProductoService // Agrega tu servicio como un proveedor aquí
+      ]
 })
-export class UsuariosModule { }
+export class ProductoModule { }

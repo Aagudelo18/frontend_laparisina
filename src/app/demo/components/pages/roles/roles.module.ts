@@ -18,26 +18,28 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 
-@NgModule({
-    imports: [
-        CommonModule,
-        InputSwitchModule,
-        RolesRoutingModule,
-        TableModule,
-        FileUploadModule,
-        FormsModule,
-        ButtonModule,
-        RippleModule,
-        ToastModule,
-        ToolbarModule,
-        RatingModule,
-        InputTextModule,
-        InputTextareaModule,
-        DropdownModule,
-        RadioButtonModule,
-        InputNumberModule,
-        DialogModule
-    ],
-    declarations: [RolesComponent]
-})
-export class RolesModule { }
+
+
+// @NgModule({
+//     imports: [
+//         CommonModule,
+//         InputSwitchModule,
+//         RolesRoutingModule,
+//         TableModule,
+//         FileUploadModule,
+//         FormsModule,
+//         ButtonModule,
+//         RippleModule,
+//         ToastModule,
+//         ToolbarModule,
+//         RatingModule,
+//         InputTextModule,
+//         InputTextareaModule,
+//         DropdownModule,
+//         RadioButtonModule,
+//         InputNumberModule,
+//         DialogModule,
+//     ],
+//     declarations: [RolesComponent],
+// })
+// export class RolesModule { }
