@@ -18,18 +18,20 @@
                     type="text"
                     id="nombre_cliente"
                     pInputText
-                    [(ngModel)]="pedido.nombre_recibe"
+                    [(ngModel)]="pedido.quien_recibe"
                 />
                 <label for="inputtext">Nombre Quien Recibe</label>
             </span>
         </div>
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <p-inputNumber
-                    inputId="inputnumber"
-                    [(ngModel)]="pedido.telefono"
-                ></p-inputNumber>
-                <label for="inputnumber">Telefono</label>
+                <input
+                    type="number"
+                    id="telefono"
+                    pInputText
+                    [(ngModel)]="pedido.telefono_cliente"
+                />
+                <label for="inputtext">Telefono</label>
             </span>
         </div>
         <div class="field col-12 md:col-3">
@@ -38,7 +40,7 @@
                     type="text"
                     id="direccion"
                     pInputText
-                    [(ngModel)]="pedido.direccion"
+                    [(ngModel)]="pedido.direccion_entrega"
                 />
                 <label for="inputtext">Dirección</label>
             </span>
@@ -48,7 +50,7 @@
                 <p-dropdown
                     inputId="dropdown"
                     [autoDisplayFirst]="false"
-                    [options]="cities"
+                    [options]="locacionesEntrega"
                     [(ngModel)]="pedido.edificio_apto_barrio"
                     optionLabel="name"
                 ></p-dropdown>
@@ -71,8 +73,21 @@
                 <p-calendar
                     inputId="calendar"
                     [(ngModel)]="pedido.fecha_entrega_pedido"
+                    [dateFormat]="'dd/mm/yy'"
                 ></p-calendar>
                 <label for="calendar">Fecha Entrega</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-dropdown
+                    inputId="dropdown"
+                    [autoDisplayFirst]="false"
+                    [options]="metodoPago"
+                    [(ngModel)]="pedido.metodo_pago"
+                    optionLabel="name"
+                ></p-dropdown>
+                <label for="dropdown">Metodo de Pago</label>
             </span>
         </div>
     </div>
@@ -80,23 +95,30 @@
     <div class="grid p-fluid mt-3">
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <select class="p-element p-inputtext ng-star-inserted" [(ngModel)] = "categoriaSeleccionada" (ngModelChange) = "categoriaOnChange()">
+                <select
+                    class="p-element p-inputtext ng-star-inserted"
+                    [(ngModel)]="categoriaSeleccionada"
+                    (ngModelChange)="categoriaOnChange()"
+                >
                     <option
                         *ngFor="let categoria of categorias"
-                        [value]="categoria.nombre_categoria_producto">
+                        [value]="categoria.nombre_categoria_producto"
+                    >
                         {{ categoria.nombre_categoria_producto }}
                     </option>
                 </select>
-                <label for="categoria" style="margin-top: -40px;">Categoría</label>              
+                <label for="categoria" style="margin-top: -40px"
+                    >Categoría</label
+                >
             </span>
         </div>
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <p-dropdown 
+                <p-dropdown
                     inputId="productosCategoria"
                     [autoDisplayFirst]="false"
                     [options]="productosCategoria"
-                    [(ngModel)]="pedido.categoria"
+                    [(ngModel)]="productoSeleccionado"
                     optionLabel="nombre_producto"
                 ></p-dropdown>
                 <label for="productos">Productos</label>
@@ -106,7 +128,7 @@
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="integeronly"
-                    [(ngModel)]="pedido.cantidad"
+                    [(ngModel)]="cantidad_producto"
                 >
                 </p-inputNumber>
                 <label htmlFor="number-input">Cantidad</label>
@@ -120,37 +142,34 @@
                 label="Agregar Producto"
                 icon="pi pi-user-plus"
                 class="p-button-success mr-2"
+                (click)="agregarProductoExistente()"
             ></button>
         </div>
-
     </div>
     <div class="grid p-fluid mt-3">
         <!-- #tabla productos -->
-
-        <p-table [value]="productos" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table [value]="productsFormArray.controls">
             <ng-template pTemplate="header">
                 <tr>
                     <th colspan="12">Lista de Productos</th>
-                    <!-- Añade el título -->
                 </tr>
                 <tr>
                     <th>Nombre Producto</th>
-                    <th>Descripción</th>
+                    <th>Categoria</th>
                     <th>cantidad</th>
                     <th>Precio Unitario</th>
-                    <th>Precio total</th>
+                    <th>SubTotal</th>
                     <th>Accion</th>
                     <!-- Agrega una columna para los botones de eliminación -->
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-producto>
+            <ng-template pTemplate="body" let-product>
                 <tr>
-                    <td>{{ producto.nombre_producto }}</td>
-                    <td>{{ producto.nombre_categoria_producto }}</td>
-                    <td>{{ producto.cantidad_producto}}</td>
-                    <td>{{ producto.precio_ico }}</td>
-                    <td>{{ producto.precio_total_producto }}</td>
-
+                    <td>{{ product.get('nombre_producto')?.value }}</td>
+                    <td>{{ product.get('nombre_categoria_producto')?.value }}</td>
+                    <td>{{ product.get('cantidad_producto')?.value}}</td>
+                    <td>{{ product.get('precio_ico')?.value}}</td>
+                    <td>{{ product.get('precio_total_producto')?.value}}</td>
                     <td>
                         <button (click)="eliminarProducto(product)">
                             Eliminar
@@ -161,6 +180,23 @@
             </ng-template>
         </p-table>
     </div>
+    <br><br>
+    <div class="summary">
+        <div class="summary-item">
+            <label for="iva">IVA:</label>
+            <input type="text" id="iva" [(ngModel)]="iva_pedido" readonly />
+        </div>
+    
+        <div class="summary-item">
+            <label for="subtotalVenta">Subtotal Venta:</label>
+            <input type="text" id="subtotalVenta" [(ngModel)]="subtotal_venta" readonly />
+        </div>
+    
+        <div class="summary-item">
+            <label for="precioTotalVenta">Precio Total Venta:</label>
+            <input type="text" id="precioTotalVenta" [(ngModel)]="precio_total_venta" readonly />
+        </div>
+    </div>
 
     <div class="my-2">
         <button
@@ -169,6 +205,7 @@
             label="Crear Pedido"
             icon="pi pi-user-plus"
             class="p-button-success mr-2"
+            (click)="crearPedido()"
         ></button>
     </div>
 </div>

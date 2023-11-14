@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleService {
+export class RolesService {
   private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/roles';
 
   constructor(private http: HttpClient) { }

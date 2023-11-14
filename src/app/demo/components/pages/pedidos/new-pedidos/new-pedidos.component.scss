@@ -9,3 +9,21 @@ p-table {
   .my-2 button {
     margin: 0 auto 10px;
   }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    width: 300px; 
+}
+
+label {
+    margin-right: 10px;
+    width: 120px; 
+    text-align: right;
+}
