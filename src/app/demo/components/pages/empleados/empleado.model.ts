@@ -1,5 +1,5 @@
 export interface Empleado {
-    _id: string;
+    id: number;
     codigo_rotulacion_empleado: string;
     nombre_empleado: string;
     tipo_contrato_empleado: string;
@@ -25,5 +25,5 @@ export interface Empleado {
     eps_empleado: string;
     pension_empleado: string;
     cuenta_bancaria_empleado: string;
-    area_empleado: string;
+    //area_empleado: string;
   }

@@ -54,13 +54,23 @@ export class clientesComponent implements OnInit {
     //     });
     //   });
     // }
+
+    // Función para actualizar la lista de empleados después de crear uno nuevo
+    actualizarListaClientes() {
+      this.clientesService.getClientes().subscribe((data) => {
+          this.clientes = data;
+      });
+    }
     guardarCliente() {
       // Llama al servicio para crear el cliente
       this.clientesService.agregarCliente(this.nuevoCliente).subscribe(
         (response) => {
           console.log('Cliente creado con éxito:', response);
           // Puedes redirigir a una página diferente o mostrar un mensaje de éxito aquí
-          this.nuevoCliente = {}; // Restablece el nuevo cliente después de la creación
+          //this.nuevoCliente = {}; // Restablece el nuevo cliente después de la creación
+          this.actualizarListaClientes();
+                this.crearClienteDialog = false; // Retraso de 1 segundo (ajusta según sea necesario)
+
         },
         (error) => {
           console.error('Error al crear el cliente:', error);

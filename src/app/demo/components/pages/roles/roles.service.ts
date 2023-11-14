@@ -6,12 +6,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleService {
-<<<<<<<<< Temporary merge branch 1
-  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api/roles';
-=========
+export class RolesService {
   private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/roles';
->>>>>>>>> Temporary merge branch 2
 
   constructor(private http: HttpClient) { }
 
