@@ -1,0 +1,121 @@
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <div class="my-2">
+            <button pButton pRipple label="Crear categoría" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewCategoriaDialog()"></button>
+        </div>
+    </ng-template>
+
+
+</p-toolbar>
+  <p-table #dt [value]="categorias" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedCategorias" selectionMode="multiple" dataKey="_id">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h4 class="m-0">Listado de Categorias</h4>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Nombre</th>
+            <th pSortableColumn="name">Descripción</th>
+            <th pSortableColumn="name">Imagen</th>
+            <th pSortableColumn="name">Estado</th>
+            <th pSortableColumn="name">Aciones</th>
+            
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-categoria>
+        <tr>
+            
+            <td style="width:10%; min-width:10rem;">
+                {{ categoria.nombre_categoria_producto }}
+            </td>
+            <td style="width:20%; min-width:10rem;">
+                {{ categoria.descripcion_categoria_producto }}
+            </td>
+            <td style="width:30%; min-width:10rem;">
+                <img [src]="'http://localhost:3000/uploads/' + categoria.imagen_categoria_producto" alt="Imagen de la categoría">
+            </td>
+            
+            <td style="width:10%; min-width:10rem;">
+                {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }}
+            </td>
+            <td style="width:30%; min-width:10rem;">
+                <div class="d-flex justify-content-center">
+                    <p-inputSwitch class="mr-2" [(ngModel)]="checked"></p-inputSwitch>
+                    <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2" (click)="openEditarCategoriaDialog(categoria)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(categoria)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="crearCategoriaDialog" [style]="{ width: '450px' }" header="Crear Categoría" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Agrega los campos del formulario para la creación del rol -->
+        <div class="field">
+            <label for="nombre_categoria">Nombre</label>
+            <input type="text" pInputText id="nombre_categoria" required autofocus
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newCategoria.nombre_categoria_producto }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newCategoria.nombre_categoria_producto">Nombre de la categoría es requerido.</small>
+        </div>
+
+        <div class="field">
+            <label for="description">Descripción</label>
+            <textarea id="description" pInputTextarea required rows="3" cols="20"></textarea>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.descripcion_categoria_producto">La descripción es requerida.</small>
+        </div>
+
+        <div class="field">
+            <p-fileUpload mode="basic" chooseLabel="Imagen" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" 
+            accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
+        </div>
+
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="editarCategoriaDialog" [style]="{ width: '450px' }" header="Editar Categoría" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <!-- Agrega los campos del formulario para la creación del rol -->
+        <div class="field">
+            <label for="nombre_categoria">Nombre</label>
+            <input type="text" pInputText id="nombre_categoria" required autofocus
+                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newCategoria.nombre_categoria_producto }" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newCategoria.nombre_categoria_producto">Nombre de la categoría es requerido.</small>
+        </div>
+
+        <div class="field">
+            <label for="description">Descripción</label>
+            <textarea id="description" pInputTextarea required rows="3" cols="20"></textarea>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.descripcion_categoria_producto">La descripción es requerida.</small>
+          </div>
+
+        <div class="formgrid grid">
+            <p-dropdown [options]="['Activo','Inactivo']" placeholder="Estado" class="mb-4 ml-3" required></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.estado_categoria_producto">El estado es requerido.</small>
+        </div>
+
+        <div class="field">
+            <p-fileUpload mode="basic" chooseLabel="Imagen" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" 
+            accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
+        </div>
+
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+    </ng-template>
+</p-dialog>
+

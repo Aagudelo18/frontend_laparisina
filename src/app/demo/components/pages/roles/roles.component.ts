@@ -1,26 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { RoleService } from './roles.service';
-import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
+import { RolesService } from './roles.service';
 
 
-@Component({
+@Component({ 
   templateUrl: './roles.component.html',
-  providers: [RoleService]
+  providers: [RolesService]
 })
 export class RolesComponent implements OnInit {
   roles: any[] = [];
   selectedRoles: any[] = [];
 
-  roleDialog: boolean = false; // Esto controla la visibilidad del p-dialog
+  rolesDialog: boolean = false; // Esto controla la visibilidad del p-dialog
   // Función para abrir el diálogo de creación de rol
-  openNewRoleDialog() {
-    this.roleDialog = true;
+  openNewRolesDialog() {
+    this.rolesDialog = true;
   }
-  constructor(private roleService: RoleService) { }
+  constructor(private rolesService: RolesService) { }
     
   ngOnInit() {
-    this.roleService.getRoles().subscribe((data: any[]) => {
+    this.rolesService.getRoles().subscribe((data: any[]) => {
       this.roles = data;
     });
   }
