@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
         { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)},
         { path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) },
         { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
+        { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule)},
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
         { path: '**', redirectTo: '/notfound' }

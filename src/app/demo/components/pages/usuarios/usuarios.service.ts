@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RolesService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class RolesService {
 @Injectable({
   providedIn: 'root'
 }) export class UsuarioService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
