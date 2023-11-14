@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = 'http://localhost:3000/api/clientes';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/clientes';
 
   constructor(private http: HttpClient) {}
 

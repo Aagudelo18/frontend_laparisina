@@ -19,7 +19,7 @@ export class RolesService {
     return this.http.post(this.apiUrl, newRoles);
   }
 
-  private apiUrlestado = 'http://localhost:3000/api/roles_estado';
+  private apiUrlestado = 'https://api-parisina-2tpy.onrender.com/api/roles_estado';
   cambiarEstadoRol(id: string) {
     return this.http.put<void>(`${this.apiUrlestado}/${id}`, {}); // Utiliza la URL correcta
   }
