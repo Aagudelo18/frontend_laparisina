@@ -5,7 +5,7 @@ import { Producto } from './producto.model';
 
 @Injectable()
   export class ProductoService {
-    private apiUrl =  'https://api-parisina-2tpy.onrender.com/api/clientes'; // URL de API
+    private apiUrl = 'https://api-parisina-2tpy.onrender.com/api'; // URL de API
   
     constructor(private http: HttpClient) {}
 
