@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ClientesRoutingModule } from './clientes-routing.module';
-import { clientesComponent } from './clientes.component';
+import { EmpleadosRoutingModule } from './empleados-routing.module';
+import { EmpleadosComponent } from './empleados.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,15 +16,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { InputSwitchModule } from 'primeng/inputswitch';
-
 
 @NgModule({
     imports: [
         CommonModule,
-        ClientesRoutingModule,
+        EmpleadosRoutingModule,
         TableModule,
-        InputSwitchModule,
         FileUploadModule,
         FormsModule,
         ButtonModule,
@@ -39,6 +36,6 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         InputNumberModule,
         DialogModule
     ],
-    declarations: [clientesComponent]
+    declarations: [EmpleadosComponent]
 })
-export class ClientesModule { }
+export class EmpleadosModule { }
