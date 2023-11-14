@@ -17,6 +17,8 @@ export class UsuariosComponent implements OnInit {
   selectedRol: any; // Variable para almacenar el rol seleccionado
   correoBusqueda: string = '';
 
+
+
   constructor(
     private usuarioService: UsuarioService,
     private rolesService: RolesService,
@@ -32,15 +34,13 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     this.usuarioService.getUsuarios().subscribe((data: any) => {
-      if (data && data.total) {
-        this.usuarios = data.total;
-        console.log(this.usuarios);
+      if (data && data.usuarios) {
+        this.usuarios = data.usuarios;
       }
     });
 
     this.rolesService.getRoles().subscribe((data: any[]) => {
       this.roles = data;
-      console.log(data);
     });
   }
 
@@ -77,16 +77,11 @@ export class UsuariosComponent implements OnInit {
       this.usuarioService.createUsuario(nuevoUsuario).subscribe((response: any) => {
         console.log('Usuario creado con éxito:', response);
 
-        // Vuelve a cargar la lista de usuarios después de crear uno nuevo
-        this.usuarioService.getUsuarios().subscribe((data: any) => {
-          if (data && data.total) {
-            this.usuarios = data.total;
-            console.log(this.usuarios);
-          }
-        });
-
+        
         this.usuarioDialog = false;
       });
     }
   }
+
+
 }
