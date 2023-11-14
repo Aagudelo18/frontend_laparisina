@@ -14,19 +14,21 @@
   <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
         <div class="my-2">
-            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewRolesDialog()"></button>
+            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewCategoriaDialog()"></button>
+            
         </div>
+        
     </ng-template>
 
     
 </p-toolbar>
-  <p-table #dt [value]="roles" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedRoles" selectionMode="multiple" dataKey="_id">
+<p-table #dt [value]="roles" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedRoles" selectionMode="multiple" dataKey="_id">
     <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h4 class="m-0">Listado de Roles</h4>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." class="w-full sm:w-auto" />
             </span>
         </div>
     </ng-template>
@@ -34,70 +36,27 @@
         <tr>
             <th pSortableColumn="name">Nombre</th>
             <th pSortableColumn="name">Permisos</th>
-            <th pSortableColumn="name">Estado</th>
-            <th pSortableColumn="name">Aciones</th>
-            
+            <th pSortableColumn="name">Acciones</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-roles>
+    <ng-template pTemplate="body" let-rol>
         <tr>
-            
             <td style="width:30%; min-width:10rem;">
-                {{ roles.nombre_rol }}
+                {{ rol.nombre_rol }}
             </td>
             <td style="width:30%; min-width:10rem;">
                 <ul>
-                    <li *ngFor="let permiso of roles.permisos_rol">
+                    <li *ngFor="let permiso of rol.permisos_rol">
                         {{ permiso.nombre_permiso }}
                     </li>
                 </ul>
             </td>
-            <td style="width:25%; min-width:10rem;">
-                {{ roles.estado_rol ? 'Activo' : 'Inactivo' }}
-            </td>
-            
-            <td>
-                <div class="flex">
-                    <p-inputSwitch [(ngModel)]="valSwitch"></p-inputSwitch>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+            <td style="width:15%; min-width:10rem;">
+                <div class="flex justify-between items-center">
+                    <p-inputSwitch [(ngModel)]="rol.estado_rol" (change)="mostrarDialogConfirmacion($event, rol)"></p-inputSwitch>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarCategoriaDialog(categoria)"></button>
                 </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
-<p-dialog [(visible)]="rolesDialog" [style]="{ width: '450px' }" header="Crear Rol" [modal]="true" class="p-fluid">
-    <ng-template pTemplate="content">
-        <!-- Agrega los campos del formulario para la creación del rol -->
-        <div class="field">
-            <label for="nombre_rol">Nombre del Rol</label>
-            <input type="text" pInputText id="nombre_rol" [(ngModel)]="newRoles.nombre_rol" required autofocus
-                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newRoles.nombre_rol }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newRoles.nombre_rol">Nombre del Rol es requerido.</small>
-        </div>
-
-        <div class="field">
-            <label for="estado_rol">Estado del Rol</label>
-            <div class="custom-select">
-                <select id="estado_rol" [(ngModel)]="newRoles.estado_rol" style="width: 100%; height: 43px;border: 1px solid #ccc;
-                border-radius: 5px;">
-                    <option value="activo">Activo</option>
-                    <option value="inactivo">Inactivo</option>
-                </select>
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !newRoles.estado_rol">Estado del Rol es requerido.</small>
-            </div>
-        </div>
-        <div *ngFor="let roles of Roles" class="field-checkbox">
-            <p-checkbox name="group" [value]="category" [(ngModel)]="selectedCategories"></p-checkbox>
-            <label >Roles</label>
-        </div>
-        
-        
-        
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideRolesDialog()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveRoles()"></button>
-    </ng-template>
-</p-dialog>
-

@@ -1,0 +1,126 @@
+<!-- <ul>
+    <li *ngFor="let role of roles">
+      <p>Nombre del Rol: {{ role.nombre_rol }}</p>
+      <p>Estado del Rol: {{ role.estado_rol ? 'Activo' : 'Inactivo' }}</p>
+      <p>Permisos del Rol:</p>
+      <ul>
+        <li *ngFor="let permiso of role.permisos_rol">
+          {{ permiso.nombre_permiso }}
+        </li>
+      </ul>
+    </li>
+  </ul> 
+  -->
+
+
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <div class="my-2">
+            <button pButton pRipple label="Crear Usuario" icon="pi pi-user-plus" class="p-button-success mr-2"
+                (click)="openNewUsuarioDialog()"></button>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
+            (click)="dt.exportCSV()"></button>
+    </ng-template>
+</p-toolbar>
+<p-table #dt [value]="usuarios" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+    [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [(selection)]="selectedUsuarios" selectionMode="multiple" dataKey="uid">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h4 class="m-0">Listado de Usuarios</h4>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" [(ngModel)]="correoBusqueda" placeholder="Buscar usuario"
+                    class="w-full sm:w-auto" />
+            </span>
+            <button pButton pRipple icon="pi pi-search" class="p-button-rounded p-button-success ml-2"
+                (click)="onBuscar()"></button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Correo electronico</th>
+            <th pSortableColumn="name">Rol usuario</th>
+            <th pSortableColumn="name">Estado</th>
+            <th pSortableColumn="name">Aciones</th>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-usuario>
+        <tr>
+
+            <td style="width:30%; min-width:10rem;">
+                {{ usuario.correo_electronico }}
+            </td>
+
+            <td style="width:30%; min-width:10rem;">
+                {{ usuario.rol_usuario.nombre_rol }}
+            </td>
+
+            <td style="width:25%; min-width:10rem;">
+                {{ usuario.estado_usuario ? 'Activo' : 'Inactivo' }}
+            </td>
+            <td>
+                <div class="flex">
+                    <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
+                        (click)="editProduct(product)"></button> -->
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                        (click)="deleteProduct(product)"></button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Create Usuario" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+        <form [formGroup]="formularioUsuario" (ngSubmit)="crearUsuario()">
+            <div class="field">
+                <label for="correo_electronico">Correo electrónico</label>
+                <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico"
+                    placeholder="Correo Electrónico" />
+                <small *ngIf="formularioUsuario.get('correo_electronico').hasError('required')">Correo electrónico
+                    requerido.</small>
+                <small *ngIf="formularioUsuario.get('correo_electronico').hasError('email')">Correo electrónico no
+                    válido.</small>
+            </div>
+
+            <div class="field">
+                <label for="contrasena_usuario">Contraseña</label>
+                <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario"
+                    placeholder="Contraseña" />
+                <small *ngIf="formularioUsuario.get('contrasena_usuario').hasError('required')">Contraseña
+                    requerida.</small>
+                <small *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')">La contraseña debe
+                    tener al menos 6 caracteres.</small>
+            </div>
+
+            <div class="field">
+                <label for="rol_usuario">Seleccione el rol del Usuario</label>
+                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles" [(ngModel)]="selectedRol"
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
+            </div>
+            
+
+
+            <div class="field">
+                <label for="estado_usuario">Estado del Usuario</label>
+                <p-dropdown formControlName="estado_usuario" inputId="estado_usuario" [options]="estadoOptions"
+                    placeholder="Seleccionar"></p-dropdown>
+            </div>
+
+
+
+            <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+            (click)="hideUsuarioDialog()"></button>
+    </ng-template>
+</p-dialog>
