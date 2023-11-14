@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
         { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)},
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
- ,,,       { path: '**', redirectTo: '/notfound' }
+ ,,,,       { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]
 })
