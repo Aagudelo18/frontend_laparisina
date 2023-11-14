@@ -7,7 +7,7 @@ import { Categoria } from './categoria.model'; // Define tu modelo de categoría
   providedIn: 'root'
 })
 export class CategoriaService {
-  private apiUrl = 'http://localhost:3000/api'; // URL de tu API
+  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api'; // URL de tu API
 
   constructor(private http: HttpClient) {}
 

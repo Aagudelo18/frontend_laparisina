@@ -14,8 +14,8 @@ export class empleadosService {
   open(EmpleadosComponent: EmpleadosComponent, arg1: { data: { employeeToEdit: any; }; header: string; width: string; }) {
     throw new Error('Method not implemented.');
   }
-  private apiUrl = 'http://localhost:3000/api';
-  private apUrl = 'http://localhost:3000/api/empleados'; // Reemplaza con la URL real de tu API
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
+  private apUrl =  'https://api-parisina-2tpy.onrender.com/api/empleados'; // Reemplaza con la URL real de tu API
 
   constructor(private http: HttpClient) {
     // this.crearEmpleado();

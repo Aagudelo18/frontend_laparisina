@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { Empleado } from './empleado.model';
-import { empleadosService } from './empleados.ervice';
+import { empleadosService } from './empleados.service';
 
 
 @Component({
