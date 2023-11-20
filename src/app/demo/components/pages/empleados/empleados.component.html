@@ -2,44 +2,82 @@
     <p>Nombre: {{ empleado.nombre_empleado }}</p>
     <p>Código de Rotulación: {{ empleado.codigo_rotulacion_empleado }}</p>
      Agrega más campos según tus necesidades -->
-  <!-- </div> -->
+<!-- </div> -->
 
-  <div class="grid">
+<div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-toast></p-toast>
+            <!-- <p-toast></p-toast> -->
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Nuevo empleado" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Agregar Empleado" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="displayCreateDialog = true"></button>
                     </div>
                 </ng-template>
-
-                <!-- <ng-template pTemplate="right">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
-                </ng-template> -->
             </p-toolbar>
 
-            <p-table #dt [value]="empleados"  responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre_empleado', 'tipo_contrato_empleado', 'tipo_documento_empleado', 'direccion_empleado']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Pagina {first} al {last} de {totalRecords} Paginas" [(selection)]="empleados" selectionMode="multiple" [rowHover]="true" dataKey="_id">
+            <p-table #dt [value]="empleados" [rows]="10"
+                [globalFilterFields]="['nombre_empleado', 'tipo_contrato_empleado', 'tipo_documento_empleado', 'direccion_empleado']"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Pagina {first} al {last} de {totalRecords} Paginas" [(selection)]="empleados"
+                selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Empleados</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
 
-                        <th pSortableColumn="codigo_rotulacion_empleado">Codigo Rotulacion<p-sortIcon field="codigo_rotulacion_empleado"></p-sortIcon></th>
-                        <th pSortableColumn="nombre_empleado">Nombre <p-sortIcon field="nombre_empleado"></p-sortIcon></th>
-                        <th pSortableColumn="tipo_contrato_empleado">Identificacion <p-sortIcon field="tipo_contrato_empleado"></p-sortIcon></th>
-                        <th pSortableColumn="fecha_inicio_empleado">correo <p-sortIcon field="fecha_inicio_empleado"></p-sortIcon></th>
-                        <th pSortableColumn="tipo_documento_empleado">Direccion <p-sortIcon field="tipo_documento_empleado"></p-sortIcon></th>
-                        <th pSortableColumn="direccion_empleado">Telefono <p-sortIcon field="direccion_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="codigo_rotulacion_empleado">Codigo Rotulacion<p-sortIcon
+                                field="codigo_rotulacion_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="nombre_empleado">Nombre <p-sortIcon field="nombre_empleado"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tipo_contrato_empleado">Identificacion <p-sortIcon
+                                field="tipo_contrato_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="fecha_inicio_empleado">Inicio Contrato <p-sortIcon
+                                field="fecha_inicio_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="fecha_vencimiento_contrato_empleado">Fin contrato <p-sortIcon
+                                field="fecha_vencimiento_contrato_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="tipo_documento_empleado">tipo documento <p-sortIcon
+                                field="tipo_documento_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="identificacion_empleado">Identificacion <p-sortIcon
+                                field="identificacion_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="fecha_nacimiento_empleado">Fecha de nacimiento <p-sortIcon
+                                field="fecha_nacimiento_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="edad_empleado">Edad <p-sortIcon field="edad_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="lugar_nacimiento_empleado">Lugar de nacimiento <p-sortIcon
+                                field="lugar_nacimiento_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="direccion_empleado">Direccion <p-sortIcon
+                                field="direccion_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="municipio_domicilio_empleado">Municipio <p-sortIcon
+                                field="municipio_domicilio_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="estado_civil_empleado">Estado Civil <p-sortIcon
+                                field="estado_civil_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="celular_empleado">Telefono <p-sortIcon
+                                field="celular_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="correo_empleado">Correo <p-sortIcon field="correo_empleado"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="alergia_empleado">Alergias <p-sortIcon
+                                field="alergia_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="grupo_sanguineo_empleado">Grupo sanguineo <p-sortIcon
+                                field="grupo_sanguineo_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="contacto_emergencia">Contacto emergencia <p-sortIcon
+                                field="contacto_emergencia"></p-sortIcon></th>
+                        <th pSortableColumn="eps_empleado">Eps <p-sortIcon field="eps_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="pension_empleado">Pension <p-sortIcon
+                                field="pension_empleado"></p-sortIcon></th>
+                        <th pSortableColumn="cuenta_bancaria_empleado">Cuenta bancaria <p-sortIcon
+                                field="cuenta_bancaria_empleado"></p-sortIcon></th>
+                        <!-- <th pSortableColumn="area_empleado">Area <p-sortIcon field="area_empleado"></p-sortIcon></th> -->
+
+
                         <th></th>
                     </tr>
                 </ng-template>
@@ -56,26 +94,259 @@
 
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Contract Type</span>
-                            {{employee.identificacion_empleado}}
+                            {{employee.tipo_contrato_empleado}}
                         </td>
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Start Date</span>
-                            {{employee.correo_empleado}}
+                            {{employee.fecha_inicio_empleado}}
                         </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Document Type</span>
-                            {{employee.direccion_empleado}}
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">final Date</span>
+                            {{employee.fecha_vencimiento_contrato_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">document type</span>
+                            {{employee.tipo_documento_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">id</span>
+                            {{employee.identificacion_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">birthdate</span>
+                            {{employee.fecha_nacimiento_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">age</span>
+                            {{employee.edad_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">place</span>
+                            {{employee.lugar_nacimiento_empleado}}
                         </td>
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Address</span>
+                            {{employee.direccion_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">municipality</span>
+                            {{employee.municipio_domicilio_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">state</span>
+                            {{employee.estado_civil_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">iphone</span>
                             {{employee.celular_empleado}}
                         </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">email</span>
+                            {{employee.correo_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">allergy</span>
+                            {{employee.alergia_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">cluster</span>
+                            {{employee.grupo_sanguineo_empleado}}
+                        </td>
+
+
+
+                        <td>
+                            <ul>
+                                <li *ngFor="let contacto of employee.contacto_emergencia">
+                                    {{ contacto.nombre_contacto_emergencia }}
+                                    {{ contacto.parentesco_empleado }}
+                                    {{ contacto.telefono_contacto_emergencia }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">eps</span>
+                            {{employee.eps_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">pension</span>
+                            {{employee.pension_empleado}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">banco</span>
+                            {{employee.cuenta_bancaria_empleado}}
+                        </td>
+                        <!-- <td style="width:14%; min-width: 10rem;"><span class="p-column-title">area</span>
+                            {{employee.area_empleado}}
+                        </td> -->
+
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEmployee(employee)"></button>
-                                
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editEmployee(employee)"></button>
+
                             </div>
                         </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-    </div>
-</div>
+                        <<p-dialog header="Crear Nuevo Empleado" [(visible)]="displayCreateDialog" [modal]="true" >
+                            <form #crearEmpleadoForm="ngForm" (ngSubmit)="crearEmpleado()" ngNativeValidate>
+                                <!-- Campos del formulario para crear un nuevo empleado -->
+                                <div class="p-fluid">
+                                    <div class="p-field">
+                                        <label for="id">id</label>
+                                        <input id="id" type="text" pInputText
+                                            name="id"
+                                            [(ngModel)]="nuevoEmpleado.id" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="codigo_rotulacion_empleado">Código de Rotulación</label>
+                                        <input id="codigo_rotulacion_empleado" type="text" pInputText
+                                            name="codigo_rotulacion_empleado"
+                                            [(ngModel)]="nuevoEmpleado.codigo_rotulacion_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="nombre_empleado">Nombre del empleado</label>
+                                        <input id="nombre_empleado" type="text" pInputText name="nombre_empleado"
+                                            [(ngModel)]="nuevoEmpleado.nombre_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="tipo_contrato_empleado">tipo de contrato</label>
+                                        <input id="tipo_contrato_empleado" type="text" pInputText
+                                            name="tipo_contrato_empleado"
+                                            [(ngModel)]="nuevoEmpleado.tipo_contrato_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="fecha_inicio_empleado">fecha de inicio</label>
+                                        <input id="fecha_inicio_empleado" type="text" pInputText
+                                            name="fecha_inicio_empleado"
+                                            [(ngModel)]="nuevoEmpleado.fecha_inicio_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="fecha_vencimiento_contrato_empleado">fecha de vencimiento del
+                                            contrato</label>
+                                        <input id="fecha_vencimiento_contrato_empleado" type="text" pInputText
+                                            name="fecha_vencimiento_contrato_empleado"
+                                            [(ngModel)]="nuevoEmpleado.fecha_vencimiento_contrato_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="tipo_documento_empleado">tipo de documento</label>
+                                        <input id="tipo_documento_empleado" type="text" pInputText
+                                            name="tipo_documento_empleado"
+                                            [(ngModel)]="nuevoEmpleado.tipo_documento_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="identificacion_empleado">identificacion</label>
+                                        <input id="identificacion_empleado" type="text" pInputText
+                                            name="identificacion_empleado"
+                                            [(ngModel)]="nuevoEmpleado.identificacion_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="fecha_nacimiento_empleado">fecha de nacimiento</label>
+                                        <input id="fecha_nacimiento_empleado" type="text" pInputText
+                                            name="fecha_nacimiento_empleado"
+                                            [(ngModel)]="nuevoEmpleado.fecha_nacimiento_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="edad_empleado">edad</label>
+                                        <input id="edad_empleado" type="text" pInputText name="edad_empleado"
+                                            [(ngModel)]="nuevoEmpleado.edad_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="lugar_nacimiento_empleado">lugar de nacimiento</label>
+                                        <input id="lugar_nacimiento_empleado" type="text" pInputText
+                                            name="lugar_nacimiento_empleado"
+                                            [(ngModel)]="nuevoEmpleado.lugar_nacimiento_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="direccion_empleado">direccion</label>
+                                        <input id="direccion_empleado" type="text" pInputText name="direccion_empleado"
+                                            [(ngModel)]="nuevoEmpleado.direccion_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="municipio_domicilio_empleado">municipio del domicilio</label>
+                                        <input id="municipio_domicilio_empleado" type="text" pInputText
+                                            name="municipio_domicilio_empleado"
+                                            [(ngModel)]="nuevoEmpleado.municipio_domicilio_empleado" required>
+                                    </div>
+                                    <div class="p-field">
+                                        <label for="estado_civil_empleado">estado civil</label>
+                                        <input id="estado_civil_empleado" type="text" pInputText
+                                            name="estado_civil_empleado"
+                                            [(ngModel)]="nuevoEmpleado.estado_civil_empleado" required>
+                                    </div>
+                                    <div class="p-fluid">
+                                        <div class="p-field">
+                                            <label for="celular_empleado">celular </label>
+                                            <input id="celular_empleado" type="text" pInputText name="celular_empleado"
+                                                [(ngModel)]="nuevoEmpleado.celular_empleado" required>
+                                        </div>
+                                        <div class="p-fluid">
+                                            <div class="p-field">
+                                                <label for="correo_empleado">correo</label>
+                                                <input id="correo_empleado" type="text" pInputText
+                                                    name="correo_empleado" [(ngModel)]="nuevoEmpleado.correo_empleado"
+                                                    required>
+                                            </div>
+                                            <div class="p-fluid">
+                                                <div class="p-field">
+                                                    <label for="alergia_empleado">alergia </label>
+                                                    <input id="alergia_empleado" type="text" pInputText
+                                                        name="alergia_empleado"
+                                                        [(ngModel)]="nuevoEmpleado.alergia_empleado" required>
+                                                </div>
+                                                <div class="p-fluid">
+                                                    <div class="p-field">
+                                                        <label for="grupo_sanguineo_empleado">grupo sanguineo </label>
+                                                        <input id="grupo_sanguineo_empleado" type="text" pInputText
+                                                            name="grupo_sanguineo_empleado"
+                                                            [(ngModel)]="nuevoEmpleado.grupo_sanguineo_empleado"
+                                                            required>
+                                                    </div>
+
+                                                    <div
+                                                        *ngFor="let contacto of nuevoEmpleado.contacto_emergencia; let i = index">
+                                                        <div class="p-field">
+                                                            <label for="nombre_contacto_emergencia{{i}}">Nombre del
+                                                                contacto de emergencia</label>
+                                                            <input id="nombre_contacto_emergencia{{i}}" type="text"
+                                                                pInputText name="nombre_contacto_emergencia{{i}}"
+                                                                [(ngModel)]="contacto.nombre_contacto_emergencia"
+                                                                required>
+                                                        </div>
+                                                        <div class="p-field">
+                                                            <label for="parentesco_empleado{{i}}">Parentesco con el
+                                                                empleado</label>
+                                                            <input id="parentesco_empleado{{i}}" type="text" pInputText
+                                                                name="parentesco_empleado{{i}}"
+                                                                [(ngModel)]="contacto.parentesco_empleado" required>
+                                                        </div>
+                                                        <div class="p-field">
+                                                            <label for="telefono_contacto_emergencia{{i}}">Teléfono del
+                                                                contacto de emergencia</label>
+                                                            <input id="telefono_contacto_emergencia{{i}}" type="text"
+                                                                pInputText name="telefono_contacto_emergencia{{i}}"
+                                                                [(ngModel)]="contacto.telefono_contacto_emergencia"
+                                                                required>
+                                                        </div>
+                                                        <div class="p-field">
+                                                            <label for="eps_empleado">eps</label>
+                                                            <input id="eps_empleado" type="text" pInputText
+                                                                name="eps_empleado"
+                                                                [(ngModel)]="nuevoEmpleado.eps_empleado" required>
+                                                        </div>
+                                                        <div class="p-field">
+                                                            <label for="pension_empleado">pension</label>
+                                                            <input id="pension_empleado" type="text" pInputText
+                                                                name="pension_empleado"
+                                                                [(ngModel)]="nuevoEmpleado.pension_empleado" required>
+                                                        </div>
+                                                        <div class="p-field">
+                                                            <label for="cuenta_bancaria_empleado">cuenta bancaria
+                                                            </label>
+                                                            <input id="cuenta_bancaria_empleado" type="text" pInputText
+                                                                name="cuenta_bancaria_empleado"
+                                                                [(ngModel)]="nuevoEmpleado.cuenta_bancaria_empleado"
+                                                                required>
+                                                        </div>
+                                                        <!-- <div class="p-field">
+                                                            <label for="area_empleado">area </label>
+                                                            <input id="area_empleado" type="text" pInputText
+                                                                name="area_empleado"
+                                                                [(ngModel)]="nuevoEmpleado.area_empleado" required>
+                                                        </div> -->
+                                                        <div class="p-field">
+                                                            <button pButton pRipple label="Guardar" type="submit"></button>
+                                                        </div>
+                                                    
+                                                        <!-- Manejo de errores -->
+                                                        <div *ngIf="crearEmpleadoForm.invalid">
+                                                            <p>El formulario no es válido. Por favor, verifica los campos.</p>
+                                                        </div>
+                                                    
+                                                   
+                                                
+                            
+                        

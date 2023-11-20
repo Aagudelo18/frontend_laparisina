@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
 
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
   //Método para obtener la lista de roles desde la API
-  getRoles(): Observable<any[]> {
+  getRoles() {
     return this.http.get<any[]>(`${this.apiUrl}/roles`);
   }
 }
@@ -20,7 +21,7 @@ export class RolesService {
 @Injectable({
   providedIn: 'root'
 }) export class UsuarioService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
@@ -30,7 +31,7 @@ export class RolesService {
   }
 
   //Crear usuario
-  createUsuario(usuarioData: any) {
+  createUsuario(usuarioData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/usuarios`, usuarioData);
   }
 
@@ -40,16 +41,16 @@ export class RolesService {
     return this.http.get<any>(url);
   }
 
-  //Actualizar un usuario
-  updateUsuario(id: string, usuarioData: any) {
-    const url = `${this.apiUrl}/usuarios/${id}`;
-    return this.http.put(url, usuarioData);
-  }
+  // //Actualizar un usuario
+  // updateUsuario(id: string, usuarioData: any) {
+  //   const url = `${this.apiUrl}/usuarios/${id}`;
+  //   return this.http.put(url, usuarioData);
+  // }
 
-  //Eliminar un usuario
-  deleteUsuario(id: string) {
-    const url = `${this.apiUrl}/usuarios/${id}`;
-    return this.http.delete(url);
-  }
+  // //Eliminar un usuario
+  // deleteUsuario(id: string) {
+  //   const url = `${this.apiUrl}/usuarios/${id}`;
+  //   return this.http.delete(url);
+  // }
   
 }

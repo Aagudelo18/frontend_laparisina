@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ClientesRoutingModule } from './clientes-routing.module';
-import { clientesComponent } from './clientes.component';
+import { VentasRoutingModule } from './ventas-routing.module';
+import { VentasComponent } from './ventas.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,15 +16,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { InputSwitchModule } from 'primeng/inputswitch';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
         CommonModule,
-        ClientesRoutingModule,
+        VentasRoutingModule,
         TableModule,
-        InputSwitchModule,
         FileUploadModule,
         FormsModule,
         ButtonModule,
@@ -37,8 +35,9 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
-        DialogModule
+        DialogModule,
+        ReactiveFormsModule
     ],
-    declarations: [clientesComponent]
+    declarations: [VentasComponent]
 })
-export class ClientesModule { }
+export class VentasModule { }
