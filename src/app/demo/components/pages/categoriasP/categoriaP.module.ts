@@ -20,6 +20,8 @@ import { CategoriaPService } from './categoriaP.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from "primeng/autocomplete";
+import { HttpClientModule } from '@angular/common/http'
+
 
 
 @NgModule({
@@ -43,6 +45,7 @@ import { AutoCompleteModule } from "primeng/autocomplete";
         ReactiveFormsModule,
         InputSwitchModule,
         AutoCompleteModule,
+        HttpClientModule
     ],
     declarations: [CategoriaPComponent],
     providers: [

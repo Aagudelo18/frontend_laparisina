@@ -22,15 +22,11 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
                     { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
                     { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
-                    { label: 'Categorias', icon: 'pi pi-fw pi-user', routerLink: ['/pages/categorias'] },
-                    { label: 'CategoriasP', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categoriasP'] },
+                    { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
+                    //{ label: 'CategoriasP', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categoriasP'] },
                     { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
                     { label: 'Empleados', icon: 'pi pi-fw pi-user', routerLink: ['/pages/empleados'] },
-                    { label: 'Productos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/productos'] },
-                    { label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
-
->>>>>>> isaac
->>>>>>> bf6e12db7af3812d3c3ecec4a44b1fe07abf2af7
+                    { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
                 ]
             },
         ]
