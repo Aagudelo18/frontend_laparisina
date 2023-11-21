@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Pedido } from './pedidos.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-list-pedidos',
@@ -172,6 +173,10 @@ export class ListPedidosComponent implements OnInit {
     this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {
       this.pedidos = data;
     });
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
    
 }

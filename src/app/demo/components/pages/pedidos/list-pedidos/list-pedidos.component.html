@@ -29,6 +29,7 @@
     #dt
     [value]="pedidos"
     [rows]="10"
+    [globalFilterFields]="['precio_total_venta']"
     [paginator]="true"
     [rowsPerPageOptions]="[10, 20, 30]"
     [showCurrentPageReport]="true"
@@ -56,12 +57,12 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="name">Nombre Cliente</th>
-            <th pSortableColumn="name">Tipo Cliente</th>
+            <th pSortableColumn="">Nombre Cliente</th>
+            <th pSortableColumn="name">Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon></th>
             <th pSortableColumn="name">Dirección</th>
             <th pSortableColumn="name">Fecha Entrega</th>
-            <th pSortableColumn="name">Estado</th>
-            <th pSortableColumn="name">Valor Total</th>
+            <th pSortableColumn="estado_pedido">Estado<p-sortIcon field="estado_pedido"></p-sortIcon></th>
+            <th pSortableColumn="precio_total_venta">Valor Total<p-sortIcon field="precio_total_venta"></p-sortIcon></th>
 
             <th pSortableColumn="name">Aciones</th>
         </tr>
