@@ -5,18 +5,75 @@
             <span class="p-float-label">
                 <input
                     type="text"
-                    id="nombre_cliente"
+                    id="documento_cliente"
                     pInputText
-                    [(ngModel)]="pedido.nombre_cliente"
+                    (change)="getCliente(pedido.documento_cliente)"
+                    [(ngModel)]="pedido.documento_cliente"
                 />
-                <label for="inputtext">Nombre cliente</label>
+                <label for="inputtext">Cedula</label>
             </span>
         </div>
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
-                    id="nombre_cliente"
+                    id="tipo_cliente"
+                    pInputText
+                    [(ngModel)]="pedido.tipo_cliente"
+                />
+                <label for="inputtext">Tipo de Cliente</label>
+            </span>
+        </div>
+        <div
+            class="field col-12 md:col-3"
+            *ngIf="pedido.tipo_cliente === 'Empresa'"
+        >
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="nit_empresa_cliente"
+                    pInputText
+                    [(ngModel)]="pedido.nit_empresa_cliente"
+                />
+                <label for="inputtext">NIT Empresa</label>
+            </span>
+        </div>
+        <div
+            class="field col-12 md:col-3"
+            *ngIf="pedido.tipo_cliente === 'Empresa'"
+        >
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="nombre_juridico"
+                    pInputText
+                    [(ngModel)]="pedido.nombre_juridico"
+                />
+                <label for="inputtext">Nombre Empresa</label>
+            </span>
+        </div>
+        <div
+            class="field col-12 md:col-3"
+            *ngIf="pedido.tipo_cliente === 'Persona natura'"
+        >
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="nombre_contacto"
+                    pInputText
+                    [(ngModel)]="pedido.nombre_contacto"
+                />
+                <label for="inputtext">Nombre cliente</label>
+            </span>
+        </div>
+        <div
+            class="field col-12 md:col-3"
+            *ngIf="pedido.tipo_cliente === 'Persona natura'"
+        >
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="quien_recibe"
                     pInputText
                     [(ngModel)]="pedido.quien_recibe"
                 />
@@ -26,8 +83,8 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
-                    type="number"
-                    id="telefono"
+                    type="text"
+                    id="telefono_cliente"
                     pInputText
                     [(ngModel)]="pedido.telefono_cliente"
                 />
@@ -38,7 +95,7 @@
             <span class="p-float-label">
                 <input
                     type="text"
-                    id="direccion"
+                    id="direccion_entrega"
                     pInputText
                     [(ngModel)]="pedido.direccion_entrega"
                 />
@@ -47,25 +104,24 @@
         </div>
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <p-dropdown
-                    inputId="dropdown"
-                    [autoDisplayFirst]="false"
-                    [options]="locacionesEntrega"
-                    [(ngModel)]="pedido.edificio_apto_barrio"
-                    optionLabel="name"
-                ></p-dropdown>
-                <label for="dropdown">Lugar de Entrega</label>
+                <input
+                    type="text"
+                    id="ciudad_cliente"
+                    pInputText
+                    [(ngModel)]="pedido.ciudad_cliente"
+                />
+                <label for="inputtext">Ciudad</label>
             </span>
         </div>
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
-                    id="ciudad"
+                    id="barrio_cliente"
                     pInputText
-                    [(ngModel)]="pedido.ciudad"
+                    [(ngModel)]="pedido.barrio_cliente"
                 />
-                <label for="inputtext">Ciudad</label>
+                <label for="inputtext">Barrio</label>
             </span>
         </div>
         <div class="field col-12 md:col-3">
@@ -73,7 +129,6 @@
                 <p-calendar
                     inputId="calendar"
                     [(ngModel)]="pedido.fecha_entrega_pedido"
-                    [dateFormat]="'dd/mm/yy'"
                 ></p-calendar>
                 <label for="calendar">Fecha Entrega</label>
             </span>
@@ -82,17 +137,28 @@
             <span class="p-float-label">
                 <p-dropdown
                     inputId="dropdown"
+                    id="metodo_pago"
                     [autoDisplayFirst]="false"
                     [options]="metodoPago"
                     [(ngModel)]="pedido.metodo_pago"
-                    optionLabel="name"
                 ></p-dropdown>
                 <label for="dropdown">Metodo de Pago</label>
             </span>
         </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="number"
+                    inputId="valor_domicilio"
+                    [(ngModel)]="pedido.valor_domicilio"
+                    (input)="calcularPrecioTotalVenta()"
+                >
+                <label for="valor_domicilio">Valor Domicilio</label>
+            </span>
+        </div>
     </div>
 
-    <div class="grid p-fluid mt-3">
+    <div *ngIf="pedido.tipo_cliente == 'Empresa' || pedido.tipo_cliente == 'Persona natura'" class="grid p-fluid mt-3">
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <select
@@ -165,34 +231,40 @@
             </ng-template>
             <ng-template pTemplate="body" let-product>
                 <tr>
-                    <td>{{ product.get('nombre_producto')?.value }}</td>
-                    <td>{{ product.get('nombre_categoria_producto')?.value }}</td>
-                    <td>{{ product.get('cantidad_producto')?.value}}</td>
-                    <td>{{ product.get('precio_ico')?.value}}</td>
-                    <td>{{ product.get('precio_total_producto')?.value}}</td>
+                    <td>{{ product.get("nombre_producto")?.value }}</td>
+                    <td>{{ product.get("nombre_categoria_producto")?.value }}</td>
+                    <td>{{ product.get("cantidad_producto")?.value }}</td>
+                    
                     <td>
-                        
+                        {{ pedido.tipo_cliente == 'Empresa' ? product.get("precio_por_mayor_ico")?.value : product.get("precio_ico")?.value }}
                     </td>
+                    
+                    <td>{{ product.get("precio_total_producto")?.value }}</td>
+                    <td></td>
                 </tr>
                 <br />
             </ng-template>
         </p-table>
     </div>
-    <br><br>
+    <br /><br />
     <div class="summary">
         <div class="summary-item">
-            <label for="iva">IVA:</label>
-            <input type="text" id="iva" [(ngModel)]="iva_pedido" readonly />
+            <label for="subtotal_venta">Precio Subtotal Venta:</label>
+            <input
+                type="text"
+                id="subtotal_venta"
+                [(ngModel)]="pedido.subtotal_venta"
+                readonly
+            />
         </div>
-    
         <div class="summary-item">
-            <label for="subtotalVenta">Subtotal Venta:</label>
-            <input type="text" id="subtotalVenta" [(ngModel)]="subtotal_venta" readonly />
-        </div>
-    
-        <div class="summary-item">
-            <label for="precioTotalVenta">Precio Total Venta:</label>
-            <input type="text" id="precioTotalVenta" [(ngModel)]="precio_total_venta" readonly />
+            <label for="precio_total_venta">Precio Total Venta:</label>
+            <input
+                type="text"
+                id="precio_total_venta"
+                [(ngModel)]="pedido.precio_total_venta"
+                readonly
+            />
         </div>
     </div>
 

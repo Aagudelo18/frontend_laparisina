@@ -1,6 +1,6 @@
 export interface Pedido {
     codigo_cliente: string;
-    nombre_cliente: string;
+    nombre_contacto: string;
     telefono_cliente: string;
     quien_recibe: string;
     direccion_entrega: string;

@@ -9,24 +9,15 @@ import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
     styleUrls: ['./new-pedidos.component.scss'],
 })
 export class NewPedidosComponent implements OnInit {
-    cities: any;
     precio_total_venta: number;
-    iva_pedido: number;
-    subtotal_venta:number;
+    valor_domicilio: number;
+    subtotal_venta: number;
+    aumento_empresa: number;
 
 
-    locacionesEntrega = [
-        { name: 'Casa', value: 'casa' },
-        { name: 'Edificio', value: 'edificio' },
-        { name: 'Apto', value: 'apto' }
-    ];
-
-    metodoPago = [
-        { name: 'Transferencia', value: 'transferencia'},
-        { name: 'Efectivo', value: 'efectivo'}
-    ];
-
+    metodoPago = ['Transferencia', 'Efectivo'];
     categorias = [];
+    clientes = [];
     categoriaSeleccionada: string;
     productoSeleccionado: any[] = [];
     productos: any[] = [];
@@ -37,29 +28,38 @@ export class NewPedidosComponent implements OnInit {
     constructor(
         private newpedidosService: NewPedidosService,
         private router: Router,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+       
     ) {
         this.categoriaSeleccionada = '';
         this.productoSeleccionado = [];
     }
 
     pedido: any = {
-        codigo_cliente: '',
-        nombre_recibe: '',
-        nombre_cliente: '',
+        documento_cliente: '',
+        tipo_cliente: '',
+        nombre_contacto: '',
+        quien_recibe: '',
+        nombre_juridico: '',
+        nit_empresa_cliente: '',
         telefono_cliente: '',
         direccion_entrega: '',
-        edificio_apto_barrio: '',
-        ciudad: '',
+        ciudad_cliente: '',
+        barrio_cliente: '',
         fecha_entrega_pedido: '',
-        cantidad: 0,
-        detalle_pedido: []
+        valor_domicilio: 0,
+        metodo_pago: '',
+        subtotal_venta: 0,
+        precio_total_venta: 0,
+        detalle_pedido: [
+        ],
     };
 
     ngOnInit() {
         this.getCategorias();
         this.getProductos();
         this.productsFormArray = this.formBuilder.array([]);
+       
     }
 
     getProductos() {
@@ -67,6 +67,26 @@ export class NewPedidosComponent implements OnInit {
             (data) => {
                 this.productos = data;
                 console.log(this.productos);
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
+    }
+
+    getCliente(documento_cliente: string) {
+        this.newpedidosService.getCliente(documento_cliente).subscribe(
+            (data: any) => {
+                // Actualizar las propiedades del objeto 'pedido' con la información del cliente
+                this.pedido.tipo_cliente = data.tipo_cliente;
+                this.pedido.nombre_contacto = data.nombre_contacto;
+                this.pedido.telefono_cliente = data.telefono_cliente;
+                this.pedido.direccion_entrega = data.direccion_cliente;
+                this.pedido.ciudad_cliente = data.ciudad_cliente;
+                this.pedido.barrio_cliente = data.barrio_cliente;
+                this.pedido.nombre_juridico = data.nombre_juridico;
+                this.pedido.nit_empresa_cliente = data.nit_empresa_cliente;
+                console.log(data);
             },
             (error) => {
                 console.error(error);
@@ -102,15 +122,36 @@ export class NewPedidosComponent implements OnInit {
             nombre_categoria_producto: [''],
             cantidad_producto: [''],
             precio_ico: [''],
+            precio_por_mayor_ico: [''],
             precio_total_producto: [''],
+            aumento_empresa:['']
         });
     }
 
-    agregarProductoExistente() {
-        const existingProductIndex = this.productsFormArray.controls.findIndex((control) =>
-            control.get('nombre_producto')?.value === this.productoSeleccionado['nombre_producto']
+    crearPedido() {
+        this.pedido.fecha_entrega_pedido = this.pedido.fecha_entrega_pedido.toISOString().split('T')[0],
+        // Asegúrate de que la propiedad 'detalle_pedido' esté definida como un array
+        this.pedido.detalle_pedido = this.productsFormArray.value || [];
+
+        this.newpedidosService.createPedido(this.pedido).subscribe(
+            (response) => {
+                console.log('Pedido creado con éxito:', response);
+                // Otras acciones después de crear el pedido
+            },
+            (error) => {
+                console.error('Error al crear el pedido:', error);
+            }
         );
-    
+    }
+
+
+    agregarProductoExistente() {
+        const existingProductIndex = this.productsFormArray.controls.findIndex(
+            (control) =>
+                control.get('nombre_producto')?.value ===
+                this.productoSeleccionado['nombre_producto']
+        );
+
         if (existingProductIndex > -1) {
             this.actualizarProductoExistente(existingProductIndex);
             this.calcularPrecioTotalVenta(); // Calcula los totales después de la actualización
@@ -119,84 +160,85 @@ export class NewPedidosComponent implements OnInit {
             this.calcularPrecioTotalVenta(); // Calcula los totales después de la adición
         }
     }
-    
-    
+
     agregarProducto() {
-        let precio_total = this.cantidad_producto * this.productoSeleccionado['precio_ico'];
-    
+        let precio_total
+        if(this.pedido.tipo_cliente == 'Persona natura') {
+            precio_total =this.cantidad_producto * this.productoSeleccionado['precio_ico'];
+        } else {
+            precio_total= this.cantidad_producto * this.productoSeleccionado['precio_por_mayor_ico']
+        }
+        
         const productGroup = this.createProductGroup();
         productGroup.patchValue({
             nombre_producto: this.productoSeleccionado['nombre_producto'],
-            nombre_categoria_producto: this.productoSeleccionado['nombre_categoria_producto'],
+            nombre_categoria_producto:this.productoSeleccionado['nombre_categoria_producto'],
             cantidad_producto: this.cantidad_producto,
             precio_ico: this.productoSeleccionado['precio_ico'],
+            precio_por_mayor_ico: this.productoSeleccionado['precio_por_mayor_ico'],
             precio_total_producto: precio_total,
         });
-    
+
         this.productsFormArray.push(productGroup);
         this.calcularPrecioTotalVenta(); // Calcula los totales después de la adición
     }
-    
+
     actualizarProductoExistente(existingProductIndex: number) {
-        const existingProduct = this.productsFormArray.controls[existingProductIndex];
+        const existingProduct =this.productsFormArray.controls[existingProductIndex];
         const cantidad = existingProduct.get('cantidad_producto')?.value + this.cantidad_producto;
-        const precioUnitario = this.productoSeleccionado['precio_ico'];
-        const precioTotal = cantidad * precioUnitario;
-    
+        let precio;
+        if(this.pedido.tipo_cliente == 'Empresa'){
+            precio = this.productoSeleccionado['precio_por_mayor_ico'];
+        }else {
+            precio = this.productoSeleccionado['precio_ico'];
+        }
+        const precioTotal = cantidad * precio;
+
         existingProduct.patchValue({
             cantidad_producto: cantidad,
             precio_total_producto: precioTotal,
         });
-    
+
         this.calcularPrecioTotalVenta(); // Calcula los totales después de la actualización
     }
+
+   
+    // Método para calcular el subtotal de todos los productos
+    calcularSubtotal() {
+        let subTotal = 0;
+        this.productsFormArray.controls.forEach((product: any) => {
+            subTotal += product.get('precio_total_producto')?.value;
+        });
+        console.log(this.aumento_empresa);
+        // Calcular el IVA (con un 8%)
+        this.aumento_empresa = subTotal * 0.08;
+
+        return subTotal;
+    }
+    
+
+    // Método para calcular el precio total de venta
+    calcularPrecioTotalVenta() {
+        
+        const subTotal = this.calcularSubtotal();
+        this.pedido.subtotal_venta = subTotal;
+        if(this.pedido.valor_domicilio == null){
+            this.pedido.valor_domicilio = 0
+        }
+        if(this.pedido.tipo_cliente == 'Empresa'){
+            this.pedido.precio_total_venta = subTotal + this.aumento_empresa + this.pedido.valor_domicilio;
+        }else {
+            this.pedido.precio_total_venta = subTotal + this.pedido.valor_domicilio;           
+        }
+       
+    }
+
 
     eliminarProducto(product: FormGroup) {
         const index = this.productsFormArray.controls.indexOf(product);
         if (index !== -1) {
             this.productsFormArray.removeAt(index);
-            this.calcularSubtotal(),
-            this. calcularPrecioTotalVenta()
-
+            this.calcularSubtotal(), this.calcularPrecioTotalVenta();
         }
-
     }
-
-    crearPedido() {
-        this.pedido.detalle_pedido = this.productsFormArray.value;
-    
-        this.newpedidosService.createPedido(this.pedido).subscribe(
-            (response) => {
-                console.log('Pedido creado con éxito:', response);
-                // Otras acciones después de crear el pedido
-            },
-            (error) => {
-                console.error('Error al crear el pedido:', error);
-                // Manejo de errores
-            }
-        );
-    }
-
-
-        // Método para calcular el subtotal de todos los productos
-            calcularSubtotal() {
-            let subTotal = 0;
-            this.productsFormArray.controls.forEach((product: any) => {
-                subTotal += product.get('precio_total_producto')?.value;
-            });
-            console.log(this.iva_pedido)
-            // Calcular el IVA (con un 19%)
-            this.iva_pedido = subTotal * 0.19;
-
-            return subTotal;
-        }
-
-        // Método para calcular el precio total de venta
-        calcularPrecioTotalVenta() {
-            const subTotal = this.calcularSubtotal();
-            this.subtotal_venta = subTotal;
-            this.precio_total_venta = subTotal + this.iva_pedido;
-        }
-    
-    
 }

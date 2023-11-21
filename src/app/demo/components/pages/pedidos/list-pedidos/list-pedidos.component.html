@@ -1,91 +1,306 @@
 
-  <p-toolbar styleClass="mb-4">
+
+<p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
         <div class="my-2">
-            <button pButton pRipple label="Crear Pedido" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewPedidos()"></button>
+            <button
+                pButton
+                pRipple
+                label="Crear Pedido"
+                icon="pi pi-user-plus"
+                class="p-button-success mr-2"
+                (click)="openNewPedidos()"
+            ></button>
         </div>
     </ng-template>
 
     <ng-template pTemplate="right">
-        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+        <button
+            pButton
+            pRipple
+            label="Export"
+            icon="pi pi-upload"
+            class="p-button-help"
+            (click)="dt.exportCSV()"
+        ></button>
     </ng-template>
 </p-toolbar>
-  <p-table #dt [value]="pedidos" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedPedidos" selectionMode="multiple" dataKey="_id">
+<p-table
+    #dt
+    [value]="pedidos"
+    [rows]="10"
+    [paginator]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [(selection)]="selectedPedidos"
+    selectionMode="multiple"
+    dataKey="_id"
+>
     <ng-template pTemplate="caption">
-        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+        <div
+            class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+        >
             <h4 class="m-0">Listado de Pedidos</h4>
             <span class="block mt-2 md:mt-0 p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                <input
+                    pInputText
+                    type="text"
+                    (input)="onGlobalFilter(dt, $event)"
+                    placeholder="Buscar..."
+                    class="w-full sm:w-auto"
+                />
             </span>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="name">Nombre Cliente</th>
-            <th pSortableColumn="name">Nombre producto</th>
+            <th pSortableColumn="name">Tipo Cliente</th>
+            <th pSortableColumn="name">Dirección</th>
+            <th pSortableColumn="name">Fecha Entrega</th>
             <th pSortableColumn="name">Estado</th>
             <th pSortableColumn="name">Valor Total</th>
+
             <th pSortableColumn="name">Aciones</th>
-            
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-pedido>
         <tr>
-            
-            <td style="width:30%; min-width:10rem;">
-                {{ pedido.nombre_cliente }}
+            <td style="width: 20%; min-width: 10rem">
+                {{ pedido.nombre_contacto }}
             </td>
-            <td style="width:30%; min-width:10rem;">
+            <td style="width: 20%; min-width: 10rem">
+                {{ pedido.tipo_cliente }}
+            </td>
+            <td style="width: 20%; min-width: 10rem">
+                {{ pedido.direccion_entrega }}
+            </td>
+            <td style="width: 20%; min-width: 10rem">
+                {{ pedido.fecha_entrega_pedido }}
+            </td>
+            <!-- <td style="width:30%; min-width:10rem;">
                 <ul>
                     <li *ngFor="let detalle of pedido.detalle_pedido">
                         {{ detalle.nombre_producto}}
                     </li>
                 </ul>
-            </td>
-            <td style="width:25%; min-width:10rem;">
+            </td> -->
+            <td style="width: 20%; min-width: 10rem">
                 {{ pedido.estado_pedido }}
             </td>
-            <td style="width:30%; min-width:10rem;">
+            <td style="width: 30%; min-width: 10rem">
                 {{ pedido.precio_total_venta }}
             </td>
             <td>
                 <div class="flex">
-                    <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2" (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                    <button
+                    type="button"
+                        pButton
+                        pRipple
+                        icon="pi pi-eye"
+                        class="p-button-rounded p-button-primary mr-2"
+                        (click)="verDetallePedido(pedido._id)"
+                    ></button>
+                    <button
+                        pButton
+                        pRipple
+                        icon="pi pi-pencil"
+                        class="p-button-rounded p-button-warning"
+                        (click)="cambiarPedido(pedido._id)"
+                    ></button>
                 </div>
             </td>
         </tr>
     </ng-template>
+
 </p-table>
-<p-dialog [(visible)]="roleDialog" [style]="{ width: '450px' }" header="Create Role" [modal]="true" class="p-fluid">
-    <ng-template pTemplate="content">
-        <!-- Agrega los campos del formulario para la creación del rol -->
-        <div class="field">
-            <label for="nombre_rol">Nombre del Rol</label>
-            <input type="text" pInputText id="nombre_rol" [(ngModel)]="newRole.nombre_rol" required autofocus
-                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newRole.nombre_rol }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newRole.nombre_rol">Nombre del Rol es requerido.</small>
-        </div>
 
-        <div class="field">
-            <label for="estado_rol">Estado del Rol</label>
-            <p-dropdown [(ngModel)]="newRole.estado_rol" inputId="estado_rol" [options]="estadoOptions" placeholder="Seleccionar">
-            </p-dropdown>
-        </div>
-
-        <div class="field">
-            <label for="permisos_rol">Permisos del Rol</label>
-            <div *ngFor="let permiso of permisosOptions">
-                <p-checkbox name="permisos_rol" [value]="permiso.value" label="{{ permiso.label }}"
-                    [(ngModel)]="newRole.permisos_rol"></p-checkbox>
+<p-dialog [(visible)]="detallePedidoDialog" [style]="{width: '600px'}" header="Detalles Pedido" [modal]="true" class="p-fluid" >            
+    <form [formGroup]="formPedidos">
+        <div class="formgrid grid mt-3">
+        <div class="formgrid grid">
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="tipo_cliente" id="tipo_cliente" type="text" pInputText>
+                    <label for="tipo_cliente">tipo cliente</label>
+                </span>             
             </div>
+            <div class="field col" >
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
+                    <label for="nombre_contacto">Nombre</label>
+                </span>             
+            </div>
+            <div class="field col" *ngIf="esPersonaNatural()">
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="quien_recibe" id="quien_recibe" type="text" pInputText>
+                    <label for="quien_recibe">Nombre Quien Recibe</label>
+                </span>             
+            </div>
+            <div class="field col" *ngIf="esEmpresa()">
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
+                    <label for="nombre_juridico">Nombre Empresa</label>
+                </span>             
+            </div>
+            <div class="field col" *ngIf="esEmpresa()">
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
+                    <label for="nit_empresa_cliente">NIT Empresa</label>
+                </span>             
+            </div>
+        </div>
+    </div>
+
+        <div class="formgrid grid mt-3">
+        <div class="formgrid grid">
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
+                    <label for="telefono_cliente">telefono cliente</label>
+                </span>
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="direccion_entrega" id="direccion_entrega" type="text" pInputText>
+                    <label for="direccion_entrega">Direccion Entrega</label>
+                </span>
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="ciudad_cliente" id="ciudad_cliente" type="text" pInputText>
+                    <label for="ciudad_cliente">Ciudad Cliente</label>
+                </span>
+            </div>
+        </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
+                        <label for="barrio_cliente">Barrio Cliente</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="fecha_entrega_pedido" id="fecha_entrega_pedido" type="text" pInputText>
+                        <label for="fecha_entrega_pedido">Fecha Entrega</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="fecha_pedido_tomado" id="fecha_pedido_tomado" type="text" pInputText>
+                        <label for="fecha_pedido_tomado">Fecha Tomado</label>
+                    </span>
+                </div>
+             
+            </div>
+            </div>
+            <div class="formgrid grid mt-3">
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="estado_pedido" id="estado_pedido" type="text" pInputText>
+                            <label for="estado_pedido"> Estado </label>
+                        </span>
+                    </div>
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="metodo_pago" id="metodo_pago" type="text" pInputText>
+                            <label for="metodo_pago">Método de Pago</label>
+                        </span>
+                    </div>
+                </div>
+                </div>
+
+  <!-- Detalle del Producto -->
+  <div class="formgrid grid mt-5" *ngIf="detallePedidoDialog">
+    <table class="table custom-table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Precio Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let detalle of formPedidos.get('detalle_pedido').value">
+                <td>{{ detalle.nombre_producto }}</td>
+                <td>{{ detalle.cantidad_producto }}</td>
+                <td>{{ detalle.estado_producto }}</td>
+                <td>{{ detalle.precio_total_producto }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+   <!-- Resumen del Pago -->
+   <div class="formgrid grid mt-5">
+    <div class="field col">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="subtotal_venta" id="subtotal_venta" type="text" pInputText>
+            <label for="subtotal_venta">Subtotal Venta</label>
+        </span>
+    </div>
+    <div class="field col" *ngIf="esEmpresa()">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="aumento_empresa" id="aumento_empresa" type="text" pInputText>
+            <label for="aumento_empresa">Aumento Empresa</label>
+        </span>
+    </div>
+    <div class="field col">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="valor_domicilio" id="valor_domicilio" type="text" pInputText>
+            <label for="valor_domicilio">Valor Domicilio</label>
+        </span>
+    </div>
+    <div class="field col">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="precio_total_venta" id="precio_total_venta" type="text" pInputText>
+            <label for="precio_total_venta">Precio Total Venta</label>
+        </span>
+    </div>
+</div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+            <button pButton pRipple label="Cerrar" class="p-button-text" (click)="detallePedidoDialog = false"></button>
+        </div>   
+    </form>             
+</p-dialog>
+
+<!-- Cambiar estado pedido -->
+<p-dialog [(visible)]="estadoPedidoDialog" [style]="{ width: '500px' }" header="Cambiar Estado" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <label for="estado_pedido">Seleccionar Estado:</label>
+            <p-dropdown [options]="estadosPedido" [(ngModel)]="estadoSeleccionado" placeholder="Seleccionar" optionLabel="label" optionValue="value" class="mb-4 ml-3" required  [style]="{ width: '100%' }"></p-dropdown>
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !estadoSeleccionado">El estado es requerido.</small>
         </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideRoleDialog()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveRole()"></button>
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="cerrarDialogEstadoPedido()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarEstadoPedido()"></button>
     </ng-template>
 </p-dialog>
-

@@ -48,7 +48,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 	ToggleButtonModule,
 	RippleModule,
 	ProgressBarModule,
-	ToastModule	
+	ToastModule,
   ],
   declarations: [NewPedidosComponent],
 })

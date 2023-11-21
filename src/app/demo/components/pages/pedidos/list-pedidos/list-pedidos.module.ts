@@ -16,6 +16,8 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ListPedidosComponent } from './list-pedidos.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 
 
@@ -37,7 +39,8 @@ import { ListPedidosComponent } from './list-pedidos.component';
     DropdownModule,
     RadioButtonModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    ReactiveFormsModule,
   ],
   declarations: [ListPedidosComponent]
 })

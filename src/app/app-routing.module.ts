@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 
+
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -16,7 +17,9 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
-                    { path: 'new-pedidos', loadChildren: () => import('./demo/components/pages/pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule)}
+                    { path: 'new-pedidos', loadChildren: () => import('./demo/components/pages/pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule)},
+                  
+                   
                 ]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },

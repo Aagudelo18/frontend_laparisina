@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class NewPedidosService {
 
-  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/';
+  private apiUrl = 'http://localhost:3000/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -23,7 +23,9 @@ export class NewPedidosService {
   public getAllProductos(): Observable<any>{
     return this.http.get(this.apiUrl + 'productos')
   }
-
-  
+ 
+  public getCliente(documento_cliente: string): Observable<any>{
+      return this.http.get(this.apiUrl + `clientes/consultar/${documento_cliente}`)
+     }
   
 }
