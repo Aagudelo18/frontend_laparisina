@@ -19,6 +19,7 @@ import { RouterModule } from '@angular/router';
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
 
         { path: '**', redirectTo: '/notfound' }
+
     ])],
     exports: [RouterModule]
 })

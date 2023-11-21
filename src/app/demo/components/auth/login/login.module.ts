@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginRoutingModule } from './login-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -12,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
     imports: [
         CommonModule,
         LoginRoutingModule,
+        ReactiveFormsModule,
         ButtonModule,
         CheckboxModule,
         InputTextModule,
