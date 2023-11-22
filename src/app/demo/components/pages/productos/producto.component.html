@@ -207,6 +207,12 @@
                 <p-fileUpload #fileCrear mode="basic" chooseLabel="Imagen" name="image" 
                 accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
 
+                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                    <div class="field col-12" style="text-align: center;">
+                        <p-image [src]="imagen_producto"alt="Imagen del producto" width="250"></p-image>
+                    </div>
+                </div>
+
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearProductoDialog = false"></button>
                     <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formProducto.valid || !fileSelected"></button>
@@ -351,6 +357,12 @@
                     
                 <p-fileUpload #fileEditar mode="basic" chooseLabel="Imagen" name="image" 
                 accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+
+                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                    <div class="field col-12" style="text-align: center;">
+                        <p-image [src]="imagen_producto"alt="Imagen del producto" width="250"></p-image>
+                    </div>
+                </div>
                     
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarProductoDialog = false"></button>

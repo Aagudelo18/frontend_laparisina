@@ -8,7 +8,7 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button pButton pRipple label="Actualizar Ordenes de Producción" icon="pi pi-refresh" class="p-button-success mr-2" (click)="nuevaCategoria()"></button>                        
+                        <button pButton pRipple label="Generar Ordenes de Producción" icon="pi pi-list" class="p-button-success mr-2" (click)="confirmarGenerarOrdenP()"></button>                        
                     </div>
                 </ng-template>
             </p-toolbar>
@@ -57,7 +57,7 @@
                         <td style="width:30%; min-width:10rem;">
                             <div class="flex">
                                 
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarCategoria(categoria._id)"></button>                                
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarOrdenDeProduccion(ordenP._id)"></button>                                
                             </div>
                         </td>
                     </tr>
@@ -65,47 +65,76 @@
             </p-table>            
         </div>
         
-        <!-- <p-dialog [(visible)]="editarCategoriaDialog" [style]="{width: '400px'}" header="Editar Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
-            <form [formGroup]="formCategoria" (ngSubmit)="actualizarCategoria()">
-                <div class="formgrid grid">
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
-                            <label for="nombre_categoria_producto">Nombre</label>
-                        </span>
-                        <span *ngIf="formCategoria.get('nombre_categoria_producto')?.hasError('required') && formCategoria.get('nombre_categoria_producto')?.touched"
-                        style="color: red;">
-                            El nombre es requerido
-                        </span>       
-                        <span *ngIf="formCategoria.get('nombre_categoria_producto')?.hasError('pattern') && formCategoria.get('nombre_categoria_producto')?.touched"
-                        style="color: red;">
-                            El nombre solo debe contener letras y tener máximo 20 caracteres
-                        </span>                
-                    </div>
+        <p-dialog [(visible)]="editarOrdenDeProduccionDialog" [style]="{width: '400px'}" header="Editar Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarEditarDialog()">            
+            <form [formGroup]="formOrdenDeProduccion" (ngSubmit)="actualizarOrdenDeProduccion()">
+                <div class="field col mt-4">
+                    <span class="p-float-label">
+                        <input [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
+                            formControlName="nombre_area" id="nombre_area" type="text" pInputText>
+                        <label for="nombre_area">Área</label>
+                    </span>            
                 </div>
 
-                <div class="formgrid grid mt-4">
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
-                            <label for="descripcion_categoria_producto">Descripción</label>
-                        </span>
-                        <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('required') && formCategoria.get('descripcion_categoria_producto')?.touched"
-                        style="color: red;">
-                            La descripción es requerida
-                        </span>
-                        <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('pattern') && formCategoria.get('descripcion_categoria_producto')?.touched"
-                        style="color: red;">
-                            La descripción solo permite letras y los signos ",." y un máximo de 100 caracteres
-                        </span>
-                    </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
+                         formControlName="nombre_producto" id="nombre_producto" type="text" pInputText>
+                        <label for="nombre_producto">Producto</label>
+                    </span>           
+                </div>
+
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
+                         formControlName="cantidad_producto" id="cantidad_producto" type="text" pInputText>
+                        <label for="cantidad_producto">Cantidad</label>
+                    </span>           
+                </div>
+
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
+                         formControlName="fecha_actualizacion_estado" id="fecha_actualizacion_estado" type="text" pInputText>
+                        <label for="fecha_actualizacion_estado">Última actualización</label>
+                    </span>         
+                </div>
+
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
+                         formControlName="fecha_entrega_pedido" id="fecha_entrega_pedido" type="text" pInputText>
+                        <label for="fecha_entrega_pedido">Fecha entrega</label>
+                    </span>          
+                </div>
+
+                <div class="field col">                   
+                    <p-dropdown (onChange)="onOrdenChange($event)" formControlName="estado_orden" [options]="estadosOrdenDeProduccion" placeholder="Estado orden de producción" [showClear]="true"></p-dropdown>                   
+                    <span *ngIf="formOrdenDeProduccion.get('nombre_categoria_producto')?.hasError('required') && formOrdenDeProduccion.get('nombre_categoria_producto')?.touched"
+                    style="color: red;">
+                        El estado es requerido
+                    </span>       
+                    <span *ngIf="formOrdenDeProduccion.get('nombre_categoria_producto')?.hasError('pattern') && formOrdenDeProduccion.get('nombre_categoria_producto')?.touched"
+                    style="color: red;">
+                        Estado de la orden de producción no válido
+                    </span> 
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarCategoriaDialog = false"></button>
-                    <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formCategoria.valid"></button>
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarOrdenDeProduccionDialog = false"></button>
+                    <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formOrdenDeProduccion.valid"></button>
                 </div>   
             </form>             
-    </p-dialog> -->
+    </p-dialog>
+
+    <p-dialog [(visible)]="generarOrdenPDialog" header="Orden de producción" [modal]="true" [style]="{width:'450px'}" (onHide)="noGenerarOrdenP()">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
+            <span>¿Está seguro de generar nuevas ordenes de producción?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noGenerarOrdenP()"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="generarOrdenesDeProduccion()"></button>
+        </ng-template>
+    </p-dialog>
     </div>
 </div>

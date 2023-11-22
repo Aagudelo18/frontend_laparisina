@@ -27,7 +27,7 @@ export class ProductoComponent implements OnInit {
     // Variables para capturar y tener control de la imagen
     file: File | null = null;
     fileSelected: boolean = false;
-    imagen_producto: string = ""
+    imagen_producto: string = '../../../../../assets/Imagenes/No IMG.png'
 
     //Variables para controlar dialogs
     crearProductoDialog: boolean = false;
@@ -173,7 +173,13 @@ export class ProductoComponent implements OnInit {
     
           this.file = file;
           this.fileSelected = event.currentFiles.length > 0;
-          console.log('Verificar: ', this.file, '\nfoto: ',event.currentFiles.length );
+          this.imagen_producto = URL.createObjectURL(file); // Mostrar la imagen seleccionada
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Imagen cargada exitosamente',
+            life: 3000
+          });
+          console.log('Verificar: ', this.file);
         } else {
           console.log("El archivo seleccionado no es una imagen.");
         }
@@ -285,6 +291,7 @@ export class ProductoComponent implements OnInit {
     cerrarDialog() {
       this.crearProductoDialog = false;
       this.fileCrear.clear();
+      this.limpiarImagenProducto()
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -292,6 +299,13 @@ export class ProductoComponent implements OnInit {
     cerrarEditarDialog() {
       this.editarProductoDialog = false;
       this.fileEditar.clear();
+      this.limpiarImagenProducto();
+    }
+
+     //-------------------------------------------------------------------------------------------------------------------------------
+    // Función para limpiar la variable imagen_categoria
+    limpiarImagenProducto() {
+      this.imagen_producto = '../../../../../assets/Imagenes/No IMG.png';
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

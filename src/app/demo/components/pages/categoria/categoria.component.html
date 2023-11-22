@@ -95,8 +95,15 @@
                         </div>
                     </div>
 
-                    <p-fileUpload #fileCrear mode="basic" chooseLabel="Imagen" name="image" 
+                    <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imagen" name="image" 
                     accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+
+                    <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                        <div class="field col-12" style="text-align: center;">
+                            <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
+                            <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300"></p-image>
+                        </div>
+                    </div>
 
                     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearCategoriaDialog = false"></button>
@@ -141,8 +148,15 @@
                     </div>
                 </div>
                 
-                <p-fileUpload #fileEditar mode="basic" chooseLabel="Imagen" name="image" 
+                <p-fileUpload #fileEditar mode="basic" chooseLabel="Editar imagen" name="image" 
                 accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+
+                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                    <div class="field col-12" style="text-align: center;">
+                        <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
+                        <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300" [preview]="true"></p-image>
+                    </div>
+                </div>
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarCategoriaDialog = false"></button>
@@ -187,7 +201,7 @@
         </form>             
     </p-dialog>
 
-    <p-dialog [(visible)]="estadoCategoriaDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}">
+    <p-dialog [(visible)]="estadoCategoriaDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
         <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
             <span *ngIf="categoria">¿Está seguro de que desea cambiar el estado de la categoría <b>{{categoria.nombre_categoria_producto}}</b>?</span>
