@@ -18,6 +18,10 @@ export class OrdenDeProduccionComponent implements OnInit {
     formOrdenDeProduccion:FormGroup;
     id: string = '';
 
+    estadosOrdenDeProduccion: string [] = ['En preparación', 'Terminado']
+
+    //Variables para controlar dialogs
+    generarOrdenPDialog: boolean = false;
     editarOrdenDeProduccionDialog: boolean = false;
 
     constructor(
@@ -28,12 +32,12 @@ export class OrdenDeProduccionComponent implements OnInit {
       private aRouter:ActivatedRoute){
 
         this.formOrdenDeProduccion = this.fb.group({
-          nombre_area: [''],
-          nombre_producto: [''],
-          cantidad_producto: [''],
-          fecha_actualizacion_estado: [''],
-          fecha_entrega_pedido: [''],
-          estado_orden: [''],
+          nombre_area: ['', [Validators.required]],
+          nombre_producto: ['', [Validators.required]],
+          cantidad_producto: ['', [Validators.required]],
+          fecha_actualizacion_estado: ['', [Validators.required]],
+          fecha_entrega_pedido: ['', [Validators.required]],
+          estado_orden: ['', [Validators.required]],
         });
 
         this.aRouter.params.subscribe(params => {
@@ -67,33 +71,75 @@ export class OrdenDeProduccionComponent implements OnInit {
       })
     }
 
+    generarOrdenesDeProduccion() {
+      this.ordenPService.gerararOrdenesDeProduccion().subscribe(
+        (response) => {
+          if (response && response.message === 'Órdenes de producción generadas exitosamente.') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Se han generado nuevas ordenes de producción exitosamente',
+              detail: 'Ordenes de producción',
+              life: 3000
+            });
+            this.getListOrdenesDeProduccion();
+            this.generarOrdenPDialog = false;
+          } else {
+            this.messageService.add({
+              severity: 'info',
+              summary: 'No hay órdenes de producción pendientes',
+              life: 3000
+            });
+            this.generarOrdenPDialog = false;
+          }
+        },
+        (error) => {
+          if (error.error && error.error.error) {
+            const errorMessage = error.error.error;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error al generar las ordenes de producción',
+              detail: errorMessage,
+              life: 5000
+            });
+          } else {
+            console.error('Error desconocido al generar las ordenes:', error);
+          }
+        }
+      );
+    }
+
     //-------------------------------------------------------------------------------------------------------------------------------
-    // // Función para actualizar una orden de producción
-    // actualizarCategoria() {
-    //   const form = this.formCategoria;
-    //   if (form.valid) {
-    //     const formData = new FormData;
-    //     formData.append('nombre_categoria_producto', this.formCategoria.get('nombre_categoria_producto').value);
-    //     formData.append('descripcion_categoria_producto', this.formCategoria.get('descripcion_categoria_producto').value);
-    //     formData.append('image', this.file);
+    // Función para actualizar una orden de producción
+    actualizarOrdenDeProduccion() {
+      // const form = this.formCategoria;
+      // if (form.valid) {
+      //   const formData = new FormData;
+      //   formData.append('nombre_categoria_producto', this.formCategoria.get('nombre_categoria_producto').value);
+      //   formData.append('descripcion_categoria_producto', this.formCategoria.get('descripcion_categoria_producto').value);
+      //   formData.append('image', this.file);
   
-    //     if (this.id !== '') {
-    //       this.categoriaService.actualizarCategoria(this.id, formData).subscribe(() => {
-    //         this.messageService.add({
-    //           severity: 'success',
-    //           summary: 'La categoría fue actualizada con éxito',
-    //           detail: 'Categoría actualizada',
-    //           life: 3000
-    //         });
-    //         this.getListCategorias();
-    //         this.editarCategoriaDialog = false;
-    //         this.fileCrear.clear();
-    //       });
-    //     }
-    //   }
-    // }
+      //   if (this.id !== '') {
+      //     this.categoriaService.actualizarCategoria(this.id, formData).subscribe(() => {
+      //       this.messageService.add({
+      //         severity: 'success',
+      //         summary: 'La categoría fue actualizada con éxito',
+      //         detail: 'Categoría actualizada',
+      //         life: 3000
+      //       });
+      //       this.getListCategorias();
+      //       this.editarCategoriaDialog = false;
+      //       this.fileCrear.clear();
+      //     });
+      //   }
+      // }
+    }
+
+    onOrdenChange(event) {
+      console.log('Estado seleccionado:', event.value);
+      // Realizar otras acciones según sea necesario
+    }
     
-    editarCategoria(id:string) {
+    editarOrdenDeProduccion(id:string) {
         this.id = id;
         this.editarOrdenDeProduccionDialog = true;
         this.getOrdenDeProduccion(id)
@@ -101,6 +147,18 @@ export class OrdenDeProduccionComponent implements OnInit {
 
     cerrarEditarDialog() {
       this.editarOrdenDeProduccionDialog = false;
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Función para confirmar generar nuevas ordenes de producción
+    confirmarGenerarOrdenP() {
+      this.generarOrdenPDialog = true;
+    }
+
+    //Función para no cambiar el estado de una categoría
+    noGenerarOrdenP() {
+      this.generarOrdenPDialog = false;
+      this.getListOrdenesDeProduccion();
     }
 
     onGlobalFilter(table: Table, event: Event) {

@@ -44,9 +44,9 @@
                             <span class="p-column-title">Descripción</span>
                             {{ categoriaP.descripcion_categoria_producto }}
                         </td>                        
-                        <td style="width:30%; min-width:10rem;">
-                            <img [src]="'http://localhost:3000/uploads/' + categoriaP.imagen_categoria_producto" 
-                            alt="Imagen de la categoría" width="100" height="65" style="border-radius: 10%;">
+                        <td style="width:20%; min-width:8rem;"> 
+                            <span class="p-column-title">Imagen</span> 
+                            {{ categoriaP.imagen_categoria_producto }}
                         </td>
                         <td style="width:10%; min-width:10rem;">
                             <span class="p-column-title">Estado</span>
@@ -111,12 +111,7 @@
                             </span>                                               
                         </div>
                     </div>
-
-                    <!-- <div class="field">
-                        <p-fileUpload mode="basic" chooseLabel="Imagen" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" 
-                        accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
-                    </div> -->
-
+ 
                     <!-- <div class="formgrid mt-3">                   
                         <p-dropdown formControlName="estado_categoria_producto" [options]="estado" [(ngModel)]="selectedEstado" placeholder="Estado" [showClear]="true" [style]="{'width': '48%'}"></p-dropdown>                   
                     </div> -->

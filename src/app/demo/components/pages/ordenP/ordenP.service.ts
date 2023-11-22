@@ -16,5 +16,13 @@ import { OrdenDeProduccion } from './ordenP.model';
     getOrdenDeProduccion(id:string): Observable<OrdenDeProduccion>{
       return this.http.get<OrdenDeProduccion>(`${this.apiUrl}/consultar-produccion/${id}`)
     }
+
+    gerararOrdenesDeProduccion():Observable<any>{
+      return this.http.post(`${this.apiUrl}/crear-produccion`,{})
+    }
+
+    putOrdenDeProduccion(id:string, ordenP:OrdenDeProduccion):Observable<void>{
+      return this.http.put<void>(`${this.apiUrl}/actualizar-produccion/${id}`,ordenP)
+    }
   }
   

@@ -28,7 +28,7 @@ export class CategoriaComponent implements OnInit {
     // Variables para capturar y tener control de la imagen
     file: File | null = null;
     fileSelected: boolean = false;
-    imagen_categoria: string = ""
+    imagen_categoria: string = '../../../../../assets/Imagenes/No IMG.png'
 
     estado:SelectItem[] = [
       { label: 'Activo', value: true },
@@ -168,7 +168,7 @@ export class CategoriaComponent implements OnInit {
         this.categoriaService.crearCategoria(formData).subscribe(
           () => {
             this.messageService.add({
-              severity: 'success',
+              severity: 'success', //'success', 'info', 'warn' o 'error'
               summary: 'La categoría fue creada con éxito',
               detail: 'Categoría creada',
               life: 3000
@@ -191,6 +191,36 @@ export class CategoriaComponent implements OnInit {
           }
         );
         
+      }
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //Función para cargar la imagen
+    onFileChange(event) {
+      if (event.currentFiles && event.currentFiles.length > 0) {
+        // Obtener solo el primer archivo seleccionado
+        const file = event.currentFiles[0];
+    
+        // Verificar si es un archivo de imagen
+        if (file.type.includes("image")) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+    
+          this.file = file;
+          this.fileSelected = event.currentFiles.length > 0;
+          this.imagen_categoria = URL.createObjectURL(file); // Mostrar la imagen seleccionada
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Imagen cargada exitosamente',
+            life: 3000
+          });
+          console.log('Verificar: ', this.file);
+        } else {
+          console.log("El archivo seleccionado no es una imagen.");
+        }
+      } else {
+        this.file = null;
+        console.log("No se seleccionó ningún archivo o se seleccionó más de uno.");
       }
     }
     
@@ -216,27 +246,7 @@ export class CategoriaComponent implements OnInit {
     // }
     
     //Función para cargar la imagen
-    onFileChange(event) {
-      if (event.currentFiles && event.currentFiles.length > 0) {
-        // Obtener solo el primer archivo seleccionado
-        const file = event.currentFiles[0];
     
-        // Verificar si es un archivo de imagen
-        if (file.type.includes("image")) {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-    
-          this.file = file;
-          this.fileSelected = event.currentFiles.length > 0;
-          console.log('Verificar: ', this.file, '\nfoto: ',event.currentFiles.length );
-        } else {
-          console.log("El archivo seleccionado no es una imagen.");
-        }
-      } else {
-        this.file = null;
-        console.log("No se seleccionó ningún archivo o se seleccionó más de uno.");
-      }
-    }
     
     //-------------------------------------------------------------------------------------------------------------------------------
     // Función para actualizar una categoría
@@ -333,6 +343,7 @@ export class CategoriaComponent implements OnInit {
     cerrarDialog() {
       this.crearCategoriaDialog = false;
       this.fileCrear.clear();
+      this.limpiarImagenCategoria();
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -340,6 +351,7 @@ export class CategoriaComponent implements OnInit {
     cerrarEditarDialog() {
       this.editarCategoriaDialog = false;
       this.fileEditar.clear();
+      this.limpiarImagenCategoria();
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -348,6 +360,12 @@ export class CategoriaComponent implements OnInit {
       this.id = id;
       this.detalleCategoriaDialog = true;
       this.getCategoria(id);
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Función para limpiar la variable imagen_categoria
+    limpiarImagenCategoria() {
+      this.imagen_categoria = '../../../../../assets/Imagenes/No IMG.png';
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

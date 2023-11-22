@@ -1,20 +1,8 @@
-<!-- <ul>
-    <li *ngFor="let role of roles">
-      <p>Nombre del Rol: {{ role.nombre_rol }}</p>
-      <p>Estado del Rol: {{ role.estado_rol ? 'Activo' : 'Inactivo' }}</p>
-      <p>Permisos del Rol:</p>
-      <ul>
-        <li *ngFor="let permiso of role.permisos_rol">
-          {{ permiso.nombre_permiso }}
-        </li>
-      </ul>
-    </li>
-  </ul> 
-  -->
-  <p-toolbar styleClass="mb-4">
+<p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
+        <p-toast></p-toast>
         <div class="my-2">
-            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewCategoriaDialog()"></button>
+            <button pButton pRipple label="Crear Rol" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewRolDialog()"></button>
             
         </div>
         
@@ -22,7 +10,7 @@
 
     
 </p-toolbar>
-<p-table #dt [value]="roles" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedRoles" selectionMode="multiple" dataKey="_id">
+<p-table #dt [value]="listRoles" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"  selectionMode="multiple" dataKey="_id"  [globalFilterFields]="['nombre_rol']">
     <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <h4 class="m-0">Listado de Roles</h4>
@@ -34,29 +22,78 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="name">Nombre</th>
+            <th pSortableColumn="name" field="nombre_rol">Nombre</th>
             <th pSortableColumn="name">Permisos</th>
+            <th pSortableColumn="name">Estado</th>
             <th pSortableColumn="name">Acciones</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-rol>
+    <ng-template pTemplate="body" let-roles>
         <tr>
             <td style="width:30%; min-width:10rem;">
-                {{ rol.nombre_rol }}
+                {{ roles.nombre_rol }}
             </td>
             <td style="width:30%; min-width:10rem;">
                 <ul>
-                    <li *ngFor="let permiso of rol.permisos_rol">
+                    <li *ngFor="let permiso of roles.permisos_rol">
                         {{ permiso.nombre_permiso }}
                     </li>
                 </ul>
             </td>
+            <td style="width:30%; min-width:5rem;">
+                <p-inputSwitch [ngModel]="roles.estado_rol" (onChange)="confirmarCambioEstado(roles)" ></p-inputSwitch>
+            </td>
             <td style="width:15%; min-width:10rem;">
                 <div class="flex justify-between items-center">
-                    <p-inputSwitch [(ngModel)]="rol.estado_rol" (change)="mostrarDialogConfirmacion($event, rol)"></p-inputSwitch>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarCategoriaDialog(categoria)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarRolDialog(roles._id)"></button>
                 </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
+<p-dialog [(visible)]="estadoRolDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="rol">¿Está seguro de que desea cambiar el estado del rol <b>{{rol.nombre_rol}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoRol(rol._id)"></button>
+    </ng-template>
+  </p-dialog>
+
+<p-dialog [(visible)]="crearRolDialog" [style]="{ width: '450px' }" header="Crear Rol" [modal]="true" class="p-fluid">
+    <form [formGroup]="formRoles" (ngSubmit)="crearRol()">
+        <div class="field">
+         <label for="nombre_rol" style="margin-bottom: 5px;">Nombre rol:</label>
+         <input type="text" formControlName="nombre_rol" pInputText id="nombre_rol" required autofocus
+                 name="nombre_rol"/>
+         </div>
+          <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1">
+            <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true"></p-checkbox>
+            <label class="ml-2">{{ rol.nombre_permiso }}</label>
+          </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearRolDialog = false" ></button>
+          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+        </div>
+    </form>  
+  </p-dialog>
+ 
+  <p-dialog [(visible)]="editarRolDialog" [style]="{ width: '450px' }" header="Editar Rol" [modal]="true" class="p-fluid">
+    <form [formGroup]="formRoles" (ngSubmit)="actualizarRol()">
+        <div class="field">
+         <label for="nombre_rol" style="margin-bottom: 5px;">Nombre rol:</label>
+         <input type="text" formControlName="nombre_rol" pInputText id="nombre_rol" required autofocus
+                 name="nombre_rol"/>
+         </div>
+          <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1">
+            <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true"></p-checkbox>
+            <label class="ml-2">{{ rol.nombre_permiso }}</label>
+          </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarRolDialog = false" ></button>
+          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+        </div>
+    </form>  
+  </p-dialog>

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 }) export class VentaService {
-  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 

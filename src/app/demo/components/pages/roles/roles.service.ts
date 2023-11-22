@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rol } from './roles.model';
+import { Roles } from './roles.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,21 +8,29 @@ import { Observable } from 'rxjs';
 })
 export class RolesService {
   private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/roles';
+  private apiUrl2 = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
-  getRoles() {
-    return this.http.get<Rol[]>(this.apiUrl);
+  getListRoles(): Observable<Roles[]>{
+    return this.http.get<Roles[]>(this.apiUrl)       
   }
 
-  createRoles(newRoles: Rol): Observable<any> {
-    return this.http.post(this.apiUrl, newRoles);
+  getRoles(id:string): Observable<Roles>{
+    return this.http.get<Roles>(`${this.apiUrl}/${id}`)
   }
 
-  private apiUrlestado = 'https://api-parisina-2tpy.onrender.com/api/roles_estado';
-  cambiarEstadoRol(id: string) {
-    return this.http.put<void>(`${this.apiUrlestado}/${id}`, {}); // Utiliza la URL correcta
+  postRoles(Roles : Roles):Observable<void>{
+    return this.http.post<void>(this.apiUrl,Roles)
   }
+
+  putRoles(id:string, Roles:Roles):Observable<void>{
+    return this.http.put<void>(`${this.apiUrl}/${id}`,Roles)
+  }
+
+  actualizarEstadoRol(id:string): Observable<void>{
+    return this.http.put<void>(`${this.apiUrl2}/roles_estado/${id}`,{})
+    }
+  
   
 }
-

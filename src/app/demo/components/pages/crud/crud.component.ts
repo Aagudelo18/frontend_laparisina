@@ -110,7 +110,7 @@ export class CrudComponent implements OnInit {
 
             this.products = [...this.products];
             this.productDialog = false;
-            this.product = {};
+            this.product = {}; 
         }
     }
 
