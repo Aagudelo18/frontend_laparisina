@@ -20,7 +20,7 @@ export class RolesService {
 @Injectable({
   providedIn: 'root'
 }) export class UsuarioService {
-  private apiUrl = 'http://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 

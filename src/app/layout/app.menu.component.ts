@@ -18,7 +18,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Menú',
                 items: [
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                    //{ label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/usuarios'] },
                     { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
                     { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
@@ -26,7 +26,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
                     //{ label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
                     { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
-                    { label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
+                    //{ label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
                     { label: 'Ventas', icon: 'pi-money-bill', routerLink: ['/pages/ventas'] },
 
                 ]

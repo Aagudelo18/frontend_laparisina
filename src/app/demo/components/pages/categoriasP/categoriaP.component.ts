@@ -115,7 +115,7 @@ export class CategoriaPComponent implements OnInit {
     //    })
     //   }
       
-    // }
+    // } 
 
     // Función para crear una categoría
     crearCategoriaP() {

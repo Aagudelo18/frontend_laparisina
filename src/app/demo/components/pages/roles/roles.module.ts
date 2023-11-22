@@ -17,6 +17,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 
@@ -26,6 +28,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         InputSwitchModule,
         RolesRoutingModule,
         TableModule,
+        ReactiveFormsModule,
         FileUploadModule,
         FormsModule,
         ButtonModule,
@@ -39,7 +42,9 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
+        CheckboxModule,
     ],
     declarations: [RolesComponent],
 })
 export class RolesModule { }
+

@@ -17,10 +17,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
     imports: [
+        ReactiveFormsModule,
         CommonModule,
         ClientesRoutingModule,
         TableModule,
