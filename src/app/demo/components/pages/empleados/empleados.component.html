@@ -1,8 +1,3 @@
-<!-- <div *ngFor="let empleado of empleados">
-    <p>Nombre: {{ empleado.nombre_empleado }}</p>
-    <p>Código de Rotulación: {{ empleado.codigo_rotulacion_empleado }}</p>
-     Agrega más campos según tus necesidades -->
-<!-- </div> -->
 
 <div class="grid">
     <div class="col-12">
@@ -159,28 +154,30 @@
                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">banco</span>
                             {{employee.cuenta_bancaria_empleado}}
                         </td>
-                        <!-- <td style="width:14%; min-width: 10rem;"><span class="p-column-title">area</span>
+                         <td style="width:14%; min-width: 10rem;"><span class="p-column-title">area</span>
                             {{employee.area_empleado}}
-                        </td> -->
+                        </td> 
 
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
-                                    (click)="editEmployee(employee)"></button>
-
-                            </div>
-                        </td>
+                        
+                            <td style="width:30%; min-width:10rem;">
+                                <div class="d-flex justify-content-center">
+                                    <p-inputSwitch class="mr-2" [(ngModel)]="checked"></p-inputSwitch>
+                                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarEmpleado(empleados.id)"></button>                           
+                                     <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(categoria)"></button>  -->
+                                </div>
+                            </td>
+                            
+                        
                         <<p-dialog header="Crear Nuevo Empleado" [(visible)]="displayCreateDialog" [modal]="true" >
                             <form #crearEmpleadoForm="ngForm" (ngSubmit)="crearEmpleado()" ngNativeValidate>
                                 <!-- Campos del formulario para crear un nuevo empleado -->
                                 <div class="p-fluid">
-                                    <div class="p-field">
+                                    <!-- <div class="p-field">
                                         <label for="id">id</label>
                                         <input id="id" type="text" pInputText
                                             name="id"
                                             [(ngModel)]="nuevoEmpleado.id" required>
-                                    </div>
+                                    </div>  -->
                                     <div class="p-field">
                                         <label for="codigo_rotulacion_empleado">Código de Rotulación</label>
                                         <input id="codigo_rotulacion_empleado" type="text" pInputText
@@ -193,11 +190,13 @@
                                             [(ngModel)]="nuevoEmpleado.nombre_empleado" required>
                                     </div>
                                     <div class="p-field">
-                                        <label for="tipo_contrato_empleado">tipo de contrato</label>
-                                        <input id="tipo_contrato_empleado" type="text" pInputText
-                                            name="tipo_contrato_empleado"
-                                            [(ngModel)]="nuevoEmpleado.tipo_contrato_empleado" required>
+                                        <label for="tipo_contrato_empleado">Tipo de Contrato</label>
+                                        <select id="tipo_contrato_empleado" pInputText name="tipo_contrato_empleado" [(ngModel)]="nuevoEmpleado.tipo_contrato_empleado" required>
+                                            <option value="fijo">Fijo</option>
+                                            <option value="indefinido">Indefinido</option>
+                                        </select>
                                     </div>
+                                    
                                     <div class="p-field">
                                         <label for="fecha_inicio_empleado">fecha de inicio</label>
                                         <input id="fecha_inicio_empleado" type="text" pInputText
@@ -212,11 +211,14 @@
                                             [(ngModel)]="nuevoEmpleado.fecha_vencimiento_contrato_empleado" required>
                                     </div>
                                     <div class="p-field">
-                                        <label for="tipo_documento_empleado">tipo de documento</label>
-                                        <input id="tipo_documento_empleado" type="text" pInputText
-                                            name="tipo_documento_empleado"
-                                            [(ngModel)]="nuevoEmpleado.tipo_documento_empleado" required>
+                                        <label for="tipo_documento_empleado">Tipo de Documento</label>
+                                        <select id="tipo_documento_empleado" pInputText name="tipo_documento_empleado" [(ngModel)]="nuevoEmpleado.tipo_documento_empleado" required>
+                                            <option value="cedula_ciudadania">Cédula de Ciudadanía</option>
+                                            <option value="cedula_extranjeria">Cédula de Extranjería</option>
+                                            <option value="tarjeta_identidad">Tarjeta de Identidad</option>
+                                        </select>
                                     </div>
+                                    
                                     <div class="p-field">
                                         <label for="identificacion_empleado">identificacion</label>
                                         <input id="identificacion_empleado" type="text" pInputText
@@ -331,12 +333,16 @@
                                                                 [(ngModel)]="nuevoEmpleado.cuenta_bancaria_empleado"
                                                                 required>
                                                         </div>
-                                                        <!-- <div class="p-field">
-                                                            <label for="area_empleado">area </label>
-                                                            <input id="area_empleado" type="text" pInputText
-                                                                name="area_empleado"
-                                                                [(ngModel)]="nuevoEmpleado.area_empleado" required>
-                                                        </div> -->
+                                                        <div class="p-field">
+                                                            <label for="area_empleado">Área</label>
+                                                            <select id="area_empleado" pInputText name="area_empleado" [(ngModel)]="nuevoEmpleado.area_empleado" required>
+                                                                <option value="panadero">Panadero</option>
+                                                                <option value="repostero">Repostero</option>
+                                                                <option value="tortas">Tortas</option>
+                                                                <option value="chef">Chef</option>
+                                                            </select>
+                                                        </div>
+                                                        
                                                         <div class="p-field">
                                                             <button pButton pRipple label="Guardar" type="submit"></button>
                                                         </div>
@@ -346,7 +352,187 @@
                                                             <p>El formulario no es válido. Por favor, verifica los campos.</p>
                                                         </div>
                                                     
-                                                   
+                                                        <<p-dialog header="Editar  Empleado" [(visible)]="displayEditDialog" [modal]="true" >
+                                                            <form #crearEmpleadoForm="ngForm" (ngSubmit)="editarEmpleado()" ngNativeValidate>
+                                                                <!-- Campos del formulario para crear un nuevo empleado -->
+                                                                <div class="p-fluid">
+                                                                <!-- Agrega los campos del formulario para la creación del rol -->
+                                                                <div class="p-field">
+                                                                    <label for="codigo_rotulacion_empleado">Código de Rotulación</label>
+                                                                    <input id="codigo_rotulacion_empleado" type="text" pInputText
+                                                                        name="codigo_rotulacion_empleado"
+                                                                        [(ngModel)]="empleadoEditado.codigo_rotulacion_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="nombre_empleado">Nombre del empleado</label>
+                                                                    <input id="nombre_empleado" type="text" pInputText name="nombre_empleado"
+                                                                        [(ngModel)]="empleadoEditado.nombre_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="tipo_contrato_empleado">Tipo de Contrato</label>
+                                                                    <select id="tipo_contrato_empleado" pInputText name="tipo_contrato_empleado" [(ngModel)]="empleadoEditado.tipo_contrato_empleado" required>
+                                                                        <option value="fijo">Fijo</option>
+                                                                        <option value="indefinido">Indefinido</option>
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                                <div class="p-field">
+                                                                    <label for="fecha_inicio_empleado">fecha de inicio</label>
+                                                                    <input id="fecha_inicio_empleado" type="text" pInputText
+                                                                        name="fecha_inicio_empleado"
+                                                                        [(ngModel)]="empleadoEditado.fecha_inicio_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="fecha_vencimiento_contrato_empleado">fecha de vencimiento del
+                                                                        contrato</label>
+                                                                    <input id="fecha_vencimiento_contrato_empleado" type="text" pInputText
+                                                                        name="fecha_vencimiento_contrato_empleado"
+                                                                        [(ngModel)]="empleadoEditado.fecha_vencimiento_contrato_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="tipo_documento_empleado">Tipo de Documento</label>
+                                                                    <select id="tipo_documento_empleado" pInputText name="tipo_documento_empleado" [(ngModel)]="empleadoEditado.tipo_documento_empleado" required>
+                                                                        <option value="cedula_ciudadania">Cédula de Ciudadanía</option>
+                                                                        <option value="cedula_extranjeria">Cédula de Extranjería</option>
+                                                                        <option value="tarjeta_identidad">Tarjeta de Identidad</option>
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                                <div class="p-field">
+                                                                    <label for="identificacion_empleado">identificacion</label>
+                                                                    <input id="identificacion_empleado" type="text" pInputText
+                                                                        name="identificacion_empleado"
+                                                                        [(ngModel)]="empleadoEditado.identificacion_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="fecha_nacimiento_empleado">fecha de nacimiento</label>
+                                                                    <input id="fecha_nacimiento_empleado" type="text" pInputText
+                                                                        name="fecha_nacimiento_empleado"
+                                                                        [(ngModel)]="empleadoEditado.fecha_nacimiento_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="edad_empleado">edad</label>
+                                                                    <input id="edad_empleado" type="text" pInputText name="edad_empleado"
+                                                                        [(ngModel)]="empleadoEditado.edad_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="lugar_nacimiento_empleado">lugar de nacimiento</label>
+                                                                    <input id="lugar_nacimiento_empleado" type="text" pInputText
+                                                                        name="lugar_nacimiento_empleado"
+                                                                        [(ngModel)]="empleadoEditado.lugar_nacimiento_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="direccion_empleado">direccion</label>
+                                                                    <input id="direccion_empleado" type="text" pInputText name="direccion_empleado"
+                                                                        [(ngModel)]="empleadoEditado.direccion_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="municipio_domicilio_empleado">municipio del domicilio</label>
+                                                                    <input id="municipio_domicilio_empleado" type="text" pInputText
+                                                                        name="municipio_domicilio_empleado"
+                                                                        [(ngModel)]="empleadoEditado.municipio_domicilio_empleado" required>
+                                                                </div>
+                                                                <div class="p-field">
+                                                                    <label for="estado_civil_empleado">estado civil</label>
+                                                                    <input id="estado_civil_empleado" type="text" pInputText
+                                                                        name="estado_civil_empleado"
+                                                                        [(ngModel)]="empleadoEditado.estado_civil_empleado" required>
+                                                                </div>
+                                                                <div class="p-fluid">
+                                                                    <div class="p-field">
+                                                                        <label for="celular_empleado">celular </label>
+                                                                        <input id="celular_empleado" type="text" pInputText name="celular_empleado"
+                                                                            [(ngModel)]="empleadoEditado.celular_empleado" required>
+                                                                    </div>
+                                                                    <div class="p-fluid">
+                                                                        <div class="p-field">
+                                                                            <label for="correo_empleado">correo</label>
+                                                                            <input id="correo_empleado" type="text" pInputText
+                                                                                name="correo_empleado" [(ngModel)]="empleadoEditado.correo_empleado"
+                                                                                required>
+                                                                        </div>
+                                                                        <div class="p-fluid">
+                                                                            <div class="p-field">
+                                                                                <label for="alergia_empleado">alergia </label>
+                                                                                <input id="alergia_empleado" type="text" pInputText
+                                                                                    name="alergia_empleado"
+                                                                                    [(ngModel)]="empleadoEditado.alergia_empleado" required>
+                                                                            </div>
+                                                                            <div class="p-fluid">
+                                                                                <div class="p-field">
+                                                                                    <label for="grupo_sanguineo_empleado">grupo sanguineo </label>
+                                                                                    <input id="grupo_sanguineo_empleado" type="text" pInputText
+                                                                                        name="grupo_sanguineo_empleado"
+                                                                                        [(ngModel)]="empleadoEditado.grupo_sanguineo_empleado"
+                                                                                        required>
+                                                                                </div>
+                            
+                                                                                <div
+                                                                                    *ngFor="let contacto of empleadoEditado.contacto_emergencia; let i = index">
+                                                                                    <div class="p-field">
+                                                                                        <label for="nombre_contacto_emergencia{{i}}">Nombre del
+                                                                                            contacto de emergencia</label>
+                                                                                        <input id="nombre_contacto_emergencia{{i}}" type="text"
+                                                                                            pInputText name="nombre_contacto_emergencia{{i}}"
+                                                                                            [(ngModel)]="contacto.nombre_contacto_emergencia"
+                                                                                            required>
+                                                                                    </div>
+                                                                                    <div class="p-field">
+                                                                                        <label for="parentesco_empleado{{i}}">Parentesco con el
+                                                                                            empleado</label>
+                                                                                        <input id="parentesco_empleado{{i}}" type="text" pInputText
+                                                                                            name="parentesco_empleado{{i}}"
+                                                                                            [(ngModel)]="contacto.parentesco_empleado" required>
+                                                                                    </div>
+                                                                                    <div class="p-field">
+                                                                                        <label for="telefono_contacto_emergencia{{i}}">Teléfono del
+                                                                                            contacto de emergencia</label>
+                                                                                        <input id="telefono_contacto_emergencia{{i}}" type="text"
+                                                                                            pInputText name="telefono_contacto_emergencia{{i}}"
+                                                                                            [(ngModel)]="contacto.telefono_contacto_emergencia"
+                                                                                            required>
+                                                                                    </div>
+                                                                                    <div class="p-field">
+                                                                                        <label for="eps_empleado">eps</label>
+                                                                                        <input id="eps_empleado" type="text" pInputText
+                                                                                            name="eps_empleado"
+                                                                                            [(ngModel)]="empleadoEditado.eps_empleado" required>
+                                                                                    </div>
+                                                                                    <div class="p-field">
+                                                                                        <label for="pension_empleado">pension</label>
+                                                                                        <input id="pension_empleado" type="text" pInputText
+                                                                                            name="pension_empleado"
+                                                                                            [(ngModel)]="empleadoEditado.pension_empleado" required>
+                                                                                    </div>
+                                                                                    <div class="p-field">
+                                                                                        <label for="cuenta_bancaria_empleado">cuenta bancaria
+                                                                                        </label>
+                                                                                        <input id="cuenta_bancaria_empleado" type="text" pInputText
+                                                                                            name="cuenta_bancaria_empleado"
+                                                                                            [(ngModel)]="empleadoEditado.cuenta_bancaria_empleado"
+                                                                                            required>
+                                                                                    </div>
+                                                                                    <div class="p-field">
+                                                                                        <label for="area_empleado">Área</label>
+                                                                                        <select id="area_empleado" pInputText name="area_empleado" [(ngModel)]="empleadoEditado.area_empleado" required>
+                                                                                            <option value="panadero">Panadero</option>
+                                                                                            <option value="repostero">Repostero</option>
+                                                                                            <option value="tortas">Tortas</option>
+                                                                                            <option value="chef">Chef</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                
+                                                                
+                                                           
+                                                        
+                                                            <ng-template pTemplate="footer">
+                                                                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
+                                                                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarEdicion()"></button>
+
+                                                            </ng-template>
+                                                        
+                                                        
+                                                         
                                                 
                             
                         

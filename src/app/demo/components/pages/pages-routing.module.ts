@@ -11,14 +11,15 @@ import { RouterModule } from '@angular/router';
         { path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) },
         { path: 'categoriasP', loadChildren: () => import('./categoriasP/categoriaP.module').then(m => m.CategoriaPModule) },
         { path: 'productos', loadChildren: () => import('./productos/producto.module').then(m => m.ProductoModule) },
-        { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule) },
-        { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule) },
-        { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
+        { path: 'pedidos', loadChildren: () => import('./pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule)},
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
-       
+        { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule)},
+        { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
+        { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
 
         { path: '**', redirectTo: '/notfound' }
+
     ])],
     exports: [RouterModule]
 })
