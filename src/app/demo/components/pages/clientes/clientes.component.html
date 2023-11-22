@@ -152,86 +152,87 @@
       </div>
        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
       <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
-      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formCliente.valid"></button>
+      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
     </div>
 </form>  
 </p-dialog>
 
 <p-dialog [(visible)]="editarClienteaDialog" [style]="{ width: '450px' }" header="Editar Cliente" [modal]="true" class="p-fluid">
-<form [formGroup]="formCliente" (ngSubmit)="actualizarCliente()">
-  <div class="formgrid grid">
-        <div class="field col">
-          <div style="display: flex;
-          flex-direction: column;
-          margin-bottom: 8px;">
-            <div style="margin-bottom: 5px;">
-              <label for="tipo_cliente" class="mb-4 mb-3">Tipo de Cliente:</label>
-            </div>
-            <div class="input">
-              <p-dropdown formControlName= "tipo_cliente" [options]="['Empresa','Persona natural']"
-                placeholder="Selecciona una opción"  name="tipo_cliente" required></p-dropdown>
+  <form [formGroup]="formCliente" (ngSubmit)="actualizarCliente()">
+    <div class="formgrid grid">
+          <div class="field col">
+            <div style="display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;">
+              <div style="margin-bottom: 5px;">
+                <label for="tipo_cliente" class="mb-4 mb-3">Tipo de Cliente:</label>
+              </div>
+              <div class="input">
+                <p-dropdown formControlName= "tipo_cliente" [options]="['Empresa','Persona natural']"
+                  placeholder="Selecciona una opción"  name="tipo_cliente" required></p-dropdown>
+              </div>
             </div>
           </div>
+          <div class="field col">
+            <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
+            <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
+               name="nombre_contacto"/>
+          </div>
         </div>
-        <div class="field col">
-          <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
-          <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
-             name="nombre_contacto"/>
+        <div class="formgrid grid">
+          <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+            <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
+            <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus name="nit_empresa_cliente"/>
+          </div>
+          <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+            <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
+            <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
+              name="nombre_juridico"/>
+          </div>
         </div>
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
+            <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required autofocus
+               name="numero_documento_cliente"/>
+          </div>
+          <div class="field col">
+            <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
+            <input type="text"  formControlName= "correo_cliente" pInputText id="correo_cliente" required autofocus
+               name="correo_cliente"/>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
+            <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
+               name="telefono_cliente"/>
+          </div>
+          <div class="field col">
+            <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
+            <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
+               name="direccion_cliente"/>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
+            <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
+               name="barrio_cliente"/>
+          </div>
+          <div class="field col">
+            <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
+            <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
+               name="ciudad_cliente"/>
+          </div>
+        </div>
+         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarClienteaDialog = false" ></button>
+        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
       </div>
-      <div class="formgrid grid">
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
-          <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
-          <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus name="nit_empresa_cliente"/>
-        </div>
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
-          <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
-          <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
-            name="nombre_juridico"/>
-        </div>
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
-          <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required autofocus
-             name="numero_documento_cliente"/>
-        </div>
-        <div class="field col">
-          <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
-          <input type="text"  formControlName= "correo_cliente" pInputText id="correo_cliente" required autofocus
-             name="correo_cliente"/>
-        </div>
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
-          <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
-             name="telefono_cliente"/>
-        </div>
-        <div class="field col">
-          <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
-          <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
-             name="direccion_cliente"/>
-        </div>
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
-          <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
-             name="barrio_cliente"/>
-        </div>
-        <div class="field col">
-          <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
-          <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
-             name="ciudad_cliente"/>
-        </div>
-      </div>
-       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarClienteaDialog = false" ></button>
-      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
-    </div>
-</form>  
+  </form>  
 </p-dialog>
+
 
 
 <p-dialog [(visible)]="detalleClienteDialog" [style]="{ width: '450px' }" header="Detalle del Cliente" [modal]="true" class="p-fluid">

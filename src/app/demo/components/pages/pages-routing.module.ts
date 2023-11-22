@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
     imports: [RouterModule.forChild([
         { path: 'crud', loadChildren: () => import('./crud/crud.module').then(m => m.CrudModule) },
         { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)},
+        { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule) },
         { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule)},
         { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule) },
         { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule)},

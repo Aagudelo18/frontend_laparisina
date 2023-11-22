@@ -152,7 +152,6 @@ export class clientesComponent implements OnInit {
         }
       }
 
-
       // Función para confirmar cambiar el estado de un cliente
     confirmarCambioEstado(clientes: Clientes) {
       this.estadoClienteDialog = true;

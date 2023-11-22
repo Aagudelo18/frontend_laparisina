@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/clientes';
-  private apiUrl2 = 'https://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api/clientes';
+  private apiUrl2 = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
   
