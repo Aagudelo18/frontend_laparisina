@@ -16,9 +16,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { CategoriaService } from './categoria.service';
+import { ReactiveFormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
-
-
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { ImageModule } from 'primeng/image';
 
 @NgModule({
     imports: [
@@ -38,8 +40,14 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        InputSwitchModule
+        ReactiveFormsModule,
+        InputSwitchModule,
+        AutoCompleteModule,
+        ImageModule
     ],
-    declarations: [CategoriaComponent]
+    declarations: [CategoriaComponent],
+    providers: [
+        CategoriaService // Agrega tu servicio como un proveedor aquí
+      ]
 })
 export class CategoriaModule { }

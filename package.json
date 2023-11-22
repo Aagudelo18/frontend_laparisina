@@ -4,7 +4,7 @@
     "license": "PrimeNG Commercial",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "ng serve --proxy-config proxy.conf.json",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
@@ -35,6 +35,7 @@
         "prismjs": "^1.29.0",
         "quill": "^1.3.7",
         "rxjs": "~7.8.0",
+        "toastr": "^2.1.4",
         "tslib": "^2.3.0",
         "zone.js": "~0.13.0"
     },

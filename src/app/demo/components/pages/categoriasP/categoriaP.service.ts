@@ -25,8 +25,8 @@ import { CategoriaP } from './categoriaP.model';
       return this.http.put<void>(`${this.apiUrl}/categorias/${id}`,categoriaP)
     }
   
-    putEstadoCategoriaP(id:string, categoriaP:CategoriaP): Observable<void>{
-      return this.http.put<void>(`${this.apiUrl}/categoria-estado/${id}`,categoriaP)
+    putEstadoCategoriaP(id:string): Observable<void>{
+      return this.http.put<void>(`${this.apiUrl}/categoria-estado/${id}`,{})
     }
   }
   

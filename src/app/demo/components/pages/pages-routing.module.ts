@@ -16,6 +16,10 @@ import { RouterModule } from '@angular/router';
         { path: 'new-pedidos', loadChildren: () => import('./pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule)},
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
+        { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule)},
+        { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
+        { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
+
         { path: '**', redirectTo: '/notfound' }
 
     ])],

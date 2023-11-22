@@ -5,7 +5,7 @@ import { Producto } from './producto.model';
 
 @Injectable()
   export class ProductoService {
-    private apiUrl = 'https://api-parisina-2tpy.onrender.com/api'; // URL de API
+    private apiUrl = 'http://localhost:3000/api'; // URL de API
   
     constructor(private http: HttpClient) {}
 
@@ -13,20 +13,21 @@ import { Producto } from './producto.model';
       return this.http.get<Producto[]>(`${this.apiUrl}/productos`)    
     }
 
-    // getCategoriaP(id:string): Observable<CategoriaP>{
-    //   return this.http.get<CategoriaP>(`${this.apiUrl}/categorias/${id}`)
-    // }
+    getProducto(id:string): Observable<Producto>{
+      return this.http.get<Producto>(`${this.apiUrl}/productos/${id}`)
+    }
+
+    crearProducto(data : FormData): Observable<Object>{
+      return this.http.post<Object>(`${this.apiUrl}/productos`,data)
+    }
+
+    actualizarProducto(id:string, data : FormData): Observable<Object>{
+      return this.http.put<Object>(`${this.apiUrl}/productos/${id}`,data)
+    }
   
-    // postCategoriaP(categoriaP : CategoriaP):Observable<void>{
-    //   return this.http.post<void>(`${this.apiUrl}/categorias`,categoriaP)
-    // }
-  
-    // putCategoriaP(id:string, categoriaP:CategoriaP):Observable<void>{
-    //   return this.http.put<void>(`${this.apiUrl}/categorias/${id}`,categoriaP)
-    // }
-  
-    // putEstadoCategoriaP(id:string, categoriaP:CategoriaP): Observable<void>{
-    //   return this.http.put<void>(`${this.apiUrl}/categoria-estado/${id}`,categoriaP)
-    // }
+    actualizarEstadoProducto(id:string): Observable<void>{
+      return this.http.put<void>(`${this.apiUrl}/producto-estado/${id}`,{})
+    }
+    
   }
   

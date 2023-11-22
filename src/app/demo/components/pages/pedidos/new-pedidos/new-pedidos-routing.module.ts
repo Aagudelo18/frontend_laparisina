@@ -5,6 +5,7 @@ import { NewPedidosComponent } from './new-pedidos.component';
 const routes: Routes = [];
 
 @NgModule({
+  
   imports: [RouterModule.forChild([
     {
       path: '', component: NewPedidosComponent

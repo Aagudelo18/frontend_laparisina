@@ -50,11 +50,12 @@
                         </td>
                         <td style="width:10%; min-width:10rem;">
                             <span class="p-column-title">Estado</span>
-                            {{ categoriaP.estado_categoria_producto ? 'Activo' : 'Inactivo' }}
+                            <!-- {{ categoriaP.estado_categoria_producto ? 'Activo' : 'Inactivo' }} -->
+                            <p-inputSwitch class="mr-2" [ngModel]="categoriaP.estado_categoria_producto" (onChange)="confirmarCambioEstado(categoriaP._id)"></p-inputSwitch>
                         </td>  
                         <td style="width:30%; min-width:10rem;">
                             <div class="flex">
-                                <p-inputSwitch class="mr-2" [ngModel]="categoriaP.estado_categoria_producto"></p-inputSwitch>
+                                
                                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarCategoriaP(categoriaP._id)"></button>                                
                             </div>
                         </td>
@@ -71,9 +72,14 @@
                                 <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
                                 <label for="nombre_categoria_producto">Nombre</label>
                             </span>
-                            <span *ngIf="formCategoriaP.get('nombre_categoria_producto')?.hasError('required') && formCategoriaP.get('nombre_categoria_producto')?.touched">
+                            <span *ngIf="formCategoriaP.get('nombre_categoria_producto')?.hasError('required') && formCategoriaP.get('nombre_categoria_producto')?.touched"
+                            style="color: red;">
                                 El nombre es requerido
-                            </span>                       
+                            </span>       
+                            <span *ngIf="formCategoriaP.get('nombre_categoria_producto')?.hasError('pattern') && formCategoriaP.get('nombre_categoria_producto')?.touched"
+                            style="color: red;">
+                                El nombre solo debe contener letras y tener máximo 20 caracteres
+                            </span>                
                         </div>
                     </div>
 
@@ -83,8 +89,13 @@
                                 <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
                                 <label for="descripcion_categoria_producto">Descripción</label>
                             </span>
-                            <span *ngIf="formCategoriaP.get('descripcion_categoria_producto')?.hasError('required') && formCategoriaP.get('descripcion_categoria_producto')?.touched">
+                            <span *ngIf="formCategoriaP.get('descripcion_categoria_producto')?.hasError('required') && formCategoriaP.get('descripcion_categoria_producto')?.touched"
+                            style="color: red;">
                                 La descripción es requerida
+                            </span>
+                            <span *ngIf="formCategoriaP.get('descripcion_categoria_producto')?.hasError('pattern') && formCategoriaP.get('descripcion_categoria_producto')?.touched"
+                            style="color: red;">
+                                La descripción solo permite letras y los signos ",." y un máximo de 100 caracteres
                             </span>
                         </div>
                     </div>
@@ -107,7 +118,7 @@
 
                     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearCategoriaPDialog = false"></button>
-                        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+                        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formCategoriaP.valid"></button>
                     </div>   
                 </form>             
         </p-dialog>

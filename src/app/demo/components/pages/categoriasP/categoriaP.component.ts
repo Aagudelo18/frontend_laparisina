@@ -12,6 +12,7 @@ import { SelectItem } from 'primeng/api';
     providers: [MessageService]
 })
 export class CategoriaPComponent implements OnInit {
+
     listCategoriasP: CategoriaP[] = []
     categoriaP: CategoriaP = {}
     formCategoriaP:FormGroup;
@@ -20,7 +21,7 @@ export class CategoriaPComponent implements OnInit {
     cols:any[] = [
       { field: 'id', header: 'ID' },
       { field: 'nombre_categoria_producto', header: 'Nombre' },
-      { field: 'descripcion_categoria_producto', header: 'Descripción' },
+      { field: 'descripcion_categoria_producto', header: 'Descripcion' },
       { field: 'imagen_categoria_producto', header: 'Imagen' },
       { field: 'estado_categoria_producto', header: 'Estado' }
     ];
@@ -45,17 +46,19 @@ export class CategoriaPComponent implements OnInit {
       private messageService: MessageService,
       private router:Router,
       private aRouter:ActivatedRoute){
+
         this.formCategoriaP = this.fb.group({
-          nombre_categoria_producto: ['',Validators.required],
-          descripcion_categoria_producto: ['',Validators.required],
+          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+          descripcion_categoria_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s-]+$/),]],
           imagen_categoria_producto: ['',Validators.required],
-          estado_categoria_producto: ['', Validators.required]
+          estado_categoria_producto: ['']
 
         })
+
         this.aRouter.params.subscribe(params => {
           this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
         });
-       }
+      }
 
     ngOnInit():void {        
         this.getListCategoriasP()                     
@@ -156,13 +159,40 @@ export class CategoriaPComponent implements OnInit {
             severity: 'info',
             summary: 'La categoría fue actualizada con éxito',
             detail: 'Categoría actualizada',
-            life: 6000
+            life: 3000
           });
           this.getListCategoriasP();
           this.editarCategoriaPDialog = false;
         });
       }
     }
+
+    confirmarCambioEstado(id: string) {
+      if (confirm('¿Está seguro de que desea cambiar el estado de la categoría?')) {
+        this.cambiarEstadoCategoria(id);
+      } else {
+        this.getListCategoriasP();
+      }
+    }
+    
+    cambiarEstadoCategoria(id: string) {
+      this.categoriaPService.putEstadoCategoriaP(id).subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'El estado de la categoría fue cambiado con éxito',
+            detail: 'Estado cambiado',
+            life: 3000
+          });
+          // Actualizar la lista de categorías u otra lógica según sea necesario
+        },
+        error: (error) => {
+          console.error('Error cambiando el estado de la categoría:', error);
+          // Manejar errores según sea necesario
+        }
+      });
+    }    
+    
 
 
     openNew() {

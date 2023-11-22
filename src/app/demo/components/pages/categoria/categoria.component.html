@@ -1,121 +1,215 @@
-<p-toolbar styleClass="mb-4">
-    <ng-template pTemplate="left">
-        <div class="my-2">
-            <button pButton pRipple label="Crear categoría" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewCategoriaDialog()"></button>
-        </div>
-    </ng-template>
+<div class="grid">
+    <div class="col-12">
+        <p-toast></p-toast>
 
+        <div class="card px-6 py-6">            
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Crear Categoría" icon="pi pi-plus" class="p-button-success mr-2" (click)="nuevaCategoria()"></button>                        
+                    </div>
+                </ng-template>
+            </p-toolbar>
 
-</p-toolbar>
-  <p-table #dt [value]="categorias" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedCategorias" selectionMode="multiple" dataKey="_id">
-    <ng-template pTemplate="caption">
-        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h4 class="m-0">Listado de Categorias</h4>
-            <span class="block mt-2 md:mt-0 p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
-            </span>
+            <p-table #dt [value]="listCategorias" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre_categoria_producto']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Lista de Categorias</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="">Imagen</th>                    
+                        <th pSortableColumn="nombre_categoria_producto">Nombre<p-sortIcon field="nombre_categoria_producto"></p-sortIcon></th>
+                        <th pSortableColumn="descripcion_categoria_producto">Descripción</th>
+                        <th pSortableColumn="estado_categoria_producto">Estado<p-sortIcon field="estado_categoria_producto"></p-sortIcon></th>
+                        <th pSortableColumn="">Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-categoria>
+                    <tr>
+                        <td style="width:30%; min-width:10rem;">
+                            <img [src]="'http://localhost:3000/uploads/' + categoria.imagen_categoria_producto" 
+                            alt="Imagen de la categoría" width="100" height="65" style="border-radius: 10%;">
+                        </td>                    
+                        <td style="width:15%; min-width:5rem;"><span class="p-column-title">Nombre</span>
+                            {{ categoria.nombre_categoria_producto }}
+                        </td>
+                        <td style="width:40%; min-width:10rem;">
+                            <span class="p-column-title">Descripción</span>
+                            {{ categoria.descripcion_categoria_producto }}
+                        </td>
+                        <td style="width:10%; min-width:10rem;">
+                            <span class="p-column-title">Estado</span>
+                            <!-- {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }} -->
+                            <p-inputSwitch class="mr-2" [ngModel]="categoria.estado_categoria_producto" (onChange)="confirmarCambioEstado(categoria)"></p-inputSwitch>
+                        </td>  
+                        <td style="width:30%; min-width:10rem;">
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarCategoria(categoria._id)" style=" width: 2.5rem; height: 2.5rem; "></button>
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="detalleCategoria(categoria._id)" style=" width: 2.5rem; height: 2.5rem; "></button>                     
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>            
         </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th pSortableColumn="name">Nombre</th>
-            <th pSortableColumn="name">Descripción</th>
-            <th pSortableColumn="name">Imagen</th>
-            <th pSortableColumn="name">Estado</th>
-            <th pSortableColumn="name">Aciones</th>
-            
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-categoria>
-        <tr>
-            
-            <td style="width:10%; min-width:10rem;">
-                {{ categoria.nombre_categoria_producto }}
-            </td>
-            <td style="width:20%; min-width:10rem;">
-                {{ categoria.descripcion_categoria_producto }}
-            </td>
-            <td style="width:30%; min-width:10rem;">
-                <img [src]="'http://localhost:3000/uploads/' + categoria.imagen_categoria_producto" alt="Imagen de la categoría">
-            </td>
-            
-            <td style="width:10%; min-width:10rem;">
-                {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }}
-            </td>
-            <td style="width:30%; min-width:10rem;">
-                <div class="d-flex justify-content-center">
-                    <p-inputSwitch class="mr-2" [(ngModel)]="checked"></p-inputSwitch>
-                    <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2" (click)="openEditarCategoriaDialog(categoria)"></button>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="deleteProduct(categoria)"></button>
+
+        <p-dialog [(visible)]="crearCategoriaDialog" [style]="{width: '400px'}" header="Crear Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+                <form [formGroup]="formCategoria" (ngSubmit)="crearCategoria()">
+                    <div class="formgrid grid">
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
+                                <label for="nombre_categoria_producto">Nombre</label>
+                            </span>
+                            <span *ngIf="formCategoria.get('nombre_categoria_producto')?.hasError('required') && formCategoria.get('nombre_categoria_producto')?.touched"
+                            style="color: red;">
+                                El nombre es requerido
+                            </span>       
+                            <span *ngIf="formCategoria.get('nombre_categoria_producto')?.hasError('pattern') && formCategoria.get('nombre_categoria_producto')?.touched"
+                            style="color: red;">
+                                El nombre solo debe contener letras y tener máximo 20 caracteres
+                            </span>                
+                        </div>
+                    </div>
+
+                    <div class="formgrid grid mt-4">
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
+                                <label for="descripcion_categoria_producto">Descripción</label>
+                            </span>
+                            <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('required') && formCategoria.get('descripcion_categoria_producto')?.touched"
+                            style="color: red;">
+                                La descripción es requerida
+                            </span>
+                            <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('pattern') && formCategoria.get('descripcion_categoria_producto')?.touched"
+                            style="color: red;">
+                                La descripción solo permite letras y los signos ",." y un máximo de 100 caracteres
+                            </span>
+                        </div>
+                    </div>
+
+                    <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imagen" name="image" 
+                    accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+
+                    <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                        <div class="field col-12" style="text-align: center;">
+                            <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
+                            <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300"></p-image>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearCategoriaDialog = false"></button>
+                        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formCategoria.valid || !fileSelected"></button>
+                    </div>   
+                </form>             
+        </p-dialog>
+
+        <p-dialog [(visible)]="editarCategoriaDialog" [style]="{width: '400px'}" header="Editar Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+            <form [formGroup]="formCategoria" (ngSubmit)="actualizarCategoria()">
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
+                            <label for="nombre_categoria_producto">Nombre</label>
+                        </span>
+                        <span *ngIf="formCategoria.get('nombre_categoria_producto')?.hasError('required') && formCategoria.get('nombre_categoria_producto')?.touched"
+                        style="color: red;">
+                            El nombre es requerido
+                        </span>       
+                        <span *ngIf="formCategoria.get('nombre_categoria_producto')?.hasError('pattern') && formCategoria.get('nombre_categoria_producto')?.touched"
+                        style="color: red;">
+                            El nombre solo debe contener letras y tener máximo 20 caracteres
+                        </span>                
+                    </div>
                 </div>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
 
-<p-dialog [(visible)]="crearCategoriaDialog" [style]="{ width: '450px' }" header="Crear Categoría" [modal]="true" class="p-fluid">
-    <ng-template pTemplate="content">
-        <!-- Agrega los campos del formulario para la creación del rol -->
-        <div class="field">
-            <label for="nombre_categoria">Nombre</label>
-            <input type="text" pInputText id="nombre_categoria" required autofocus
-                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newCategoria.nombre_categoria_producto }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newCategoria.nombre_categoria_producto">Nombre de la categoría es requerido.</small>
+                <div class="formgrid grid mt-4">
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
+                            <label for="descripcion_categoria_producto">Descripción</label>
+                        </span>
+                        <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('required') && formCategoria.get('descripcion_categoria_producto')?.touched"
+                        style="color: red;">
+                            La descripción es requerida
+                        </span>
+                        <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('pattern') && formCategoria.get('descripcion_categoria_producto')?.touched"
+                        style="color: red;">
+                            La descripción solo permite letras y los signos ",." y un máximo de 100 caracteres
+                        </span>
+                    </div>
+                </div>
+                
+                <p-fileUpload #fileEditar mode="basic" chooseLabel="Editar imagen" name="image" 
+                accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+
+                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                    <div class="field col-12" style="text-align: center;">
+                        <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
+                        <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300" [preview]="true"></p-image>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarCategoriaDialog = false"></button>
+                    <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formCategoria.valid"></button>
+                </div>   
+            </form>             
+    </p-dialog>
+
+    <p-dialog [(visible)]="detalleCategoriaDialog" [style]="{width: '400px'}" header="Detalles Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+        <form [formGroup]="formCategoria">
+            <div class="formgrid grid mt-4">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}" 
+                        formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
+                        <label for="nombre_categoria_producto">Nombre</label>
+                    </span>             
+                </div>
+            </div>
+
+            <div class="formgrid grid mt-4">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <textarea [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
+                         rows="5" cols="30" pInputTextarea formControlName="descripcion_categoria_producto" id="descripcion_categoria_producto"></textarea>
+                        <label for="descripcion_categoria_producto">Descripción</label>
+                    </span>
+                </div>
+            </div>
+
+            <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                <div class="field col-12" style="text-align: center;">
+                    <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
+                    <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300" [preview]="true"></p-image>
+                </div>
+            </div>
+            
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button pButton pRipple label="Cerrar" class="p-button-text" (click)="detalleCategoriaDialog = false"></button>
+            </div>   
+        </form>             
+    </p-dialog>
+
+    <p-dialog [(visible)]="estadoCategoriaDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span *ngIf="categoria">¿Está seguro de que desea cambiar el estado de la categoría <b>{{categoria.nombre_categoria_producto}}</b>?</span>
         </div>
-
-        <div class="field">
-            <label for="description">Descripción</label>
-            <textarea id="description" pInputTextarea required rows="3" cols="20"></textarea>
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.descripcion_categoria_producto">La descripción es requerida.</small>
-        </div>
-
-        <div class="field">
-            <p-fileUpload mode="basic" chooseLabel="Imagen" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" 
-            accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
-        </div>
-
-        
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
-    </ng-template>
-</p-dialog>
-
-<p-dialog [(visible)]="editarCategoriaDialog" [style]="{ width: '450px' }" header="Editar Categoría" [modal]="true" class="p-fluid">
-    <ng-template pTemplate="content">
-        <!-- Agrega los campos del formulario para la creación del rol -->
-        <div class="field">
-            <label for="nombre_categoria">Nombre</label>
-            <input type="text" pInputText id="nombre_categoria" required autofocus
-                [ngClass]="{ 'ng-invalid ng-dirty': submitted && !newCategoria.nombre_categoria_producto }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !newCategoria.nombre_categoria_producto">Nombre de la categoría es requerido.</small>
-        </div>
-
-        <div class="field">
-            <label for="description">Descripción</label>
-            <textarea id="description" pInputTextarea required rows="3" cols="20"></textarea>
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.descripcion_categoria_producto">La descripción es requerida.</small>
-          </div>
-
-        <div class="formgrid grid">
-            <p-dropdown [options]="['Activo','Inactivo']" placeholder="Estado" class="mb-4 ml-3" required></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !categoria.estado_categoria_producto">El estado es requerido.</small>
-        </div>
-
-        <div class="field">
-            <p-fileUpload mode="basic" chooseLabel="Imagen" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" 
-            accept="image/*" maxFileSize="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
-        </div>
-
-        
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
-    </ng-template>
-</p-dialog>
-
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoCategoria(categoria._id)"></button>
+        </ng-template>
+    </p-dialog>
+    </div>
+</div>

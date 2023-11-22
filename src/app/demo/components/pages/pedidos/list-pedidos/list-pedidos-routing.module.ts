@@ -3,13 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListPedidosModule } from './list-pedidos.module';
 import { ListPedidosComponent } from './list-pedidos.component';
 
+
 const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forChild([
     {
       path: '', component: ListPedidosComponent
-    }
+    },
   ])],
   exports: [RouterModule]
 })
