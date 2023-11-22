@@ -3,13 +3,15 @@ import { PedidosService } from './pedidos.service';
 import { Router } from '@angular/router';
 import { Pedido } from './pedidos.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-list-pedidos',
   templateUrl: './list-pedidos.component.html',
-  styleUrls: ['./list-pedidos.component.scss']
+  styleUrls: ['./list-pedidos.component.scss'],
+  providers: [MessageService, ConfirmationService],
 })
 
 
@@ -23,15 +25,15 @@ export class ListPedidosComponent implements OnInit {
   id: string = '';
   formPedidos: FormGroup;
   roleDialog: boolean = false; // Esto controla la visibilidad del p-dialog
-  estadoPedidoDialog: boolean = false;
-  estadosPedido: SelectItem[]; // Variable para almacenar los estados del pedido
-  estadoSeleccionado: string; // Variable para almacenar el estado seleccionado en el dropdown
-
+  estadoSiguiente: string;
+ 
 
   constructor(
     private pedidosService: PedidosService,
     private router: Router,
     private fb: FormBuilder,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
     ) 
     {
       this.formPedidos = this.fb.group({
@@ -63,23 +65,14 @@ export class ListPedidosComponent implements OnInit {
         this.pedidos = data;
       });
 
-      this.estadosPedido = [
-        { label: 'Tomado', value: 'Tomado' },
-        { label: 'Preparacion', value: 'Preparacion' },
-        { label: 'Terminado', value: 'Terminado' },
-        { label: 'Asignado', value: 'Asignado' },
-        { label: 'Enviado', value: 'Enviado' },
-        { label: 'Entregado', value: 'Entregado' },
-        { label: 'Anulado', value: 'Anulado' }
-    ];
     }
 
   openNewPedidos() {
     this.router.navigate(['/new-pedidos'])
   }
 
-  editNewPedidos() {
-    this.router.navigate(['edit-pedidos'])
+  enviarListPedido(){
+    this.router.navigate(['/list-pedidos']);
   }
 
   verDetallePedido(id: string) {
@@ -88,15 +81,6 @@ export class ListPedidosComponent implements OnInit {
     this.getPedidoDetalle(id);
   }
 
-  cambiarPedido(id: string, nuevoEstado: string) {
-    this.id = id;
-    this.estadoPedidoDialog = true;
-    this.cambiarEstadoPedido(id, nuevoEstado);
-  }
-
-  cerrarDialogEstadoPedido() {
-    this.estadoPedidoDialog = false;
-}
 
   getPedidoDetalle(id: string){
     this.pedidosService.getPedidoDetalle(id).subscribe((data)=>{
@@ -130,44 +114,71 @@ export class ListPedidosComponent implements OnInit {
    esEmpresa() {
       return this.formPedidos.get('tipo_cliente').value === 'Empresa';
    }
+   
 
     
-  cambiarEstadoPedido(id: string, nuevoEstado: string) {
-    this.pedidosService.updatePedido(id, nuevoEstado).subscribe(
-      () => {
-        console.log(`Estado del pedido con ID ${id} actualizado con éxito.`);
-        // Puedes recargar la lista de pedidos o hacer otras acciones después de la actualización
+   cambiarEstadoPedido(pedido: Pedido, nuevoEstado: string) {
+    // Validación: Solo permitir cambiar de 'Pendiente' a 'Tomado'
+    if (pedido.estado_pedido === 'Pendiente' && nuevoEstado === 'Tomado') {
+      // Actualizar el estado del pedido
+      this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
+        () => {
+          console.log(`Estado del pedido con ID ${pedido._id} actualizado a 'Tomado'.`);
+          // Actualizar la lista de pedidos después de la actualización
+          this.cargarPedidos();
+        },
+        (error) => {
+          console.error('Error al actualizar el estado del pedido:', error);
+          // Manejar el error según tus necesidades
+        }
+      );
+    } else {
+      console.warn(`No se puede cambiar el estado del pedido con ID ${pedido._id}.`);
+      // Puedes mostrar un mensaje al usuario indicando que no se puede cambiar el estado
+    }
+
+   
+  }
+
+
+  cambiarPedido(id: string) {
+    const pedido = this.pedidos.find((pedido) => pedido._id === id);
+  
+    // Si el pedido está en el estado "Pendiente", establece el estado siguiente
+    if (pedido.estado_pedido === 'Pendiente') {
+      pedido.estado_pedido = 'Tomado';
+    }
+    else {
+      pedido.estado_pedido = pedido.estado_pedido;
+    }
+  
+    // Pasa el pedido al método updatePedido()
+    this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Cambio de estado con Éxito',
+          life: 5000
+        }); 
+        // Actualizar la lista de pedidos
         this.cargarPedidos();
       },
       (error) => {
-        console.error('Error al actualizar el estado del pedido:', error);
-        // Puedes manejar el error de la manera que desees
+        if (error.error && error.error.error) {
+          const errorMessage = error.error.error;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al cambiar el estado del Pedido',
+            detail: errorMessage,
+            life: 5000
+          });
+        } else {
+          console.error('Error desconocido al crear el Pedido:', error);
+        }
       }
     );
-    // Puedes cerrar el modal aquí si es necesario después de cambiar el estado
-    this.detallePedidoDialog = false;
   }
 
-  guardarEstadoPedido() {
-    const idPedido = this.id;
-    const nuevoEstado = this.estadoSeleccionado;
-
-    this.pedidosService.updatePedido(idPedido, nuevoEstado).subscribe(
-      () => {
-        console.log(`Estado del pedido con ID ${idPedido} actualizado con éxito.`);
-        this.cargarPedidos(); // Recarga la lista de pedidos después de la actualización
-      },
-      (error) => {
-        console.error('Error al actualizar el estado del pedido:', error);
-        // Puedes manejar el error de la manera que desees
-      }
-    );
-
-    // Cierra el modal después de guardar el estado
-    this.estadoPedidoDialog = false;
-  }
-
-  
 
   cargarPedidos() {
     this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {

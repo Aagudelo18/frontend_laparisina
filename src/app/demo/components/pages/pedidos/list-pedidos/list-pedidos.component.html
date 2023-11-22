@@ -1,5 +1,5 @@
 
-
+<p-toast></p-toast>
 <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
         <div class="my-2">
@@ -29,9 +29,9 @@
     #dt
     [value]="pedidos"
     [rows]="10"
-    [globalFilterFields]="['precio_total_venta']"
+    [globalFilterFields]="['nombre_contacto']"
     [paginator]="true"
-    [rowsPerPageOptions]="[10, 20, 30]"
+    [rowsPerPageOptions]="[5, 10, 15]"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
     [(selection)]="selectedPedidos"
@@ -57,7 +57,7 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="">Nombre Cliente</th>
+            <th pSortableColumn="">Nombre Cliente <p-sortIcon field="nombre_contacto"></p-sortIcon></th>
             <th pSortableColumn="name">Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon></th>
             <th pSortableColumn="name">Dirección</th>
             <th pSortableColumn="name">Fecha Entrega</th>
@@ -107,9 +107,10 @@
                     <button
                         pButton
                         pRipple
-                        icon="pi pi-pencil"
+                        icon="pi pi-chevron-right"
                         class="p-button-rounded p-button-warning"
-                        (click)="cambiarPedido(pedido._id)"
+                        (click)="cambiarPedido(pedido._id, estadoSiguiente)">
+                        {{ pedido.estado_pedido }}
                     ></button>
                 </div>
             </td>
@@ -118,7 +119,8 @@
 
 </p-table>
 
-<p-dialog [(visible)]="detallePedidoDialog" [style]="{width: '600px'}" header="Detalles Pedido" [modal]="true" class="p-fluid" >            
+<p-dialog [(visible)]="detallePedidoDialog" [style]="{width: '900px'}" header="Detalles Pedido" [modal]="true" class="p-fluid" >  
+    <br>        
     <form [formGroup]="formPedidos">
         <div class="formgrid grid mt-3">
         <div class="formgrid grid">
@@ -157,11 +159,6 @@
                     <label for="nit_empresa_cliente">NIT Empresa</label>
                 </span>             
             </div>
-        </div>
-    </div>
-
-        <div class="formgrid grid mt-3">
-        <div class="formgrid grid">
             <div class="field col">
                 <span class="p-float-label">
                     <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -169,6 +166,11 @@
                     <label for="telefono_cliente">telefono cliente</label>
                 </span>
             </div>
+        </div>
+    </div>
+
+        <div class="formgrid grid mt-3">
+        <div class="formgrid grid">
             <div class="field col">
                 <span class="p-float-label">
                     <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -183,18 +185,18 @@
                     <label for="ciudad_cliente">Ciudad Cliente</label>
                 </span>
             </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
+                    <label for="barrio_cliente">Barrio Cliente</label>
+                </span>
+            </div>
         </div>
         </div>
 
         <div class="formgrid grid mt-3">
             <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
-                        formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
-                        <label for="barrio_cliente">Barrio Cliente</label>
-                    </span>
-                </div>
                 <div class="field col">
                     <span class="p-float-label">
                         <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -238,6 +240,7 @@
             <tr>
                 <th>Producto</th>
                 <th>Cantidad</th>
+                <th>Precio Unitario</th>
                 <th>Estado</th>
                 <th>Precio Total</th>
             </tr>
@@ -246,6 +249,7 @@
             <tr *ngFor="let detalle of formPedidos.get('detalle_pedido').value">
                 <td>{{ detalle.nombre_producto }}</td>
                 <td>{{ detalle.cantidad_producto }}</td>
+                <td>{{ formPedidos.tipo_cliente == 'Empresa' ? detalle.precio_por_mayor_ico : detalle.precio_ico }}</td>                
                 <td>{{ detalle.estado_producto }}</td>
                 <td>{{ detalle.precio_total_producto }}</td>
             </tr>
@@ -291,17 +295,4 @@
 </p-dialog>
 
 <!-- Cambiar estado pedido -->
-<p-dialog [(visible)]="estadoPedidoDialog" [style]="{ width: '500px' }" header="Cambiar Estado" [modal]="true" class="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="formgrid grid">
-            <label for="estado_pedido">Seleccionar Estado:</label>
-            <p-dropdown [options]="estadosPedido" [(ngModel)]="estadoSeleccionado" placeholder="Seleccionar" optionLabel="label" optionValue="value" class="mb-4 ml-3" required  [style]="{ width: '100%' }"></p-dropdown>
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !estadoSeleccionado">El estado es requerido.</small>
-        </div>
-    </ng-template>
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="cerrarDialogEstadoPedido()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarEstadoPedido()"></button>
-    </ng-template>
-</p-dialog>

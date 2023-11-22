@@ -18,6 +18,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
                     { path: 'new-pedidos', loadChildren: () => import('./demo/components/pages/pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule)},
+                    { path: 'list-pedidos', loadChildren: () => import('./demo/components/pages/pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule)},
                   
                    
                 ]

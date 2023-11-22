@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { NewPedidosService } from './new-pedidos.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-new-pedidos',
     templateUrl: './new-pedidos.component.html',
     styleUrls: ['./new-pedidos.component.scss'],
+    providers: [MessageService],
 })
 export class NewPedidosComponent implements OnInit {
     precio_total_venta: number;
@@ -29,6 +31,7 @@ export class NewPedidosComponent implements OnInit {
         private newpedidosService: NewPedidosService,
         private router: Router,
         private formBuilder: FormBuilder,
+        private messageService: MessageService,
        
     ) {
         this.categoriaSeleccionada = '';
@@ -47,10 +50,11 @@ export class NewPedidosComponent implements OnInit {
         ciudad_cliente: '',
         barrio_cliente: '',
         fecha_entrega_pedido: '',
-        valor_domicilio: 0,
+        valor_domicilio: null,
         metodo_pago: '',
         subtotal_venta: 0,
         precio_total_venta: 0,
+        aumento_empresa: 0,
         detalle_pedido: [
         ],
     };
@@ -124,22 +128,37 @@ export class NewPedidosComponent implements OnInit {
             precio_ico: [''],
             precio_por_mayor_ico: [''],
             precio_total_producto: [''],
-            aumento_empresa:['']
         });
     }
 
     crearPedido() {
+        const subTotal = this.calcularSubtotal();
+        this.aumento_empresa = subTotal * 0.08; 
         this.pedido.fecha_entrega_pedido = this.pedido.fecha_entrega_pedido.toISOString().split('T')[0],
         // Asegúrate de que la propiedad 'detalle_pedido' esté definida como un array
         this.pedido.detalle_pedido = this.productsFormArray.value || [];
 
         this.newpedidosService.createPedido(this.pedido).subscribe(
             (response) => {
-                console.log('Pedido creado con éxito:', response);
-                // Otras acciones después de crear el pedido
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Pedido creado con Éxito',
+                    life: 3000
+                  });   
+                  this.router.navigate(['/list-pedidos']);                 
             },
             (error) => {
-                console.error('Error al crear el pedido:', error);
+                if (error.error && error.error.error) {
+                    const errorMessage = error.error.error;
+                    this.messageService.add({
+                      severity: 'error',
+                      summary: 'Error al crear el Pedido',
+                      detail: errorMessage,
+                      life: 5000
+                    });
+                  } else {
+                    console.error('Error desconocido al crear el Pedido:', error);
+                  }
             }
         );
     }
@@ -218,8 +237,7 @@ export class NewPedidosComponent implements OnInit {
     
 
     // Método para calcular el precio total de venta
-    calcularPrecioTotalVenta() {
-        
+    calcularPrecioTotalVenta() {       
         const subTotal = this.calcularSubtotal();
         this.pedido.subtotal_venta = subTotal;
         if(this.pedido.valor_domicilio == null){
