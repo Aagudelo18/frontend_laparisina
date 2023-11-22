@@ -26,14 +26,18 @@ export class ListPedidosComponent implements OnInit {
   formPedidos: FormGroup;
   roleDialog: boolean = false; // Esto controla la visibilidad del p-dialog
   estadoSiguiente: string;
- 
+  //vistas de listar pedidos array
+  pedidosPendientes: Pedido[] = [];
+  pedidosTerminados: Pedido[] = [];
+  pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
+
 
   constructor(
     private pedidosService: PedidosService,
     private router: Router,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
     ) 
     {
       this.formPedidos = this.fb.group({
@@ -65,8 +69,41 @@ export class ListPedidosComponent implements OnInit {
         this.pedidos = data;
       });
 
+      this.cargarPedidos();
+      this.cargarPedidosPendientes();
+      this.cargarPedidosTerminados();
+
+    }
+    //Cambiar de pestañas en el listar ----------------------------------------------------------------
+    cambiarPestana(event) {
+      this.pestanaSeleccionada = event.index;
+      this.cargarPedidos();
     }
 
+    //Cargar los pedidos-----------------------------------------------------------------------------
+    cargarPedidos() {
+      if (this.pestanaSeleccionada === 0) {
+        this.pedidosService.getPedidosPendientes().subscribe((data: Pedido[]) => {
+          this.pedidosPendientes = data;
+        });
+      } else if (this.pestanaSeleccionada === 1) {
+        this.pedidosService.getPedidosTerminados().subscribe((data: Pedido[]) => {
+          this.pedidosTerminados = data;
+        });
+      }
+    }
+  
+    cargarPedidosPendientes() {
+      this.pedidosService.getPedidosPendientes().subscribe((data: Pedido[]) => {
+        this.pedidosPendientes = data;
+      });
+    }
+  
+    cargarPedidosTerminados() {
+      this.pedidosService.getPedidosTerminados().subscribe((data: Pedido[]) => {
+        this.pedidosTerminados = data;
+      });
+    }
   openNewPedidos() {
     this.router.navigate(['/new-pedidos'])
   }
@@ -179,12 +216,6 @@ export class ListPedidosComponent implements OnInit {
     );
   }
 
-
-  cargarPedidos() {
-    this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {
-      this.pedidos = data;
-    });
-  }
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

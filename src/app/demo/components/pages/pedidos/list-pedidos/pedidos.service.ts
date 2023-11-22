@@ -25,5 +25,13 @@ export class PedidosService {
   updatePedido(id: string, pedido: Pedido): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}pedidos/${id}`, pedido);
   }
+
+  getPedidosPendientes(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidos/pendientes`);
+  }
+
+  getPedidosTerminados(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidos/terminados`);
+  }
   
 }
