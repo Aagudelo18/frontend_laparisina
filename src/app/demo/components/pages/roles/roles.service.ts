@@ -7,13 +7,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RolesService {
-  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/roles';
+  private apiUrl = 'http://localhost:3000/api/';
   private apiUrl2 = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
   getListRoles(): Observable<Roles[]>{
-    return this.http.get<Roles[]>(this.apiUrl)       
+    return this.http.get<Roles[]>(this.apiUrl + 'roles')       
   }
 
   getRoles(id:string): Observable<Roles>{

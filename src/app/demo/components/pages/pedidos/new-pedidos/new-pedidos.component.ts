@@ -50,6 +50,7 @@ export class NewPedidosComponent implements OnInit {
         ciudad_cliente: '',
         barrio_cliente: '',
         fecha_entrega_pedido: '',
+        correo_domiciliario: '',
         valor_domicilio: null,
         metodo_pago: '',
         subtotal_venta: 0,
@@ -66,6 +67,18 @@ export class NewPedidosComponent implements OnInit {
        
     }
 
+    eliminarProducto(product: FormGroup) {
+        const index = this.productsFormArray.controls.indexOf(product);
+        if (index !== -1) {
+            this.productsFormArray.removeAt(index);
+            this.calcularSubtotal(), this.calcularPrecioTotalVenta();
+        }
+    }
+
+    cancelarCreacion() {
+        this.router.navigate(['/list-pedidos']);
+    }
+    
     getProductos() {
         this.newpedidosService.getAllProductos().subscribe(
             (data) => {
@@ -252,11 +265,5 @@ export class NewPedidosComponent implements OnInit {
     }
 
 
-    eliminarProducto(product: FormGroup) {
-        const index = this.productsFormArray.controls.indexOf(product);
-        if (index !== -1) {
-            this.productsFormArray.removeAt(index);
-            this.calcularSubtotal(), this.calcularPrecioTotalVenta();
-        }
-    }
+ 
 }
