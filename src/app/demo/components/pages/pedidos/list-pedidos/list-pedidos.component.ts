@@ -3,7 +3,6 @@ import { PedidosService } from './pedidos.service';
 import { Router } from '@angular/router';
 import { Pedido } from './pedidos.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 
