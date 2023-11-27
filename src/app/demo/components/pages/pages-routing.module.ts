@@ -25,6 +25,7 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/login.guard'; // I
         //{ path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard] },
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
+        { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule)},
 
         { path: '**', redirectTo: '/notfound' }
 
