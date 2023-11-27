@@ -1,81 +1,166 @@
 <div class="grid">
-    <div class="col-12">
-        <div class="card px-6 py-6">
-            <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Crear cliente" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewClienteDialog()"></button>
-                    </div>
-                </ng-template>
-            
-                
-            </p-toolbar>
-              <p-table class="dt-responsive" #dt [value]="clientes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedClientes" selectionMode="multiple" dataKey="_id">
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h4 class="m-0">Listado de Clientes</h4>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="name">Codigo cliente</th>
-                        <th pSortableColumn="name">tipo cliente</th>
-                        <th pSortableColumn="name">documento cliente</th>
-                        <th pSortableColumn="name">nombre contacto</th>
-                        <th pSortableColumn="name">celular cliente</th>
-                        <th pSortableColumn="name">Aciones</th>
-                        
-                    </tr>
-                 </ng-template>
-                <ng-template pTemplate="body" let-clientes>
-                    <tr>
-                        
-                        <td style="width:6%; min-width:10rem;">
-                            {{ clientes.codigo_cliente }}
-                        </td>
-                        <td style="width:10%; min-width:10rem;">
-                            {{ clientes.tipo_cliente }}
-                        </td>
-                        <td style="width:15%; min-width:10rem;">
-                            {{ clientes.numero_documento_cliente}}
-                        </td>
-                        <td style="width:10%; min-width:10rem;">
-                            {{ clientes.nombre_contacto }}
-                        </td>
-                        <td style="width:10%; min-width:10rem;">
-                            {{ clientes.celular_cliente }}
-                        </td>
-                        
-                        <td>
-                            <div class="flex">
-                                <p-inputSwitch [(ngModel)]="valSwitch"></p-inputSwitch>
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarClienteDialog(clientes)"></button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-    </div>
+  <div class="col-12">
+      <div class="card px-6 py-6">
+          <p-toast></p-toast>
+          <p-toolbar styleClass="mb-4">
+              <ng-template pTemplate="left">
+                  <div class="my-2">
+                      <button pButton pRipple label="Crear cliente" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewClienteDialog()"></button>
+                  </div>
+              </ng-template>
+          
+              
+          </p-toolbar>
+            <p-table #dt [value]="listClientes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedClientes" selectionMode="multiple" dataKey="_id" [globalFilterFields]="['numero_documento_cliente', 'tipo_cliente','nombre_contacto']">
+              <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                  <h5 class="m-0">Lista de Clientes</h5>
+                  <span class="block mt-2 md:mt-0 p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                  </span>
+              </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                  <tr>
+                      
+                      <th pSortableColumn="name" field="tipo_cliente">Tipo cliente</th>
+                      <th pSortableColumn="name" field="numero_documento_cliente">Numero de identificacion</th>
+                      <th pSortableColumn="name" field="nombre_contacto">Nombre contacto</th>
+                      <th pSortableColumn="name">Correo</th>
+                      <th pSortableColumn="name">Celular</th>
+                      <th pSortableColumn="name">Estado</th>
+                      <th pSortableColumn="name">Aciones</th>
+                      
+                  </tr>
+               </ng-template>
+              <ng-template pTemplate="body" let-clientes>
+                  <tr>
+                      
+                      
+                      <td style="width:8%; min-width:9rem;">
+                          {{ clientes.tipo_cliente }}
+                      </td>
+                      <td style="width:8%; min-width:8rem;">
+                          {{ clientes.numero_documento_cliente}}
+                      </td>
+                      <td style="width:8%; min-width:10rem;">
+                          {{ clientes.nombre_contacto }}
+                      </td>
+                      <td style="width:8%; min-width:8rem;">
+                        {{ clientes.correo_cliente }}
+                    </td>
+                      <td style="width:8%; min-width:8rem;">
+                          {{ clientes.telefono_cliente }}
+                      </td>
+                      <td style="width:8%; min-width:5rem;">
+                        <div class="flex" style="align-items: center;" >
+                          <br>
+                          <p-inputSwitch [ngModel]="clientes.estado_cliente" (onChange)="confirmarCambioEstado(clientes)"></p-inputSwitch>
+                      </div>
+                      </td>
+                      <td>
+                          <div class="flex" style="align-items: center;">
+                              <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2" (click) = "openDetalleClienteDialog(clientes._id)" style=" width: 2.5rem; height: 2.5rem; " ></button>
+                              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarClienteDialog(clientes._id)" style=" width: 2.5rem; height: 2.5rem; ;"></button>
+                          </div>
+                      </td>
+                  </tr>
+              </ng-template>
+          </p-table>
+      </div> 
+  </div>
 </div>
+<p-dialog [(visible)]="estadoClienteDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}">
+<div class="flex align-items-center justify-content-center">
+    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    <span *ngIf="clientes">¿Está seguro de que desea cambiar el estado del cliente <b>{{clientes.nombre_contacto}}</b>?</span>
+</div>
+<ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoCliente(clientes._id)"></button>
+</ng-template>
+</p-dialog>
 <p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '450px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
-    <ng-template pTemplate="content">
-
-        <div class="field">
-            <label for="codigo_cliente">Codigo del cliente:</label>
-            <input type="text" pInputText id="codigo_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.codigo_cliente" name="codigo_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.codigo_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.codigo_cliente">
-              Nombre de contacto es requerido.
-            </small>
+<form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
+  <div class="formgrid grid">
+        <div class="field col">
+          <div style="display: flex;
+          flex-direction: column;
+          margin-bottom: 8px;">
+            <div style="margin-bottom: 5px;">
+              <label for="tipo_cliente" class="mb-4 mb-3">Tipo de Cliente:</label>
+            </div>
+            <div class="input">
+              <p-dropdown formControlName= "tipo_cliente" [options]="['Empresa','Persona natural']"
+                placeholder="Selecciona una opción"  name="tipo_cliente" required></p-dropdown>
+            </div>
           </div>
-          <div class="field">
+        </div>
+        <div class="field col">
+           <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
+           <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
+              name="nombre_contacto"/>
+         </div>
+        </div>
+        <div class="formgrid grid">
+        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+          <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
+          <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
+            name="nombre_juridico"/>
+        </div>
+        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+          <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
+          <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus name="nit_empresa_cliente"/>
+        </div>
+      </div>
+        <div class="formgrid grid">
+        <div class="field col">
+          <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
+          <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required autofocus
+             name="numero_documento_cliente"/>
+        </div>
+        <div class="field col">
+          <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
+          <input type="text"  formControlName= "correo_cliente" pInputText id="correo_cliente" required autofocus
+             name="correo_cliente"/>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
+          <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
+             name="telefono_cliente"/>
+        </div>
+        <div class="field col">
+          <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
+          <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
+             name="direccion_cliente"/>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
+          <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
+             name="barrio_cliente"/>
+        </div>
+        <div class="field col ">
+          <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
+          <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
+             name="ciudad_cliente"/>
+        </div>
+      </div>
+       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
+      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+    </div>
+</form>  
+</p-dialog>
+
+<p-dialog [(visible)]="editarClienteaDialog" [style]="{ width: '450px' }" header="Editar Cliente" [modal]="true" class="p-fluid">
+  <form [formGroup]="formCliente" (ngSubmit)="actualizarCliente()">
+    <div class="formgrid grid">
+          <div class="field col">
             <div style="display: flex;
             flex-direction: column;
             margin-bottom: 8px;">
@@ -83,104 +168,136 @@
                 <label for="tipo_cliente" class="mb-4 mb-3">Tipo de Cliente:</label>
               </div>
               <div class="input">
-                <p-dropdown [(ngModel)]="nuevoCliente.tipo_cliente" [options]="['Empresa','Persona natural']"
-                  placeholder="Selecciona una opción" name="tipo_cliente" required></p-dropdown>
+                <p-dropdown formControlName= "tipo_cliente" [options]="['Empresa','Persona natural']"
+                  placeholder="Selecciona una opción"  name="tipo_cliente" required></p-dropdown>
               </div>
-              <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.tipo_cliente">
-                El tipo de cliente es requerido.
-              </small>
             </div>
           </div>
-          
-        <div class="field">
+          <div class="field col">
             <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
-            <input type="text" pInputText id="nombre_contacto" required autofocus
-              [(ngModel)]="nuevoCliente.nombre_contacto" name="nombre_contacto"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.nombre_contacto }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.nombre_contacto">
-              Nombre de contacto es requerido.
-            </small>
+            <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
+               name="nombre_contacto"/>
           </div>
-
-          <div class="field">
-            <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
-            <input type="text" pInputText id="nombre_juridico" required autofocus
-              [(ngModel)]="nuevoCliente.nombre_juridico" name="nombre_juridico"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.nombre_juridico }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.nombre_juridico">
-              Nombre juridico es requerido.
-            </small>
-          </div>
-          <div class="field">
-            <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
-            <input type="text" pInputText id="numero_documento_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.numero_documento_cliente" name="numero_documento_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.numero_documento_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.numero_documento_cliente">
-              Numero de documento es requerido.
-            </small>
-          </div>
-          <div class="field">
+        </div>
+        <div class="formgrid grid">
+          <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
             <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
-            <input type="text" pInputText id="nit_empresa_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.nit_empresa_cliente" name="nit_empresa_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.nit_empresa_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.nit_empresa_cliente">
-              Nit de la empresa es requerido.
-            </small>
+            <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus name="nit_empresa_cliente"/>
           </div>
-          <div class="field">
+          <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+            <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
+            <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
+              name="nombre_juridico"/>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
+            <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required autofocus
+               name="numero_documento_cliente"/>
+          </div>
+          <div class="field col">
             <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
-            <input type="text" pInputText id="correo_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.correo_cliente" name="correo_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.correo_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.correo_cliente">
-              El correo electronico es requerido.
-            </small>
+            <input type="text"  formControlName= "correo_cliente" pInputText id="correo_cliente" required autofocus
+               name="correo_cliente"/>
           </div>
-          <div class="field">
-            <label for="celular_cliente" style="margin-bottom: 5px;">Celular:</label>
-            <input type="text" pInputText id="celular_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.celular_cliente" name="celular_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.celular_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.celular_cliente">
-              El celular es requerido.
-            </small>
+        </div>
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
+            <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
+               name="telefono_cliente"/>
           </div>
-          <div class="field">
+          <div class="field col">
             <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
-            <input type="text" pInputText id="direccion_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.direccion_cliente" name="direccion_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.direccion_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.direccion_cliente">
-              La dirección es requerida.
-            </small>
+            <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
+               name="direccion_cliente"/>
           </div>
-          <div class="field">
+        </div>
+        <div class="formgrid grid">
+          <div class="field col">
             <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
-            <input type="text" pInputText id="barrio_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.barrio_cliente" name="barrio_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.barrio_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.barrio_cliente">
-              El barrio es requerido.
-            </small>
+            <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
+               name="barrio_cliente"/>
           </div>
-          <div class="field">
+          <div class="field col">
             <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
-            <input type="text" pInputText id="ciudad_cliente" required autofocus
-              [(ngModel)]="nuevoCliente.ciudad_cliente" name="ciudad_cliente"
-              [ngClass]="{ 'ng-invalid ng-dirty': submitted && !nuevoCliente.ciudad_cliente }" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !nuevoCliente.ciudad_cliente">
-              El barrio es requerido.
-            </small>
+            <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
+               name="ciudad_cliente"/>
           </div>
-
-        
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarCliente()"></button>
-    </ng-template>
+        </div>
+         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarClienteaDialog = false" ></button>
+        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+      </div>
+  </form>  
 </p-dialog>
 
+
+
+<p-dialog [(visible)]="detalleClienteDialog" [style]="{ width: '450px' }" header="Detalle del Cliente" [modal]="true" class="p-fluid">
+<form [formGroup]="formCliente">
+  <div class="formgrid grid">
+    <div class="field col">
+      <label for="tipo_cliente" style="margin-bottom: 5px;">Nombre de contacto:</label>
+      <input type="text" formControlName="tipo_cliente" pInputText id="tipo_cliente" required autofocus
+         name="tipo_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+    </div>
+        <div class="field col">
+           <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
+           <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
+              name="nombre_contacto" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+         </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+          <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
+          <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus name="nit_empresa_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Empresa'">
+          <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
+          <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
+            name="nombre_juridico" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
+          <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required autofocus
+             name="numero_documento_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+        <div class="field col">
+          <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
+          <input type="text"  formControlName= "correo_cliente" pInputText id="correo_cliente" required autofocus
+             name="correo_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
+          <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
+             name="telefono_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+        <div class="field col">
+          <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
+          <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
+             name="direccion_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
+          <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
+             name="barrio_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+        <div class="field col">
+          <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
+          <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
+             name="ciudad_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+        </div>
+      </div>
+       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-text" (click)="detalleClienteDialog = false" ></button>
+    </div>
+</form>  
+</p-dialog>

@@ -22,11 +22,12 @@ import { SliderModule } from 'primeng/slider';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
  
   imports: [
+	ReactiveFormsModule,
     CommonModule,
     NewPedidosRoutingModule,
 	FormsModule,

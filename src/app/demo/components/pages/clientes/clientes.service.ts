@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Clientes } from './clientes.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,28 +8,27 @@ import { Observable } from 'rxjs';
 })
 export class ClienteService {
   private apiUrl = 'http://localhost:3000/api/clientes';
+  private apiUrl2 = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
-
-  getClientes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
-  }
-
-  agregarCliente(cliente: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, cliente);
-  }
   
-  // Agrega el método para obtener un cliente por su ID
-  getClientePorId(clienteId: string): Observable<any> {
-    const url = `${this.apiUrl}/${clienteId}`;
-    return this.http.get<any>(url);
+  getListClientes(): Observable<Clientes[]>{
+    return this.http.get<Clientes[]>(this.apiUrl)       
   }
 
-  actualizarCliente(cliente: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${cliente._id}`, cliente);
+  getClientes(id:string): Observable<Clientes>{
+    return this.http.get<Clientes>(`${this.apiUrl}/${id}`)
   }
 
-  eliminarCliente(clienteId: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${clienteId}`);
+  postClientes(Clientes : Clientes):Observable<void>{
+    return this.http.post<void>(this.apiUrl,Clientes)
   }
+
+  putClientes(id:string, Clientes:Clientes):Observable<void>{
+    return this.http.put<void>(`${this.apiUrl}/${id}`,Clientes)
+  }
+
+  actualizarEstadoCliente(id:string): Observable<void>{
+    return this.http.put<void>(`${this.apiUrl2}/clientes_estado/${id}`,{})
+    }
 }

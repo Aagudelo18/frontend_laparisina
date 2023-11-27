@@ -20,14 +20,24 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/usuarios'] },
+                    { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
+                    { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
                     { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
                     { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
                     { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
+<<<<<<< HEAD
                     { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
                     { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
                     { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
                     { label: 'Empleados', icon: 'pi pi-fw pi-user', routerLink: ['/pages/empleados'] },
                     
+=======
+                    { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
+                    //{ label: 'Orden de producción', icon: 'pi pi-fw pi-user', routerLink: ['/pages/orden-de-produccion'] },
+                    { label: 'Ventas', icon: 'pi-money-bill', routerLink: ['/pages/ventas'] },
+                    
+
+>>>>>>> 7e837ef4ddc774b798bf179da477585bf04766ef
                 ]
             },
 

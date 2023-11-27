@@ -5,53 +5,120 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
-                    type="text"
-                    id="documento_cliente"
+                    inputId="documento_cliente"
                     pInputText
-                    (change)="getCliente(pedido.documento_cliente)"
-                    [(ngModel)]="pedido.documento_cliente"
+                    (change)="getCliente(pedido.get('documento_cliente').value)"
+                    [formControl]="pedido.get('documento_cliente')"
+                    (input)="
+                        pedido
+                            .get('documento_cliente')
+                            .setValue($event.target.value)
+                    "
                 />
                 <label for="inputtext">Cedula</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('documento_cliente').invalid &&
+                    pedido.get('documento_cliente').touched
+                "
+                style="color: red"
+            >
+                <div
+                    *ngIf="pedido.get('documento_cliente').hasError('required')"
+                >
+                    La cédula es requerida
+                </div>
+                <div
+                    *ngIf="pedido.get('documento_cliente').hasError('pattern')"
+                >
+                    La cédula debe contener solo números y tener una longitud
+                    válida
+                </div>
+            </div>
         </div>
+        <!-- Tipo de Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
                     id="tipo_cliente"
                     pInputText
-                    [(ngModel)]="pedido.tipo_cliente"
+                    [formControl]="pedido.get('tipo_cliente')"
+                    (input)="
+                        pedido.get('tipo_cliente').setValue($event.target.value)
+                    "
+                    disabled
                 />
                 <label for="inputtext">Tipo de Cliente</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('tipo_cliente').invalid &&
+                    pedido.get('tipo_cliente').touched
+                "
+                style="color: red"
+            >
+                El tipo de cliente es requerido
+            </div>
         </div>
-        <div
-            class="field col-12 md:col-3"
-            *ngIf="pedido.tipo_cliente === 'Empresa'"
+        <!-- NIT Empresa (solo visible si el tipo de cliente es Empresa) -->
+        <div class="field col-12 md:col-3"
+            *ngIf="pedido.get('tipo_cliente').value === 'Empresa'"
         >
             <span class="p-float-label">
                 <input
                     type="text"
                     id="nit_empresa_cliente"
                     pInputText
-                    [(ngModel)]="pedido.nit_empresa_cliente"
+                    [formControl]="pedido.get('nit_empresa_cliente')"
+                    (input)="
+                        pedido
+                            .get('nit_empresa_cliente')
+                            .setValue($event.target.value)
+                    "
+                    disabled
                 />
                 <label for="inputtext">NIT Empresa</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('nit_empresa_cliente').invalid &&
+                    pedido.get('nit_empresa_cliente').touched
+                "
+                style="color: red"
+            >
+                El NIT de la empresa es requerido
+            </div>
         </div>
-        <div
-            class="field col-12 md:col-3"
-            *ngIf="pedido.tipo_cliente === 'Empresa'"
+        <!-- Nombre Jurídico (solo visible si el tipo de cliente es Empresa) -->
+        <div class="field col-12 md:col-3"
+            *ngIf="pedido.get('tipo_cliente').value === 'Empresa'"
         >
             <span class="p-float-label">
                 <input
                     type="text"
                     id="nombre_juridico"
                     pInputText
-                    [(ngModel)]="pedido.nombre_juridico"
+                    [formControl]="pedido.get('nombre_juridico')"
+                    (input)="
+                        pedido
+                            .get('nombre_juridico')
+                            .setValue($event.target.value)
+                    "
+                    disabled
                 />
                 <label for="inputtext">Nombre Empresa</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('nombre_juridico').invalid &&
+                    pedido.get('nombre_juridico').touched
+                "
+                style="color: red"
+            >
+                El nombre jurídico es requerido
+            </div>
         </div>
         <div
             class="field col-12 md:col-3"
@@ -62,10 +129,25 @@
                     type="text"
                     id="nombre_contacto"
                     pInputText
-                    [(ngModel)]="pedido.nombre_contacto"
+                    [formControl]="pedido.get('nombre_contacto')"
+                    (input)="
+                        pedido
+                            .get('nombre_contacto')
+                            .setValue($event.target.value)
+                    "
+                    disabled
                 />
                 <label for="inputtext">Nombre cliente</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('nombre_contacto').invalid &&
+                    pedido.get('nombre_contacto').touched
+                "
+                style="color: red"
+            >
+                El nombre de contacto es requerido
+            </div>
         </div>
         <div
             class="field col-12 md:col-3"
@@ -76,64 +158,147 @@
                     type="text"
                     id="quien_recibe"
                     pInputText
-                    [(ngModel)]="pedido.quien_recibe"
+                    [formControl]="pedido.get('quien_recibe')"
+                    (input)="
+                        pedido.get('quien_recibe').setValue($event.target.value)
+                    "
                 />
                 <label for="inputtext">Quien recibe</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('quien_recibe').invalid &&
+                    pedido.get('quien_recibe').touched
+                "
+                style="color: red"
+            >
+                Quien recibe es requerido
+            </div>
         </div>
+        <!-- Telefono Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
                     id="telefono_cliente"
                     pInputText
-                    [(ngModel)]="pedido.telefono_cliente"
+                    [formControl]="pedido.get('telefono_cliente')"
+                    (input)="
+                        pedido
+                            .get('telefono_cliente')
+                            .setValue($event.target.value)
+                    "
                 />
                 <label for="inputtext">Telefono</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('telefono_cliente').invalid &&
+                    pedido.get('telefono_cliente').touched
+                "
+                style="color: red"
+            >
+                El teléfono es requerido
+            </div>
         </div>
+        <!-- Dirección Entrega -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
                     id="direccion_entrega"
                     pInputText
-                    [(ngModel)]="pedido.direccion_entrega"
+                    [formControl]="pedido.get('direccion_entrega')"
+                    (input)="
+                        pedido
+                            .get('direccion_entrega')
+                            .setValue($event.target.value)
+                    "
                 />
                 <label for="inputtext">Dirección</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('direccion_entrega').invalid &&
+                    pedido.get('direccion_entrega').touched
+                "
+                style="color: red"
+            >
+                La dirección de entrega es requerida
+            </div>
         </div>
+        <!-- Ciudad Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
                     id="ciudad_cliente"
                     pInputText
-                    [(ngModel)]="pedido.ciudad_cliente"
+                    [formControl]="pedido.get('ciudad_cliente')"
+                    (input)="
+                        pedido
+                            .get('ciudad_cliente')
+                            .setValue($event.target.value)
+                    "
                 />
                 <label for="inputtext">Ciudad</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('ciudad_cliente').invalid &&
+                    pedido.get('ciudad_cliente').touched
+                "
+                style="color: red"
+            >
+                La ciudad es requerida
+            </div>
         </div>
+        <!-- Barrio Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
                     type="text"
                     id="barrio_cliente"
                     pInputText
-                    [(ngModel)]="pedido.barrio_cliente"
+                    [formControl]="pedido.get('barrio_cliente')"
+                    (input)="
+                        pedido
+                            .get('barrio_cliente')
+                            .setValue($event.target.value)
+                    "
                 />
                 <label for="inputtext">Barrio</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('barrio_cliente').invalid &&
+                    pedido.get('barrio_cliente').touched
+                "
+                style="color: red"
+            >
+                El barrio es requerido
+            </div>
         </div>
+        <!-- Fecha Entrega Pedido -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-calendar
                     inputId="calendar"
-                    [(ngModel)]="pedido.fecha_entrega_pedido"
+                    [formControl]="pedido.get('fecha_entrega_pedido')"
                 ></p-calendar>
                 <label for="calendar">Fecha Entrega</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('fecha_entrega_pedido').invalid &&
+                    pedido.get('fecha_entrega_pedido').touched
+                "
+                style="color: red"
+            >
+                La fecha de entrega es requerida
+            </div>
         </div>
+        <!-- Método de Pago -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
@@ -141,21 +306,48 @@
                     id="metodo_pago"
                     [autoDisplayFirst]="false"
                     [options]="metodoPago"
-                    [(ngModel)]="pedido.metodo_pago"
+                    [formControl]="pedido.get('metodo_pago')"
                 ></p-dropdown>
-                <label for="dropdown">Metodo de Pago</label>
+                <label for="dropdown">Método de Pago</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('metodo_pago').invalid &&
+                    pedido.get('metodo_pago').touched
+                "
+                style="color: red"
+            >
+                El método de pago es requerido
+            </div>
         </div>
-        <div class="field col-12 md:col-3">
+        <!-- Valor Domicilio -->
+        <div class="field col-12 md:col-2">
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="valor_domicilio"
-                    [(ngModel)]="pedido.valor_domicilio"
+                    [formControl]="pedido.get('valor_domicilio')"
                     (input)="calcularPrecioTotalVenta()"
-                >
-                </p-inputNumber>
+                ></p-inputNumber>
                 <label for="valor_domicilio">Valor Domicilio</label>
             </span>
+            <div
+                *ngIf="
+                    pedido.get('valor_domicilio')?.hasError('required') &&
+                    pedido.get('valor_domicilio')?.touched
+                "
+                style="color: red"
+            >
+                El valor del domicilio es requerido
+            </div>
+            <div
+                *ngIf="
+                    pedido.get('valor_domicilio')?.hasError('min') &&
+                    pedido.get('valor_domicilio')?.touched
+                "
+                style="color: red"
+            >
+                El valor del domicilio debe ser mayor a cero
+            </div>
         </div>
     </div>
 
@@ -165,7 +357,8 @@
                 <select
                     class="p-element p-inputtext ng-star-inserted"
                     [(ngModel)]="categoriaSeleccionada"
-                    (ngModelChange)="categoriaOnChange()"
+                    (change)="categoriaOnChange()"
+                    [ngModelOptions]="{ standalone: true }"
                 >
                     <option
                         *ngFor="let categoria of categorias"
@@ -178,30 +371,53 @@
                     >Categoría</label
                 >
             </span>
+            <div
+                *ngIf="!categoriaSeleccionada && categoriaSeleccionada !== 0"
+                style="color: red"
+            >
+                La categoría es requerida
+            </div>
         </div>
+        <!-- Productos de la Categoría -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
                     inputId="productosCategoria"
                     [autoDisplayFirst]="false"
                     [options]="productosCategoria"
-                    [(ngModel)]="productoSeleccionado"
+                    [value]="productoSeleccionado"
                     optionLabel="nombre_producto"
+                    (onChange)="productoSeleccionado = $event.value"
                 ></p-dropdown>
                 <label for="productos">Productos</label>
             </span>
+            <div
+                *ngIf="!productoSeleccionado && productoSeleccionado !== 0"
+                style="color: red"
+            >
+                El producto es requerido
+            </div>
         </div>
+        <!-- Cantidad Producto -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-inputNumber
-                    inputId="integeronly"
+                    inputId="cantidad_producto"
                     [(ngModel)]="cantidad_producto"
+                    [ngModelOptions]="{ standalone: true }"
                 >
                 </p-inputNumber>
                 <label htmlFor="number-input">Cantidad</label>
             </span>
+            <div
+                *ngIf="!cantidad_producto && cantidad_producto !== 0"
+                style="color: red"
+            >
+                La cantidad del producto es requerida
+            </div>
         </div>
 
+        <!-- Botón Agregar Producto -->
         <div class="field col-12 md:col-3">
             <button
                 pButton
@@ -210,11 +426,18 @@
                 icon="pi pi-user-plus"
                 class="p-button-success mr-2"
                 (click)="agregarProductoExistente()"
+                [disabled]="!productoSeleccionado && productoSeleccionado !== 0 || cantidad_producto == 0 || cantidad_producto == e"
             ></button>
+            <div
+                *ngIf="!productoSeleccionado && productoSeleccionado !== 0 || cantidad_producto == 0 || cantidad_producto == e"
+                style="color: red"
+            >
+                Agregue un producto válido antes de continuar
+            </div>
         </div>
     </div>
+    <!-- #tabla productos -->
     <div class="grid p-fluid mt-3">
-        <!-- #tabla productos -->
         <p-table [value]="productsFormArray.controls">
             <ng-template pTemplate="header">
                 <tr>
@@ -233,16 +456,27 @@
             <ng-template pTemplate="body" let-product>
                 <tr>
                     <td>{{ product.get("nombre_producto")?.value }}</td>
-                    <td>{{ product.get("nombre_categoria_producto")?.value }}</td>
-                    <td>{{ product.get("cantidad_producto")?.value }}</td>
-                    
                     <td>
-                        {{ pedido.tipo_cliente == 'Empresa' ? product.get("precio_por_mayor_ico")?.value : product.get("precio_ico")?.value }}
+                        {{ product.get("nombre_categoria_producto")?.value }}
                     </td>
-                    
+                    <td>{{ product.get("cantidad_producto")?.value }}</td>
+                    <td>
+                        {{
+                            pedido.get("tipo_cliente").value === "Empresa"
+                                ? product.get("precio_por_mayor_ico")?.value
+                                : product.get("precio_ico")?.value
+                        }}
+                    </td>
                     <td>{{ product.get("precio_total_producto")?.value }}</td>
                     <td>
-                        <button pButton pRipple icon="pi pi-times" class="p-button-rounded p-button-danger mr-2" (click)="eliminarProducto(product)" style=" width: 2.5rem; height: 2.5rem; "></button>
+                        <button
+                            pButton
+                            pRipple
+                            icon="pi pi-times"
+                            class="p-button-rounded p-button-danger mr-2"
+                            (click)="eliminarProducto(product)"
+                            style="width: 2.5rem; height: 2.5rem"
+                        ></button>
                     </td>
                 </tr>
                 <br />
@@ -250,27 +484,25 @@
         </p-table>
     </div>
     <br /><br />
-    <div class="formgrid grid">
-        <div class="field col-6 md:col-3">
+    <div class="formgrid grid justify-end">
+        <div class="field col-6 md-3">
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="subtotal_venta"
-                    [(ngModel)]="pedido.subtotal_venta"
+                    [formControl]="pedido.get('subtotal_venta')"
                     readonly="true"
-                >
-                </p-inputNumber>
+                ></p-inputNumber>
                 <label for="subtotal_venta">Subtotal Venta</label>
             </span>
         </div>
 
-        <div class="field col-6 md:col-3">
+        <div class="field col-6 md-3">
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="precio_total_venta"
-                    [(ngModel)]="pedido.precio_total_venta"
+                    [formControl]="pedido.get('precio_total_venta')"
                     readonly="true"
-                >
-                </p-inputNumber>
+                ></p-inputNumber>
                 <label for="precio_total_venta">Precio Total Venta</label>
             </span>
         </div>
@@ -284,6 +516,14 @@
             icon="pi pi-user-plus"
             class="p-button-success mr-2"
             (click)="crearPedido()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            label="Cancelar"
+            icon="pi pi-user-plus"
+            class="p-button-danger mr-2"
+            (click)="cancelarCreacion()"
         ></button>
     </div>
 </div>

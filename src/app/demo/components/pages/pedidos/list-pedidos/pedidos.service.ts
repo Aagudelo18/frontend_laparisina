@@ -25,5 +25,25 @@ export class PedidosService {
   updatePedido(id: string, pedido: Pedido): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}pedidos/${id}`, pedido);
   }
+
+  getPedidosPendientes(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosPendientes`);
+  }
+
+  getPedidosTerminados(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosTerminados`);
+  }
+
+  getPedidosAnulados(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosAnulados`);
+  }
+
+  getPedidosEnviados(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`);
+  }
+
+  public getDomiciliarios(): Observable<any>{
+    return this.http.get(this.apiUrl + 'domiciliarios')
+   }
   
 }

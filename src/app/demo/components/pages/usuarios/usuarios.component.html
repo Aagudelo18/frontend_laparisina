@@ -33,7 +33,7 @@
             <th pSortableColumn="rol_usuario.nombre_rol">Rol usuario<p-sortIcon field="rol_usuario"></p-sortIcon></th>
             <th pSortableColumn="estado_usuario">Estado<p-sortIcon field="estado_usuario"></p-sortIcon>
             </th>
-            <th pSortableColumn="name">Aciones</th>
+            <th pSortableColumn="name">Acciones</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-usuario>
@@ -62,43 +62,47 @@
     </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Editar Usuario" [modal]="true"
+<p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Crear Usuario" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
         <form [formGroup]="formularioUsuario" (ngSubmit)="crearUsuario()">
-            <div class="field">
-                <label for="correo_electronico">Correo electrónico</label>
-                <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico"
-                    placeholder="Correo Electrónico" />
-                <small *ngIf="formularioUsuario.get('correo_electronico').hasError('required')" style="color: red;">Correo electrónico
-                    requerido.</small>
-                <span *ngIf="formularioUsuario.get('correo_electronico').hasError('email')" style="color: red;">Correo electrónico no
+            <div class="field" style="margin-bottom: 15px;">
+                <span class="p-float-label">
+                    <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico" />
+                    <label for="correo_electronico">Correo electrónico</label>
+                </span>
+                <span
+                    *ngIf="formularioUsuario.get('correo_electronico')?.hasError('required') && formularioUsuario.get('correo_electronico')?.touched"
+                    style="color: red;">Correo electrónico
+                    requerido.</span>
+                <span *ngIf="formularioUsuario.get('correo_electronico').hasError('email')" style="color: red;">Correo
+                    electrónico no
                     válido.</span>
             </div>
 
-            <div class="field">
-                <label for="contrasena_usuario">Contraseña</label>
-                <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario"
-                    placeholder="Contraseña" />
-                <small *ngIf="formularioUsuario.get('contrasena_usuario').hasError('required')" style="color: red;">La contraseña
-                    es requerida.</small>
-                <span *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')" style="color: red;">La contraseña debe
-                    tener al menos 6 caracteres.</span>       
-                <span *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('pattern') && formularioUsuario.get('contrasena_usuario')?.touched"
-                style="color: red;">
+            <div class="field" style="margin-bottom: 15px;">
+                <span class="p-float-label">
+                    <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
+                    <label for="contrasena_usuario">Contraseña</label>
+                </span>
+                <span *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('required') && formularioUsuario.get('contrasena_usuario')?.touched" style="color: red;">La
+                    contraseña
+                    es requerida.</span>
+                <span *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
+                    contraseña debe
+                    tener al menos 6 caracteres.</span>
+                <span
+                    *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('pattern') && formularioUsuario.get('contrasena_usuario')?.touched"
+                    style="color: red;">
                     La contraseña debe contar con una mayúscula, una minúscula y un número.
-                </span> 
+                </span>
             </div>
-
-
 
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [(ngModel)]="selectedRol" [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
+                    [(ngModel)]="selectedRol" [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol para el usuario"></p-dropdown>
             </div>
-
-
 
             <div class="field">
                 <label for="estado_usuario">Estado del Usuario</label>
@@ -119,6 +123,18 @@
     </ng-template>
 </p-dialog>
 
+<p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+      <span >¿Está seguro de que desea crear este usuario <b>{{ formularioUsuario.get('correo_electronico').value }}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="mostrarConfirmacionUsuario = false"></button>
+      <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmarCrearUsuario()"></button>
+    </ng-template>
+  </p-dialog>
+  
+
 <p-dialog [(visible)]="editarUsuarioDialog" [style]="{ width: '450px' }" header="Editar Usuario" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
@@ -127,6 +143,13 @@
             <div class="field">
                 <label for="correo_electronico">Correo electrónico</label>
                 <input type="text" pInputText id="correo_electronico" formControlName="correo_electronico" />
+                <span
+                    *ngIf="formularioEditarUsuario.get('correo_electronico')?.hasError('required') && formularioEditarUsuario.get('correo_electronico')?.touched"
+                    style="color: red;">Correo electrónico
+                    requerido.</span>
+                <span *ngIf="formularioEditarUsuario.get('correo_electronico').hasError('email')" style="color: red;">Correo
+                    electrónico no
+                    válido.</span>
             </div>
 
 
@@ -153,3 +176,5 @@
             (click)="cerrarEditarUsuarioDialog()"></button>
     </ng-template>
 </p-dialog>
+
+
