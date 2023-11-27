@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
     correo_electronico: string = '';
     contrasena_usuario: string = '';
     correoNoRegistradoError: string | null = null; // Inicializa la variable como null
+    isAuthenticated: boolean = false;
 
     constructor(
         public layoutService: LayoutService,
@@ -48,7 +49,6 @@ export class LoginComponent implements OnInit {
         this.loginService.getUsuarios().subscribe((data: any) => {
             if (data && data.usuarios) {
                 this.usuarios = data.usuarios;
-                console.log(this.usuarios);
             }
         });
     }
@@ -56,27 +56,29 @@ export class LoginComponent implements OnInit {
     login() {
         if (this.loginFormulario.valid) {
             const usuarioData = this.loginFormulario.value;
-            console.log('este es usuario data: ' + usuarioData);
-            console.log(usuarioData);
-            
-            this.loginService.Login(usuarioData).subscribe(
+
+            this.loginService.login(usuarioData).subscribe(
                 (response: any) => {
                     if (response && response.usuario) {
-                        console.log(response);
-                        console.log(response.usuario);
-                        // Usuario autenticado correctamente
-                        // Redirecciona a la página después del inicio de sesión (por ejemplo, /dashboard)
+                        // Guardar el token en localStorage
+                        localStorage.setItem('token', response.token);
+                        // Redirigir al usuario a la página después del inicio de sesión
                         this.router.navigate(['/']);
                     } else {
-                        // Autenticación fallida
+                        // En caso de inicio de sesión fallido, limpiar el token
+                        localStorage.removeItem('token');
                         console.error('Inicio de sesión fallido.');
                     }
                 },
                 (error) => {
                     console.error('Error en la solicitud de inicio de sesión:', error);
+                    localStorage.removeItem('token');
 
-                    // Verifica si el error es un HTTP 400 y el mensaje indica que el correo electrónico no está registrado
-                    
+                    if (error.error && error.error.msg) {
+                        this.correoNoRegistradoError = error.error.msg;
+                    } else {
+                        this.correoNoRegistradoError = 'Ha ocurrido un error, por favor intenta de nuevo';
+                    }
                 }
             );
         }
