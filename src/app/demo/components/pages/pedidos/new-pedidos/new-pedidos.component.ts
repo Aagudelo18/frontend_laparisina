@@ -186,17 +186,17 @@ export class NewPedidosComponent implements OnInit {
             .get('detalle_pedido')
             ?.patchValue(this.productsFormArray.value || []);
 
-        this.newpedidosService.createPedido(this.pedido).subscribe(
-            (response) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Pedido creado con Éxito',
-                    life: 3000
-                  });   
-                  setTimeout(() => {
+        this.newpedidosService
+            .createPedido(this.pedido.getRawValue())
+            .subscribe(
+                (response) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Pedido creado con Éxito',
+                        life: 3000,
+                    });
                     this.router.navigate(['/list-pedidos']);
-                  }, 1500); // 3000 milisegundos = 3 segundos               
-            },
+                },
                 (error) => {
                     if (error.error && error.error.error) {
                         const errorMessage = error.error.error;
