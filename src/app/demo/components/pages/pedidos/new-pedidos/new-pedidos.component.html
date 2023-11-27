@@ -55,7 +55,7 @@
         </div>
         <div
             class="field col-12 md:col-3"
-            *ngIf="pedido.tipo_cliente === 'Persona natura'"
+            *ngIf="pedido.tipo_cliente === 'Persona natural'"
         >
             <span class="p-float-label">
                 <input
@@ -69,7 +69,7 @@
         </div>
         <div
             class="field col-12 md:col-3"
-            *ngIf="pedido.tipo_cliente === 'Persona natura'"
+            *ngIf="pedido.tipo_cliente === 'Persona natural'"
         >
             <span class="p-float-label">
                 <input
@@ -78,7 +78,7 @@
                     pInputText
                     [(ngModel)]="pedido.quien_recibe"
                 />
-                <label for="inputtext">Nombre Quien Recibe</label>
+                <label for="inputtext">Quien recibe</label>
             </span>
         </div>
         <div class="field col-12 md:col-3">
@@ -159,7 +159,7 @@
         </div>
     </div>
 
-    <div *ngIf="pedido.tipo_cliente == 'Empresa' || pedido.tipo_cliente == 'Persona natura'" class="grid p-fluid mt-3">
+    <div *ngIf="pedido.tipo_cliente == 'Empresa' || pedido.tipo_cliente == 'Persona natural'" class="grid p-fluid mt-3">
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <select

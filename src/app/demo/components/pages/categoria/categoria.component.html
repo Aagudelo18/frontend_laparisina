@@ -11,7 +11,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="listCategorias" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre_categoria_producto']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="listCategorias" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre_categoria_producto']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Lista de Categorias</h5>
@@ -59,7 +59,8 @@
             </p-table>            
         </div>
 
-        <p-dialog [(visible)]="crearCategoriaDialog" [style]="{width: '400px'}" header="Crear Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+        <p-dialog [(visible)]="crearCategoriaDialog" [style]="{width: '400px'}" header="Crear Categoría" 
+        [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
                 <form [formGroup]="formCategoria" (ngSubmit)="crearCategoria()">
                     <div class="formgrid grid">
                         <div class="field col">
@@ -98,10 +99,9 @@
                     <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imagen" name="image" 
                     accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
 
-                    <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
+                    <div *ngIf="imagen_categoria" class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
                         <div class="field col-12" style="text-align: center;">
-                            <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
-                            <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300"></p-image>
+                            <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="250"></p-image>
                         </div>
                     </div>
 
@@ -114,7 +114,7 @@
 
         <p-dialog [(visible)]="editarCategoriaDialog" [style]="{width: '400px'}" header="Editar Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
             <form [formGroup]="formCategoria" (ngSubmit)="actualizarCategoria()">
-                <div class="formgrid grid">
+                <div class="formgrid grid mt-4">
                     <div class="field col">
                         <span class="p-float-label">
                             <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
@@ -153,8 +153,7 @@
 
                 <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
                     <div class="field col-12" style="text-align: center;">
-                        <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
-                        <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300" [preview]="true"></p-image>
+                        <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="200" (click)="abrirImagenDialog(imagen_categoria)"></p-image>
                     </div>
                 </div>
 
@@ -165,7 +164,8 @@
             </form>             
     </p-dialog>
 
-    <p-dialog [(visible)]="detalleCategoriaDialog" [style]="{width: '400px'}" header="Detalles Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+    <p-dialog [(visible)]="detalleCategoriaDialog" [style]="{width: '400px'}" header="Detalles Categoría" 
+    [modal]="true" class="p-fluid" (onHide)="cerrarDialog()" [dismissableMask]="true">            
         <form [formGroup]="formCategoria">
             <div class="formgrid grid mt-4">
                 <div class="field col">
@@ -190,7 +190,8 @@
             <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
                 <div class="field col-12" style="text-align: center;">
                     <!-- <img [src]="imagen_categoria" alt="Imagen de la categoría" width="355" style="border-radius: 2%;"> -->
-                    <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="300" [preview]="true"></p-image>
+                    <p-image [src]="imagen_categoria"alt="Imagen de la categoría" width="200" 
+                    (click)="abrirImagenDialog(imagen_categoria)"></p-image>
                 </div>
             </div>
             
@@ -210,6 +211,12 @@
             <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
             <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoCategoria(categoria._id)"></button>
         </ng-template>
+    </p-dialog>
+
+
+    <p-dialog header="" [(visible)]="displayDialog" [modal]="true" [responsive]="true"
+        [style]="{ 'max-width': '50%', 'width': 'auto', 'overflow': 'hidden' }" [dismissableMask]="true">
+            <img [src]="imagen_categoria" alt="Imagen del producto" style="width: 100%">
     </p-dialog>
     </div>
 </div>

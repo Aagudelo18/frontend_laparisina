@@ -24,10 +24,10 @@ export class AppMenuComponent implements OnInit {
                     { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
                     { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
                     { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
-                    //{ label: 'CategoriasP', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categoriasP'] },
                     { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
-                    { label: 'Empleados', icon: 'pi pi-fw pi-user', routerLink: ['/pages/empleados'] },
                     { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
+                    { label: 'Empleados', icon: 'pi pi-fw pi-user', routerLink: ['/pages/empleados'] },
+                    
                 ]
             },
 

@@ -145,7 +145,9 @@ export class NewPedidosComponent implements OnInit {
                     summary: 'Pedido creado con Éxito',
                     life: 3000
                   });   
-                  this.router.navigate(['/list-pedidos']);                 
+                  setTimeout(() => {
+                    this.router.navigate(['/list-pedidos']);
+                  }, 1500); // 3000 milisegundos = 3 segundos               
             },
             (error) => {
                 if (error.error && error.error.error) {
