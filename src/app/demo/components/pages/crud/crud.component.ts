@@ -57,6 +57,8 @@ export class CrudComponent implements OnInit {
     }
 
     deleteSelectedProducts() {
+        const ids = this.selectedProducts.map(product => product.id)
+        console.log(ids)
         this.deleteProductsDialog = true;
     }
 

@@ -28,7 +28,9 @@ export class CategoriaComponent implements OnInit {
     // Variables para capturar y tener control de la imagen
     file: File | null = null;
     fileSelected: boolean = false;
-    imagen_categoria: string = '../../../../../assets/Imagenes/No IMG.png'
+    displayDialog: boolean = false;
+    // imagen_categoria: string = '../../../../../assets/Imagenes/No IMG.png';
+    imagen_categoria: string = ''
 
     estado:SelectItem[] = [
       { label: 'Activo', value: true },
@@ -365,8 +367,15 @@ export class CategoriaComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     // Función para limpiar la variable imagen_categoria
     limpiarImagenCategoria() {
-      this.imagen_categoria = '../../../../../assets/Imagenes/No IMG.png';
+      this.imagen_categoria = '';
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función para abrir un dialog y imagen mas grande
+    abrirImagenDialog(imagen_categoria: string) {
+      this.imagen_categoria = imagen_categoria;
+      this.displayDialog = true;
+    }    
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para filtar la tabla en el buscador
