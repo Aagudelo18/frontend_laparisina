@@ -342,7 +342,7 @@
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
                                 ></button>
-                                <button
+                                <!-- <button
                                     pButton
                                     pRipple
                                     icon="pi pi-chevron-right"
@@ -353,7 +353,7 @@
                                             pedido.estado_pedido
                                         )
                                     "
-                                ></button>
+                                ></button> -->
                             </div>
                         </td>
                     </tr>
@@ -648,11 +648,6 @@
                         <label for="barrio_cliente">Barrio Cliente</label>
                     </span>
                 </div>
-            </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
                 <div class="field col">
                     <span class="p-float-label">
                         <input
@@ -670,6 +665,11 @@
                         <label for="fecha_entrega_pedido">Fecha Entrega</label>
                     </span>
                 </div>
+            </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">          
                 <div class="field col">
                     <span class="p-float-label">
                         <input
@@ -687,10 +687,6 @@
                         <label for="fecha_pedido_tomado">Fecha Tomado</label>
                     </span>
                 </div>
-            </div>
-        </div>
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
                 <div class="field col">
                     <span class="p-float-label">
                         <input
@@ -708,6 +704,7 @@
                         <label for="estado_pedido"> Estado </label>
                     </span>
                 </div>
+                
                 <div class="field col">
                     <span class="p-float-label">
                         <input
@@ -727,6 +724,11 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+            
+            </div>
+        </div> -->
 
         <!-- Detalle del Producto -->
         <div class="formgrid grid mt-5" *ngIf="detallePedidoDialog">
@@ -762,6 +764,7 @@
                 </tbody>
             </table>
         </div>
+        <br>
 
         <!-- Resumen del Pago -->
         <div class="formgrid grid mt-5">
