@@ -120,9 +120,9 @@
                 El nombre jurídico es requerido
             </div>
         </div>
-        <div
-            class="field col-12 md:col-3"
-            *ngIf="pedido.tipo_cliente === 'Persona natura'"
+        <!-- Nombre Contacto (solo visible si el tipo de cliente es Persona natural) -->
+        <div class="field col-12 md:col-3"
+            *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'"
         >
             <span class="p-float-label">
                 <input
@@ -149,9 +149,9 @@
                 El nombre de contacto es requerido
             </div>
         </div>
-        <div
-            class="field col-12 md:col-3"
-            *ngIf="pedido.tipo_cliente === 'Persona natura'"
+        <!-- Quien Recibe (solo visible si el tipo de cliente es Persona natural) -->
+        <div class="field col-12 md:col-3"
+            *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'"
         >
             <span class="p-float-label">
                 <input
@@ -351,7 +351,14 @@
         </div>
     </div>
 
-    <div *ngIf="pedido.tipo_cliente == 'Empresa' || pedido.tipo_cliente == 'Persona natura'" class="grid p-fluid mt-3">
+    <div
+        *ngIf="
+            pedido.get('tipo_cliente').value === 'Empresa' ||
+            pedido.get('tipo_cliente').value === 'Persona natural'
+        "
+        class="grid p-fluid mt-3"
+    >
+
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <select

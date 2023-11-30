@@ -52,7 +52,7 @@ export class CategoriaComponent implements OnInit {
       private categoriaService: CategoriaService,
       private messageService: MessageService,
       private router:Router,
-      private aRouter:ActivatedRoute){
+      private aRouter:ActivatedRoute){ 
 
         this.formCategoria = this.fb.group({
           nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
