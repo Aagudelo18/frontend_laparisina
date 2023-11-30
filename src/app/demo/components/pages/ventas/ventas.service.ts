@@ -15,11 +15,11 @@ export class VentasService {
   constructor(private http: HttpClient) { }
 
   getVentas() {
-    return this.http.get<Pedido[]>(this.apiUrl + 'ventas');
+    return this.http.get<Pedido[]>(this.apiUrl + '/ventas');
   }
 
   getVentaDetalle(id: string): Observable<any> {
-    return this.http.get<any>(this.apiUrl + `ventas/${id}`);
+    return this.http.get<any>(this.apiUrl + `/ventas/${id}`);
   }
   
   

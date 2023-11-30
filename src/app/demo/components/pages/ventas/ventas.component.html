@@ -50,11 +50,11 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="">Nombre Cliente <p-sortIcon field="nombre_contacto"></p-sortIcon></th>
-            <th pSortableColumn="name">Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon></th>
+            <th pSortableColumn="nombre_contacto">Nombre Cliente <p-sortIcon field="nombre_contacto"></p-sortIcon></th>
+            <th pSortableColumn="tipo_cliente">Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon></th>
             <th pSortableColumn="name">Dirección</th>
-            <th pSortableColumn="name">Fecha Entrega</th>
-            <th pSortableColumn="estado_pedido">Estado<p-sortIcon field="estado_pedido"></p-sortIcon></th>
+            <th pSortableColumn="direccion_entrega">Fecha Entrega</th>
+            <th pSortableColumn="">Estado</th>
             <th pSortableColumn="precio_total_venta">Valor Total<p-sortIcon field="precio_total_venta"></p-sortIcon></th>
 
             <th pSortableColumn="name">Aciones</th>
@@ -72,7 +72,7 @@
                 {{ venta.direccion_entrega }}
             </td>
             <td style="width: 20%; min-width: 10rem">
-                {{ venta.fecha_entrega_pedido }}
+                {{ venta.fecha_entrega_pedido  | slice:0:10}}
             </td>
             <!-- <td style="width:30%; min-width:10rem;">
                 <ul>
@@ -186,7 +186,7 @@
                     <span class="p-float-label">
                         <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
                         formControlName="fecha_entrega_pedido" id="fecha_entrega_pedido" type="text" pInputText>
-                        <label for="fecha_entrega_pedido">Fecha Entrega</label>
+                        <label for="fecha_entrega_pedido" >Fecha Entrega</label>
                     </span>
                 </div>
                 <div class="field col">

@@ -60,6 +60,8 @@ export class LoginComponent implements OnInit {
             this.loginService.login(usuarioData).subscribe(
                 (response: any) => {
                     if (response && response.usuario) {
+                        //Guardar el usuario en local storage
+                        localStorage.setItem('currentUser', JSON.stringify(response.usuario)); // Almacena los datos del usuario
                         // Guardar el token en localStorage
                         localStorage.setItem('token', response.token);
                         // Redirigir al usuario a la página después del inicio de sesión
