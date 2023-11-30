@@ -25,9 +25,12 @@ export class ProductoComponent implements OnInit {
     id: string = '';
     
     // Variables para capturar y tener control de la imagen
-    file: File | null = null;
+    files: File[] = [];
     fileSelected: boolean = false;
-    imagen_producto: string = '../../../../../assets/Imagenes/No IMG.png'
+    imagenes: string[] = [];
+    displayDialog: boolean = false;
+    imagenDialogSrc: string = '';
+    imagenes_seleccionadas_producto: string[] = [];
 
     //Variables para controlar dialogs
     crearProductoDialog: boolean = false;
@@ -53,8 +56,7 @@ export class ProductoComponent implements OnInit {
           precio_ico: ['',[Validators.required, Validators.pattern(/^[0-9]{4,6}$/)]],
           precio_por_mayor_ico: ['',[Validators.required, Validators.pattern(/^[0-9]{4,6}$/)]],
           durabilidad_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9,.\s:-]{1,50}$/)]],
-          ingredientes_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s,.:'-]+$/)]],
-          image: [null],
+          imagenes_producto: [null],
 
         });
 
@@ -105,10 +107,11 @@ export class ProductoComponent implements OnInit {
           precio_ico: data.precio_ico,
           precio_por_mayor_ico: data.precio_por_mayor_ico,
           durabilidad_producto: data.durabilidad_producto,
-          ingredientes_producto: data.ingredientes_producto,
-          image: data.imagen_producto,
+          imagenes_producto: data.imagenes_producto,
         })
-        this.imagen_producto = 'http://localhost:3000/uploads/' + data.imagen_producto
+        const rutaImagenes = 'http://localhost:3000/uploads/';
+        this.imagenes = data.imagenes_producto.map(imagen => rutaImagenes + imagen);
+
       })
     }
 
@@ -126,8 +129,13 @@ export class ProductoComponent implements OnInit {
         formData.append('precio_ico', this.formProducto.get('precio_ico').value);
         formData.append('precio_por_mayor_ico', this.formProducto.get('precio_por_mayor_ico').value);
         formData.append('durabilidad_producto', this.formProducto.get('durabilidad_producto').value);
-        formData.append('ingredientes_producto', this.formProducto.get('ingredientes_producto').value);
-        formData.append('image', this.file);
+
+        // Añadir las imágenes seleccionadas
+        if (this.files && this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
+            formData.append('imagenes_producto', this.files[i]);
+          }
+        }
         
         this.productoService.crearProducto(formData).subscribe(
           () => {
@@ -140,6 +148,8 @@ export class ProductoComponent implements OnInit {
             });
             this.getListProductos();
             this.cerrarDialog();
+            this.fileCrear.clear();
+            this.files = [];
           },
           (error) => {
             if (error.error && error.error.error) {
@@ -161,30 +171,50 @@ export class ProductoComponent implements OnInit {
     
     //---------------------------------------------------------------------------------------------------------------------------------
     //Función para cargar la imagen
+
     onFileChange(event) {
       if (event.currentFiles && event.currentFiles.length > 0) {
         // Obtener solo el primer archivo seleccionado
-        const file = event.currentFiles[0];
-    
-        // Verificar si es un archivo de imagen
-        if (file.type.includes("image")) {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-    
-          this.file = file;
-          this.fileSelected = event.currentFiles.length > 0;
-          this.imagen_producto = URL.createObjectURL(file); // Mostrar la imagen seleccionada
+        const files = event.currentFiles;
+
+        if (files.length > 3) {
+          this.fileCrear.clear();
+          this.fileEditar.clear();
+          this.files = [];
+          // Mostrar mensaje de error
           this.messageService.add({
-            severity: 'info',
-            summary: 'Imagen cargada exitosamente',
-            life: 3000
+            severity: 'error',
+            summary: 'Error al cargar imágenes',
+            detail: 'Solo se permite subir 3 imagenes por producto',
+            life: 5000
           });
-          console.log('Verificar: ', this.file);
-        } else {
-          console.log("El archivo seleccionado no es una imagen.");
+          return; // Salir de la función si se excede el límite de imágenes
         }
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          // Verificar si es un archivo de imagen
+          if (file && file.type && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+      
+            this.files.push(file);
+            this.imagenes_seleccionadas_producto.push(URL.createObjectURL(file)); // Mostrar la imagen seleccionada
+            
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Imagen cargada exitosamente',
+              life: 3000
+            });
+          } else {
+            console.log("El archivo seleccionado no es una imagen.");
+          }
+        }
+        this.fileSelected = event.currentFiles.length > 0 && event.currentFiles.length < 4;
+        //this.imagen_producto = URL.createObjectURL(files[0]); // Mostrar la imagen seleccionada
+        console.log('Array imagenes: ',this.files)
       } else {
-        this.file = null;
+        this.files = [];
         console.log("No se seleccionó ningún archivo o se seleccionó más de uno.");
       }
     }
@@ -202,8 +232,14 @@ export class ProductoComponent implements OnInit {
         formData.append('precio_ico', this.formProducto.get('precio_ico').value);
         formData.append('precio_por_mayor_ico', this.formProducto.get('precio_por_mayor_ico').value);
         formData.append('durabilidad_producto', this.formProducto.get('durabilidad_producto').value);
-        formData.append('ingredientes_producto', this.formProducto.get('ingredientes_producto').value);
-        formData.append('image', this.file);
+
+        // Añadir las imágenes seleccionadas
+        if (this.files && this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
+            formData.append('imagenes_producto', this.files[i]);
+          }
+        }
+        // formData.append('imagenes_producto', this.files);
   
         if (this.id !== '') {
           this.productoService.actualizarProducto(this.id, formData).subscribe(
@@ -274,6 +310,10 @@ export class ProductoComponent implements OnInit {
         this.id = '';                
         this.formProducto.reset()
         this.crearProductoDialog = true;
+        this.fileCrear.clear();
+        this.files = [];
+        this.fileSelected = false;
+        this.imagenes_seleccionadas_producto = [];
     }
     
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -283,7 +323,7 @@ export class ProductoComponent implements OnInit {
         this.editarProductoDialog = true;
         this.getProducto(id)
         this.fileEditar.clear();
-        this.file = null;
+        this.files = [];
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -291,7 +331,8 @@ export class ProductoComponent implements OnInit {
     cerrarDialog() {
       this.crearProductoDialog = false;
       this.fileCrear.clear();
-      this.limpiarImagenProducto()
+      this.files = [];
+      this.fileSelected = false;
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -299,13 +340,6 @@ export class ProductoComponent implements OnInit {
     cerrarEditarDialog() {
       this.editarProductoDialog = false;
       this.fileEditar.clear();
-      this.limpiarImagenProducto();
-    }
-
-     //-------------------------------------------------------------------------------------------------------------------------------
-    // Función para limpiar la variable imagen_categoria
-    limpiarImagenProducto() {
-      this.imagen_producto = '../../../../../assets/Imagenes/No IMG.png';
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -315,6 +349,15 @@ export class ProductoComponent implements OnInit {
       this.detalleProductoDialog = true;
       this.getProducto(id);
     }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función para abrir un dialog y imagen mas grande
+    abrirImagenDialog(imagenSrc: string) {
+      this.imagenDialogSrc = imagenSrc;
+      this.displayDialog = true;
+    }    
+    
+    
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para filtar la tabla en el buscador

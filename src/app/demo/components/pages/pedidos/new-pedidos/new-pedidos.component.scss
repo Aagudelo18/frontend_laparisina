@@ -1,30 +1,39 @@
-p-table {
-    margin: 0 auto; 
-    display: table;
-  }
-  .my-2 {
-    text-align: center; 
-  }
-  
-  .my-2 button {
-    margin: 0 auto 10px;
-  }
+/* Ajustes generales para la tabla y su contenedor */
+.grid {
+  width: 90%;
+}
 
-  .summary {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Ajustes específicos para la tabla */
+p-table {
+  width: 100%;
+  display: table;
+  margin-bottom: 20px; /* Ajusta según sea necesario */
+}
+
+/* Otras clases para el formato de la tabla */
+.my-2 {
+  text-align: center;
+}
+
+.my-2 button {
+  margin: 0 auto 10px;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .summary-item {
-    display: flex;
-    align-items: center;
-    width: 300px; 
+  display: flex;
+  align-items: center;
+  width: 300px;
 }
 
 label {
     margin-right: 10px;
     width: 120px; 
-  
+    text-align: right;
 }
 

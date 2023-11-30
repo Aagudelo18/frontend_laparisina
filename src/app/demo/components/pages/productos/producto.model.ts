@@ -7,8 +7,7 @@ export interface Producto {
   precio_ico?: number;
   precio_por_mayor_ico?: number;
   durabilidad_producto?: string;
-  ingredientes_producto?: string;
-  imagen_producto?: string; // El signo de interrogación indica que este campo es opcional
+  imagenes_producto?: string[]; // El signo de interrogación indica que este campo es opcional
   estado_producto?: boolean;
 }
 

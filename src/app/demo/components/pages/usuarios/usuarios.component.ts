@@ -20,6 +20,7 @@ export class UsuariosComponent implements OnInit {
   selectedRol: any; // Variable para almacenar el rol seleccionado
   correoBusqueda: string = '';
   editarUsuarioDialog: boolean = false;
+  mostrarConfirmacionUsuario = false; // Variable para controlar la visibilidad del diálogo de confirmación
   usuarioAEditar: any;
   usuario: any;
   formularioUsuario: FormGroup;
@@ -90,7 +91,6 @@ export class UsuariosComponent implements OnInit {
     this.editarUsuarioDialog = false;
   }
 
-
   estadoOptions = [
     { label: 'Activo', value: true },
     { label: 'Inactivo', value: false },
@@ -124,39 +124,46 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
+
+
   crearUsuario() {
     if (this.formularioUsuario.valid) {
-      const nuevoUsuario = this.formularioUsuario.value;
+      this.mostrarConfirmacionUsuario = true; // Mostrar el diálogo de confirmación
+    }
+  }
 
-      // Asigna el objeto completo del rol seleccionado al objeto nuevoUsuario
+  confirmarCrearUsuario() {
+    if (this.formularioUsuario.valid) {
+      const nuevoUsuario = this.formularioUsuario.value;
       nuevoUsuario.rol_usuario = this.selectedRol;
 
-      console.log('Rol seleccionado:', this.selectedRol);
-      console.log('Nuevo Usuario:', nuevoUsuario);
-
-      this.usuarioService.createUsuario(nuevoUsuario).subscribe((response: any) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'El usuario fue creado con éxito',
-          detail: 'Usuario creado',
-          life: 3000
-        });
-        this.getListUsuarios();
-        this.getListRoles();
-        this.usuarioDialog = false;
-      });
-    } (error) => {
-      if (error.error && error.error.error) {
-        const errorMessage = error.error.error;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error al crear el usuario',
-          detail: errorMessage,
-          life: 5000
-        });
-      } else {
-        console.error('Error desconocido al crear el usuario:', error);
-      }
+      this.usuarioService.createUsuario(nuevoUsuario).subscribe(
+        (response: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'El usuario fue creado con éxito',
+            detail: 'Usuario creado',
+            life: 3000
+          });
+          this.getListUsuarios();
+          this.getListRoles();
+          this.usuarioDialog = false;
+          this.mostrarConfirmacionUsuario = false; // Cerrar el diálogo de confirmación
+        },
+        (error) => {
+          if (error.error && error.error.error) {
+            const errorMessage = error.error.error;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error al crear el usuario',
+              detail: errorMessage,
+              life: 5000
+            });
+          } else {
+            console.error('Error desconocido al crear el usuario:', error);
+          }
+        }
+      );
     }
   }
 
@@ -173,11 +180,7 @@ export class UsuariosComponent implements OnInit {
 
   // Método para habilitar la edición de un usuario específico
   editarUsuario(usuarioAEditar) {
-    console.log('Usuario para editar:', usuarioAEditar);
-    console.log('El id del usuario' + usuarioAEditar.uid);
-
     this.usuarioAEditar = usuarioAEditar;
-    console.log('2. Usuario para editar:', this.usuarioAEditar);
 
     // Llenar el formulario de edición con los datos del usuario seleccionado
     this.formularioEditarUsuario.patchValue({
@@ -186,14 +189,12 @@ export class UsuariosComponent implements OnInit {
       estado_usuario: usuarioAEditar.estado_usuario
     });
 
-    console.log('Valores del formulario:', this.formularioEditarUsuario.value); // Verifica los valores asignados al formulario
     // Mostrar el diálogo de edición
     this.editarUsuarioDialog = true;
   }
 
   //Método para actualizar el usuario.
   actualizarUsuario() {
-    console.log('Usuario que se necesita o quiere editar ' + this.usuarioAEditar);
     if (this.usuarioAEditar) {
       const { correo_electronico, rol_usuario, estado_usuario } = this.formularioEditarUsuario.value;
 
@@ -218,7 +219,7 @@ export class UsuariosComponent implements OnInit {
         const errorMessage = error.error.error;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error al actualizar la categoría',
+          summary: 'Error al actualizar el usuario',
           detail: errorMessage,
           life: 5000
         });

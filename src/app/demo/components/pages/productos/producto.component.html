@@ -37,7 +37,7 @@
                 <ng-template pTemplate="body" let-producto>
                     <tr>
                         <td style="width:15%; min-width:10rem;">
-                            <img [src]="'http://localhost:3000/uploads/' + producto.imagen_producto" 
+                            <img [src]="'http://localhost:3000/uploads/' + producto.imagenes_producto[0]" 
                             alt="Imagen del producto" width="100" height="65" style="border-radius: 10%;">
                         </td>                 
                         <td style="width:15%; min-width:5rem;"><span class="p-column-title">Tipo</span>
@@ -188,28 +188,17 @@
                             La descripción solo permite letras, los signos ",.:-" y un máximo de 500 caracteres
                         </span>
                     </div>
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <textarea rows="5" cols="30" pInputTextarea formControlName="ingredientes_producto" id="ingredientes_producto"></textarea>
-                            <label for="ingredientes_producto">Ingredientes Producto</label>
-                        </span>
-                        <span *ngIf="formProducto.get('ingredientes_producto')?.hasError('required') && formProducto.get('ingredientes_producto')?.touched"
-                        style="color: red;">
-                            Los ingredientes son requeridos
-                        </span>
-                        <span *ngIf="formProducto.get('ingredientes_producto')?.hasError('pattern') && formProducto.get('ingredientes_producto')?.touched"
-                        style="color: red;">
-                            Caracteres incorrectos en el campo ingredientes
-                        </span>
-                    </div>
                 </div>
                 
-                <p-fileUpload #fileCrear mode="basic" chooseLabel="Imagen" name="image" 
-                accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+                <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imágenes" name="image" chooseIcon="pi pi-images" 
+                [multiple]="true" accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
 
-                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
-                    <div class="field col-12" style="text-align: center;">
-                        <p-image [src]="imagen_producto"alt="Imagen del producto" width="250"></p-image>
+                <div class="formgrid grid mt-4">
+                    <div class="field col-12 text-left d-flex flex-wrap justify-content-center">
+                      <ng-container *ngFor="let imagen of imagenes_seleccionadas_producto">
+                        <p-image class="m-2" [src]="imagen" alt="Imagen del producto" 
+                        width="100" (click)="abrirImagenDialog(imagen)"></p-image>
+                      </ng-container>
                     </div>
                 </div>
 
@@ -223,9 +212,9 @@
 
             
 
-        <p-dialog [(visible)]="editarProductoDialog" [style]="{width: '700px'}" header="Editar Categoría" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+        <p-dialog [(visible)]="editarProductoDialog" [style]="{width: '700px'}" header="Editar Producto" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
             <form [formGroup]="formProducto" (ngSubmit)="actualizarProducto()">
-                <div class="formgrid grid">
+                <div class="formgrid grid mt-4">
                     <div class="field col">
                         <span class="p-float-label">
                             <input formControlName="codigo_producto" id="codigo_producto" type="text" pInputText>
@@ -339,30 +328,21 @@
                             La descripción solo permite letras, los signos ",.:-" y un máximo de 500 caracteres
                         </span>
                     </div>
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <textarea rows="5" cols="30" pInputTextarea formControlName="ingredientes_producto" id="ingredientes_producto"></textarea>
-                            <label for="ingredientes_producto">Ingredientes Producto</label>
-                        </span>
-                        <span *ngIf="formProducto.get('ingredientes_producto')?.hasError('required') && formProducto.get('ingredientes_producto')?.touched"
-                        style="color: red;">
-                            Los ingredientes son requeridos
-                        </span>
-                        <span *ngIf="formProducto.get('ingredientes_producto')?.hasError('pattern') && formProducto.get('ingredientes_producto')?.touched"
-                        style="color: red;">
-                            Caracteres incorrectos en el campo ingredientes
-                        </span>
-                    </div>
                 </div>
-                    
-                <p-fileUpload #fileEditar mode="basic" chooseLabel="Imagen" name="image" 
-                accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
 
-                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
-                    <div class="field col-12" style="text-align: center;">
-                        <p-image [src]="imagen_producto"alt="Imagen del producto" width="250"></p-image>
+                <p-fileUpload #fileEditar mode="basic" chooseLabel="Cambiar imágenes" name="imagenes_producto" chooseIcon="pi pi-images" 
+                [multiple]="true" accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+
+                <div class="formgrid grid mt-4">
+                    <div class="field col-12 text-left d-flex flex-wrap justify-content-center">
+                      <ng-container *ngFor="let imagen of imagenes">
+                        <p-image class="m-2" [src]="imagen" alt="Imagen del producto" 
+                        width="100" (click)="abrirImagenDialog(imagen)"></p-image>
+                      </ng-container>
                     </div>
                 </div>
+                  
+                
                     
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarProductoDialog = false"></button>
@@ -371,7 +351,8 @@
             </form>             
         </p-dialog>
 
-        <p-dialog [(visible)]="detalleProductoDialog" [style]="{width: '700px'}" header="Detalles Producto" [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
+        <p-dialog [(visible)]="detalleProductoDialog" [style]="{width: '700px'}" header="Detalles Producto" 
+        [modal]="true" class="p-fluid" (onHide)="cerrarDialog()" [dismissableMask]="true">            
             <form [formGroup]="formProducto">
                 <div class="formgrid grid mt-4">
                     <div class="field col">
@@ -432,18 +413,14 @@
                             <label for="descripcion_producto">Descripción</label>
                         </span>
                     </div>
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <textarea [readonly]="true" [ngStyle]="{'pointer-events': 'none', 'background-color': '#f4f4f4', 'caret-color': 'transparent'}"
-                             rows="7" cols="30" pInputTextarea formControlName="ingredientes_producto" id="ingredientes_producto"></textarea>
-                            <label for="ingredientes_producto">Ingredientes Producto</label>
-                        </span>
-                    </div>
                 </div>
-    
-                <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
-                    <div class="field col-12" style="text-align: center;">
-                        <p-image [src]="imagen_producto" alt="Imagen del producto" width="300" [preview]="true"></p-image>
+
+                <div class="formgrid grid mt-4">
+                    <div class="field col-12 text-left d-flex flex-wrap justify-content-center">
+                      <ng-container *ngFor="let imagen of imagenes">
+                        <p-image class="m-2" [src]="imagen" alt="Imagen del producto" 
+                        width="100" (click)="abrirImagenDialog(imagen)"></p-image>
+                      </ng-container>
                     </div>
                 </div>
     
@@ -453,7 +430,8 @@
             </form>             
         </p-dialog>
 
-        <p-dialog [(visible)]="estadoProductoDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}">
+
+        <p-dialog [(visible)]="estadoProductoDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span *ngIf="producto">¿Está seguro de que desea cambiar el estado del producto <b>{{producto.nombre_producto}}</b>?</span>
@@ -462,6 +440,12 @@
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
                 <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoProducto(producto._id)"></button>
             </ng-template>
+        </p-dialog>
+
+
+        <p-dialog header="" [(visible)]="displayDialog" [modal]="true" [responsive]="true"
+        [style]="{ 'max-width': '40%', 'width': 'auto', 'overflow': 'hidden' }" [dismissableMask]="true">
+            <img [src]="imagenDialogSrc" alt="Imagen del producto" style="width: 100%">
         </p-dialog>
     </div>
 </div>

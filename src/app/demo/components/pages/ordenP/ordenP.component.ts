@@ -14,15 +14,22 @@ import { SelectItem } from 'primeng/api';
 export class OrdenDeProduccionComponent implements OnInit {
 
     listOrdenesDeProduccion: OrdenDeProduccion[] = []
+    listPedidosOrden: any[] = [];
     ordenP: OrdenDeProduccion = {}
     formOrdenDeProduccion:FormGroup;
     id: string = '';
 
-    estadosOrdenDeProduccion: string [] = ['En preparación', 'Terminado']
+    pedido: any = {};
+    pedidosSeleccionados: any[] = [];
+    idsPedidosSeleccionados: any[] = [];
+
+    nuevoEstado: string = 'Terminado'
 
     //Variables para controlar dialogs
-    generarOrdenPDialog: boolean = false;
+    seleccionarOrdenPDialog: boolean = false;
+    confirmarOrdenPDialog: boolean = false;
     editarOrdenDeProduccionDialog: boolean = false;
+    confirmarEstadoOrdenPDialog: boolean = false;
 
     constructor(
       private fb:FormBuilder,
@@ -43,20 +50,25 @@ export class OrdenDeProduccionComponent implements OnInit {
         this.aRouter.params.subscribe(params => {
           this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
         });
-      }
-
-    ngOnInit():void {        
-        this.getListOrdenesDeProduccion()                     
     }
 
-    //Función para listar todas las categorías
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //función de inicialización del componente
+    ngOnInit():void {        
+        this.getListOrdenesDeProduccion();
+        this.getPedidos();               
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //Función para listar todas las ordenes de produccion
     getListOrdenesDeProduccion(){     
         this.ordenPService.getListOrdenesDeProduccion().subscribe((data) =>{      
-          this.listOrdenesDeProduccion = data;        
+          this.listOrdenesDeProduccion = data.filter(orden => orden.estado_orden === 'En preparacion');        
         })        
     }
 
-    //Función para obtener los datos de una categoría por id
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //Función para obtener los datos de una orden de producción por id
     getOrdenDeProduccion(id:string){      
       this.ordenPService.getOrdenDeProduccion(id).subscribe((data:OrdenDeProduccion) => {
        
@@ -71,8 +83,19 @@ export class OrdenDeProduccionComponent implements OnInit {
       })
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //Función para listar los pedidos enviados a producción
+    getPedidos(){     
+      this.ordenPService.getPedidos().subscribe((data) =>{      
+        this.listPedidosOrden = data.filter(pedido => pedido.estado_pedido === 'En produccion');
+      })
+      
+  }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //Función para generar las ordenes de producción
     generarOrdenesDeProduccion() {
-      this.ordenPService.gerararOrdenesDeProduccion().subscribe(
+      this.ordenPService.gerararOrdenesDeProduccion(this.idsPedidosSeleccionados).subscribe(
         (response) => {
           if (response && response.message === 'Órdenes de producción generadas exitosamente.') {
             this.messageService.add({
@@ -82,14 +105,16 @@ export class OrdenDeProduccionComponent implements OnInit {
               life: 3000
             });
             this.getListOrdenesDeProduccion();
-            this.generarOrdenPDialog = false;
+            this.confirmarOrdenPDialog = false;
+            this.seleccionarOrdenPDialog = false;
           } else {
             this.messageService.add({
               severity: 'info',
               summary: 'No hay órdenes de producción pendientes',
               life: 3000
             });
-            this.generarOrdenPDialog = false;
+            this.confirmarOrdenPDialog = false;
+            this.seleccionarOrdenPDialog = false;
           }
         },
         (error) => {
@@ -109,58 +134,71 @@ export class OrdenDeProduccionComponent implements OnInit {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
-    // Función para actualizar una orden de producción
-    actualizarOrdenDeProduccion() {
-      // const form = this.formCategoria;
-      // if (form.valid) {
-      //   const formData = new FormData;
-      //   formData.append('nombre_categoria_producto', this.formCategoria.get('nombre_categoria_producto').value);
-      //   formData.append('descripcion_categoria_producto', this.formCategoria.get('descripcion_categoria_producto').value);
-      //   formData.append('image', this.file);
-  
-      //   if (this.id !== '') {
-      //     this.categoriaService.actualizarCategoria(this.id, formData).subscribe(() => {
-      //       this.messageService.add({
-      //         severity: 'success',
-      //         summary: 'La categoría fue actualizada con éxito',
-      //         detail: 'Categoría actualizada',
-      //         life: 3000
-      //       });
-      //       this.getListCategorias();
-      //       this.editarCategoriaDialog = false;
-      //       this.fileCrear.clear();
-      //     });
-      //   }
-      // }
+    // Función para actualizar el estado de una orden de producción
+    actualizarEstadoOrdenDeProduccion() {
+      this.ordenPService.actualizarEstadoOrdenDeProduccion(this.id, this.nuevoEstado).subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Orden de producción actualizada',
+            detail: 'El estado de la orden de producción fue actualizado con éxito',
+            life: 3000
+          });
+          this.getListOrdenesDeProduccion();
+          this.confirmarEstadoOrdenPDialog = false;
+        },
+        (error) => {
+          if (error.error && error.error.error) {
+            const errorMessage = error.error.error;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error al cambiar el estado de la orden de producción',
+              detail: errorMessage,
+              life: 3000
+            });
+          } else {
+            console.error('Error desconocido al generar las ordenes:', error);
+          }
+        }
+      )
     }
 
-    onOrdenChange(event) {
-      console.log('Estado seleccionado:', event.value);
-      // Realizar otras acciones según sea necesario
-    }
-    
-    editarOrdenDeProduccion(id:string) {
-        this.id = id;
-        this.editarOrdenDeProduccionDialog = true;
-        this.getOrdenDeProduccion(id)
+    confirmarActualizarOrdenDeProduccion(id: string) {
+      this.confirmarEstadoOrdenPDialog = true;
+      this.id = id;
     }
 
-    cerrarEditarDialog() {
-      this.editarOrdenDeProduccionDialog = false;
+    noActualizarOrdenDeProduccion() {
+      this.confirmarEstadoOrdenPDialog = false;
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Función para seleccionar los pedidos para generar nuevas ordenes de producción
+    seleccionarPedidosOrdenP() {
+      this.seleccionarOrdenPDialog = true;
+      this.pedidosSeleccionados = [];
+      this.idsPedidosSeleccionados = [];
+    }
+
+    prepararPedidosSeleccionados() {
+      this.confirmarOrdenPDialog = true;
+      this.idsPedidosSeleccionados = this.pedidosSeleccionados.map(id => id._id)
+      console.log(this.idsPedidosSeleccionados)
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
     // Función para confirmar generar nuevas ordenes de producción
     confirmarGenerarOrdenP() {
-      this.generarOrdenPDialog = true;
+      this.confirmarOrdenPDialog = true;
     }
 
-    //Función para no cambiar el estado de una categoría
+    //Función para no generar las ordenes de producción
     noGenerarOrdenP() {
-      this.generarOrdenPDialog = false;
-      this.getListOrdenesDeProduccion();
+      this.confirmarOrdenPDialog = false;
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función para filtar la tabla en el buscador
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }

@@ -17,9 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ListPedidosComponent } from './list-pedidos.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
-
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   
@@ -41,6 +39,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     InputNumberModule,
     DialogModule,
     ReactiveFormsModule,
+    TabViewModule,
   ],
   declarations: [ListPedidosComponent]
 })
