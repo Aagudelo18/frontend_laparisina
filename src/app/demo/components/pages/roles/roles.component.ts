@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { Permiso,Roles } from './roles.model';
 import { Table } from 'primeng/table';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
 
 
 @Component({ 
@@ -48,20 +50,22 @@ export class RolesComponent implements OnInit {
     private router:Router,
     private aRouter:ActivatedRoute){
       this.formRoles = this.fb.group({
-        nombre_rol: ['',Validators.required],
+        nombre_rol: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
         estado_rol: [true,Validators.required],
-        permisos_rol: [],
-      })
+        permisos_rol: ['', [Validators.required]],
+      });
       this.aRouter.params.subscribe(params => {
         this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
       });
      }
+
     
   ngOnInit():void {        
       this.getListRoles();
       for (const rol of this.selectedRoles) {
         this.formRoles.addControl(rol.nombre_permiso, this.fb.control(false));
-      }                
+      }  
+         
   }
 
   getListRoles(){     
