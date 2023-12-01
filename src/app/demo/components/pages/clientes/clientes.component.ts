@@ -5,7 +5,8 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Clientes } from './clientes.model';
 import { SelectItem } from 'primeng/api';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup} from '@angular/forms';
+import { Validators } from '@angular/forms';
  
 @Component({
     templateUrl: './clientes.component.html',
@@ -41,16 +42,16 @@ export class clientesComponent implements OnInit {
         private router:Router,
         private aRouter:ActivatedRoute){
           this.formCliente = this.fb.group({
-            tipo_cliente: ['',Validators.required],
-            nombre_contacto: ['',Validators.required],
-            nombre_juridico: ['', Validators.required],
-            numero_documento_cliente: ['', Validators.required],
-            nit_empresa_cliente: ['', Validators.required], 
-            correo_cliente: ['', Validators.required],
-            telefono_cliente: ['', Validators.required],
-            direccion_cliente: ['', Validators.required],
-            barrio_cliente: ['', Validators.required],
-            ciudad_cliente: ['', Validators.required],
+            tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            nombre_contacto: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            nombre_juridico: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            numero_documento_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
+            nit_empresa_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,12}$/),]],
+            correo_cliente: ['',[Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/),]],
+            telefono_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
+            direccion_cliente: ['',[Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'-]+$/),]],
+            barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
             estado_cliente: ['', Validators.required],
   
           })
@@ -151,6 +152,7 @@ export class clientesComponent implements OnInit {
           });
         }
       }
+
 
       // Función para confirmar cambiar el estado de un cliente
     confirmarCambioEstado(clientes: Clientes) {
