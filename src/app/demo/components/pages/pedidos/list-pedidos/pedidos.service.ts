@@ -42,9 +42,6 @@ export class PedidosService {
     return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`);
   }
 
-  getPedidosEntregados(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEntregados`);
-  }
 
   public getDomiciliarios(): Observable<any>{
     return this.http.get(this.apiUrl + 'domiciliarios')
