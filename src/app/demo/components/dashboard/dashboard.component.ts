@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, SelectItem } from 'primeng/api';
 import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription } from 'rxjs';
@@ -38,12 +38,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
             { label: 'Remove', icon: 'pi pi-fw pi-minus' }
         ];
 
+        this.getListDashboard();
+    }
+
+    getListDashboard() {
         this.dashboardService.getVentas().subscribe(
             (data: any) => {
                 console.log('Datos de ventas:', data);
                 this.ventas = data.ventas; // Asignar el campo 'ventas' al arreglo this.ventas
                 this.calcularNuevasVentas();
                 const productoCantidadMap = this.obtenerProductosMasVendidos();
+                // Llamar a initChart() después de obtener los datos de ventas
+                this.initChart();
             }
         );
     }
@@ -53,21 +59,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const unaSemanaEnMilisegundos = 7 * 24 * 60 * 60 * 1000; // 7 días en milisegundos
         const fechaActual = new Date(); // Obtener la fecha actual
 
-        // Calcular la fecha del lunes de esta semana
-        const lunesDeEstaSemana = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - fechaActual.getDay() + 1);
+        // Calcular la fecha del domingo de la semana anterior
+        const domingoDeLaSemanaAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - fechaActual.getDay() - 1);
 
-        // Calcular la fecha del domingo de esta semana
-        const domingoDeEstaSemana = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + (6 - fechaActual.getDay()));
-
-        // Filtrar las ventas que ocurrieron desde el lunes hasta el domingo de esta semana
+        // Filtrar las ventas que ocurrieron desde el lunes hasta el domingo de la semana anterior
         const nuevasVentas = this.ventas.filter(venta => {
             const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido); // Convertir la fecha de entrega a objeto Date
-            return fechaEntregaPedido >= lunesDeEstaSemana && fechaEntregaPedido <= domingoDeEstaSemana;
+            return fechaEntregaPedido.getDay() === 0;
         });
 
         const cantidadNuevasVentas = nuevasVentas.length;
         return cantidadNuevasVentas;
     }
+
+
 
     obtenerProductosMasVendidos(): void {
         const productoCantidadMap = new Map<string, {
@@ -96,7 +101,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
 
         const sortedProducts = Array.from(productoCantidadMap.entries())
-            .sort((a, b) => b[1].quantitySold - a[1].quantitySold)
+            .sort((b, a) => a[1].quantitySold - b[1].quantitySold)
             .slice(0, 5); // Obtener solo los 5 productos más vendidos
 
         this.topSellingProducts = sortedProducts.map(([productName, product]) => ({
@@ -114,58 +119,68 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
+        // Aquí se obtienen las ventas del servicio o del lugar correspondiente
+        const ventas = this.ventas; // Asegúrate de que este sea el arreglo de ventas
+        console.log("ejemplo o cosas que quiero ver para la gráfica" + ventas);
+
+        // Datos de ejemplo (reemplaza esto con tus datos reales)
+        const labels = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const ventasDiarias = [0, 0, 0, 0, 0, 0, 0];
+
+        this.ventas.forEach(venta => {
+            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
+            const diaEntrega = fechaEntregaPedido.getDay();
+            ventasDiarias[diaEntrega]++;
+        });
+
+        const data = ventasDiarias;
+
         this.chartData = {
-            labels: ['Enero', 'Febrero', 'Marzo', 'April', 'May', 'June', 'July'],
+            labels,
             datasets: [
                 {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
+                    label: 'Ventas diarias',
+                    data,
                     fill: false,
                     backgroundColor: documentStyle.getPropertyValue('--green-600'),
                     borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
+                    tension: 0.4,
+                },
+            ],
         };
 
         this.chartOptions = {
             plugins: {
                 legend: {
                     labels: {
-                        color: textColor
-                    }
-                }
+                        color: textColor,
+                    },
+                },
             },
             scales: {
                 x: {
                     ticks: {
-                        color: textColorSecondary
+                        color: textColorSecondary,
                     },
                     grid: {
                         color: surfaceBorder,
-                        drawBorder: false
-                    }
+                        drawBorder: false,
+                    },
                 },
                 y: {
                     ticks: {
-                        color: textColorSecondary
+                        color: textColorSecondary,
                     },
                     grid: {
                         color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
+                        drawBorder: false,
+                    },
+                },
+            },
         };
     }
+
+
 
     ngOnDestroy() {
         if (this.subscription) {
