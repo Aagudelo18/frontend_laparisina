@@ -27,6 +27,7 @@ export class ListPedidosComponent implements OnInit {
     pedidosTerminados: Pedido[] = [];
     pedidosAnulados: Pedido[] = [];
     pedidosEnviados: Pedido[] = [];
+    pedidosEntregados: Pedido[] = [];
     pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
     cambiarEstadoPDialog: boolean;
     estado_pedido: string;
@@ -76,6 +77,7 @@ export class ListPedidosComponent implements OnInit {
         this.cargarPedidosTerminados();
         this.cargarPedidosAnulados();
         this.cargarPedidosEnviados();
+        this.cargarPedidosEntregados();
     }
 
     //Cargar Domiciliarios
@@ -107,6 +109,16 @@ export class ListPedidosComponent implements OnInit {
             .subscribe((data: Pedido[]) => {
                 this.pedidosTerminados = data;
                 console.log(this.pedidosTerminados);
+            });
+    }
+
+    
+    cargarPedidosEntregados() {
+        this.pedidosService
+            .getPedidosEntregados()
+            .subscribe((data: Pedido[]) => {
+                this.pedidosEntregados = data;
+                console.log(this.pedidosEntregados);
             });
     }
 
@@ -328,6 +340,8 @@ export class ListPedidosComponent implements OnInit {
         }
     }
 
+
+   
     // Actualiza el método para manejar el botón "Sí"
     onYesButtonClickDomicilio() {
         this.resolverPromesa(true); // Resuelve la promesa con "true"
@@ -355,7 +369,7 @@ export class ListPedidosComponent implements OnInit {
                     life: 5000,
                 });
                 // Actualizar la lista de pedidos
-                this.cargarPedidosPendientes();
+                this.cargarPedidosEnviados();
                 this.cargarPedidosTerminados();
             },
             (error) => {
