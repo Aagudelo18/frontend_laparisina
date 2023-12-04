@@ -22,6 +22,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { ImageModule } from 'primeng/image';
 import { GalleriaModule } from 'primeng/galleria';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
     imports: [
@@ -45,7 +46,8 @@ import { GalleriaModule } from 'primeng/galleria';
         InputSwitchModule,
         AutoCompleteModule,
         ImageModule,
-        GalleriaModule
+        GalleriaModule,
+        CarouselModule
     ],
     declarations: [ProductoComponent],
     providers: [

@@ -1,70 +1,82 @@
 import { Component, OnInit } from '@angular/core';
 import { NewPedidosService } from './new-pedidos.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 
+function fechaNoMenorActual(control: AbstractControl): { [key: string]: boolean } | null {
+  const fechaIngresada = new Date(control.value);
+  const fechaActual = new Date();
+
+  if (fechaIngresada < fechaActual) {
+    return { 'fechaMenorActual': true };
+  }
+
+  return null;
+}
+
 @Component({
-    selector: 'app-new-pedidos',
-    templateUrl: './new-pedidos.component.html',
-    styleUrls: ['./new-pedidos.component.scss'],
-    providers: [MessageService],
+  selector: 'app-new-pedidos',
+  templateUrl: './new-pedidos.component.html',
+  styleUrls: ['./new-pedidos.component.scss'],
+  providers: [MessageService],
 })
 export class NewPedidosComponent implements OnInit {
-    precio_total_venta: number;
-    subtotal_venta: number;
-    aumento_empresa: number;
-    pedido: FormGroup;
+  precio_total_venta: number;
+  subtotal_venta: number;
+  aumento_empresa: number;
+  pedido: FormGroup;
 
-    metodoPago = ['Transferencia', 'Efectivo'];
-    categorias = [];
-    clientes = [];
-    categoriaSeleccionada: string;
-    productoSeleccionado: any[] = [];
-    productos: any[] = [];
-    productosCategoria: any[] = [];
-    productsFormArray: FormArray;
-    cantidad_producto: number;
+  metodoPago = ['Transferencia', 'Efectivo'];
+  categorias = [];
+  clientes = [];
+  categoriaSeleccionada: string;
+  productoSeleccionado: any[] = [];
+  productos: any[] = [];
+  productosCategoria: any[] = [];
+  productsFormArray: FormArray;
+  cantidad_producto: number;
 
-    constructor(
-        private newpedidosService: NewPedidosService,
-        private router: Router,
-        private fb: FormBuilder,
-        private messageService: MessageService
-    ) {
-        this.categoriaSeleccionada = '';
-        this.productoSeleccionado = [];
+  constructor(
+    private newpedidosService: NewPedidosService,
+    private router: Router,
+    private fb: FormBuilder,
+    private messageService: MessageService
+  ) {
+    this.categoriaSeleccionada = '';
+    this.productoSeleccionado = [];
 
-        this.pedido = this.fb.group({
-            documento_cliente: [
-                '',
-                [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)],
-            ],
-            tipo_cliente: ['', Validators.required],
-            nombre_contacto: ['', Validators.required],
-            quien_recibe: ['', Validators.required],
-            nombre_juridico: ['', Validators.required],
-            nit_empresa_cliente: [
-                '',
-                [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)],
-            ],
-            telefono_cliente: [
-                '',
-                [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)],
-            ],
-            direccion_entrega: ['', Validators.required],
-            ciudad_cliente: ['', Validators.required],
-            barrio_cliente: ['', Validators.required],
-            fecha_entrega_pedido: ['', Validators.required],
-            correo_domiciliario: ['', [Validators.required, Validators.email]],
-            metodo_pago: ['', Validators.required],
-            valor_domicilio: [0, [Validators.required, Validators.min(0)]],
-            subtotal_venta: [0, Validators.min(0)],
-            precio_total_venta: [0, Validators.min(0)],
-            aumento_empresa: [0, Validators.min(0)],
-            detalle_pedido: [],
-        });
-    }
+    this.pedido = this.fb.group({
+      documento_cliente: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)],
+      ],
+      tipo_cliente: ['', Validators.required],
+      nombre_contacto: ['', Validators.required],
+      quien_recibe: ['', Validators.required],
+      nombre_juridico: ['', Validators.required],
+      nit_empresa_cliente: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)],
+      ],
+      telefono_cliente: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)],
+      ],
+      direccion_entrega: ['', Validators.required],
+      ciudad_cliente: ['', Validators.required],
+      barrio_cliente: ['', Validators.required],
+      fecha_entrega_pedido: ['', [Validators.required, fechaNoMenorActual]],
+      correo_domiciliario: ['', [Validators.required, Validators.email]],
+      metodo_pago: ['', Validators.required],
+      valor_domicilio: [0, [Validators.required, Validators.min(0)]],
+      subtotal_venta: [0, Validators.min(0)],
+      precio_total_venta: [0, Validators.min(0)],
+      aumento_empresa: [0, Validators.min(0)],
+      detalle_pedido: [],
+    });
+  }
+
 
     ngOnInit() {
         this.getCategorias();

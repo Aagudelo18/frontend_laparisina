@@ -27,7 +27,7 @@ export class RolesComponent implements OnInit {
     { nombre_permiso: 'Orden de produccion' },
     { nombre_permiso: 'Ventas' },
   ];
-  
+
   listRoles: Roles[] = []
   rol: Roles = {}
   formRoles:FormGroup;
@@ -44,6 +44,11 @@ export class RolesComponent implements OnInit {
   ];
   selectedEstado: SelectItem = {value: ''};
 
+  atLeastOneCheckboxSelectedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const selectedCheckboxes = Object.values(control.value).some((value: string) => value === 'true');
+    return selectedCheckboxes ? null : { atLeastOneCheckboxSelected: true };
+  };
+
   constructor(private fb:FormBuilder,
     private rolesService: RolesService,
     private messageService: MessageService,
@@ -52,14 +57,14 @@ export class RolesComponent implements OnInit {
       this.formRoles = this.fb.group({
         nombre_rol: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
         estado_rol: [true,Validators.required],
-        permisos_rol: ['', [Validators.required]],
-      });
+        permisos_rol: [],
+      }, { validators: this.atLeastOneCheckboxSelectedValidator });
       this.aRouter.params.subscribe(params => {
         this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
       });
      }
 
-    
+
   ngOnInit():void {        
       this.getListRoles();
       for (const rol of this.selectedRoles) {
@@ -74,7 +79,7 @@ export class RolesComponent implements OnInit {
     })        
 }
 
-
+ 
 getRoles(id: string) {
   this.rolesService.getRoles(id).subscribe((data: Roles) => {
     this.formRoles = this.fb.group({
@@ -96,6 +101,7 @@ crearRol() {
   .filter(rol => this.formRoles.get(rol.nombre_permiso)?.value)
   .map(rol => ({ nombre_permiso: rol.nombre_permiso }));
 
+  
 const nuevoRol: Roles = {
   nombre_rol: this.formRoles.value.nombre_rol,
   estado_rol: true,

@@ -64,7 +64,7 @@
         </div>
         <!-- NIT Empresa (solo visible si el tipo de cliente es Empresa) -->
         <div class="field col-12 md:col-3"
-            *ngIf="pedido.get('tipo_cliente').value === 'Empresa'"
+            *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
                 <input
@@ -93,7 +93,7 @@
         </div>
         <!-- Nombre Jurídico (solo visible si el tipo de cliente es Empresa) -->
         <div class="field col-12 md:col-3"
-            *ngIf="pedido.get('tipo_cliente').value === 'Empresa'"
+            *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
                 <input
@@ -291,13 +291,15 @@
             <div
                 *ngIf="
                     pedido.get('fecha_entrega_pedido').invalid &&
-                    pedido.get('fecha_entrega_pedido').touched
+                    pedido.get('fecha_entrega_pedido').touched &&
+                    pedido.get('fecha_entrega_pedido').hasError('fechaMenorActual')
                 "
                 style="color: red"
             >
-                La fecha de entrega es requerida
+                La fecha de entrega no puede ser menor a la fecha actual.
             </div>
         </div>
+        
         <!-- Método de Pago -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
@@ -353,7 +355,7 @@
 
     <div
         *ngIf="
-            pedido.get('tipo_cliente').value === 'Empresa' ||
+            pedido.get('tipo_cliente').value === 'Persona jurídica' ||
             pedido.get('tipo_cliente').value === 'Persona natural'
         "
         class="grid p-fluid mt-3"
@@ -469,7 +471,7 @@
                     <td>{{ product.get("cantidad_producto")?.value }}</td>
                     <td>
                         {{
-                            pedido.get("tipo_cliente").value === "Empresa"
+                            pedido.get("tipo_cliente").value === "Persona jurídica"
                                 ? product.get("precio_por_mayor_ico")?.value
                                 : product.get("precio_ico")?.value
                         }}

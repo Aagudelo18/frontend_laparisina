@@ -1,7 +1,7 @@
 <div class="grid">
-    <div class="col-12">
-        <p-toast></p-toast>
+    <p-toast></p-toast>
 
+    <div class="col-12">
         <div class="card px-6 py-6">            
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
@@ -59,11 +59,13 @@
             </p-table>            
         </div>
 
+        
+
         <p-dialog [(visible)]="crearCategoriaDialog" [style]="{width: '400px'}" header="Crear Categoría" 
         [modal]="true" class="p-fluid" (onHide)="cerrarDialog()">            
                 <form [formGroup]="formCategoria" (ngSubmit)="crearCategoria()">
                     <div class="formgrid grid">
-                        <div class="field col">
+                        <div class="field col mt-4">
                             <span class="p-float-label">
                                 <input formControlName="nombre_categoria_producto" id="nombre_categoria_producto" type="text" pInputText>
                                 <label for="nombre_categoria_producto">Nombre</label>
@@ -91,7 +93,7 @@
                             </span>
                             <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('pattern') && formCategoria.get('descripcion_categoria_producto')?.touched"
                             style="color: red;">
-                                La descripción solo permite letras y los signos ",." y un máximo de 100 caracteres
+                                La descripción solo permite letras y los signos ",." y un máximo de 300 caracteres
                             </span>
                         </div>
                     </div>
@@ -143,7 +145,7 @@
                         </span>
                         <span *ngIf="formCategoria.get('descripcion_categoria_producto')?.hasError('pattern') && formCategoria.get('descripcion_categoria_producto')?.touched"
                         style="color: red;">
-                            La descripción solo permite letras y los signos ",." y un máximo de 100 caracteres
+                            La descripción solo permite letras y los signos ",." y un máximo de 300 caracteres
                         </span>
                     </div>
                 </div>
@@ -220,3 +222,5 @@
     </p-dialog>
     </div>
 </div>
+
+

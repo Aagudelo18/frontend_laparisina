@@ -94,66 +94,6 @@ export class CategoriaComponent implements OnInit {
       })
     }
 
-
-    // addCategoria(){
-    //   const categoria : Categoria = {
-    //    nombre_categoria_producto: this.formCategoria.value.nombre_categoria_producto,
-    //    descripcion_categoria_producto: this.formCategoria.value.descripcion_categoria_producto,
-    //    imagen_categoria_producto: this.formCategoria.value.imagen_categoria_producto,
-    //    estado_categoria_producto: this.formCategoria.value.estado_categoria_producto,
-    //   }
- 
-    //   if(this.id != ''){
-    //    categoria._id = this.id;
-    //    this.categoriaService.putCategoria(this.id,categoria).subscribe(() => {
-    //     alert('Categoria actualizada con éxito')    
-    //     this.messageService.add({
-    //         severity: 'info', //'success', 'info', 'warn' o 'error'
-    //         summary: `La categoría fue actualizada con éxito`,
-    //         detail: 'Categoría actualizada',
-    //         life: 6000 // La duración del mensaje en milisegundos
-    //       });
-    //       this.getListCategorias();
-    //       this.editarCategoriaDialog = false;  
-    //    })
-    //   } else {            
-    //    this.categoriaService.postCategoria(categoria).subscribe(() => {
-    //     alert('Categoría creada con éxito')
-    //     this.messageService.add({
-    //         severity: 'success', //'success', 'info', 'warn' o 'error'
-    //         summary: 'La categoría fue creada con éxito',
-    //         detail: 'Categoría creada',
-    //         life: 6000 // La duración del mensaje en milisegundos
-    //     });
-    //     this.getListCategorias();
-    //     this.crearCategoriaDialog = false;     
-    //    })
-    //   }
-      
-    // }
-
-    // // Función para crear una categoría
-    // crearCategoria() {
-    //   const nuevaCategoria: Categoria = {
-    //     nombre_categoria_producto: this.formCategoria.value.nombre_categoria_producto,
-    //     descripcion_categoria_producto: this.formCategoria.value.descripcion_categoria_producto,
-    //     imagen_categoria_producto: this.formCategoria.value.imagen_categoria_producto,
-    //     estado_categoria_producto: true,
-    //   };
-
-    //   this.categoriaService.postCategoria(nuevaCategoria).subscribe(() => {
-    //     alert('Categoría creada con éxito');
-    //     this.messageService.add({
-    //       severity: 'success',
-    //       summary: 'La categoría fue creada con éxito',
-    //       detail: 'Categoría creada',
-    //       life: 3000
-    //     });
-    //     this.getListCategorias();
-    //     this.crearCategoriaDialog = false;
-    //   });
-    // }
-
     //--------------------------------------------------------------------------------------------------------------------------------
     
 

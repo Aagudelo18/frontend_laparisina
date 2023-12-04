@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CategoriaRoutingModule } from './categoria-routing.module';
-import { CategoriaComponent } from './categoria.component';
+import { ProductoRoutingModule } from './product-list-routing.module';
+import { ProductComponent } from './product-list.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,17 +16,20 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { CategoriaService } from './categoria.service';
+import { ProductService } from './product-list.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { ImageModule } from 'primeng/image';
-
+import { GalleriaModule } from 'primeng/galleria';
+import { CarouselModule } from 'primeng/carousel';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DataViewModule } from 'primeng/dataview';
 
 @NgModule({
     imports: [
         CommonModule,
-        CategoriaRoutingModule,
+        ProductoRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -44,11 +47,15 @@ import { ImageModule } from 'primeng/image';
         ReactiveFormsModule,
         InputSwitchModule,
         AutoCompleteModule,
-        ImageModule
+        ImageModule,
+        GalleriaModule,
+        CarouselModule,
+        DataViewModule
     ],
-    declarations: [CategoriaComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [ProductComponent],
     providers: [
-        CategoriaService // Agrega tu servicio como un proveedor aquí
+        ProductService // Agrega tu servicio como un proveedor aquí
       ]
 })
-export class CategoriaModule { }
+export class ProductModule { }

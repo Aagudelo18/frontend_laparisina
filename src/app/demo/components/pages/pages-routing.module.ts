@@ -15,7 +15,7 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/login.guard'; // I
         { path: 'empleados', loadChildren: () => import('./empleados/empleados.module').then(m => m.EmpleadosModule), canActivate: [AuthGuard] },
         { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule), canActivate: [AuthGuard] },
         { path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule), canActivate: [AuthGuard] },
-        { path: 'categoriasP', loadChildren: () => import('./categoriasP/categoriaP.module').then(m => m.CategoriaPModule), canActivate: [AuthGuard] },
+        { path: 'vistaC', loadChildren: () => import('./product-list/product-list.module').then(m => m.ProductModule), canActivate: [AuthGuard] },
         { path: 'productos', loadChildren: () => import('./productos/producto.module').then(m => m.ProductoModule), canActivate: [AuthGuard] },
         { path: 'pedidos', loadChildren: () => import('./pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule), canActivate: [AuthGuard] },
         { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard] },
@@ -27,6 +27,7 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/login.guard'; // I
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
         { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule)},
+      
 
         { path: '**', redirectTo: '/notfound' }
 

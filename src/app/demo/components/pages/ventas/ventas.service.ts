@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class VentasService {
 
-  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api/';
 
   constructor(private http: HttpClient) { }
 
