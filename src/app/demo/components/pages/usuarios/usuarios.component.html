@@ -66,7 +66,7 @@
     class="p-fluid">
     <ng-template pTemplate="content">
         <form [formGroup]="formularioUsuario" (ngSubmit)="crearUsuario()">
-            <div class="field" style="margin-bottom: 15px;">
+            <div class="field mt-4">
                 <span class="p-float-label">
                     <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico" />
                     <label for="correo_electronico">Correo electrónico</label>
@@ -80,12 +80,14 @@
                     válido.</span>
             </div>
 
-            <div class="field" style="margin-bottom: 15px;">
+            <div class="field mt-4" style="margin-bottom: 15px;">
                 <span class="p-float-label">
                     <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
                     <label for="contrasena_usuario">Contraseña</label>
                 </span>
-                <span *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('required') && formularioUsuario.get('contrasena_usuario')?.touched" style="color: red;">La
+                <span
+                    *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('required') && formularioUsuario.get('contrasena_usuario')?.touched"
+                    style="color: red;">La
                     contraseña
                     es requerida.</span>
                 <span *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
@@ -98,42 +100,53 @@
                 </span>
             </div>
 
+            <div class="field mt-4">
+                <span class="p-float-label">
+                    <input type="password" pInputText id="confirmar_contrasena"
+                        formControlName="confirmar_contrasena" />
+                    <label for="confirmar_contrasena">Confirmar Contraseña</label>
+                </span>
+                <span
+                    *ngIf="formularioUsuario.get('confirmar_contrasena')?.hasError('required') && formularioUsuario.get('confirmar_contrasena')?.touched"
+                    style="color: red;">Confirmación de contraseña requerida.</span>
+                <span *ngIf="formularioUsuario.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no
+                    coinciden.</span>
+                <span
+                    *ngIf="formularioUsuario.get('confirmar_contrasena')?.value !== formularioUsuario.get('contrasena_usuario')?.value && formularioUsuario.get('confirmar_contrasena')?.touched"
+                    style="color: red;">Las contraseñas no coinciden.</span>
+            </div>
+
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [(ngModel)]="selectedRol" [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol para el usuario"></p-dropdown>
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol para el usuario"></p-dropdown>
             </div>
 
-            <div class="field">
-                <label for="estado_usuario">Estado del Usuario</label>
-                <p-dropdown formControlName="estado_usuario" inputId="estado_usuario" [options]="estadoOptions"
-                    placeholder="Seleccionar"></p-dropdown>
+            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="usuarioDialog = false"></button>
+                <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                    [disabled]="!formularioUsuario.valid"></button>
             </div>
-
-
-
-            <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
         </form>
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-            (click)="closeDialog()"></button>
-
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true" [style]="{width:'450px'}">
+<p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true"
+    [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
-      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-      <span >¿Está seguro de que desea crear este usuario <b>{{ formularioUsuario.get('correo_electronico').value }}</b>?</span>
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>¿Está seguro de que desea crear este usuario <b>{{ formularioUsuario.get('correo_electronico').value
+                }}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
-      <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="mostrarConfirmacionUsuario = false"></button>
-      <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmarCrearUsuario()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="mostrarConfirmacionUsuario = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+            (click)="confirmarCrearUsuario()"></button>
     </ng-template>
-  </p-dialog>
-  
+</p-dialog>
+
 
 <p-dialog [(visible)]="editarUsuarioDialog" [style]="{ width: '450px' }" header="Editar Usuario" [modal]="true"
     class="p-fluid">
@@ -147,7 +160,8 @@
                     *ngIf="formularioEditarUsuario.get('correo_electronico')?.hasError('required') && formularioEditarUsuario.get('correo_electronico')?.touched"
                     style="color: red;">Correo electrónico
                     requerido.</span>
-                <span *ngIf="formularioEditarUsuario.get('correo_electronico').hasError('email')" style="color: red;">Correo
+                <span *ngIf="formularioEditarUsuario.get('correo_electronico').hasError('email')"
+                    style="color: red;">Correo
                     electrónico no
                     válido.</span>
             </div>
@@ -156,7 +170,7 @@
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [(ngModel)]="selectedRol" [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
             </div>
 
             <div class="field">
@@ -167,14 +181,14 @@
 
             <!-- Otros campos de edición -->
 
-            <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="editarUsuarioDialog = false"></button>
+                <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                    [disabled]="!formularioEditarUsuario.valid"></button>
+            </div>
         </form>
     </ng-template>
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-            (click)="cerrarEditarUsuarioDialog()"></button>
-    </ng-template>
+
 </p-dialog>
-
-

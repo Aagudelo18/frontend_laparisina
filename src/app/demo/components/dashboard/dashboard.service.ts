@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Pedido } from './ventas.model';
+import { Pedido } from '../pages/ventas/ventas.model';
 import { Observable } from 'rxjs';
 
 
@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class VentasService {
+export class DashboardService {
 
-  private apiUrl = 'http://localhost:3000/api/';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 

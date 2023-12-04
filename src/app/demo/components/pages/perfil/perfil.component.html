@@ -1,0 +1,16 @@
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <div class="my-2">
+        </div>
+    </ng-template>
+
+    
+    <h1>Información del Usuario</h1>
+    
+    <div>
+        <p>Correo electrónico: {{ currentUser.correo_electronico }}</p>
+        <p>Rol de usuario: {{ currentUser.rol_usuario.nombre_rol }}</p>
+        <p>Estado del usuario: {{ currentUser.estado_usuario ? 'Activo' : 'Inactivo' }}</p>
+        <!-- Mostrar otros datos del usuario aquí -->
+    </div>
+</p-toolbar>

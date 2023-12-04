@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CategoriaRoutingModule } from './categoria-routing.module';
-import { CategoriaComponent } from './categoria.component';
+import { PerfilRoutingModule } from './perfil-routing.module';
+import { PerfilComponent } from './perfil.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,17 +16,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
-import { CategoriaService } from './categoria.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { AutoCompleteModule } from "primeng/autocomplete";
-import { ImageModule } from 'primeng/image';
-
 
 @NgModule({
     imports: [
         CommonModule,
-        CategoriaRoutingModule,
+        PerfilRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -41,14 +36,8 @@ import { ImageModule } from 'primeng/image';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        ReactiveFormsModule,
-        InputSwitchModule,
-        AutoCompleteModule,
-        ImageModule
+        ReactiveFormsModule
     ],
-    declarations: [CategoriaComponent],
-    providers: [
-        CategoriaService // Agrega tu servicio como un proveedor aquí
-      ]
+    declarations: [PerfilComponent]
 })
-export class CategoriaModule { }
+export class PerfilModule { }

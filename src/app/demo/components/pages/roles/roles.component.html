@@ -51,7 +51,7 @@
         </tr>
     </ng-template>
 </p-table>
-<p-dialog [(visible)]="estadoRolDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}">
+<p-dialog [(visible)]="estadoRolDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
         <span *ngIf="rol">¿Está seguro de que desea cambiar el estado del rol <b>{{rol.nombre_rol}}</b>?</span>
@@ -64,36 +64,69 @@
 
 <p-dialog [(visible)]="crearRolDialog" [style]="{ width: '450px' }" header="Crear Rol" [modal]="true" class="p-fluid">
     <form [formGroup]="formRoles" (ngSubmit)="crearRol()">
+        <br>
         <div class="field">
-         <label for="nombre_rol" style="margin-bottom: 5px;">Nombre rol:</label>
-         <input type="text" formControlName="nombre_rol" pInputText id="nombre_rol" required autofocus
-                 name="nombre_rol"/>
+         <span class="p-float-label">
+            <input formControlName="nombre_rol" id="nombre_rol" type="text" pInputText>
+            <label for="nombre_rol">Nombre rol</label>
+        </span>
+        <span *ngIf="formRoles.get('nombre_rol')?.hasError('required') && formRoles.get('nombre_rol')?.touched"
+        style="color: red;">
+            El nombre es requerido
+        </span>       
+        <span *ngIf="formRoles.get('nombre_rol')?.hasError('pattern') && formRoles.get('nombre_rol')?.touched"
+        style="color: red;">
+            El nombre solo debe contener letras y tener máximo 20 caracteres
+        </span>  
          </div>
-          <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1">
+         <div>
+            <label for=""> Permisos</label>
+          <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1"> 
             <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true"></p-checkbox>
             <label class="ml-2">{{ rol.nombre_permiso }}</label>
           </div>
+          <div *ngIf="formRoles.get('permisos_rol')?.hasError('permisosRequired') && formRoles.get('permisos_rol')?.touched" style="color: red;">
+            Permisos es requerido, selecciona al menos uno.
+        </div>
+        
+        </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
           <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearRolDialog = false" ></button>
           <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
         </div>
+        
     </form>  
   </p-dialog>
- 
+
   <p-dialog [(visible)]="editarRolDialog" [style]="{ width: '450px' }" header="Editar Rol" [modal]="true" class="p-fluid">
     <form [formGroup]="formRoles" (ngSubmit)="actualizarRol()">
+        <br>
         <div class="field">
-         <label for="nombre_rol" style="margin-bottom: 5px;">Nombre rol:</label>
-         <input type="text" formControlName="nombre_rol" pInputText id="nombre_rol" required autofocus
-                 name="nombre_rol"/>
+         <span class="p-float-label">
+            <input formControlName="nombre_rol" id="nombre_rol" type="text" pInputText>
+            <label for="nombre_rol">Nombre rol</label>
+        </span>
+        <span *ngIf="formRoles.get('nombre_rol')?.hasError('required') && formRoles.get('nombre_rol')?.touched"
+        style="color: red;">
+            El nombre es requerido
+        </span>       
+        <span *ngIf="formRoles.get('nombre_rol')?.hasError('pattern') && formRoles.get('nombre_rol')?.touched"
+        style="color: red;">
+            El nombre solo debe contener letras y tener máximo 20 caracteres
+        </span> 
          </div>
+         <div>
           <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1">
-            <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true"></p-checkbox>
+            <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true" (onChange)="onCheckboxChange($event, rol)"></p-checkbox>
             <label class="ml-2">{{ rol.nombre_permiso }}</label>
           </div>
+          <div *ngIf="formRoles.hasError('atLeastOneCheckboxSelectedValidator') && formRoles.touched" style="color: red;">
+            Debes seleccionar al menos un permiso.
+          </div>
+        </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
           <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarRolDialog = false" ></button>
-          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formRoles.valid"></button>
         </div>
     </form>  
   </p-dialog>
