@@ -102,11 +102,11 @@
                             <p-tableCheckbox [value]="pedido"></p-tableCheckbox>
                         </td>
                         <td style="width:20%; min-width:10rem;"><span class="p-column-title">No Cliente</span>
-                            {{pedido.tipo_cliente == 'Empresa' ? pedido.nit_empresa_cliente : pedido.documento_cliente}}
+                            {{pedido.tipo_cliente == 'Persona jurídica' ? pedido.nit_empresa_cliente : pedido.documento_cliente}}
                         </td>
                         <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Name</span>
-                            {{pedido.tipo_cliente == 'Empresa' ? pedido.nombre_juridico : pedido.nombre_contacto}}
+                            {{pedido.tipo_cliente == 'Persona jurídica' ? pedido.nombre_juridico : pedido.nombre_contacto}}
                         </td>
                         <td style="width:20%; min-width:10rem;">
                             <span class="p-column-title">Name</span>

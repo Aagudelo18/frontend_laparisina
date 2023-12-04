@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { CategoriaService } from '../categoria/categoria.service';
+import { Ng2ImgMaxService } from 'ng2-img-max';
+
 
 @Component({
     templateUrl: './producto.component.html',
@@ -17,6 +19,7 @@ export class ProductoComponent implements OnInit {
   @ViewChild('fileCrear') fileCrear: FileUpload;
   @ViewChild('fileEditar') fileEditar: FileUpload;
 
+  //---------------------------------------------------------------------------------------------------------------------------------
     listProductos: Producto[] = [];
     categorias: string [] = []
     producto: Producto = {};
@@ -24,6 +27,7 @@ export class ProductoComponent implements OnInit {
     formEditarProducto: FormGroup;
     id: string = '';
     
+    //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control de la imagen
     files: File[] = [];
     fileSelected: boolean = false;
@@ -32,6 +36,27 @@ export class ProductoComponent implements OnInit {
     imagenDialogSrc: string = '';
     imagenes_seleccionadas_producto: string[] = [];
 
+    //Configuración carrusel de imagenes
+    galleriaResponsiveOptions: any[] = [
+      {
+          breakpoint: '1024px',
+          numVisible: 5
+      },
+      {
+          breakpoint: '960px',
+          numVisible: 4
+      },
+      {
+          breakpoint: '768px',
+          numVisible: 3
+      },
+      {
+          breakpoint: '560px',
+          numVisible: 1
+      }
+    ];
+
+    //---------------------------------------------------------------------------------------------------------------------------------
     //Variables para controlar dialogs
     crearProductoDialog: boolean = false;
     editarProductoDialog: boolean = false;
@@ -46,7 +71,9 @@ export class ProductoComponent implements OnInit {
       private messageService: MessageService,
       private router:Router,
       private aRouter:ActivatedRoute,
-      private categoriaService: CategoriaService){
+      private categoriaService: CategoriaService,
+      private ng2ImgMaxService: Ng2ImgMaxService
+      ){
 
         this.formProducto = this.fb.group({
           codigo_producto: ['',[Validators.required, Validators.pattern(/^[0-9]{3,4}$/),]],
@@ -191,15 +218,20 @@ export class ProductoComponent implements OnInit {
           return; // Salir de la función si se excede el límite de imágenes
         }
 
+        if (this.imagenes.length > 0){
+          this.imagenes = [];
+        }
+        
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           // Verificar si es un archivo de imagen
           if (file && file.type && file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-      
+            
+            //if (this.imagenes.length >)
             this.files.push(file);
-            this.imagenes_seleccionadas_producto.push(URL.createObjectURL(file)); // Mostrar la imagen seleccionada
+            this.imagenes.push(URL.createObjectURL(file)); // Mostrar la imagen seleccionada
             
             this.messageService.add({
               severity: 'info',
@@ -211,7 +243,6 @@ export class ProductoComponent implements OnInit {
           }
         }
         this.fileSelected = event.currentFiles.length > 0 && event.currentFiles.length < 4;
-        //this.imagen_producto = URL.createObjectURL(files[0]); // Mostrar la imagen seleccionada
         console.log('Array imagenes: ',this.files)
       } else {
         this.files = [];
@@ -313,7 +344,7 @@ export class ProductoComponent implements OnInit {
         this.fileCrear.clear();
         this.files = [];
         this.fileSelected = false;
-        this.imagenes_seleccionadas_producto = [];
+        this.imagenes = ['../../../../../assets/Imagenes/No IMG 2.png'];
     }
     
     //-------------------------------------------------------------------------------------------------------------------------------
