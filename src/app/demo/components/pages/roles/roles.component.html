@@ -51,7 +51,7 @@
         </tr>
     </ng-template>
 </p-table>
-<p-dialog [(visible)]="estadoRolDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}">
+<p-dialog [(visible)]="estadoRolDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
         <span *ngIf="rol">¿Está seguro de que desea cambiar el estado del rol <b>{{rol.nombre_rol}}</b>?</span>
@@ -115,13 +115,18 @@
             El nombre solo debe contener letras y tener máximo 20 caracteres
         </span> 
          </div>
+         <div>
           <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1">
-            <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true"></p-checkbox>
+            <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true" (onChange)="onCheckboxChange($event, rol)"></p-checkbox>
             <label class="ml-2">{{ rol.nombre_permiso }}</label>
           </div>
+          <div *ngIf="formRoles.hasError('atLeastOneCheckboxSelectedValidator') && formRoles.touched" style="color: red;">
+            Debes seleccionar al menos un permiso.
+          </div>
+        </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
           <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarRolDialog = false" ></button>
-          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formRoles.valid"></button>
         </div>
     </form>  
   </p-dialog>
