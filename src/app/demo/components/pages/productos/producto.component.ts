@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { CategoriaService } from '../categoria/categoria.service';
-import { Ng2ImgMaxService } from 'ng2-img-max';
 
 
 @Component({
@@ -72,7 +71,6 @@ export class ProductoComponent implements OnInit {
       private router:Router,
       private aRouter:ActivatedRoute,
       private categoriaService: CategoriaService,
-      private ng2ImgMaxService: Ng2ImgMaxService
       ){
 
         this.formProducto = this.fb.group({

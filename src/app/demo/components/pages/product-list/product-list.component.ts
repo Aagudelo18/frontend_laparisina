@@ -170,7 +170,7 @@ export class ProductComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para qgregar un producto al carrito
     // onClick(product: Product) {
-    //   this.categoriaService.addNewProduct(product)
+    //   this.cartService.addNewProduct(product)
     // }
 
     //-------------------------------------------------------------------------------------------------------------------------------
