@@ -14,7 +14,6 @@ import { TotalComponent } from '../total/total.component';
   ],
 
   declarations: [
-    CartComponent,
   ],
  
 })

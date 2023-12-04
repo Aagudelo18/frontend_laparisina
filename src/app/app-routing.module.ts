@@ -23,6 +23,7 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                    
                 ]
             },
+            { path: 'vistaCliente', loadChildren: () => import('./demo/components/pages/product-list/product-list.module').then(m => m.ProductModule) },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotfoundComponent },
