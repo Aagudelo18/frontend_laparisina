@@ -40,6 +40,7 @@ import { TabViewModule } from 'primeng/tabview';
     DialogModule,
     ReactiveFormsModule,
     TabViewModule,
+    
   ],
   declarations: [ListPedidosComponent]
 })
