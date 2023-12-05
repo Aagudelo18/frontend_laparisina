@@ -1,0 +1,297 @@
+
+    <p-toast></p-toast>
+    <h1>CREAR EMPLEADO</h1>
+    <div class="grid p-fluid mt-3">
+        <!-- Primera fila -->
+        <div class="field p-col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="codigo_rotulacion_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.codigo_rotulacion_empleado"
+                />
+                <label class="full-width-label" for="codigo_rotulacion_empleado">Codigo de rotulacion</label>
+            </span>
+        </div>
+
+        <div class="field p-col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="nombre_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.nombre_empleado"
+                />
+                <label class="full-width-label" for="nombre_empleado">Nombre del empleado</label>
+            </span>
+        </div>
+
+        <div class="field p-col-12 md-3">
+            <span class="p-float-label">
+                <p-dropdown
+                id="tipo_contrato_empleado"
+                [options]="['Fijo', 'Indefinido']"
+                [(ngModel)]="empleado.tipo_contrato_empleado"
+                placeholder="Selecciona tipo de contrato"
+                styleClass="p-inputtext p-filled"
+                required
+            ></p-dropdown>
+
+                <label class="full-width-label" for="tipo_contrato_empleado">Tipo de Contrato</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="fecha_inicio_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.fecha_inicio_empleado"
+                />
+                <label for="inputtext">Fecha inicio</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="fecha_vencimiento_contrato_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.fecha_vencimiento_contrato_empleado"
+                />
+                <label class="full-width-label" for="inputtext">Fecha de vencimiento del contrato</label>
+            </span>
+        </div>
+        
+        <div class="p-field">
+            <span class="p-float-label">
+                <p-dropdown
+                id="tipo_documento_empleado"
+                [options]="['Cédula de Ciudadanía', 'Cédula de Extranjería', 'Tarjeta de Identidad']"
+                [(ngModel)]="empleado.tipo_documento_empleado"
+                placeholder="Selecciona tipo de documento"
+                styleClass="p-inputtext p-filled"
+                required
+            ></p-dropdown>
+                <label class="full-width-label" for="tipo_documento_empleado">Tipo de Documento</label>
+            </span>
+        </div>
+        
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="identificacion_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.identificacion_empleado"
+                />
+                <label for="inputtext">Identificacion</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="fecha_nacimiento_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.fecha_nacimiento_empleado"
+                    style="width: 100%;"
+                />
+                <label for="fecha_nacimiento_empleado" style="width: 100%;">Fecha de nacimiento</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="edad_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.edad_empleado"
+                    style="width: 100%;"
+                />
+                <label for="edad_empleado" class="custom-label">Edad</label>
+            </span>
+        </div>
+        
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="lugar_nacimiento_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.lugar_nacimiento_empleado"
+                />
+                <label for="inputtext" style="width: 100%;">Lugar de nacimiento</label>
+            </span>
+        </div>
+        
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="direccion_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.direccion_empleado"
+                />
+                <label for="inputtext">Direccion</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="municipio_domicilio_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.municipio_domicilio_empleado"
+                />
+                <label for="inputtext" style="width: 100%;">Municipio de domicilio</label>
+            </span>
+        </div>
+        
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="estado_civil_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.estado_civil_empleado"
+                />
+                <label for="inputtext">Estado civil</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="celular_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.celular_empleado"
+                />
+                <label for="inputtext">Celular</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="correo_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.correo_empleado"
+                />
+                <label for="inputtext">Correo</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="alergia_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.alergia_empleado"
+                />
+                <label for="inputtext">Alergia</label>
+            </span>
+        </div>
+        <div *ngFor="let contacto of empleado.contacto_emergencia; let i = index" class="row">
+            <div class="col-md-4">
+                <div class="p-field custom-input">
+                    <input id="nombre_contacto_emergencia{{i}}" type="text" pInputText name="nombre_contacto_emergencia{{i}}"
+                        [(ngModel)]="contacto.nombre_contacto_emergencia" required>
+                        <label for="inputtext" class="custom-label">Nombre del contacto de emergencia</label>
+                </div>
+            </div>
+        
+            <div class="col-md-4">
+                <div class="p-field custom-input">
+                    <input id="parentesco_empleado{{i}}" type="text" pInputText name="parentesco_empleado{{i}}"
+                        [(ngModel)]="contacto.parentesco_empleado" required>
+                    <div class="custom-label" (click)="focusInput('parentesco_empleado{{i}}')">Parentesco con el empleado</div>
+                </div>
+            </div>
+        
+            <div class="col-md-4">
+                <div class="p-field custom-input">
+                    <input id="telefono_contacto_emergencia{{i}}" type="text" pInputText name="telefono_contacto_emergencia{{i}}"
+                        [(ngModel)]="contacto.telefono_contacto_emergencia" required>
+                    <div class="custom-label" (click)="focusInput('telefono_contacto_emergencia{{i}}')">Teléfono del contacto de emergencia</div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="grupo_sanguineo_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.grupo_sanguineo_empleado"
+                />
+                <label for="inputtext">Grupo sanguineo</label>
+            </span>
+        </div>
+        
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="eps_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.eps_empleado"
+                />
+                <label for="inputtext">Eps</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="pension_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.pension_empleado"
+                />
+                <label for="inputtext">Pension</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="cuenta_bancaria_empleado"
+                    pInputText
+                    [(ngModel)]="empleado.cuenta_bancaria_empleado"
+                />
+                <label for="inputtext">Cuenta bancaria</label>
+            </span>
+        </div>
+        <div class="field p-col-12 md-3">
+            <span class="p-float-label">
+                <p-dropdown
+                    id="area_empleado"
+                    [options]="['Panadero', 'Repostero', 'Tortas', 'Chef']"
+                    [(ngModel)]="empleado.area_empleado"
+                    placeholder="Selecciona área"
+                    styleClass="p-inputtext p-filled"
+                    required
+                ></p-dropdown>
+                <label class="full-width-label" for="area_empleado">Área</label>
+            </span>
+        </div>
+        
+        
+    </div>
+    
+
+    <div class="my-2">
+        <button
+            pButton
+            pRipple
+            label="Crear Empleado"
+            icon="pi pi-user-plus"
+            class="p-button-success mr-2"
+            (click)="crearEmpleado()"
+        ></button>
+    </div>
+

@@ -5,6 +5,7 @@ import { ProductService } from './product-list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../categoria/categoria.service';
+import { CartService } from '../cart/cart.service';
 
 @Component({
     templateUrl: './product-list.component.html',
@@ -20,6 +21,8 @@ export class ProductComponent implements OnInit {
     formProduct:FormGroup;
     id: string = '';
     categoriaSeleccionada: string = 'Todas las categorías';
+
+    visibleSidebarCarrito: boolean = false;
     
     //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control de la imagen
@@ -76,7 +79,7 @@ export class ProductComponent implements OnInit {
       private messageService: MessageService,
       private aRouter:ActivatedRoute,
       private categoriaService: CategoriaService,
-      //private cartService: CartService,
+      private cartService: CartService,
       ){
 
         this.aRouter.params.subscribe(params => {
@@ -169,9 +172,10 @@ export class ProductComponent implements OnInit {
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para qgregar un producto al carrito
-    // onClick(product: Product) {
-    //   this.cartService.addNewProduct(product)
-    // }
+    onClick(product: Product) {
+      console.log(product)
+      this.cartService.addNewProduct(product)
+    }
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para abrir un dialog y ver detalles de un producto
@@ -187,6 +191,10 @@ export class ProductComponent implements OnInit {
     //función para cerrar un dialog y limpiar el fileUpload de crear producto
     cerrarDialog() {
       this.detalleProductoDialog = false;
+    }
+
+    visibleCarritoSidebar() {
+      this.visibleSidebarCarrito = true;
     }
     
     //-------------------------------------------------------------------------------------------------------------------------------
