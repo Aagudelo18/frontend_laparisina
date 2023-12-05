@@ -56,60 +56,85 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Método para calcular las nuevas ventas desde la última semana
     calcularNuevasVentas() {
-        const unaSemanaEnMilisegundos = 7 * 24 * 60 * 60 * 1000; // 7 días en milisegundos
-        const fechaActual = new Date(); // Obtener la fecha actual
+        // Obtener la fecha actual
+        const fechaActual = new Date();
 
-        // Calcular la fecha del domingo de la semana anterior
-        const domingoDeLaSemanaAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - fechaActual.getDay() - 1);
+        // Obtener la fecha del día anterior
+        const fechaAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - 1);
 
-        // Filtrar las ventas que ocurrieron desde el lunes hasta el domingo de la semana anterior
+        // Filtrar las ventas que ocurrieron desde el día anterior
         const nuevasVentas = this.ventas.filter(venta => {
-            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido); // Convertir la fecha de entrega a objeto Date
-            return fechaEntregaPedido.getDay() === 0;
+            // Convertir la fecha de entrega a objeto Date
+            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
+
+            // Devolver true si la fecha de entrega es posterior a la fecha del día anterior
+            return fechaEntregaPedido.getTime() >= fechaAnterior.getTime();
         });
 
+        // Devolver la cantidad de ventas filtradas
         const cantidadNuevasVentas = nuevasVentas.length;
         return cantidadNuevasVentas;
     }
 
-
-
+    //Método para obtener los productos más vendidos de la semana, implementando la misma lógica de las ventas de la semana.
     obtenerProductosMasVendidos(): void {
+        // Obtener la fecha actual
+        const fechaActual = new Date();
+
+        // Obtener la fecha del día anterior
+        const fechaAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - 1);
+
+        // Filtrar las ventas que ocurrieron desde el día anterior
+        const ventasDeLaSemana = this.ventas.filter(venta => {
+            // Convertir la fecha de entrega a objeto Date
+            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
+
+            // Devolver true si la fecha de entrega es posterior a la fecha del día anterior
+            return fechaEntregaPedido.getTime() >= fechaAnterior.getTime();
+        });
+
+        // Obtener un mapa de productos vendidos
         const productoCantidadMap = new Map<string, {
             name: string,
             quantitySold: number,
             price: number
         }>();
 
-        this.ventas.forEach(venta => {
+        // Iterar sobre las ventas de la semana
+        ventasDeLaSemana.forEach(venta => {
+            // Iterar sobre los detalles del pedido
             venta.detalle_pedido.forEach(detalle => {
+                // Obtener el nombre del producto
                 const nombreProducto = detalle.nombre_producto;
+
+                // Obtener la cantidad vendida
                 const cantidadProducto = detalle.cantidad_producto;
+
+                // Obtener el precio del producto
                 const precioProducto = detalle.precio_ico; // O detalle.precio_por_mayor_ico, según sea el precio que quieras mostrar
 
-                if (productoCantidadMap.has(nombreProducto)) {
-                    productoCantidadMap.get(nombreProducto)!.quantitySold += cantidadProducto;
-                    productoCantidadMap.get(nombreProducto)!.price = precioProducto;
-                } else {
-                    productoCantidadMap.set(nombreProducto, {
-                        name: nombreProducto,
-                        quantitySold: cantidadProducto,
-                        price: precioProducto
-                    });
-                }
+                // Agregar el producto al mapa
+                productoCantidadMap.set(nombreProducto, {
+                    name: nombreProducto,
+                    quantitySold: cantidadProducto,
+                    price: precioProducto
+                });
             });
         });
 
+        // Obtener los productos más vendidos
         const sortedProducts = Array.from(productoCantidadMap.entries())
             .sort((b, a) => a[1].quantitySold - b[1].quantitySold)
             .slice(0, 5); // Obtener solo los 5 productos más vendidos
 
+        // Asignar los productos más vendidos a la propiedad `topSellingProducts`
         this.topSellingProducts = sortedProducts.map(([productName, product]) => ({
             name: product.name,
             quantitySold: product.quantitySold,
             price: product.price
         }));
     }
+
 
 
 

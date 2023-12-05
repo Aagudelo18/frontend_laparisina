@@ -85,4 +85,12 @@ export class LoginComponent implements OnInit {
             );
         }
     }
+
+    registro() {
+        this.router.navigate(['/auth/registrarse']); // Navegar a la vista de registro al hacer clic en el botón
+    }
+
+    recuperarContrasena() {
+        this.router.navigate(['/auth/recuperar-contrasena']); // Navegar a la vista de recuperar contraseña al hacer clic en el enlace
+      }
 }

@@ -23,4 +23,9 @@ export class AppTopBarComponent {
         this.loginService.logout(); // Llama al método logout() del servicio LoginService
         this.router.navigate(['/auth/login']); // Redirige al usuario al componente de login
     }
+
+    perfil() {
+        this.router.navigate(['/pages/perfil']); // Esta ruta debe coincidir con tu ruta '/perfil' definida en las rutas de tu aplicación
+    }
+    
 }
