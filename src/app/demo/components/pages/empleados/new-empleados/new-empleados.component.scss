@@ -1,0 +1,105 @@
+p-table {
+    margin: 0 auto; 
+    display: table;
+  }
+  .my-2 {
+    text-align: center; 
+  }
+  
+  .my-2 button {
+    margin: 0 auto 10px;
+  }
+
+  .summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    width: 300px; 
+}
+
+label {
+    margin-right: 10px;
+    width: 120px; 
+}
+.full-width-label {
+  width: 100%;
+  display: block;
+}
+.custom-width {
+  width: 100%;
+}
+
+.full-width-input {
+  width: calc(100% - 2px); /* Ajusta si es necesario para el borde */
+}
+
+.full-width-input {
+  width: 100%;
+}
+
+.custom-label {
+  white-space: nowrap; /* Evita el salto de línea */
+  overflow: hidden;    /* Oculta el desbordamiento */
+  text-overflow: ellipsis; /* Añade puntos suspensivos en el desbordamiento */
+  display: block;
+  width: 100%; /* Ocupa el 100% del ancho disponible */
+}
+.custom-input {
+  position: relative;
+}
+
+.custom-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  pointer-events: none;
+  transition: 0.3s ease-out;
+  color: #333; /* Cambia el color del texto */
+  font-size: 14px; /* Ajusta el tamaño del texto según sea necesario */
+  cursor: text; /* Muestra el cursor de texto al pasar sobre el título */
+}
+
+.custom-input input:focus + .custom-label,
+.custom-label.clicked {
+  top: -12px;
+  font-size: 12px;
+  color: #050505; /* Puedes cambiar el color al subir o mantenerlo constante */
+}
+.custom-input {
+    position: relative;
+}
+
+.custom-label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 12px;
+    pointer-events: none;
+    transition: 0.3s ease-out;
+    color: #333; /* Cambia el color del texto */
+    font-size: 14px; /* Ajusta el tamaño del texto según sea necesario */
+    cursor: text; /* Muestra el cursor de texto al pasar sobre el título */
+}
+
+.custom-input input:focus + .custom-label,
+.custom-label.clicked {
+    top: -12px;
+    font-size: 12px;
+    color: #070707; /* Puedes cambiar el color al subir o mantenerlo constante */
+}
+
+.custom-input input {
+    padding: 12px; /* Ajusta el espacio dentro del campo según sea necesario */
+    font-size: 14px; /* Ajusta el tamaño del texto dentro del campo según sea necesario */
+}
+
+
+
+
+
