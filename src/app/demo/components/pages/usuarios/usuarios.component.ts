@@ -61,7 +61,7 @@ export class UsuariosComponent implements OnInit {
     this.getListRoles();
   }
 
-  //Método para traer todos los usuarios.
+  //Método para traer todos los usuarios. signIn
   getListUsuarios() {
     this.usuarioService.getUsuarios().subscribe((data: any) => {
       if (data && data.usuarios) {

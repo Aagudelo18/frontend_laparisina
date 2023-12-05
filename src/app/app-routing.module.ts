@@ -1,9 +1,18 @@
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
+import { ListEmpleadosComponent } from './demo/components/pages/empleados/list-empleados/list-empleados.component';
 
-
+const routes: Routes = [
+    // Otras rutas...
+    {
+        
+      path: 'detalle-empleado/:id',
+      component: ListEmpleadosComponent,
+      
+    },
+];
 @NgModule({
     imports: [
         RouterModule.forRoot([
@@ -19,6 +28,8 @@ import { AppLayoutComponent } from "./layout/app.layout.component";
                     { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
                     { path: 'new-pedidos', loadChildren: () => import('./demo/components/pages/pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule)},
                     { path: 'list-pedidos', loadChildren: () => import('./demo/components/pages/pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule)},
+                    { path: 'new-empleados', loadChildren: () => import('./demo/components/pages/empleados/new-empleados/new-empleados.module').then(m => m.NewEmpleadosModule)},
+                    { path: 'list-empleados', loadChildren: () => import('./demo/components/pages/empleados/list-empleados/list-empleados.module').then(m => m.ListEmpleadosModule)},
                   
                    
                 ]
