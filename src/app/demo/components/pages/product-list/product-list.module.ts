@@ -26,6 +26,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DataViewModule } from 'primeng/dataview';
 import { MenubarModule } from 'primeng/menubar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     imports: [
@@ -52,7 +53,8 @@ import { MenubarModule } from 'primeng/menubar';
         GalleriaModule,
         CarouselModule,
         DataViewModule,
-        MenubarModule
+        MenubarModule,
+        OverlayPanelModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [ProductComponent],
