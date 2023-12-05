@@ -31,4 +31,8 @@ export class ClienteService {
   actualizarEstadoCliente(id:string): Observable<void>{
     return this.http.put<void>(`${this.apiUrl2}/clientes_estado/${id}`,{})
     }
+
+descargarClientesExcel(): Observable<Blob> {
+  return this.http.get(`${this.apiUrl2}/clientes_excel`, { responseType: 'blob' });
+}
 }
