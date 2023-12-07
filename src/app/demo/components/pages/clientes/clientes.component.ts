@@ -130,7 +130,7 @@ export class clientesComponent implements OnInit {
             ciudad_cliente: data.ciudad_cliente,
             estado_cliente:data.estado_cliente,
             contrasena_usuario: this.formCliente.value.contrasena_usuario,
-          confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
+            confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
           })
         })
       }

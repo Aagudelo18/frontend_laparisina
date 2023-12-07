@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../categoria/categoria.service';
 import { CartService } from '../cart/cart.service';
 
+
+
 @Component({
     templateUrl: './product-list.component.html',
     providers: [MessageService, CategoriaService]
@@ -21,8 +23,10 @@ export class ProductComponent implements OnInit {
     formProduct:FormGroup;
     id: string = '';
     categoriaSeleccionada: string = 'Todas las categorías';
-
-    visibleSidebarCarrito: boolean = false;
+    carrito: Product[] = [];
+    cantidad?: number;
+    cantidadSeleccionada: number = 1; // Valor predeterminado
+    precioTotal: number;
     
     //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control de la imagen
@@ -69,6 +73,7 @@ export class ProductComponent implements OnInit {
       }
     ];
 
+
     //---------------------------------------------------------------------------------------------------------------------------------
     //Variables para controlar dialogs
     detalleProductoDialog: boolean = false;
@@ -79,7 +84,7 @@ export class ProductComponent implements OnInit {
       private messageService: MessageService,
       private aRouter:ActivatedRoute,
       private categoriaService: CategoriaService,
-      private cartService: CartService,
+     
       ){
 
         this.aRouter.params.subscribe(params => {
@@ -170,12 +175,7 @@ export class ProductComponent implements OnInit {
       })
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para qgregar un producto al carrito
-    onClick(product: Product) {
-      console.log(product)
-      this.cartService.addNewProduct(product)
-    }
+   
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para abrir un dialog y ver detalles de un producto
@@ -193,14 +193,14 @@ export class ProductComponent implements OnInit {
       this.detalleProductoDialog = false;
     }
 
-    visibleCarritoSidebar() {
-      this.visibleSidebarCarrito = true;
-    }
+   
     
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para filtar la tabla en el buscador
     onFilter(dv: any, event: Event) {
       dv.filter((event.target as HTMLInputElement).value);
     }
-    
+    // Nuevas funciones para el carrito
+
+
 }

@@ -23,6 +23,7 @@ export class CartService {
 
   //Agregar al carrito de compras cuando pulse el botón dentro de la card de producto
   addNewProduct(product: Producto){
+    console.log(product)
     this.cartProducts.push(product);
     this._products.next(this.cartProducts);
   }

@@ -18,6 +18,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ListPedidosComponent } from './list-pedidos.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   
@@ -40,6 +41,7 @@ import { TabViewModule } from 'primeng/tabview';
     DialogModule,
     ReactiveFormsModule,
     TabViewModule,
+    TooltipModule,
     
   ],
   declarations: [ListPedidosComponent]

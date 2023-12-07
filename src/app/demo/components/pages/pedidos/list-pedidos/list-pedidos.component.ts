@@ -37,7 +37,7 @@ export class ListPedidosComponent implements OnInit {
     domiciliarioSeleccionado: any; // Puedes ajustar este tipo según tus necesidades
     domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
     confirmarAsignacionDialog: boolean = false;
-
+   
     constructor(
         private pedidosService: PedidosService,
         private router: Router,
@@ -79,6 +79,14 @@ export class ListPedidosComponent implements OnInit {
         this.cargarPedidosEnviados();
         
     }
+
+    //cargar el componet automatico
+    reloadComponent() {
+        const currentRoute = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate([currentRoute]);  
+        });
+      }
 
     //Cargar Domiciliarios
     cargarDomiciliarios() {
@@ -129,6 +137,8 @@ export class ListPedidosComponent implements OnInit {
         });
     }
 
+ 
+
     openNewPedidos() {
         this.router.navigate(['/new-pedidos']);
     }
@@ -176,7 +186,7 @@ export class ListPedidosComponent implements OnInit {
     }
 
     esEmpresa() {
-        return this.formPedidos.get('tipo_cliente').value === 'Empresa';
+        return this.formPedidos.get('tipo_cliente').value === 'Persona jurídica';
     }
 
     private esperarRespuesta(): Promise<boolean> {
@@ -301,6 +311,7 @@ export class ListPedidosComponent implements OnInit {
                 // Actualizar la lista de pedidos
                 this.cargarPedidosPendientes();
                 this.cargarPedidosTerminados();
+                this.reloadComponent();
             },
             (error) => {
                 if (error.error && error.error.error) {

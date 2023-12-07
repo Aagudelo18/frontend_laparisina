@@ -14,6 +14,7 @@ import { CategoriaService } from '../categoria/categoria.service';
     templateUrl: './producto.component.html',
     providers: [MessageService, CategoriaService]
 })
+
 export class ProductoComponent implements OnInit {
   @ViewChild('fileCrear') fileCrear: FileUpload;
   @ViewChild('fileEditar') fileEditar: FileUpload;
