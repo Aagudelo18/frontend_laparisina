@@ -5,6 +5,7 @@ import { ProductService } from './product-list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../categoria/categoria.service';
+import { CartService } from '../cart/cart.service';
 
 
 
@@ -191,6 +192,8 @@ export class ProductComponent implements OnInit {
     cerrarDialog() {
       this.detalleProductoDialog = false;
     }
+
+   
     
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para filtar la tabla en el buscador

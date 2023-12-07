@@ -10,7 +10,6 @@ import { FileUpload } from 'primeng/fileupload';
 import { CategoriaService } from '../categoria/categoria.service';
 
 
-
 @Component({
     templateUrl: './producto.component.html',
     providers: [MessageService, CategoriaService]

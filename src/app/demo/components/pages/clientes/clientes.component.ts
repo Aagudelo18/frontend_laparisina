@@ -22,7 +22,7 @@ export class clientesComponent implements OnInit {
     estadoClienteDialog: boolean = false;
     selectedClientes: any[] = [];
    
-    private confirmacionUsuarioSubject = new Subject<boolean>();
+      private confirmacionUsuarioSubject = new Subject<boolean>();
       mostrarConfirmacionUsuario = false; 
       listClientes: Clientes[] = []
       clientes: Clientes = {}
@@ -65,7 +65,27 @@ export class clientesComponent implements OnInit {
             this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
           });
          }
-
+        
+         async descargarExcel() {
+          try {
+            const blob = await this.clienteService.descargarClientesExcel().toPromise();
+            this.descargarArchivo(blob);
+          } catch (error) {
+            console.error('Error al descargar el archivo', error);
+            // Manejar el error según sea necesario
+          }
+        }
+      
+        private descargarArchivo(blob: Blob) {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          document.body.appendChild(a);
+          a.href = url;
+          a.download = 'cliente.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        }
+      
 
        //Verifica o se asegura de que el campo de confirmar contraseña coincida con la contraseña.
       validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
@@ -110,7 +130,7 @@ export class clientesComponent implements OnInit {
             ciudad_cliente: data.ciudad_cliente,
             estado_cliente:data.estado_cliente,
             contrasena_usuario: this.formCliente.value.contrasena_usuario,
-          confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
+            confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
           })
         })
       }

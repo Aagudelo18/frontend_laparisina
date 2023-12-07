@@ -38,12 +38,14 @@
                                 <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
                                 <label for="rememberme1">Recuerdame</label>
                             </div>
-                            <a class="font-medium no-underline ml-2 text-right cursor-pointer"
+                            <a (click)="recuperarContrasena()" class="font-medium no-underline ml-2 text-right cursor-pointer"
                                 style="color: var(--primary-color)">¿Olvidaste tu contraseña?</a>
                         </div>
                     </div>
                 </form>
-                <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl"></button>
+                <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl" [disabled]="!loginFormulario.valid"></button>
+                <br><br>
+                <button (click)="registro()" pButton pRipple label="Registrarse" class="w-full p-3 text-xl"></button>
             </div>
         </div>
     </div>

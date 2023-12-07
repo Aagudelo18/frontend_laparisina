@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Clientes } from './clientes.model';
+import { Clientes } from '../../pages/clientes/clientes.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -31,8 +31,4 @@ export class ClienteService {
   actualizarEstadoCliente(id:string): Observable<void>{
     return this.http.put<void>(`${this.apiUrl2}/clientes_estado/${id}`,{})
     }
-
-descargarClientesExcel(): Observable<Blob> {
-  return this.http.get(`${this.apiUrl2}/clientes_excel`, { responseType: 'blob' });
-}
 }

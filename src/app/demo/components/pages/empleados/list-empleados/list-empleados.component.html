@@ -1,0 +1,538 @@
+
+<p-toast></p-toast>
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <div class="my-2">
+            <button
+                pButton
+                pRipple
+                label="Crear Empleado"
+                icon="pi pi-user-plus"
+                class="p-button-success mr-2"
+                (click)="openNewEmpleados()"
+            ></button>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <!-- <button
+            pButton
+            pRipple
+            label="Export"
+            icon="pi pi-upload"
+            class="p-button-help"
+            (click)="dt.exportCSV()"
+        ></button> -->
+    </ng-template>
+</p-toolbar>
+<p-table
+    #dt
+    [value]="empleados"
+    [rows]="10"
+    [globalFilterFields]="['nombre_empleado', 'tipo_contrato_empleado', 'tipo_documento_empleado', 'direccion_empleado']"
+    [paginator]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [(selection)]="selectedEmpleados"
+    selectionMode="multiple"
+    dataKey="_id"
+>
+
+
+    <ng-template pTemplate="caption">
+        <div
+            class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+        >
+            <h4 class="m-0">Listado de Empleados</h4>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input
+                    pInputText
+                    type="text"
+                    (input)="onGlobalFilter(dt, $event)"
+                    placeholder="Buscar..."
+                    class="w-full sm:w-auto"
+                />
+            </span>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="codigo_rotulacion_empleado">Codigo Rotulacion<p-sortIcon
+                field="codigo_rotulacion_empleado"></p-sortIcon></th>
+        <th pSortableColumn="nombre_empleado">Nombre <p-sortIcon field="nombre_empleado"></p-sortIcon>
+        </th>
+        <th pSortableColumn="tipo_documento_empleado">tipo documento <p-sortIcon
+            field="tipo_documento_empleado"></p-sortIcon></th>
+    <th pSortableColumn="identificacion_empleado">Identificacion <p-sortIcon
+            field="identificacion_empleado"></p-sortIcon></th>
+            <th pSortableColumn="contacto_emergencia">Contacto emergencia <p-sortIcon
+                field="contacto_emergencia"></p-sortIcon></th>
+
+            <th pSortableColumn="name">Aciones</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-empleado>
+        <tr>
+            <td style="width:14%; min-width:15rem;"><span class="p-column-title">Code</span>
+                {{empleado.codigo_rotulacion_empleado}}
+            </td>
+            <td style="width:14%; min-width:15rem;">
+                <span class="p-column-title">Name</span>
+                {{empleado.nombre_empleado}}
+            </td>
+            <td style="width:14%; min-width: 15rem;"><span class="p-column-title">document type</span>
+                {{empleado.tipo_documento_empleado}}
+            </td>
+            <td style="width:14%; min-width: 15rem;"><span class="p-column-title">id</span>
+                {{empleado.identificacion_empleado}}
+            </td>
+            <td style="width:14%; min-width: 10rem;"><span class="p-column-title">id</span>
+                <ul>
+                    <li *ngFor="let contacto of empleado.contacto_emergencia">
+                        {{ contacto.nombre_contacto_emergencia }}
+                        {{ contacto.parentesco_empleado }}
+                        {{ contacto.telefono_contacto_emergencia }}
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <div class="flex">
+                    
+                    <button
+                    type="button"
+                        pButton
+                        pRipple
+                        icon="pi pi-eye"
+                        class="p-button-rounded p-button-primary mr-2"
+                        (click)="verDetalleEmpleado(empleado._id)"
+                    ></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarEmpleadoDialog(empleado._id)" style=" width: 2.5rem; height: 2.5rem; ;"></button>
+                    <!-- <button
+                        pButton
+                        pRipple
+                        icon="pi pi-chevron-right"
+                        class="p-button-rounded p-button-warning"
+                        (click)="cambiarEmpleado(empleado._id, estadoSiguiente)">
+                        {{ empleado.estado_empleado }}
+                    ></button> -->
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>
+
+<p-dialog
+    [(visible)]="detalleEmpleadoDialog"
+    [style]="{ width: '900px' }"
+    header="Detalles Empleado"
+    [modal]="true"
+    class="p-fluid"
+>
+<form [formGroup]="formEmpleados" style="margin-top: 30px;">
+        <!-- Primera fila -->
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+            <div class="field col">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"
+                        formControlName="tipo_contrato_empleado"
+                        id="tipo_contrato_empleado"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="tipo_contrato_empleado">Tipo de contrato</label>
+                </span>
+            </div>
+            <div class="field col" >
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="fecha_inicio_empleado" id="fecha_inicio_empleado" type="text" pInputText>
+                    <label for="fecha_inicio_empleado">Fecha de inicio</label>
+                </span>             
+            </div>
+            <div class="field col" >
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado" type="text" pInputText>
+                    <label for="fecha_vencimiento_contrato_empleado">Fecha vencimiento</label>
+                </span>             
+            </div>
+            
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="lugar_nacimiento_empleado" id="lugar_nacimiento_empleado" type="text" pInputText>
+                    <label for="lugar_nacimiento_empleado">Lugar de nacimiento</label>
+                </span>             
+            </div>
+        </div>
+     </div>
+
+        <div class="formgrid grid mt-3">
+        <div class="formgrid grid">
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" type="text" pInputText>
+                    <label for="fecha_nacimiento_empleado">Fecha nacimiento</label>
+                </span>             
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="edad_empleado" id="edad_empleado" type="text" pInputText>
+                    <label for="edad_empleado">Edad</label>
+                </span>             
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="direccion_empleado" id="direccion_empleado" type="text" pInputText>
+                    <label for="direccion_empleado">Dirección</label>
+                </span>
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="municipio_domicilio_empleado" id="municipio_domicilio_empleado" type="text" pInputText>
+                    <label for="municipio_domicilio_empleado">Municipio del domicilio</label>
+                </span>
+            </div>
+            
+        </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="estado_civil_empleado" id="estado_civil_empleado" type="text" pInputText>
+                        <label for="estado_civil_empleado">Estado civil</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="celular_empleado" id="celular_empleado" type="text" pInputText>
+                        <label for="celular_empleado">Celular</label>
+                    </span>
+                </div>       
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="correo_empleado" id="correo_empleado" type="text" pInputText>
+                        <label for="correo_empleado">Correo</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                        formControlName="alergia_empleado" id="alergia_empleado" type="text" pInputText>
+                        <label for="alergia_empleado"> Alergías </label>
+                    </span>
+                </div>
+            </div>
+            </div>
+            <div class="formgrid grid mt-3">
+                <div class="formgrid grid">
+                    
+                    <!-- <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="grupo_sanguineo_empleado" id="grupo_sanguineo_empleado" type="text" pInputText>
+                            <label for="grupo_sanguineo_empleado">Grupo sanguineo</label>
+                        </span>
+                    </div> -->
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="eps_empleado" id="eps_empleado" type="text" pInputText>
+                            <label for="eps_empleado">Eps</label>
+                        </span>
+                    </div>
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="pension_empleado" id="pension_empleado" type="text" pInputText>
+                            <label for="pension_empleado">Pensión</label>
+                        </span>
+                    </div>
+                    <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="cuenta_bancaria_empleado" id="cuenta_bancaria_empleado" type="text" pInputText>
+                            <label for="cuenta_bancaria_empleado">Numero de cuenta</label>
+                        </span>
+                    </div>
+                   
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="area_empleado" id="area_empleado" type="text" pInputText>
+                            <label for="area_empleado">Area</label>
+                        </span>
+                </div>
+                </div>
+                
+                
+
+  <!-- Detalle del Producto -->
+  <div class="formgrid grid mt-5" *ngIf="detalleEmpleadoDialog">
+    <table class="table custom-table">
+        
+        <tbody>
+            <tr *ngFor="let detalle of formEmpleados.controls['detalle_empleado'].value">
+                <td>{{ detalle.tipo_contrato_empleado }}</td>
+                            <td>{{ detalle.fecha_inicio_empleado }}</td>
+                            <td>{{ detalle.fecha_vencimiento_contrato_empleado }}</td>                
+                            <td>{{ detalle.fecha_nacimiento_empleado }}</td>
+                            <td>{{ detalle.edad_empleado }}</td>
+                            <td>{{ detalle.lugar_nacimiento_empleado }}</td>
+                            <td>{{ detalle.direccion_empleado }}</td>
+                            <td>{{ detalle.municipio_domicilio_empleado }}</td>
+                            <td>{{ detalle.estado_civil_empleado }}</td>
+                            <td>{{ detalle.celular_empleado }}</td>
+                            <td>{{ detalle.correo_empleado }}</td>
+                            <td>{{ detalle.alergia_empleado }}</td>
+                            <td>{{ detalle.grupo_sanguineo_empleado }}</td>
+                            <td>{{ detalle.eps_empleado }}</td>
+                            <td>{{ detalle.pension_empleado }}</td>
+                            <td>{{ detalle.cuenta_bancaria_empleado }}</td>
+                            <td>{{ detalle.area_empleado }}</td>
+                        </tr>
+        </tbody>
+    </table>
+</div>
+
+   <!-- Resumen del Pago -->
+   <!-- <div class="formgrid grid mt-5">
+    <div class="field col">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="subtotal_venta" id="subtotal_venta" type="text" pInputText>
+            <label for="subtotal_venta">Subtotal Venta</label>
+        </span>
+    </div>
+    <div class="field col" *ngIf="esEmpresa()">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="aumento_empresa" id="aumento_empresa" type="text" pInputText>
+            <label for="aumento_empresa">Aumento Empresa</label>
+        </span>
+    </div>
+    <div class="field col">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="valor_domicilio" id="valor_domicilio" type="text" pInputText>
+            <label for="valor_domicilio">Valor Domicilio</label>
+        </span>
+    </div>
+    <div class="field col">
+        <span class="p-float-label">
+            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+            formControlName="precio_total_venta" id="precio_total_venta" type="text" pInputText>
+            <label for="precio_total_venta">Precio Total Venta</label>
+        </span>
+    </div>
+</div> -->
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+            <button pButton pRipple label="Cerrar" class="p-button-text" (click)="detalleEmpleadoDialog = false"></button>
+        </div>   
+    </form>             
+</p-dialog>
+
+<p-dialog [(visible)]="editarEmpleadoDialog" [style]="{ width: '900px' }" header="Editar Empleado" [modal]="true" class="p-fluid">
+    <form [formGroup]="formEmpleados" (ngSubmit)="actualizarEmpleado()" style="margin-top: 30px;">
+      <!-- Primera fila -->
+      <div class="formgrid grid mt-3">
+        <div class="formgrid grid">
+          <div class="field col">
+            <span class="p-float-label">
+              <input formControlName="codigo_rotulacion_empleado" id="codigo_rotulacion_empleado" type="text" pInputText>
+              <label for="codigo_rotulacion_empleado">Codigo del empleado</label>
+            </span>
+          </div>    
+            
+            
+                  <div class="field col">
+                    <span class="p-float-label">
+                      <input formControlName="nombre_empleado" id="nombre_empleado" type="text" pInputText>
+                      <label for="nombre_empleado">Nombre</label>
+                    </span>
+                  </div>  
+            
+                  <div class="field col">
+                    <span class="p-float-label">
+                      <input formControlName="tipo_contrato_empleado" id="tipo_contrato_empleado" type="text" pInputText>
+                      <label for="tipo_contrato_empleado">Tipo de contrato</label>
+                    </span>
+                  </div>                  
+            
+                  
+                      <div class="field col">
+                        <span class="p-float-label">
+                          <input formControlName="fecha_inicio_empleado" id="fecha_inicio_empleado" type="text" pInputText>
+                          <label for="fecha_inicio_empleado">Fecha de inicio</label>
+                        </span>
+                      </div>  
+                    </div>
+                </div>
+                      <div class="formgrid grid mt-3">
+                        <div class="formgrid grid">
+                          <div class="field col">
+                            <span class="p-float-label">
+                              <input formControlName="fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado" type="text" pInputText>
+                              <label for="fecha_vencimiento_contrato_empleado">Fecha Fin</label>
+                            </span>
+                          </div>                   
+            
+                          
+                              <div class="field col">
+                                <span class="p-float-label">
+                                  <input formControlName="tipo_documento_empleado" id="tipo_documento_empleado" type="text" pInputText>
+                                  <label for="tipo_documento_empleado">Tipo de documento</label>
+                                </span>
+                              </div>  
+                              
+                                  <div class="field col">
+                                    <span class="p-float-label">
+                                      <input formControlName="identificacion_empleado" id="identificacion_empleado" type="text" pInputText>
+                                      <label for="identificacion_empleado">Número de identificación</label>
+                                    </span>
+                                  </div> 
+                                  
+                                      <div class="field col">
+                                        <span class="p-float-label">
+                                          <input formControlName="fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" type="text" pInputText>
+                                          <label for="fecha_nacimiento_empleado">Fecha de nacimiento</label>
+                                        </span>
+                                      </div> 
+                                    </div> 
+                                </div> 
+                                      <div class="formgrid grid mt-3">
+                                        <div class="formgrid grid">
+                                          <div class="field col">
+                                            <span class="p-float-label">
+                                              <input formControlName="edad_empleado" id="edad_empleado" type="text" pInputText>
+                                              <label for="edad_empleado">Edad</label>
+                                            </span>
+                                          </div>                    
+            
+                                          
+                                              <div class="field col">
+                                                <span class="p-float-label">
+                                                  <input formControlName="lugar_nacimiento_empleado" id="lugar_nacimiento_empleado" type="text" pInputText>
+                                                  <label for="lugar_nacimiento_empleado">Lugar de nacimiento</label>
+                                                </span>
+                                              </div> 
+                                              
+                                                  <div class="field col">
+                                                    <span class="p-float-label">
+                                                      <input formControlName="direccion_empleado" id="direccion_empleado" type="text" pInputText>
+                                                      <label for="direccion_empleado">Dirección</label>
+                                                    </span>
+                                                  </div> 
+                                                  
+                                                      <div class="field col">
+                                                        <span class="p-float-label">
+                                                          <input formControlName="municipio_domicilio_empleado" id="municipio_domicilio_empleado" type="text" pInputText>
+                                                          <label for="municipio_domicilio_empleado">Municipio domicilio</label>
+                                                        </span>
+                                                      </div> 
+                                                    </div> 
+                                                </div> 
+                                                      <div class="formgrid grid mt-3">
+                                                        <div class="formgrid grid">
+                                                          <div class="field col">
+                                                            <span class="p-float-label">
+                                                              <input formControlName="estado_civil_empleado" id="estado_civil_empleado" type="text" pInputText>
+                                                              <label for="estado_civil_empleado">Estado civil</label>
+                                                            </span>
+                                                          </div> 
+                                                          
+                                                              <div class="field col">
+                                                                <span class="p-float-label">
+                                                                  <input formControlName="celular_empleado" id="celular_empleado" type="text" pInputText>
+                                                                  <label for="celular_empleado">Telefono</label>
+                                                                </span>
+                                                              </div>                  
+           
+                                                              
+                                                                  <div class="field col">
+                                                                    <span class="p-float-label">
+                                                                      <input formControlName="correo_empleado" id="correo_empleado" type="text" pInputText>
+                                                                      <label for="correo_empleado">Correo</label>
+                                                                    </span>
+                                                                  </div>  
+                                                                  
+                                                                      <div class="field col">
+                                                                        <span class="p-float-label">
+                                                                          <input formControlName="alergia_empleado" id="alergia_empleado" type="text" pInputText>
+                                                                          <label for="alergia_empleado">Alergias</label>
+                                                                        </span>
+                                                                      </div> 
+                                                                    </div> 
+                                                                </div>                    
+            
+                                                        <div
+                                                        *ngFor="let contacto of empleado.contacto_emergencia; let i = index">
+                                                            <div class="p-float-label">
+                                                            <label for="nombre_contacto_emergencia{{i}}">Nombre del
+                                                            contacto de emergencia</label>
+                                                        <input id="nombre_contacto_emergencia{{i}}" type="text"
+                                                            pInputText name="nombre_contacto_emergencia{{i}}"
+                                                            [(ngModel)]="contacto.nombre_contacto_emergencia"required> </div>
+                                                        </div>
+                                                        <div class="formgrid grid mt-3">
+                                                            <div class="formgrid grid">
+                                                              <div class="field col">
+                                                                <span class="p-float-label">
+                                                                  <input formControlName="eps_empleado" id="eps_empleado" type="text" pInputText>
+                                                                  <label for="eps_empleado">Eps</label>
+                                                                </span>
+                                                              </div>                   
+            
+                                                              
+                                                                  <div class="field col">
+                                                                    <span class="p-float-label">
+                                                                      <input formControlName="pension_empleado" id="pension_empleado" type="text" pInputText>
+                                                                      <label for="pension_empleado">Pensión</label>
+                                                                    </span>
+                                                                  </div>            
+                                                                  
+                                                                      <div class="field col">
+                                                                        <span class="p-float-label">
+                                                                          <input formControlName="cuenta_bancaria_empleado" id="cuenta_bancaria_empleado" type="text" pInputText>
+                                                                          <label for="cuenta_bancaria_empleado">Número de cuenta</label>
+                                                                        </span>
+                                                                      </div>  
+                                                                      
+                                                                          <div class="field col">
+                                                                            <span class="p-float-label">
+                                                                              <input formControlName="area_empleado" id="area_empleado" type="text" pInputText>
+                                                                              <label for="area_empleado">Área</label>
+                                                                            </span>
+                                                                          </div>  
+                                                                        </div> 
+                                                                    </div> 
+                            
+            
+            
+                                                                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                                                                        <div style="display: flex; gap: 10px;">
+                                                                          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarEmpleadoDialog = false"></button>
+                                                                          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+                                                                        </div>
+                                                                      </div>
+                                                                      
+
+
+
+
+
