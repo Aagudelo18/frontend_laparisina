@@ -41,6 +41,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    [readonly]="true" 
                     type="text"
                     id="tipo_cliente"
                     pInputText
@@ -68,6 +69,7 @@
         >
             <span class="p-float-label">
                 <input
+                [readonly]="true" 
                     type="text"
                     id="nit_empresa_cliente"
                     pInputText
@@ -96,7 +98,8 @@
             *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
-                <input
+                <textarea
+                [readonly]="true" 
                     type="text"
                     id="nombre_juridico"
                     pInputText
@@ -107,7 +110,7 @@
                             .setValue($event.target.value)
                     "
                     disabled
-                />
+                ></textarea>
                 <label for="inputtext">Nombre Empresa</label>
             </span>
             <div
@@ -126,6 +129,7 @@
         >
             <span class="p-float-label">
                 <input
+                [readonly]="true" 
                     type="text"
                     id="nombre_contacto"
                     pInputText
@@ -134,7 +138,7 @@
                         pedido
                             .get('nombre_contacto')
                             .setValue($event.target.value)
-                    "
+                    "f
                     disabled
                 />
                 <label for="inputtext">Nombre cliente</label>
@@ -155,6 +159,7 @@
         >
             <span class="p-float-label">
                 <input
+                [readonly]="!clienteExistente" 
                     type="text"
                     id="quien_recibe"
                     pInputText
@@ -179,6 +184,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                [readonly]="!clienteExistente" 
                     type="text"
                     id="telefono_cliente"
                     pInputText
@@ -204,7 +210,10 @@
         <!-- Dirección Entrega -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input
+                <textarea
+                style="resize: none;"
+                style="resize: none;"
+                [readonly]="!clienteExistente" 
                     type="text"
                     id="direccion_entrega"
                     pInputText
@@ -214,7 +223,7 @@
                             .get('direccion_entrega')
                             .setValue($event.target.value)
                     "
-                />
+                ></textarea>
                 <label for="inputtext">Dirección</label>
             </span>
             <div
@@ -231,6 +240,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                [readonly]="!clienteExistente" 
                     type="text"
                     id="ciudad_cliente"
                     pInputText
@@ -257,6 +267,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                [readonly]="!clienteExistente" 
                     type="text"
                     id="barrio_cliente"
                     pInputText
@@ -283,27 +294,20 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-calendar
+                disabled
                     inputId="calendar"
                     [formControl]="pedido.get('fecha_entrega_pedido')"
+                    [minDate]="minDate"
                 ></p-calendar>
                 <label for="calendar">Fecha Entrega</label>
             </span>
-            <div
-                *ngIf="
-                    pedido.get('fecha_entrega_pedido').invalid &&
-                    pedido.get('fecha_entrega_pedido').touched &&
-                    pedido.get('fecha_entrega_pedido').hasError('fechaMenorActual')
-                "
-                style="color: red"
-            >
-                La fecha de entrega no puede ser menor a la fecha actual.
-            </div>
         </div>
         
         <!-- Método de Pago -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
+                [readonly]="!clienteExistente" 
                     inputId="dropdown"
                     id="metodo_pago"
                     [autoDisplayFirst]="false"
@@ -323,14 +327,17 @@
             </div>
         </div>
         <!-- Valor Domicilio -->
-        <div class="field col-12 md:col-2">
+        <div class="field col-12 md:col-2 md:col-3">
+            <label for="valor_domicilio">Valor Domicilio</label>
             <span class="p-float-label">
-                <p-inputNumber
+                <input
+                class="form-control"
+                type="number"
+                [readonly]="!clienteExistente" 
                     inputId="valor_domicilio"
                     [formControl]="pedido.get('valor_domicilio')"
                     (input)="calcularPrecioTotalVenta()"
-                ></p-inputNumber>
-                <label for="valor_domicilio">Valor Domicilio</label>
+                />
             </span>
             <div
                 *ngIf="
@@ -364,6 +371,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <select
+                [readonly]="!clienteExistente" 
                     class="p-element p-inputtext ng-star-inserted"
                     [(ngModel)]="categoriaSeleccionada"
                     (change)="categoriaOnChange()"
@@ -391,6 +399,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
+                [readonly]="!clienteExistente" 
                     inputId="productosCategoria"
                     [autoDisplayFirst]="false"
                     [options]="productosCategoria"
@@ -411,6 +420,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-inputNumber
+                [readonly]="!clienteExistente"
                     inputId="cantidad_producto"
                     [(ngModel)]="cantidad_producto"
                     [ngModelOptions]="{ standalone: true }"

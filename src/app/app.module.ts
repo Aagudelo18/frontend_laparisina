@@ -11,16 +11,21 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import { TotalComponent } from './demo/components/pages/total/total.component';
+import { PagesModule } from './demo/components/pages/pages.module';
+
+
+
 
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, TotalComponent
+        AppComponent, NotfoundComponent, 
     ],
     imports: [
         AppRoutingModule,
-        AppLayoutModule
+        AppLayoutModule,
+        PagesModule,
+
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -30,3 +35,4 @@ import { TotalComponent } from './demo/components/pages/total/total.component';
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+

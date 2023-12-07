@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../categoria/categoria.service';
 
+
+
 @Component({
     templateUrl: './product-list.component.html',
     providers: [MessageService, CategoriaService]
@@ -20,6 +22,10 @@ export class ProductComponent implements OnInit {
     formProduct:FormGroup;
     id: string = '';
     categoriaSeleccionada: string = 'Todas las categorías';
+    carrito: Product[] = [];
+    cantidad?: number;
+    cantidadSeleccionada: number = 1; // Valor predeterminado
+    precioTotal: number;
     
     //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control de la imagen
@@ -66,6 +72,7 @@ export class ProductComponent implements OnInit {
       }
     ];
 
+
     //---------------------------------------------------------------------------------------------------------------------------------
     //Variables para controlar dialogs
     detalleProductoDialog: boolean = false;
@@ -76,7 +83,7 @@ export class ProductComponent implements OnInit {
       private messageService: MessageService,
       private aRouter:ActivatedRoute,
       private categoriaService: CategoriaService,
-      //private cartService: CartService,
+     
       ){
 
         this.aRouter.params.subscribe(params => {
@@ -167,11 +174,7 @@ export class ProductComponent implements OnInit {
       })
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para qgregar un producto al carrito
-    // onClick(product: Product) {
-    //   this.categoriaService.addNewProduct(product)
-    // }
+   
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para abrir un dialog y ver detalles de un producto
@@ -194,5 +197,7 @@ export class ProductComponent implements OnInit {
     onFilter(dv: any, event: Event) {
       dv.filter((event.target as HTMLInputElement).value);
     }
-    
+    // Nuevas funciones para el carrito
+
+
 }

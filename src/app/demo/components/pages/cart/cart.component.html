@@ -1,10 +1,20 @@
 
 <h2>TOTAL</h2>
-<app-total></app-total>
 
 <div class="cart-container">
     
     <h2>LISTA DE LA COMPRA</h2>
+  <!-- <mat-list>
+    <mat-list-item  *ngFor="let product of products; let indice= index" class="cart-item">
+      <span class="item-title">{{ product.nombre_producto }}</span>
+      <span class="item-description">{{ product.descripcion_producto }}</span>
+      <span class="item-price">{{ product.precio_ico }}</span>
+      <button mat.button color="warn" (click)="onClickDelete(indice)">Borrar</button>
+    </mat-list-item>
+
+  </mat-list> -->
+
+
     <div *ngFor="let product of products; let indice= index" class="cart-item">
       <span class="item-title">{{ product.nombre_producto }}</span>
       <span class="item-description">{{ product.descripcion_producto }}</span>

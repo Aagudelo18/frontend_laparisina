@@ -24,6 +24,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 @NgModule({
  
   imports: [
@@ -50,6 +51,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 	RippleModule,
 	ProgressBarModule,
 	ToastModule,
+	
   ],
   declarations: [NewPedidosComponent],
 })
