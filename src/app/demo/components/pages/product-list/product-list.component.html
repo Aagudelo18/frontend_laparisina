@@ -45,10 +45,10 @@
                 <ng-template let-categoria pTemplate="item">
                         <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
                             <div class="my-5">
-                                <img [title]="categoria.descripcion_categoria_producto" src="{{categoria.imagen_categoria_producto}}" [alt]="categoria.nombre_categoria_producto" class="shadow-4" width="50%"/>
+                                <img [pTooltip]="categoria.descripcion_categoria_producto" src="{{categoria.imagen_categoria_producto}}" [alt]="categoria.nombre_categoria_producto" class="shadow-4" width="50%"/>
                             </div>
                             <div>
-                                <h5 class="mb-1" [title]="categoria.descripcion_categoria_producto">{{categoria.nombre_categoria_producto}}</h5>
+                                <h5 class="mb-1" [pTooltip]="categoria.descripcion_categoria_producto">{{categoria.nombre_categoria_producto}}</h5>
                                 <!-- <h6 class="mt-0 mb-3" style="font-weight: normal;"
                                 [title]="categoria.descripcion_categoria_producto">{{categoria.descripcion_categoria_producto}}</h6> -->
                             </div>
