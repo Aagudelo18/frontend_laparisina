@@ -6,6 +6,9 @@ export interface Product {
   descripcion_producto?: string;
   precio_ico?: number;
   precio_por_mayor_ico?: number;
+  cantidad?: number;
+  precioTotal?:number;
+  cantidadSeleccionada?: number;
   durabilidad_producto?: string;
   imagenes_producto?: string[]; // El signo de interrogación indica que este campo es opcional
   estado_producto?: boolean;
