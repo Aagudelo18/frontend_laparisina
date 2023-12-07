@@ -7,10 +7,6 @@
         </div>
     </ng-template>
 
-    <ng-template pTemplate="right">
-        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-            (click)="dt.exportCSV()"></button>
-    </ng-template>
 </p-toolbar>
 <p-table #dt [value]="usuarios" [globalFilterFields]="['correo_electronico']" [rows]="10" [paginator]="true"
     [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
@@ -118,8 +114,9 @@
 
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
-                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol para el usuario"></p-dropdown>
+                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario"
+                    [options]="rolesForCreation" [optionLabel]="'nombre_rol'"
+                    placeholder="Seleccionar rol para el usuario"></p-dropdown>
             </div>
 
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
@@ -170,13 +167,13 @@
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol" appendTo="body"></p-dropdown>
             </div>
 
             <div class="field">
                 <label for="estado_usuario">Estado del Usuario</label>
                 <p-dropdown formControlName="estado_usuario" inputId="estado_usuario" [options]="estadoOptions"
-                    placeholder="Seleccionar"></p-dropdown>
+                    placeholder="Seleccionar" appendTo="body"></p-dropdown>
             </div>
 
             <!-- Otros campos de edición -->

@@ -127,6 +127,26 @@ export class VentasComponent implements OnInit {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
    
+  // async descargarExcel() {
+  //   try {
+  //     const blob = await this.ventasService.descargarClientesExcel().toPromise();
+  //     this.descargarArchivo(blob);
+  //   } catch (error) {
+  //     console.error('Error al descargar el archivo', error);
+  //     // Manejar el error según sea necesario
+  //   }
+  // }
+
+  // private descargarArchivo(blob: Blob) {
+  //   const url = window.URL.createObjectURL(blob);
+  //   const a = document.createElement('a');
+  //   document.body.appendChild(a);
+  //   a.href = url;
+  //   a.download = 'ventas.xlsx';
+  //   a.click();
+  //   window.URL.revokeObjectURL(url);
+  // }
+
 }
 
 

@@ -18,20 +18,39 @@ export class AppMenuComponent implements OnInit {
                 label: 'Menú',
                 items: [
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
-                    { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/usuarios'] },
-                    { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
-                    { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
-                    { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
-                    { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
-                    { label: 'Pedidos', icon: 'pi pi-fw pi-user', routerLink: ['/pages/pedidos'] },
-                    { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
-                    { label: 'Ventas', icon: 'pi pi-money-bill', routerLink: ['/pages/ventas'] },
                     //{ label: 'Perfil', icon: 'pi pi-money-bill', routerLink: ['/pages/perfil'] },
-                    
-
                 ]
             },
+            {
+                label: 'Configuración',
+                items: [
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/pages/roles'] },
+                ]
+            },
+            {
+                label: 'Usuarios',
+                items: [
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/pages/usuarios'] },
+                ]
+            },
+            {
+                label: 'Producción',
+                items: [
+                    { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
+                    { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
+                    { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
+                    { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
+                ]
+            },
+            {
+                label: 'Ventas',
+                items: [
+                    { label: 'Clientes', icon: 'pi pi-fw pi-user', routerLink: ['/pages/clientes'] },
+                    { label: 'Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pages/pedidos'] },
+                    { label: 'Ventas', icon: 'pi pi-fw pi-money-bill', routerLink: ['/pages/ventas'] },
+                ]
+            }
+
 
             // {
             //     label: 'Pages',
