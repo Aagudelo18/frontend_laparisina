@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { RestaurarContrasenaService } from './restaurar-contrasena.services';
-import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms'; // Importa Validators y FormGroup
 import { MessageService } from 'primeng/api';
 
@@ -26,7 +25,8 @@ export class RestaurarContrasenaComponent implements OnInit {
         private formBuilder: FormBuilder,
         private resetPasswordService: RestaurarContrasenaService,
         private messageService: MessageService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     ) {
     }
 
@@ -40,9 +40,6 @@ export class RestaurarContrasenaComponent implements OnInit {
         this.route.queryParams.subscribe(params => {
             this.token = params['token'] || ''; // Obtener el token de los parámetros de la URL
             if (this.token) {
-                // Si el token está presente, puedes realizar las acciones necesarias aquí
-                // Por ejemplo, llamar a la función de restablecimiento de contraseña
-                this.resetPassword();
             }
         });
     }
@@ -51,9 +48,6 @@ export class RestaurarContrasenaComponent implements OnInit {
     validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
         const contrasena = control.root.get('newPassword');
         const confirmarContrasena = control.value;
-
-        console.log('Valor del campo de contraseña:', control.value);
-        console.log('¿Es válida la contraseña?', control.valid);
 
         if (contrasena && contrasena.value !== confirmarContrasena) {
             return { contrasenaNoCoincide: true };
@@ -64,8 +58,7 @@ export class RestaurarContrasenaComponent implements OnInit {
 
     restablecerContrasena() {
         const newPassword = this.formularioContrasena.value.newPassword;
-        console.log('Contraseña a enviar en el método de restablecer contraseña:', newPassword);
-        
+
         if (this.formularioContrasena.valid && this.token) {
             this.resetPasswordService.resetPassword(newPassword, this.token)
                 .subscribe(
@@ -77,9 +70,11 @@ export class RestaurarContrasenaComponent implements OnInit {
                             detail: 'Contraseña restablecida correctamente',
                             life: 3000
                         });
-                        // Puedes redirigir al usuario a una página de éxito o a otra ruta aquí
-                        // Ejemplo:
-                        // this.router.navigate(['/login']);
+                        // Redirigir después de 3 segundos
+                        setTimeout(() => {
+                            this.router.navigate(['/auth/login']);
+                        }, 3000);
+
                     },
                     (error) => {
                         // Manejo de errores
@@ -110,7 +105,7 @@ export class RestaurarContrasenaComponent implements OnInit {
             });
         }
     }
-    
+
 
 
     private resetPassword() {
@@ -139,7 +134,6 @@ export class RestaurarContrasenaComponent implements OnInit {
                             detail: 'El token es inválido o ha expirado',
                             life: 3000
                         });
-                        console.log(newPassword)
                     } else {
                         this.messageService.add({
                             severity: 'error',
