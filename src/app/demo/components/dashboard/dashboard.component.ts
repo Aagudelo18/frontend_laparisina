@@ -13,12 +13,21 @@ import { Pedido } from '../pages/ventas/ventas.model';
 export class DashboardComponent implements OnInit, OnDestroy {
     ventas: Pedido[] = [];
     items!: MenuItem[];
-
     topSellingProducts: any[] = [];
     products!: Product[];
 
-    chartData: any;
+    ventasSemana: any[] = [];
 
+    barData: any;
+    barOptions: any;
+
+    pieData: any;
+    pieOptions: any;
+
+    radarData: any;
+    radarOptions: any;
+
+    chartData: any;
     chartOptions: any;
 
     subscription!: Subscription;
@@ -30,7 +39,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
 
         this.items = [
@@ -47,9 +55,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 console.log('Datos de ventas:', data);
                 this.ventas = data.ventas; // Asignar el campo 'ventas' al arreglo this.ventas
                 this.calcularNuevasVentas();
-                const productoCantidadMap = this.obtenerProductosMasVendidos();
+                this.calcularGanancia();
+                const productoCantidadMap = this.obtenerProductosMasVendidosSemana();
                 // Llamar a initChart() después de obtener los datos de ventas
                 this.initChart();
+                this.actualizarGraficoProductosVendidos();
             }
         );
     }
@@ -58,17 +68,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     calcularNuevasVentas() {
         // Obtener la fecha actual
         const fechaActual = new Date();
+        const diaSemanaActual = fechaActual.getDay(); // Obtener el día de la semana (0 para domingo, 1 para lunes, ...)
 
-        // Obtener la fecha del día anterior
-        const fechaAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - 1);
+        // Obtener la fecha del lunes de esta semana
+        const fechaLunes = new Date(fechaActual);
+        fechaLunes.setDate(fechaActual.getDate() - diaSemanaActual);
 
-        // Filtrar las ventas que ocurrieron desde el día anterior
+        // Filtrar las ventas de la semana
         const nuevasVentas = this.ventas.filter(venta => {
-            // Convertir la fecha de entrega a objeto Date
-            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
-
-            // Devolver true si la fecha de entrega es posterior a la fecha del día anterior
-            return fechaEntregaPedido.getTime() >= fechaAnterior.getTime();
+            const fechaVenta = new Date(venta.fecha_entrega_pedido);
+            return fechaVenta >= fechaLunes;
         });
 
         // Devolver la cantidad de ventas filtradas
@@ -76,65 +85,136 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return cantidadNuevasVentas;
     }
 
-    //Método para obtener los productos más vendidos de la semana, implementando la misma lógica de las ventas de la semana.
-    obtenerProductosMasVendidos(): void {
+    // Calcula la suma de los precios totales de las ventas de la semana
+    calcularGanancia(): number {
         // Obtener la fecha actual
         const fechaActual = new Date();
+        const diaSemanaActual = fechaActual.getDay(); // Obtener el día de la semana (0 para domingo, 1 para lunes, ...)
 
-        // Obtener la fecha del día anterior
-        const fechaAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() - 1);
+        // Obtener la fecha del lunes de esta semana
+        const fechaLunes = new Date(fechaActual);
+        fechaLunes.setDate(fechaActual.getDate() - diaSemanaActual);
 
-        // Filtrar las ventas que ocurrieron desde el día anterior
-        const ventasDeLaSemana = this.ventas.filter(venta => {
-            // Convertir la fecha de entrega a objeto Date
-            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
-
-            // Devolver true si la fecha de entrega es posterior a la fecha del día anterior
-            return fechaEntregaPedido.getTime() >= fechaAnterior.getTime();
+        // Filtrar las ventas de la semana
+        const gananciasVentas = this.ventas.filter(venta => {
+            const fechaVenta = new Date(venta.fecha_entrega_pedido);
+            return fechaVenta >= fechaLunes;
         });
 
-        // Obtener un mapa de productos vendidos
-        const productoCantidadMap = new Map<string, {
-            name: string,
-            quantitySold: number,
-            price: number
-        }>();
+        // Sumar los precios totales de las ventas de la semana
+        let gananciaTotal = 0;
+        gananciasVentas.forEach(venta => {
+            gananciaTotal += venta.precio_total_venta;
+        });
 
-        // Iterar sobre las ventas de la semana
-        ventasDeLaSemana.forEach(venta => {
-            // Iterar sobre los detalles del pedido
+        return gananciaTotal;
+    }
+
+    formatearGanancia(ganancia: number): string {
+        return ganancia.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
+      }
+
+    async obtenerProductosMasVendidosSemana(): Promise<void> {
+        const fechaActual = new Date();
+        const diaSemanaActual = fechaActual.getDay(); // Obtener el día de la semana (0 para domingo, 1 para lunes, ...)
+
+        // Obtener la fecha del lunes de esta semana
+        const fechaLunes = new Date(fechaActual);
+        fechaLunes.setDate(fechaActual.getDate() - diaSemanaActual);
+
+        // Filtrar las ventas de la semana
+        const ventasSemana = this.ventas.filter(venta => {
+            const fechaVenta = new Date(venta.fecha_entrega_pedido);
+            return fechaVenta >= fechaLunes;
+        });
+
+        // Seguir un proceso similar al anterior para contar las ventas de cada producto
+        const productoCantidadMap = new Map<string, number>();
+        ventasSemana.forEach(venta => {
             venta.detalle_pedido.forEach(detalle => {
-                // Obtener el nombre del producto
                 const nombreProducto = detalle.nombre_producto;
-
-                // Obtener la cantidad vendida
                 const cantidadProducto = detalle.cantidad_producto;
 
-                // Obtener el precio del producto
-                const precioProducto = detalle.precio_ico; // O detalle.precio_por_mayor_ico, según sea el precio que quieras mostrar
-
-                // Agregar el producto al mapa
-                productoCantidadMap.set(nombreProducto, {
-                    name: nombreProducto,
-                    quantitySold: cantidadProducto,
-                    price: precioProducto
-                });
+                if (productoCantidadMap.has(nombreProducto)) {
+                    productoCantidadMap.set(nombreProducto, productoCantidadMap.get(nombreProducto) + cantidadProducto);
+                } else {
+                    productoCantidadMap.set(nombreProducto, cantidadProducto);
+                }
             });
         });
 
-        // Obtener los productos más vendidos
+        // Ordenar los productos más vendidos
         const sortedProducts = Array.from(productoCantidadMap.entries())
-            .sort((b, a) => a[1].quantitySold - b[1].quantitySold)
-            .slice(0, 5); // Obtener solo los 5 productos más vendidos
+            .sort((b, a) => a[1] - b[1])
+            .slice(0, 5); // Obtener los 5 productos más vendidos
 
         // Asignar los productos más vendidos a la propiedad `topSellingProducts`
-        this.topSellingProducts = sortedProducts.map(([productName, product]) => ({
-            name: product.name,
-            quantitySold: product.quantitySold,
-            price: product.price
+        this.topSellingProducts = sortedProducts.map(([productName, quantitySold]) => ({
+            name: productName,
+            quantitySold: quantitySold
         }));
     }
 
+    async actualizarGraficoProductosVendidos(): Promise<void> {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+        // Llamar al método para obtener los productos más vendidos de la semana
+        await this.obtenerProductosMasVendidosSemana();
+        console.log(this.obtenerProductosMasVendidosSemana);
+
+        // Obtener los nombres y cantidades vendidas de los productos más vendidos
+        const labels = this.topSellingProducts.map(product => product.name);
+        const data = this.topSellingProducts.map(product => product.quantitySold);
+        console.log("Cantidad de productos más vendidos", data);
+        console.log("Nombre de los 5 productos más vendidos", labels);
+
+        // Actualizar el gráfico con los datos de los productos más vendidos
+        this.barData = {
+            labels: ['Semana'],
+            datasets: labels.map((productName, index) => ({
+                label: productName,
+                backgroundColor: documentStyle.getPropertyValue(`--primary-${800 - index * 100}`),
+                borderColor: documentStyle.getPropertyValue(`--primary-${800 - index * 100}`),
+                data: [data[index]]
+            }))
+        };
+
+        this.barOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        fontColor: textColor
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary,
+                        font: {
+                            weight: 500
+                        }
+                    },
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                },
+            }
+        };
+    }
 
 
 
@@ -144,12 +224,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-        // Aquí se obtienen las ventas del servicio o del lugar correspondiente
-        const ventas = this.ventas; // Asegúrate de que este sea el arreglo de ventas
-        console.log("ejemplo o cosas que quiero ver para la gráfica" + ventas);
-
-        // Datos de ejemplo (reemplaza esto con tus datos reales)
-        const labels = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const labels = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
         const ventasDiarias = [0, 0, 0, 0, 0, 0, 0];
 
         this.ventas.forEach(venta => {
@@ -204,6 +279,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
         };
     }
+
 
 
 
