@@ -1,0 +1,38 @@
+<p-toast></p-toast>
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div
+            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <div class="text-center mb-5">
+                    <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="160" class="mb-3">
+                    <br>
+                    <div class="text-900 text-3xl font-medium mb-5">Recuperar contraseña</div>
+                    <br>
+                </div>
+
+                <form [formGroup]="formularioCorreo" (ngSubmit)="enviarCorreo()">
+                    <div class="field mt-4" style="margin-bottom: 15px;">
+                        <span class="p-float-label">
+                            <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico"
+                                style="width: 100%;" />
+                            <label for="correo_electronico">Correo electrónico</label>
+                        </span>
+                        <span
+                            *ngIf="formularioCorreo.get('correo_electronico')?.hasError('required') && formularioCorreo.get('correo_electronico')?.touched"
+                            style="color: red;">Correo electrónico
+                            requerido.</span>
+                        <span *ngIf="formularioCorreo.get('correo_electronico').hasError('email')"
+                            style="color: red;">Correo
+                            electrónico no
+                            válido.</span>
+                        <br>
+                    </div>
+
+                    <button pButton pRipple label="Enviar correo" class="w-full p-3 text-xl" type="submit"
+                        [disabled]="!formularioCorreo.valid"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

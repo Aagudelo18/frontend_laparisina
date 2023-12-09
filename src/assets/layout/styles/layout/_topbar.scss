@@ -10,7 +10,7 @@
     transition: left $transitionDuration;
     display: flex;
     align-items: center;
-    box-shadow: 0px 3px 5px rgba(0,0,0,.02), 0px 0px 2px rgba(0,0,0,.05), 0px 1px 4px rgba(0,0,0,.08);
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, .02), 0px 0px 2px rgba(0, 0, 0, .05), 0px 1px 4px rgba(0, 0, 0, .08);
 
     .layout-topbar-logo {
         display: flex;
@@ -22,8 +22,14 @@
         border-radius: 12px;
 
         img {
-            height: 11rem;
-            margin-right: .5rem;
+            max-width: 10rem;
+            /* Ajusta el ancho máximo para mantener la proporción */
+            max-height: 10rem;
+            /* Mantiene la proporción de la imagen */
+            overflow: hidden;
+            /* Recorta el contenido que excede el tamaño */
+            border-radius: 1px;
+            margin-right: .90rem;
         }
 
         &:focus {
@@ -111,7 +117,7 @@
             position: absolute;
             flex-direction: column;
             background-color: var(--surface-overlay);
-            box-shadow: 0px 3px 5px rgba(0,0,0,.02), 0px 0px 2px rgba(0,0,0,.05), 0px 1px 4px rgba(0,0,0,.08);
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, .02), 0px 0px 2px rgba(0, 0, 0, .05), 0px 1px 4px rgba(0, 0, 0, .08);
             border-radius: 12px;
             padding: 1rem;
             right: 2rem;

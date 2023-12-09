@@ -38,19 +38,9 @@ export class LoginComponent implements OnInit {
             correo_electronico: ['', [Validators.required, Validators.email]], // Agrega Validators.email para validar el formato del correo electrónico
             contrasena_usuario: ['', Validators.required]
         });
-
     }
 
     ngOnInit() {
-        this.getListUsuarios();
-    }
-
-    getListUsuarios() {
-        this.loginService.getUsuarios().subscribe((data: any) => {
-            if (data && data.usuarios) {
-                this.usuarios = data.usuarios;
-            }
-        });
     }
 
     login() {
