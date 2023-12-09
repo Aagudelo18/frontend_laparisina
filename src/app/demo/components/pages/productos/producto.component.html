@@ -23,14 +23,14 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="codigo_producto">Imagen<p-sortIcon></p-sortIcon></th>        
+                        <th>Imagen</th>        
                         <th pSortableColumn="codigo_producto">Código<p-sortIcon field="codigo_producto"></p-sortIcon></th>
                         <th pSortableColumn="nombre_producto">Nombre<p-sortIcon field="nombre_producto"></p-sortIcon></th>
-                        <th pSortableColumn="nombre_categoria_producto">Categoría<p-sortIcon field="nombre_categoria_producto"></p-sortIcon></th>    
+                        <th>Categoría</th>    
                         <th pSortableColumn="precio_ico">Precio ICO<p-sortIcon field="precio_ico"></p-sortIcon></th>
                         <th pSortableColumn="precio_por_mayor_ico">Precio Por Mayor<p-sortIcon field="precio_por_mayor_ico"></p-sortIcon></th>
                         <th pSortableColumn="estado_producto">Estado<p-sortIcon field="estado_producto"></p-sortIcon></th>
-                        <th pSortableColumn="">Acciones</th>
+                        <th>Acciones</th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -59,12 +59,14 @@
                         </td>
                         <td style="width:8%; min-width:10rem;">
                             <span class="p-column-title">Telefono</span>
-                            <p-inputSwitch class="mr-2" [ngModel]="producto.estado_producto" (onChange)="confirmarCambioEstado(producto)"></p-inputSwitch>
+                            <p-inputSwitch class="mr-2" [ngModel]="producto.estado_producto" (onChange)="confirmarCambioEstado(producto)" pTooltip="Cambiar estado"></p-inputSwitch>
                         </td>  
                         <td style="width:15%; min-width:10rem;">
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editarProducto(producto._id) " style=" width: 2.5rem; height: 2.5rem; "></button>
-                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="detalleProducto(producto._id)" style=" width: 2.5rem; height: 2.5rem; "></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" pTooltip="Editar" tooltipPosition="left"
+                                (click)="editarProducto(producto._id) " style=" width: 2.5rem; height: 2.5rem; "></button>
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" pTooltip="Ver detalles" 
+                                (click)="detalleProducto(producto._id)" style=" width: 2.5rem; height: 2.5rem; "></button>
                             </div>
                         </td>
                     </tr>
@@ -116,7 +118,7 @@
                                 </span>       
                                 <span *ngIf="formProducto.get('nombre_categoria_producto')?.hasError('pattern') && formProducto.get('nombre_categoria_producto')?.touched"
                                 style="color: red;">
-                                    La categoría solo debe contener letras y tener máximo 20 caracteres
+                                    La categoría solo debe contener letras y tener máximo 20 caracteres sin espacios dobles
                                 </span> 
                             </div>
                             <div class="field col">
@@ -266,7 +268,7 @@
                                 </span>       
                                 <span *ngIf="formProducto.get('nombre_producto')?.hasError('pattern') && formProducto.get('nombre_producto')?.touched"
                                 style="color: red;">
-                                    El nombre solo puede tener letras y máximo 20 caracteres
+                                    El nombre solo puede tener letras y máximo 20 caracteres sin espacios dobles
                                 </span>                
                             </div>
                         </div>
@@ -376,136 +378,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                <!-- <div class="formgrid grid mt-4">
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <input formControlName="codigo_producto" id="codigo_producto" type="text" pInputText>
-                            <label for="codigo_producto">Código Producto</label>
-                        </span>
-                        <span *ngIf="formProducto.get('codigo_producto')?.hasError('required') && formProducto.get('codigo_producto')?.touched"
-                        style="color: red;">
-                            El código es requerido
-                        </span>       
-                        <span *ngIf="formProducto.get('codigo_producto')?.hasError('pattern') && formProducto.get('codigo_producto')?.touched"
-                        style="color: red;">
-                            El código solo puede tener números entre 3 y 4 dígitos
-                        </span>                
-                    </div>
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <input formControlName="nombre_producto" id="nombre_producto" type="text" pInputText>
-                            <label for="nombre_producto">Nombre Producto</label>
-                        </span>
-                        <span *ngIf="formProducto.get('nombre_producto')?.hasError('required') && formProducto.get('nombre_producto')?.touched"
-                        style="color: red;">
-                            El nombre es requerido
-                        </span>       
-                        <span *ngIf="formProducto.get('nombre_producto')?.hasError('pattern') && formProducto.get('nombre_producto')?.touched"
-                        style="color: red;">
-                            El nombre solo puede tener letras y máximo 20 caracteres
-                        </span>                
-                    </div>
-                </div>
-
-                <div class="formgrid grid mt-4">
-                    <div class="field col">                   
-                        <p-dropdown (onChange)="onCategoriaChange($event)" formControlName="nombre_categoria_producto" [options]="categorias" placeholder="Categoría Producto" [showClear]="true"></p-dropdown>                   
-                        <span *ngIf="formProducto.get('nombre_categoria_producto')?.hasError('required') && formProducto.get('nombre_categoria_producto')?.touched"
-                        style="color: red;">
-                            La categoría es requerida
-                        </span>       
-                        <span *ngIf="formProducto.get('nombre_categoria_producto')?.hasError('pattern') && formProducto.get('nombre_categoria_producto')?.touched"
-                        style="color: red;">
-                            La categoría solo debe contener letras y tener máximo 20 caracteres
-                        </span> 
-                    </div>
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <input formControlName="durabilidad_producto" id="durabilidad_producto" type="text" pInputText>
-                            <label for="durabilidad_producto">Durabilidad Producto</label>
-                        </span>
-                        <span *ngIf="formProducto.get('durabilidad_producto')?.hasError('required') && formProducto.get('durabilidad_producto')?.touched"
-                        style="color: red;">
-                            Durabilidad producto es requerido
-                        </span>       
-                        <span *ngIf="formProducto.get('durabilidad_producto')?.hasError('pattern') && formProducto.get('durabilidad_producto')?.touched"
-                        style="color: red;">
-                            La durabilidad solo debe contener letras y tener máximo 50 caracteres
-                        </span>                
-                    </div>
-                </div>
-
-                <div class="formgrid grid mt-4">
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <p-inputNumber inputId="integeronly" formControlName="precio_ico"></p-inputNumber>
-                            <label for="precio_ico">Precio ICO</label>
-                        </span>
-                        <span>
-                            Mínimo: 1000 &nbsp; Máximo: 999.999
-                        </span> 
-                        <br>
-                        <span *ngIf="formProducto.get('precio_ico')?.hasError('required') && formProducto.get('precio_ico')?.touched"
-                        style="color: red;">
-                            El precio ICO es requerido
-                        </span>       
-                        <span *ngIf="formProducto.get('precio_ico')?.hasError('pattern') && formProducto.get('precio_ico')?.touched"
-                        style="color: red;">
-                            El precio ICO solo permite números
-                        </span>                
-                    </div>
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <p-inputNumber inputId="integeronly" formControlName="precio_por_mayor_ico"></p-inputNumber>
-                            <label for="precio_por_mayor_ico">Precio por mayor sin ICO</label>
-                        </span>
-                        <span>
-                            Mínimo: 1000 &nbsp; Máximo: 999.999
-                        </span> 
-                        <br>
-                        <span *ngIf="formProducto.get('precio_por_mayor_ico')?.hasError('required') && formProducto.get('precio_por_mayor_ico')?.touched"
-                        style="color: red;">
-                            El precio por mayor sin ICO es requerido
-                        </span>       
-                        <span *ngIf="formProducto.get('precio_por_mayor_ico')?.hasError('pattern') && formProducto.get('precio_por_mayor_ico')?.touched"
-                        style="color: red;">
-                            El precio por mayor sin ICO solo debe contener números entre 1000/999999
-                        </span>                
-                    </div>
-                </div>
-
-                <div class="formgrid grid mt-4">
-                    
-                    <div class="field col">
-                        <span class="p-float-label">
-                            <textarea rows="5" cols="30" pInputTextarea formControlName="descripcion_producto" id="descripcion_producto"></textarea>
-                            <label for="descripcion_producto">Descripción</label>
-                        </span>
-                        <span *ngIf="formProducto.get('descripcion_producto')?.hasError('required') && formProducto.get('descripcion_producto')?.touched"
-                        style="color: red;">
-                            La descripción es requerida
-                        </span>
-                        <span *ngIf="formProducto.get('descripcion_producto')?.hasError('pattern') && formProducto.get('descripcion_producto')?.touched"
-                        style="color: red;">
-                            La descripción solo permite letras, los signos ",.:-" y un máximo de 500 caracteres
-                        </span>
-                    </div>
-                </div>
-
-                <p-fileUpload #fileEditar mode="basic" chooseLabel="Cambiar imágenes" name="imagenes_producto" chooseIcon="pi pi-images" 
-                [multiple]="true" accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload> -->
-
-                <!-- <div class="formgrid grid mt-4">
-                    <div class="field col-12 text-left d-flex flex-wrap justify-content-center">
-                      <ng-container *ngFor="let imagen of imagenes">
-                        <p-image class="m-2" [src]="imagen" alt="Imagen del producto" 
-                        width="100" (click)="abrirImagenDialog(imagen)"></p-image>
-                      </ng-container>
-                    </div>
-                </div> -->
-                  
                 
                     
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">

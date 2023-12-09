@@ -28,7 +28,7 @@ export class CategoriaComponent implements OnInit {
     // Variables para capturar y tener control de la imagen
     file: File | null = null;
     fileSelected: boolean = false;
-    displayDialog: boolean = false;
+    imagenDialog: boolean = false;
     // imagen_categoria: string = '../../../../../assets/Imagenes/No IMG.png';
     imagen_categoria: string = ''
 
@@ -55,7 +55,7 @@ export class CategoriaComponent implements OnInit {
       private aRouter:ActivatedRoute){ 
 
         this.formCategoria = this.fb.group({
-          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\d\s-]{1,20}$/),]],
           descripcion_categoria_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s-]+$/),]],
           image: [null],
 
@@ -76,7 +76,10 @@ export class CategoriaComponent implements OnInit {
     //Función para listar todas las categorías
     getListCategorias(){     
         this.categoriaService.getListCategorias().subscribe((data) =>{      
-          this.listCategorias = data;        
+          this.listCategorias = data.map(categoria => ({
+            ...categoria,
+            imagen_categoria_producto: `http://localhost:3000/uploads/${categoria.imagen_categoria_producto}`
+          }))
         })        
     }
 
@@ -103,8 +106,12 @@ export class CategoriaComponent implements OnInit {
       if (form.valid) {
         // Crear FormData y agregar valores
         const formData = new FormData();
-        formData.append('nombre_categoria_producto', this.formCategoria.get('nombre_categoria_producto').value);
-        formData.append('descripcion_categoria_producto', this.formCategoria.get('descripcion_categoria_producto').value);
+
+        const nombreCategoria = this.formCategoria.get('nombre_categoria_producto').value.trim();
+        const descripcionCategoria = this.formCategoria.get('descripcion_categoria_producto').value.trim();
+
+        formData.append('nombre_categoria_producto', nombreCategoria);
+        formData.append('descripcion_categoria_producto',descripcionCategoria);
         formData.append('image', this.file);
         
         this.categoriaService.crearCategoria(formData).subscribe(
@@ -196,8 +203,12 @@ export class CategoriaComponent implements OnInit {
       const form = this.formCategoria;
       if (form.valid) {
         const formData = new FormData;
-        formData.append('nombre_categoria_producto', this.formCategoria.get('nombre_categoria_producto').value);
-        formData.append('descripcion_categoria_producto', this.formCategoria.get('descripcion_categoria_producto').value);
+
+        const nombreCategoria = this.formCategoria.get('nombre_categoria_producto').value.trim();
+        const descripcionCategoria = this.formCategoria.get('descripcion_categoria_producto').value.trim();
+
+        formData.append('nombre_categoria_producto', nombreCategoria);
+        formData.append('descripcion_categoria_producto', descripcionCategoria);
         formData.append('image', this.file);
   
         if (this.id !== '') {
@@ -314,7 +325,7 @@ export class CategoriaComponent implements OnInit {
     //función para abrir un dialog y imagen mas grande
     abrirImagenDialog(imagen_categoria: string) {
       this.imagen_categoria = imagen_categoria;
-      this.displayDialog = true;
+      this.imagenDialog = true;
     }    
 
     //-------------------------------------------------------------------------------------------------------------------------------

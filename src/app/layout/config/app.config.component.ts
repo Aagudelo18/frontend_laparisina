@@ -8,6 +8,8 @@ import { MenuService } from "../app.menu.service";
 })
 export class AppConfigComponent {
 
+    currentTheme: string = 'lara-light-indigo';
+
     @Input() minimal: boolean = false;
 
     scales: number[] = [12, 13, 14, 15, 16];
@@ -66,6 +68,7 @@ export class AppConfigComponent {
             this.layoutService.config.theme = theme;
             this.layoutService.config.colorScheme = colorScheme;
             this.layoutService.onConfigUpdate();
+            this.currentTheme = theme;
         });
     }
 
