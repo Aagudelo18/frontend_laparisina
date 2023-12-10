@@ -52,7 +52,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     getListDashboard() {
         this.dashboardService.getVentas().subscribe(
             (data: any) => {
-                console.log('Datos de ventas:', data);
                 this.ventas = data.ventas; // Asignar el campo 'ventas' al arreglo this.ventas
                 this.calcularNuevasVentas();
                 this.calcularGanancia();
@@ -72,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         // Obtener la fecha del lunes de esta semana
         const fechaLunes = new Date(fechaActual);
-        fechaLunes.setDate(fechaActual.getDate() - diaSemanaActual);
+        fechaLunes.setDate(fechaActual.getDate() - diaSemanaActual - 1);
 
         // Filtrar las ventas de la semana
         const nuevasVentas = this.ventas.filter(venta => {
@@ -163,13 +162,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         // Llamar al método para obtener los productos más vendidos de la semana
         await this.obtenerProductosMasVendidosSemana();
-        console.log(this.obtenerProductosMasVendidosSemana);
 
         // Obtener los nombres y cantidades vendidas de los productos más vendidos
         const labels = this.topSellingProducts.map(product => product.name);
         const data = this.topSellingProducts.map(product => product.quantitySold);
-        console.log("Cantidad de productos más vendidos", data);
-        console.log("Nombre de los 5 productos más vendidos", labels);
+        const cantidad = this.topSellingProducts.map(product => product.length);
 
         // Actualizar el gráfico con los datos de los productos más vendidos
         this.barData = {

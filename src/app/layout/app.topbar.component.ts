@@ -11,6 +11,8 @@ export class AppTopBarComponent {
 
     items!: MenuItem[];
 
+    confirmarCerrarSesionDialog = false;
+
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
@@ -20,12 +22,21 @@ export class AppTopBarComponent {
     constructor(public layoutService: LayoutService, private loginService: LoginService, private router: Router) { }
 
     logout(): void {
-        this.loginService.logout(); // Llama al método logout() del servicio LoginService
-        this.router.navigate(['/auth/login']); // Redirige al usuario al componente de login
+        this.confirmarCerrarSesionDialog = true; // Redirige al usuario al componente de login
+    }
+
+    noCerrarSesion() {
+        this.confirmarCerrarSesionDialog = false;
+    }
+
+    cerrarSesion() {
+        this.confirmarCerrarSesionDialog = false;
+        this.loginService.logout(); // Llamar al servicio para cerrar sesión o ejecutar las acciones correspondientes para cerrar la sesión del usuario
+        this.router.navigate(['/auth/login']); // Redirigir al usuario a la página de inicio de sesión después de cerrar sesión
     }
 
     perfil() {
         this.router.navigate(['/pages/perfil']); // Esta ruta debe coincidir con tu ruta '/perfil' definida en las rutas de tu aplicación
     }
-    
+
 }
