@@ -42,9 +42,11 @@
             <td style="width:30%; min-width:10rem;">
                 {{ usuario.rol_usuario.nombre_rol }}
             </td>
-
-            <td style="width:25%; min-width:10rem; ">
-                {{ usuario.estado_usuario ? 'Activo' : 'Inactivo' }}
+            <td style="width:10%; min-width:10rem;">
+                <span class="p-column-title">Estado</span>
+                <!-- {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }} -->
+                <p-inputSwitch class="mr-2" [ngModel]="usuario.estado_usuario"
+                    (onChange)="confirmarCambioEstado(usuario)" pTooltip="Cambiar estado"></p-inputSwitch>
             </td>
             <td>
                 <div class="flex">
@@ -57,6 +59,21 @@
         </tr>
     </ng-template>
 </p-table>
+
+<p-dialog [(visible)]="estadoUsuarioDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}"
+    (onHide)="noCambiarEstado()">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="usuario">¿Está seguro de que desea cambiar el estado de la categoría
+            <b>{{usuario.correo_electronico}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="noCambiarEstado()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="cambiarEstadoUsuario(usuario.uid, !usuario.estado_usuario)"></button>
+    </ng-template>
+</p-dialog>
 
 <p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Crear Usuario" [modal]="true"
     class="p-fluid">
@@ -143,6 +160,17 @@
             (click)="confirmarCrearUsuario()"></button>
     </ng-template>
 </p-dialog>
+
+<!-- <p-dialog [(visible)]="estadoCategoriaDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="categoria">¿Está seguro de que desea cambiar el estado de la categoría <b>{{categoria.nombre_categoria_producto}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoCategoria(categoria._id)"></button>
+    </ng-template>
+</p-dialog> -->
 
 
 <p-dialog [(visible)]="editarUsuarioDialog" [style]="{ width: '450px' }" header="Editar Usuario" [modal]="true"

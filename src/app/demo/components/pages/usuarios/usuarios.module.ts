@@ -16,6 +16,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -36,6 +38,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
+        TooltipModule,
+        InputSwitchModule,
         ReactiveFormsModule
     ],
     declarations: [UsuariosComponent]

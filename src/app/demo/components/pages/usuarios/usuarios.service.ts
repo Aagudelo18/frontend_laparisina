@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   getUsuarios() {
     return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
   }
-  
+
   //Método para obtener la lista de roles desde la API
   getRoles() {
     return this.http.get<any[]>(`${this.apiUrl}/roles`);
@@ -36,11 +36,17 @@ import { Observable } from 'rxjs';
     const url = `${this.apiUrl}/usuarios/${uid}`;
     return this.http.put(url, usuarioData);
   }
-
+  
+  //Actualizar estado de un usuario.
+  actualizarEstadoUsuario(uid: string, usuarioData: any) {
+    const url = `${this.apiUrl}/usuario-estado/${uid}`;
+    return this.http.put(url, usuarioData);
+  }
   //Eliminar un usuario
   deleteUsuario(uid: string) {
     const url = `${this.apiUrl}/usuarios/${uid}`;
     return this.http.delete(url);
   }
-  
+
+
 }
