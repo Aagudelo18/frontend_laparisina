@@ -24,6 +24,7 @@ export class UsuariosComponent implements OnInit {
   correoBusqueda: string = '';
   editarUsuarioDialog: boolean = false;
   mostrarConfirmacionUsuario = false; // Variable para controlar la visibilidad del diálogo de confirmación
+  estadoUsuarioDialog: boolean = false;
   usuarioAEditar: any;
   usuario: any;
   formularioUsuario: FormGroup;
@@ -250,5 +251,38 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
+  // Función para confirmar cambiar el estado de una categoría
+  confirmarCambioEstado(usuario: Usuario) {
+    this.estadoUsuarioDialog = true;
+    this.usuario = usuario
+  }
+  
+  // Función para cambiar el estado de una categoría
+  cambiarEstadoUsuario(uid: string, nuevoEstado: boolean) {
+    const usuarioData = {
+      estado_usuario: nuevoEstado
+    };
+
+    this.usuarioService.actualizarEstadoUsuario(uid, usuarioData).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'El estado del usuario fue cambiado con éxito',
+          life: 3000
+        });
+        this.estadoUsuarioDialog = false;
+      },
+      error: (error) => {
+        console.error('Error cambiando el estado del usuario:', error);
+        // Manejar errores según sea necesario
+      }
+    });
+  }
+
+  //Función para no cambiar el estado de una categoría
+  noCambiarEstado() {
+    this.estadoUsuarioDialog = false;
+    this.getListUsuarios();
+  }
 
 }

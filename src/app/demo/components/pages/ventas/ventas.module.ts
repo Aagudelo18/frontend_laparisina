@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { VentasComponent } from './ventas.component';
+import { TooltipModule } from 'primeng/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -40,6 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RadioButtonModule,
     InputNumberModule,
     DialogModule,
+    TooltipModule,
     ReactiveFormsModule,
   ],
   declarations: [VentasComponent]

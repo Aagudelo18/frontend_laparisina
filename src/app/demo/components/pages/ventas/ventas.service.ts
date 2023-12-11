@@ -22,5 +22,8 @@ export class VentasService {
     return this.http.get<any>(this.apiUrl + `/ventas/${id}`);
   }
   
+  descargarVentasExcel(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/ventas_excel`, { responseType: 'blob' });
+  }
   
 }
