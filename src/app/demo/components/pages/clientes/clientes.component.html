@@ -89,203 +89,200 @@
 </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '450px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
-<form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
-  <br>
-  <div class="formgrid grid">
-    <div class="field col">
-      <span class="p-float-label">
-        <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
-        <label for="tipo_cliente">Tipo cliente</label>
-      </span>
-      <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-        El tipo de cliente es requerido
-      </span>       
-      <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-        El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
-      </span>
-    </div>
-        <div class="field col">
-            <span class="p-float-label">
-              <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
-              <label for="nombre_contacto">Nombre de contacto</label>
+<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '850px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
+  <form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
+    <br>
+    <div class="formgrid grid">
+          <div class="field col">
+           <p-dropdown formControlName= "tipo_cliente" [options]="['Persona jurídica','Persona natural']"
+            placeholder="Tipo cliente"  name="tipo_cliente" ></p-dropdown>
+            <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
+            style="color: red;">
+              El tipo de cliente es requerida
+            </span>       
+            <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
+            style="color: red;">
+              El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
             </span>
-              <span *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
-              style="color: red;">
-                El nombre es requerido
-              </span>       
-              <span *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
-              style="color: red;">
-                El nombre solo debe contener letras y tener máximo 20 caracteres
+            </div>
+          <div class="field col">
+              <span class="p-float-label">
+                <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
+                <label for="nombre_contacto">Nombre de contacto</label>
               </span>
-         </div>
+                <span *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
+                style="color: red;">
+                  El nombre es requerido
+                </span>       
+                <span *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
+                style="color: red;">
+                  El nombre solo debe contener letras y tener máximo 50 caracteres
+                </span>
+           </div>
+          </div>
+        <br>
+        <div class="formgrid grid">
+          <div class="field col">
+            <span class="p-float-label">
+              <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
+              <label for="numero_documento_cliente">Número de Identificación</label>
+          </span>
+          <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
+          style="color: red;">
+              El Número de Identificación es requerido
+          </span>       
+          <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
+          style="color: red;">
+              El número de Identificación solo puede tener números y tener máximo 10 caracteres
+          </span>
+          </div>
+          <div class="field col">
+            <span class="p-float-label">
+              <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
+              <label for="telefono_cliente">Número de celular</label>
+          </span>
+          <span *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
+          style="color: red;">
+              El número de celular es requerido
+          </span>       
+          <span *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
+          style="color: red;">
+              El número de celular solo puede tener números y tener máximo 10 caracteres
+          </span>
+          </div>
         </div>
         <div class="formgrid grid mt-4">
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-              <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
-              <label for="nombre_juridico">nombre juridico</label>
+          <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+            <span class="p-float-label">
+                <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
+                <label for="nombre_juridico">Nombre juridico</label>
+            </span>
+            <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
+            style="color: red;">
+                El nombre juridico es requerido
+            </span>       
+            <span *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
+            style="color: red;">
+                El nombre juridico solo puede tener letras y tener máximo 90 caracteres
+            </span>
+          </div>
+          <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+            <span class="p-float-label">
+              <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
+              <label for="nit_empresa_cliente">Nit de la empresa</label>
           </span>
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
+          <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
           style="color: red;">
-              El nombre juridico es requerido
+              El nit de la empresa es requerido
           </span>       
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
+          <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
           style="color: red;">
-              El nombre juridico solo puede tener letras y tener máximo 20 caracteres
+              El nit de la empresa solo puede tener números y tener máximo 12 caracteres
           </span>
+          </div>
         </div>
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-            <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
-            <label for="nit_empresa_cliente">Nit de la empresa</label>
-        </span>
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa es requerido
-        </span>       
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa solo puede tener números y tener máximo 12 caracteres
-        </span>
-        </div>
-      </div>
-      <br>
-      <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
-            <label for="numero_documento_cliente">Número de Identificación</label>
-        </span>
-        <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
-        style="color: red;">
-            El Número de Identificación es requerido
-        </span>       
-        <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
-        style="color: red;">
-            El número de Identificación solo puede tener números y tener máximo 10 caracteres
-        </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
-            <label for="telefono_cliente">Número de celular</label>
-        </span>
-        <span *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
-        style="color: red;">
-            El número de celular es requerido
-        </span>       
-        <span *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
-        style="color: red;">
-            El número de celular solo puede tener números y tener máximo 10 caracteres
-        </span>
-        </div>
-      </div>
-      <div class="formgrid grid mt-4">
-        <div class="field col ">
-          <span class="p-float-label">
+        <div class="formgrid grid mt-4">
+          <div class="field col ">
             <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-           placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
-            <label for="ciudad_cliente">Ciudad</label>
+            placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
+          <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
+          style="color: red;">
+              La Ciudad es requerida
+          </span>       
+          <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"
+          style="color: red;">
+              La Ciudad solo puede tener letras y tener máximo 20 caracteres
           </span>
-        <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
-        style="color: red;">
-            La Ciudad es requerida
-        </span>       
-        <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"
-        style="color: red;">
-            La Ciudad solo puede tener letras y tener máximo 20 caracteres
-        </span>
+          </div>
+          <div class="field col">
+            <span class="p-float-label">
+              <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
+              <label for="barrio_cliente">Barrio</label>
+          </span>
+          <span *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
+          style="color: red;">
+              El barrio es requerido
+          </span>       
+          <span *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
+          style="color: red;">
+              El barrio solo puede tener letras y tener máximo 20 caracteres 
+          </span>
+          </div>
         </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
-            <label for="barrio_cliente">Barrio</label>
-        </span>
-        <span *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
-        style="color: red;">
-            El barrio es requerido
-        </span>       
-        <span *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
-        style="color: red;">
-            El barrio solo puede tener letras y tener máximo 20 caracteres 
-        </span>
+        <br>
+        <div class="formgrid grid">
+          <div class="field col">
+            <span class="p-float-label">
+              <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
+              <label for="direccion_cliente">Dirección</label>
+          </span>
+          <span *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
+          style="color: red;">
+              La dirección es requerido
+          </span>       
+          <span *ngIf="formCliente.get('direccion_cliente')?.hasError('pattern') && formCliente.get('direccion_cliente')?.touched"
+          style="color: red;">
+              La dirección no es valida
+          </span>
+          </div>
+          <div class="field col">
+            <span class="p-float-label">
+                <input type="email" pInputText id="correo_cliente" formControlName="correo_cliente" />
+                <label for="correo_cliente">Correo electrónico</label>
+            </span>
+            <span
+                *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
+                style="color: red;">Correo electrónico
+                requerido.</span>
+            <span *ngIf="formCliente.get('correo_cliente').hasError('email')" style="color: red;">Correo
+                electrónico no
+                válido.</span>
         </div>
-      </div>
-      <br>
-      <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
-            <label for="direccion_cliente">Dirección</label>
-        </span>
-        <span *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
-        style="color: red;">
-            La dirección es requerido
-        </span>       
-        <span *ngIf="formCliente.get('direccion_cliente')?.hasError('pattern') && formCliente.get('direccion_cliente')?.touched"
-        style="color: red;">
-            La dirección no es valida
-        </span>
+        
+     
         </div>
-        <div class="field col">
-          <span class="p-float-label">
-              <input type="email" pInputText id="correo_cliente" formControlName="correo_cliente" />
-              <label for="correo_cliente">Correo electrónico</label>
-          </span>
-          <span
-              *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
-              style="color: red;">Correo electrónico
-              requerido.</span>
-          <span *ngIf="formCliente.get('correo_cliente').hasError('email')" style="color: red;">Correo
-              electrónico no
-              válido.</span>
+        <div class="formgrid grid mt-4">
+          <div class="field col">
+            <span class="p-float-label">
+                <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
+                <label for="contrasena_usuario">Contraseña</label>
+            </span>
+            <span
+                *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
+                style="color: red;">La
+                contraseña
+                es requerida.</span>
+            <span *ngIf="formCliente.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
+                contraseña debe
+                tener al menos 6 caracteres.</span>
+            <span
+                *ngIf="formCliente.get('contrasena_usuario')?.hasError('pattern') && formCliente.get('contrasena_usuario')?.touched"
+                style="color: red;">
+                La contraseña debe contar con una mayúscula, una minúscula y un número.
+            </span>
+        </div>
+          <div class="field col">
+            <span class="p-float-label">
+                <input type="password" pInputText id="confirmar_contrasena"
+                    formControlName="confirmar_contrasena" />
+                <label for="confirmar_contrasena">Confirmar Contraseña</label>
+            </span>
+            <span
+                *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
+                style="color: red;">Confirmación de contraseña requerida.</span>
+            <span *ngIf="formCliente.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no
+                coinciden.</span>
+            <span
+                *ngIf="formCliente.get('confirmar_contrasena')?.value !== formCliente.get('contrasena_usuario')?.value && formCliente.get('confirmar_contrasena')?.touched"
+                style="color: red;">Las contraseñas no coinciden.</span>
+        </div>
+        </div>
+         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
+        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
       </div>
-      
-   
-      </div>
-      <div class="formgrid grid mt-4">
-        <div class="field col">
-          <span class="p-float-label">
-              <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
-              <label for="contrasena_usuario">Contraseña</label>
-          </span>
-          <span
-              *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
-              style="color: red;">La
-              contraseña
-              es requerida.</span>
-          <span *ngIf="formCliente.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
-              contraseña debe
-              tener al menos 6 caracteres.</span>
-          <span
-              *ngIf="formCliente.get('contrasena_usuario')?.hasError('pattern') && formCliente.get('contrasena_usuario')?.touched"
-              style="color: red;">
-              La contraseña debe contar con una mayúscula, una minúscula y un número.
-          </span>
-      </div>
-        <div class="field col">
-          <span class="p-float-label">
-              <input type="password" pInputText id="confirmar_contrasena"
-                  formControlName="confirmar_contrasena" />
-              <label for="confirmar_contrasena">Confirmar Contraseña</label>
-          </span>
-          <span
-              *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
-              style="color: red;">Confirmación de contraseña requerida.</span>
-          <span *ngIf="formCliente.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no
-              coinciden.</span>
-          <span
-              *ngIf="formCliente.get('confirmar_contrasena')?.value !== formCliente.get('contrasena_usuario')?.value && formCliente.get('confirmar_contrasena')?.touched"
-              style="color: red;">Las contraseñas no coinciden.</span>
-      </div>
-      </div>
-       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
-      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
-    </div>
-</form>  
-</p-dialog>
+  </form>  
+  </p-dialog>
 
 <p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true"
     [style]="{width:'450px'}">
@@ -329,40 +326,10 @@
               </span>       
               <span *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
               style="color: red;">
-                El nombre solo debe contener letras y tener máximo 20 caracteres
+                El nombre solo debe contener letras y tener máximo 50 caracteres
               </span>
          </div>
         </div>
-        <div class="formgrid grid mt-4">
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-              <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
-              <label for="nombre_juridico">Nombre juridico</label>
-          </span>
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
-          style="color: red;">
-              El nombre juridico es requerido
-          </span>       
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
-          style="color: red;">
-              El nombre juridico solo puede tener letras y tener máximo 20 caracteres
-          </span>
-        </div>
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-            <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
-            <label for="nit_empresa_cliente">Nit de la empresa</label>
-        </span>
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa es requerido
-        </span>       
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa solo puede tener números y tener máximo 12 caracteres
-        </span>
-        </div>
-      </div>
       <br>
       <div class="formgrid grid">
         <div class="field col">
@@ -391,6 +358,36 @@
         <span *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
         style="color: red;">
             El número de celular solo puede tener números y tener máximo 10 caracteres
+        </span>
+        </div>
+      </div>
+      <div class="formgrid grid mt-4">
+        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+          <span class="p-float-label">
+              <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
+              <label for="nombre_juridico">Nombre juridico</label>
+          </span>
+          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
+          style="color: red;">
+              El nombre juridico es requerido
+          </span>       
+          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
+          style="color: red;">
+              El nombre juridico solo puede tener letras y tener máximo 90 caracteres
+          </span>
+        </div>
+        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+          <span class="p-float-label">
+            <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
+            <label for="nit_empresa_cliente">Nit de la empresa</label>
+        </span>
+        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
+        style="color: red;">
+            El nit de la empresa es requerido
+        </span>       
+        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
+        style="color: red;">
+            El nit de la empresa solo puede tener números y tener máximo 12 caracteres
         </span>
         </div>
       </div>

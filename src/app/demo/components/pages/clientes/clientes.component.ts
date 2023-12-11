@@ -47,13 +47,13 @@ export class clientesComponent implements OnInit {
         private aRouter:ActivatedRoute){
           this.formCliente = this.fb.group({
             tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            nombre_contacto: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            nombre_juridico: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            nombre_contacto: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,50}$/),]],
+            nombre_juridico: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{1,90}$/),]],
             numero_documento_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
             nit_empresa_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,12}$/),]],
             telefono_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
             direccion_cliente: ['',[Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'-]+$/),]],
-            barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{1,20}$/),]],
             ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
             estado_cliente: ['', Validators.required],
             correo_cliente: ['', [Validators.required, Validators.email]],
