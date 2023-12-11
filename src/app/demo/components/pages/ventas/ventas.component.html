@@ -8,7 +8,8 @@
 
     <ng-template pTemplate="right">
         <button (click)="descargarExcel()"
-            style="background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; outline: none; padding: 5px;">
+            style="background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; outline: none; padding: 5px;"
+            pTooltip="Descargar archivo excel" tooltipPosition="left">
             <svg xmlns="http://www.w3.org/2000/svg" x="25px" y="0px" width="30" height="30" viewBox="0 0 48 48"
                 style=" top: 50%; left: 50%; ">
                 <defs>
@@ -87,7 +88,8 @@
             <td>
                 <div class="flex">
                     <button type="button" pButton pRipple icon="pi pi-eye"
-                        class="p-button-rounded p-button-primary mr-2" (click)="verDetalleVenta(venta._id)"></button>
+                        class="p-button-rounded p-button-primary mr-2" (click)="verDetalleVenta(venta._id)"
+                        pTooltip="Ver detalle" tooltipPosition="left"></button>
                 </div>
             </td>
         </tr>

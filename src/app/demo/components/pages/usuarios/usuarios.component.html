@@ -3,7 +3,7 @@
     <ng-template pTemplate="left">
         <div class="my-2">
             <button pButton pRipple label="Crear Usuario" icon="pi pi-user-plus" class="p-button-success mr-2"
-                (click)="openNewUsuarioDialog()"></button>
+                (click)="openNewUsuarioDialog()" pTooltip="Crear usuario"></button>
         </div>
     </ng-template>
 
@@ -53,7 +53,7 @@
                     <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
                         (click)="editProduct(product)"></button> -->
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
-                        (click)="editarUsuario(usuario)"></button>
+                        (click)="editarUsuario(usuario)" pTooltip="Editar usuario"></button>
                 </div>
             </td>
         </tr>

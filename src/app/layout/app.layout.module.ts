@@ -18,6 +18,7 @@ import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
 import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
 import { FileUploadModule } from 'primeng/fileupload';
 
 
@@ -45,6 +46,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         RouterModule,
         AppConfigModule,
         DialogModule,
+        TooltipModule,
         FileUploadModule
     ],
     exports: [AppLayoutComponent]
