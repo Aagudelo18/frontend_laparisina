@@ -204,14 +204,29 @@ export class OrdenDeProduccionComponent implements OnInit {
         return 'Sin detalles disponibles';
       }
     
-      // Añade un encabezado antes del primer elemento del detallePedido
-      const contenido = [`PRODUCTOS PEDIDO \n- ${detallePedido[0].nombre_producto} :  ${detallePedido[0].cantidad_producto}`];
+      const contenidoTabla = `
+      <table style="width: 100%; text-align: center;">
+          <thead>
+              <tr>
+                  <th style="width: 55%;">Producto</th>
+                  <th style="width: 45%;">Cantidad</th>
+              </tr>
+          </thead>
+          <tbody>
+              ${detallePedido.map(item => `
+                  <tr>
+                      <td style="width: 55%; text-align: center;">${item.nombre_producto}</td>
+                      <td style="width: 45%; text-align: center;">${item.cantidad_producto}</td>
+                  </tr>
+              `).join('')}
+          </tbody>
+      </table>
+`;
+
     
-      // Añade el resto de los elementos
-      contenido.push(...detallePedido.slice(1).map(item => `- ${item.nombre_producto} :  ${item.cantidad_producto}`));
-    
-      return contenido.join('\n');
+      return contenidoTabla;
     }
+    
     
     
 
