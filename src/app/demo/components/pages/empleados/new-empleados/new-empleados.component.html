@@ -186,6 +186,28 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    type="password"
+                    id="contrasena_usuario"
+                    pInputText
+                    [(ngModel)]="empleado.contrasena_usuario"
+                />
+                <label for="inputtext">Contraseña</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="password"
+                    id="confirmar_contrasena"
+                    pInputText
+                    [(ngModel)]="empleado.confirmar_contrasena"
+                />
+                <label for="inputtext">Confirmar contraseña</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
                     type="text"
                     id="alergia_empleado"
                     pInputText
@@ -194,31 +216,36 @@
                 <label for="inputtext">Alergia</label>
             </span>
         </div>
-        <div *ngFor="let contacto of empleado.contacto_emergencia; let i = index" class="row">
-            <div class="col-md-4">
-                <div class="p-field custom-input">
-                    <input id="nombre_contacto_emergencia{{i}}" type="text" pInputText name="nombre_contacto_emergencia{{i}}"
-                        [(ngModel)]="contacto.nombre_contacto_emergencia" required>
-                        <label for="inputtext" class="custom-label">Nombre del contacto de emergencia</label>
-                </div>
-            </div>
         
-            <div class="col-md-4">
-                <div class="p-field custom-input">
-                    <input id="parentesco_empleado{{i}}" type="text" pInputText name="parentesco_empleado{{i}}"
-                        [(ngModel)]="contacto.parentesco_empleado" required>
-                    <div class="custom-label" (click)="focusInput('parentesco_empleado{{i}}')">Parentesco con el empleado</div>
-                </div>
-            </div>
-        
-            <div class="col-md-4">
-                <div class="p-field custom-input">
-                    <input id="telefono_contacto_emergencia{{i}}" type="text" pInputText name="telefono_contacto_emergencia{{i}}"
-                        [(ngModel)]="contacto.telefono_contacto_emergencia" required>
-                    <div class="custom-label" (click)="focusInput('telefono_contacto_emergencia{{i}}')">Teléfono del contacto de emergencia</div>
-                </div>
-            </div>
+<div *ngFor="let contacto of empleado.contacto_emergencia; let i = index" class="contacto-emergencia-row">
+    <div class="contacto-emergencia-col">
+        <div class="p-field custom-input">
+            <input id="nombre_contacto_emergencia{{i}}" type="text" pInputText name="nombre_contacto_emergencia{{i}}"
+                [(ngModel)]="contacto.nombre_contacto_emergencia" required
+                [class.filled]="contacto.nombre_contacto_emergencia">
+            <label for="inputtext" class="custom-label custom-title" [class.active]="contacto.nombre_contacto_emergencia">Nombre del contacto</label>
         </div>
+    </div>
+
+    <div class="contacto-emergencia-col">
+        <div class="p-field custom-input">
+            <input id="parentesco_empleado{{i}}" type="text" pInputText name="parentesco_empleado{{i}}"
+                [(ngModel)]="contacto.parentesco_empleado" required
+                [class.filled]="contacto.parentesco_empleado">
+            <label for="parentesco_empleado{{i}}" class="custom-label custom-title" [class.active]="contacto.parentesco_empleado">Parentesco</label>
+        </div>
+    </div>
+
+    <div class="contacto-emergencia-col">
+        <div class="p-field custom-input">
+            <input id="telefono_contacto_emergencia{{i}}" type="text" pInputText name="telefono_contacto_emergencia{{i}}"
+                [(ngModel)]="contacto.telefono_contacto_emergencia" required
+                [class.filled]="contacto.telefono_contacto_emergencia">
+            <label for="telefono_contacto_emergencia{{i}}" class="custom-label custom-title" [class.active]="contacto.telefono_contacto_emergencia">Teléfono del contacto</label>
+        </div>
+    </div>
+</div>
+
         
         
         <div class="field col-12 md:col-3">
@@ -270,7 +297,7 @@
             <span class="p-float-label">
                 <p-dropdown
                     id="area_empleado"
-                    [options]="['Panadero', 'Repostero', 'Tortas', 'Chef']"
+                    [options]="['Producción', 'Domiciliario']"
                     [(ngModel)]="empleado.area_empleado"
                     placeholder="Selecciona área"
                     styleClass="p-inputtext p-filled"
@@ -294,4 +321,18 @@
             (click)="crearEmpleado()"
         ></button>
     </div>
+
+    <p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true"
+    [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>¿Está seguro de que desea crear este usuario <b>{{ formEmpleados.get('correo_empleado').value
+                }}</b>?</span>
+    </div>
+     <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="mostrarConfirmacionUsuario = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmarCreacionUsuario()"></button>
+          </ng-template>
+</p-dialog> 
 
