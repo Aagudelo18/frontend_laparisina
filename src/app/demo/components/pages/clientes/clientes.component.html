@@ -45,22 +45,22 @@
                   <tr>
                       
                       
-                      <td style="width:8%; min-width:9rem;">
+                      <td style="width:15%; min-width:9rem;">
                           {{ clientes.tipo_cliente }}
                       </td>
-                      <td style="width:8%; min-width:8rem;">
+                      <td style="width:15%; min-width:8rem;">
                           {{ clientes.numero_documento_cliente}}
                       </td>
-                      <td style="width:8%; min-width:10rem;">
+                      <td style="width:15%; min-width:10rem;">
                           {{ clientes.nombre_contacto }}
                       </td>
-                      <td style="width:8%; min-width:8rem;">
+                      <td style="width:15%; min-width:8rem;">
                           {{ clientes.telefono_cliente }}
                       </td>
-                      <td style="width:8%; min-width:9rem;">
+                      <td style="width:15%; min-width:9rem;">
                         {{ clientes.direccion_cliente }}
                     </td>
-                      <td style="width:8%; min-width:5rem;">
+                      <td style="width:15%; min-width:5rem;">
                         <div class="flex" style="align-items: center;" >
                           <br>
                           <p-inputSwitch [ngModel]="clientes.estado_cliente" (onChange)="confirmarCambioEstado(clientes)"></p-inputSwitch>

@@ -76,7 +76,7 @@ export class ProductoComponent implements OnInit {
 
         this.formProducto = this.fb.group({
           codigo_producto: ['',[Validators.required, Validators.pattern(/^[0-9]{3,4}$/),]],
-          nombre_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/)]],
+          nombre_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\d\s-]{1,20}$/)]],
           nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
           descripcion_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s:-]+$/)]],
           precio_ico: ['',[Validators.required, Validators.pattern(/^[0-9]{4,6}$/)]],
@@ -148,9 +148,13 @@ export class ProductoComponent implements OnInit {
       if (form.valid) {
         // Crear FormData y agregar valores
         const formData = new FormData();
+
+        const nombreProducto = this.formProducto.get('nombre_producto').value.trim();
+        const descripcionProducto = this.formProducto.get('descripcion_producto').value.trim();
+
         formData.append('codigo_producto', this.formProducto.get('codigo_producto').value);
-        formData.append('nombre_producto', this.formProducto.get('nombre_producto').value);
-        formData.append('nombre_categoria_producto', this.formProducto.get('nombre_categoria_producto').value);
+        formData.append('nombre_producto', nombreProducto);
+        formData.append('nombre_categoria_producto', descripcionProducto);
         formData.append('descripcion_producto', this.formProducto.get('descripcion_producto').value);
         formData.append('precio_ico', this.formProducto.get('precio_ico').value);
         formData.append('precio_por_mayor_ico', this.formProducto.get('precio_por_mayor_ico').value);

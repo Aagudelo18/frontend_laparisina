@@ -26,7 +26,7 @@ export class VentasComponent implements OnInit {
   formVentas: FormGroup;
   roleDialog: boolean = false; // Esto controla la visibilidad del p-dialog
   estadoSiguiente: string;
- 
+
 
   constructor(
     private ventasService: VentasService,
@@ -34,46 +34,65 @@ export class VentasComponent implements OnInit {
     private fb: FormBuilder,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-    ) 
-    {
-      this.formVentas = this.fb.group({
-        documento_cliente: [''],
-        tipo_cliente: [''],
-        nombre_contacto: [''],
-        telefono_cliente: [''],
-        quien_recibe:[''],
-        ciudad_cliente:[''],
-        barrio_cliente:[''],
-        fecha_entrega_pedido:[''],
-        fecha_pedido_tomado:[''],
-        direccion_entrega:[''],
-        estado_pedido: [''],
-        precio_total_venta:[''],
-        subtotal_venta:[''],
-        metodo_pago:[''],
-        valor_domicilio:[''],
-        nit_empresa_cliente:[''],
-        nombre_juridico:[''],
-        aumento_empresa:[''],
-        detalle_pedido:['']
-      
-      }); 
-     }
+  ) {
+    this.formVentas = this.fb.group({
+      documento_cliente: [''],
+      tipo_cliente: [''],
+      nombre_contacto: [''],
+      telefono_cliente: [''],
+      quien_recibe: [''],
+      ciudad_cliente: [''],
+      barrio_cliente: [''],
+      fecha_entrega_pedido: [''],
+      fecha_pedido_tomado: [''],
+      direccion_entrega: [''],
+      estado_pedido: [''],
+      precio_total_venta: [''],
+      subtotal_venta: [''],
+      metodo_pago: [''],
+      valor_domicilio: [''],
+      nit_empresa_cliente: [''],
+      nombre_juridico: [''],
+      aumento_empresa: [''],
+      detalle_pedido: ['']
 
-    ngOnInit() {
-      this.ventasService.getVentas().subscribe(
-        (data: any) => {
-          console.log('Datos de ventas:', data);
-          this.ventas = data.ventas; // Asignar el campo 'ventas' al arreglo this.ventas
-        },
-        (error) => {
-          console.error('Error al obtener los datos de ventas:', error);
-          // Manejo de error: mostrar un mensaje, notificar al usuario, etc.
-        }
-      );
+    });
+  }
+
+  async descargarExcel() {
+    try {
+      const blob = await this.ventasService.descargarVentasExcel().toPromise();
+      this.descargarArchivo(blob);
+    } catch (error) {
+      console.error('Error al descargar el archivo', error);
+      // Manejar el error según sea necesario
     }
+  }
 
-  enviarListPedido(){
+  private descargarArchivo(blob: Blob) {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.href = url;
+    a.download = 'Ventas.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  ngOnInit() {
+    this.ventasService.getVentas().subscribe(
+      (data: any) => {
+        console.log('Datos de ventas:', data);
+        this.ventas = data.ventas; // Asignar el campo 'ventas' al arreglo this.ventas
+      },
+      (error) => {
+        console.error('Error al obtener los datos de ventas:', error);
+        // Manejo de error: mostrar un mensaje, notificar al usuario, etc.
+      }
+    );
+  }
+
+  enviarListPedido() {
     this.router.navigate(['/list-pedidos']);
   }
 
@@ -84,8 +103,8 @@ export class VentasComponent implements OnInit {
   }
 
 
-  getVentaDetalle(id: string){
-    this.ventasService.getVentaDetalle(id).subscribe((data)=>{
+  getVentaDetalle(id: string) {
+    this.ventasService.getVentaDetalle(id).subscribe((data) => {
       this.formVentas.setValue({
         documento_cliente: data.documento_cliente,
         tipo_cliente: data.tipo_cliente,
@@ -105,17 +124,18 @@ export class VentasComponent implements OnInit {
         aumento_empresa: data.aumento_empresa || '',
         nit_empresa_cliente: data.nit_empresa_cliente || '',
         nombre_juridico: data.nombre_juridico || '',
-        detalle_pedido: data.detalle_pedido || []     
-      }) 
-    })}
-    
-    esPersonaNatural() {
-      return this.formVentas.get('tipo_cliente').value === 'Persona natura';
-   }
-   
-   esEmpresa() {
-      return this.formVentas.get('tipo_cliente').value === 'Empresa';
-   }
+        detalle_pedido: data.detalle_pedido || []
+      })
+    })
+  }
+
+  esPersonaNatural() {
+    return this.formVentas.get('tipo_cliente').value === 'Persona natura';
+  }
+
+  esEmpresa() {
+    return this.formVentas.get('tipo_cliente').value === 'Empresa';
+  }
 
   cargarPedidos() {
     this.ventasService.getVentas().subscribe((data: Pedido[]) => {
@@ -126,7 +146,27 @@ export class VentasComponent implements OnInit {
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
-   
+
+  // async descargarExcel() {
+  //   try {
+  //     const blob = await this.ventasService.descargarClientesExcel().toPromise();
+  //     this.descargarArchivo(blob);
+  //   } catch (error) {
+  //     console.error('Error al descargar el archivo', error);
+  //     // Manejar el error según sea necesario
+  //   }
+  // }
+
+  // private descargarArchivo(blob: Blob) {
+  //   const url = window.URL.createObjectURL(blob);
+  //   const a = document.createElement('a');
+  //   document.body.appendChild(a);
+  //   a.href = url;
+  //   a.download = 'ventas.xlsx';
+  //   a.click();
+  //   window.URL.revokeObjectURL(url);
+  // }
+
 }
 
 

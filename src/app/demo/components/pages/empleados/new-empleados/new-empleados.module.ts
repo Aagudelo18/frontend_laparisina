@@ -22,7 +22,7 @@ import { SliderModule } from 'primeng/slider';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
  
@@ -49,6 +49,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 	RippleModule,
 	ProgressBarModule,
 	ToastModule,
+	DialogModule,
   ],
   declarations: [NewEmpleadosComponent],
 })

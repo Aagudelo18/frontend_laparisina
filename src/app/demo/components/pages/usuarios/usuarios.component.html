@@ -3,14 +3,10 @@
     <ng-template pTemplate="left">
         <div class="my-2">
             <button pButton pRipple label="Crear Usuario" icon="pi pi-user-plus" class="p-button-success mr-2"
-                (click)="openNewUsuarioDialog()"></button>
+                (click)="openNewUsuarioDialog()" pTooltip="Crear usuario"></button>
         </div>
     </ng-template>
 
-    <ng-template pTemplate="right">
-        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-            (click)="dt.exportCSV()"></button>
-    </ng-template>
 </p-toolbar>
 <p-table #dt [value]="usuarios" [globalFilterFields]="['correo_electronico']" [rows]="10" [paginator]="true"
     [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
@@ -46,21 +42,38 @@
             <td style="width:30%; min-width:10rem;">
                 {{ usuario.rol_usuario.nombre_rol }}
             </td>
-
-            <td style="width:25%; min-width:10rem; ">
-                {{ usuario.estado_usuario ? 'Activo' : 'Inactivo' }}
+            <td style="width:10%; min-width:10rem;">
+                <span class="p-column-title">Estado</span>
+                <!-- {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }} -->
+                <p-inputSwitch class="mr-2" [ngModel]="usuario.estado_usuario"
+                    (onChange)="confirmarCambioEstado(usuario)" pTooltip="Cambiar estado"></p-inputSwitch>
             </td>
             <td>
                 <div class="flex">
                     <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
                         (click)="editProduct(product)"></button> -->
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
-                        (click)="editarUsuario(usuario)"></button>
+                        (click)="editarUsuario(usuario)" pTooltip="Editar usuario"></button>
                 </div>
             </td>
         </tr>
     </ng-template>
 </p-table>
+
+<p-dialog [(visible)]="estadoUsuarioDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}"
+    (onHide)="noCambiarEstado()">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="usuario">¿Está seguro de que desea cambiar el estado de la categoría
+            <b>{{usuario.correo_electronico}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="noCambiarEstado()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="cambiarEstadoUsuario(usuario.uid, !usuario.estado_usuario)"></button>
+    </ng-template>
+</p-dialog>
 
 <p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Crear Usuario" [modal]="true"
     class="p-fluid">
@@ -118,8 +131,9 @@
 
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
-                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol para el usuario"></p-dropdown>
+                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario"
+                    [options]="rolesForCreation" [optionLabel]="'nombre_rol'"
+                    placeholder="Seleccionar rol para el usuario"></p-dropdown>
             </div>
 
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
@@ -147,6 +161,17 @@
     </ng-template>
 </p-dialog>
 
+<!-- <p-dialog [(visible)]="estadoCategoriaDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="categoria">¿Está seguro de que desea cambiar el estado de la categoría <b>{{categoria.nombre_categoria_producto}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoCategoria(categoria._id)"></button>
+    </ng-template>
+</p-dialog> -->
+
 
 <p-dialog [(visible)]="editarUsuarioDialog" [style]="{ width: '450px' }" header="Editar Usuario" [modal]="true"
     class="p-fluid">
@@ -170,13 +195,13 @@
             <div class="field">
                 <label for="rol_usuario">Seleccione el rol del Usuario</label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol"></p-dropdown>
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol" appendTo="body"></p-dropdown>
             </div>
 
             <div class="field">
                 <label for="estado_usuario">Estado del Usuario</label>
                 <p-dropdown formControlName="estado_usuario" inputId="estado_usuario" [options]="estadoOptions"
-                    placeholder="Seleccionar"></p-dropdown>
+                    placeholder="Seleccionar" appendTo="body"></p-dropdown>
             </div>
 
             <!-- Otros campos de edición -->

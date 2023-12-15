@@ -198,6 +198,39 @@ export class OrdenDeProduccionComponent implements OnInit {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
+    // Función para generar el contenido del tooltip
+    generarContenidoTooltip(detallePedido: any[]): string {
+      if (!detallePedido || detallePedido.length === 0) {
+        return 'Sin detalles disponibles';
+      }
+    
+      const contenidoTabla = `
+      <table style="width: 100%; text-align: center;">
+          <thead>
+              <tr>
+                  <th style="width: 55%;">Producto</th>
+                  <th style="width: 45%;">Cantidad</th>
+              </tr>
+          </thead>
+          <tbody>
+              ${detallePedido.map(item => `
+                  <tr>
+                      <td style="width: 55%; text-align: center;">${item.nombre_producto}</td>
+                      <td style="width: 45%; text-align: center;">${item.cantidad_producto}</td>
+                  </tr>
+              `).join('')}
+          </tbody>
+      </table>
+`;
+
+    
+      return contenidoTabla;
+    }
+    
+    
+    
+
+    //-------------------------------------------------------------------------------------------------------------------------------
     //función para filtar la tabla en el buscador
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

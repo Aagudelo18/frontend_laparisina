@@ -23,6 +23,8 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { ImageModule } from 'primeng/image';
 import { GalleriaModule } from 'primeng/galleria';
 import { CarouselModule } from 'primeng/carousel';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 @NgModule({
     imports: [
@@ -47,7 +49,8 @@ import { CarouselModule } from 'primeng/carousel';
         AutoCompleteModule,
         ImageModule,
         GalleriaModule,
-        CarouselModule
+        CarouselModule,
+        TooltipModule
     ],
     declarations: [ProductoComponent],
     providers: [

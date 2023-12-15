@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
         { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
         { path: 'registrarse', loadChildren: () => import('./registrarse/registrarse.module').then(m => m.RegistrarseModule) },
         { path: 'recuperar-contrasena', loadChildren: () => import('./recuperar-contrasena/recuperar-contrasena.module').then(m => m.RecuperarContrasenaModule) },
+        { path: 'restaurar-contrasena', loadChildren: () => import('./restaurar-contrasena/restaurar-contrasena.module').then(m => m.RestaurarContrasenaModule) },
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]

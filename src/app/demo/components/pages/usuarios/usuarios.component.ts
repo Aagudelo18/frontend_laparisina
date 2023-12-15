@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UsuarioService } from './usuarios.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -17,10 +19,12 @@ export class UsuariosComponent implements OnInit {
   usuarios: any[] = [];
   selectedUsuarios: any[] = [];
   roles: any[] = []; // Se declara una lista para roles
+  rolesForCreation: any[] = [];
   selectedRol: any; // Variable para almacenar el rol seleccionado
   correoBusqueda: string = '';
   editarUsuarioDialog: boolean = false;
   mostrarConfirmacionUsuario = false; // Variable para controlar la visibilidad del diálogo de confirmación
+  estadoUsuarioDialog: boolean = false;
   usuarioAEditar: any;
   usuario: any;
   formularioUsuario: FormGroup;
@@ -40,7 +44,7 @@ export class UsuariosComponent implements OnInit {
       rol_usuario: ['', [Validators.required]],// Establece el valor predeterminado a "Activo"
     });
     this.formularioEditarUsuario = fb.group({
-      correo_electronico: [{ value: '', disabled: true }, ''],
+      correo_electronico: ['', [Validators.required, Validators.email]],
       rol_usuario: ['', [Validators.required]],
       estado_usuario: [true, Validators.required],
     });
@@ -59,6 +63,7 @@ export class UsuariosComponent implements OnInit {
 
     //Traemos el método para traer todos los roles
     this.getListRoles();
+    this.getListRolesForCreation();
   }
 
   //Método para traer todos los usuarios. signIn
@@ -70,6 +75,13 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
+  getListRolesForCreation() {
+    this.usuarioService.getRoles().subscribe((data: any[]) => {
+      // Filtrar los roles para mostrar solo el rol de Administrador para la creación
+      this.rolesForCreation = data.filter(rol => rol._id === '6547f25b67ec1e25d0c5d17a');
+    });
+  }
+
   //Método para traer todos los roles.
   getListRoles() {
     this.usuarioService.getRoles().subscribe((data: any[]) => {
@@ -77,6 +89,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
+  
   //Abre o muestra el dialog o el modal del Editar Usuario
   openEditarUsuarioDialog() {
     this.editarUsuarioDialog = true;
@@ -102,19 +115,6 @@ export class UsuariosComponent implements OnInit {
   //       return stateA.localeCompare(stateB);
   //     }
   //   });
-  // }
-
-
-
-  //Metodo para buscar por medio del correo electrónico
-  onBuscar() {
-    // Obtener la lista completa de usuarios desde donde se esté almacenando
-    const usuariosCompletos = this.usuarios;
-    // Realizar la búsqueda por correo electrónico
-    this.usuarios = usuariosCompletos.filter(usuario =>
-      usuario.correo_electronico.toLowerCase().includes(this.correoBusqueda.toLowerCase())
-    );
-  }
 
   //Verifica o se asegura de que el campo de confirmar contraseña coincida con la contraseña.
   validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
@@ -141,39 +141,37 @@ export class UsuariosComponent implements OnInit {
   confirmarCrearUsuario() {
     if (this.formularioUsuario.valid) {
       const nuevoUsuario = this.formularioUsuario.value;
-
-      // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
+  
       if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
-        this.usuarioService.createUsuario(nuevoUsuario).subscribe(
-          (response) => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'El usuario fue creado con éxito',
-              detail: 'Usuario creado',
-              life: 3000
-            });
-            this.getListUsuarios();
-            this.getListRoles();
-            this.usuarioDialog = false;
-            this.mostrarConfirmacionUsuario = false; // Cerrar el diálogo de confirmación
-          },
-          (error) => {
-            if (error.error && error.error.error) {
-              const errorMessage = error.error.error;
+        this.usuarioService.createUsuario(nuevoUsuario)
+          .subscribe(
+            (response: any) => {
               this.messageService.add({
-                severity: 'error',
-                summary: 'Error al crear el usuario',
-                detail: errorMessage,
-                life: 5000
+                severity: 'success',
+                summary: 'El usuario fue creado con éxito',
+                detail: 'Usuario creado',
+                life: 3000
               });
-            } else {
-              console.error('Error desconocido al crear el usuario:', error);
+              this.getListUsuarios();
+              this.getListRoles();
+              this.usuarioDialog = false;
+              this.mostrarConfirmacionUsuario = false; // Cerrar el diálogo de confirmación
+            },
+            (error) => {
+              if (error && error.error && error.error.errors && error.error.errors.length > 0) {
+                const errorMessage = error.error.errors[0].msg; // Acceder al mensaje de error específico
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error al crear el usuario',
+                  detail: errorMessage,
+                  life: 5000
+                });
+              } else {
+                console.error('Error desconocido al crear el usuario:', error);
+              }
             }
-          }
-        );
+          );
       } else {
-        // Si las contraseñas no coinciden, puedes mostrar un mensaje de error o tomar alguna acción
-        // Por ejemplo:
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -183,6 +181,7 @@ export class UsuariosComponent implements OnInit {
       }
     }
   }
+  
 
   //Método par apoder filtrar, o el campo de buscador.
   onGlobalFilter(table: Table, event: Event) {
@@ -218,32 +217,72 @@ export class UsuariosComponent implements OnInit {
         correo_electronico,
         rol_usuario,
         estado_usuario,
-      }).subscribe((respuesta: any) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'El usuario fue editado con éxito',
-          detail: 'Usuario Editado',
-          life: 3000
+      })
+        .pipe(
+          catchError(error => {
+            if (error && error.error && error.error.error) {
+              const errorMessage = error.error.error;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error al actualizar el usuario',
+                detail: errorMessage,
+                life: 5000
+              });
+            } else {
+              console.error('Error al actualizar el usuario:', error);
+            }
+            return throwError(error); // Propaga el error
+          })
+        )
+        .subscribe((respuesta: any) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'El usuario fue editado con éxito',
+            detail: 'Usuario Editado',
+            life: 3000
+          });
+          console.log('Los datos se han actualizado correctamente.', respuesta);
+          this.getListUsuarios();
+          this.getListRoles();
+          this.editarUsuarioDialog = false;
         });
-        console.log('Los datos se han actualizado correctamente.', respuesta);
-        this.getListUsuarios();
-        this.getListRoles();
-        this.editarUsuarioDialog = false;
-      });
-    } else (error) => {
-      if (error.error && error.error.error) {
-        const errorMessage = error.error.error;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error al actualizar el usuario',
-          detail: errorMessage,
-          life: 5000
-        });
-        console.error('El usuario no está definido.');
-
-      }
+    } else {
+      console.error('El usuario no está definido.');
     }
   }
 
+  // Función para confirmar cambiar el estado de una categoría
+  confirmarCambioEstado(usuario: Usuario) {
+    this.estadoUsuarioDialog = true;
+    this.usuario = usuario
+  }
+  
+  // Función para cambiar el estado de una categoría
+  cambiarEstadoUsuario(uid: string, nuevoEstado: boolean) {
+    const usuarioData = {
+      estado_usuario: nuevoEstado
+    };
+
+    this.usuarioService.actualizarEstadoUsuario(uid, usuarioData).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'El estado del usuario fue cambiado con éxito',
+          life: 3000
+        });
+        this.estadoUsuarioDialog = false;
+      },
+      error: (error) => {
+        console.error('Error cambiando el estado del usuario:', error);
+        // Manejar errores según sea necesario
+      }
+    });
+  }
+
+  //Función para no cambiar el estado de una categoría
+  noCambiarEstado() {
+    this.estadoUsuarioDialog = false;
+    this.getListUsuarios();
+  }
 
 }
