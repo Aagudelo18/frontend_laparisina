@@ -30,6 +30,7 @@ export class ListPedidosComponent implements OnInit {
     pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
     cambiarEstadoPDialog: boolean;
     estado_pedido: string;
+    esatdo_pago: string;
     realizarCambioEstado: boolean;
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
     cambiarEstadoPDialogAnular: boolean;
@@ -60,6 +61,7 @@ export class ListPedidosComponent implements OnInit {
             precio_total_venta: [''],
             subtotal_venta: [''],
             metodo_pago: [''],
+            estado_pago: [''],
             valor_domicilio: [''],
             nit_empresa_cliente: [''],
             nombre_juridico: [''],
@@ -172,6 +174,7 @@ export class ListPedidosComponent implements OnInit {
                 precio_total_venta: data.precio_total_venta,
                 subtotal_venta: data.subtotal_venta,
                 metodo_pago: data.metodo_pago,
+                estado_pago: data.estado_pago,
                 valor_domicilio: data.valor_domicilio,
                 aumento_empresa: aumento || '',
                 nit_empresa_cliente: data.nit_empresa_cliente || '',

@@ -20,6 +20,7 @@ export class NewPedidosComponent implements OnInit {
   pedido: FormGroup;
 
   metodoPago = ['Transferencia', 'Efectivo'];
+  estadoPago = ['Pagado', 'Pendiente']
   categorias = [];
   clientes = [];
   categoriaSeleccionada: string;
@@ -63,6 +64,7 @@ export class NewPedidosComponent implements OnInit {
       fecha_entrega_pedido: ['', [Validators.required,]],
       correo_domiciliario: ['', [Validators.required, Validators.email]],
       metodo_pago: ['', Validators.required],
+      estado_pago: ['', Validators.required],
       valor_domicilio: [0, [Validators.required, Validators.min(0)]],
       subtotal_venta: [0, Validators.min(0)],
       precio_total_venta: [0, Validators.min(0)],
