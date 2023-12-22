@@ -4,6 +4,8 @@ import { LoginService } from './login.services';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'; // Importa Validators y FormGroup
 import { MessageService } from 'primeng/api';
+import { jwtDecode } from 'jwt-decode';
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -82,5 +84,5 @@ export class LoginComponent implements OnInit {
 
     recuperarContrasena() {
         this.router.navigate(['/auth/recuperar-contrasena']); // Navegar a la vista de recuperar contraseña al hacer clic en el enlace
-      }
+    }
 }

@@ -1,532 +1,619 @@
 <div class="grid">
   <div class="col-12">
-      <div class="card px-6 py-6">
-          <p-toast></p-toast>
-          <p-toolbar styleClass="mb-4">
-              <ng-template pTemplate="left">
-                  <div class="my-2">
-                      <button pButton pRipple label="Crear cliente" icon="pi pi-user-plus" class="p-button-success mr-2" (click)="openNewClienteDialog()"></button>
-                  </div>
-              </ng-template>
-              <ng-template pTemplate="right">
-                <button (click)="descargarExcel()" style="background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; outline: none; padding: 5px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" x="25px" y="0px" width="30" height="30" viewBox="0 0 48 48" style=" top: 50%; left: 50%; ">
-                    <defs><linearGradient id="G7C1BuhajJQaEWHVlNUzHa_BEMhRoRy403e_gr1" x1="6" x2="27" y1="24" y2="24" data-name="ÐÐµÐ·ÑÐ¼ÑÐ½Ð½ÑÐ¹ Ð³ÑÐ°Ð´Ð¸ÐµÐ½Ñ 10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#21ad64"></stop><stop offset="1" stop-color="#088242"></stop></linearGradient></defs><path fill="#31c447" d="m41,10h-16v28h16c.55,0,1-.45,1-1V11c0-.55-.45-1-1-1Z"></path><path fill="#fff" d="m32,15h7v3h-7v-3Zm0,10h7v3h-7v-3Zm0,5h7v3h-7v-3Zm0-10h7v3h-7v-3Zm-7-5h5v3h-5v-3Zm0,10h5v3h-5v-3Zm0,5h5v3h-5v-3Zm0-10h5v3h-5v-3Z"></path><path fill="url(#G7C1BuhajJQaEWHVlNUzHa_BEMhRoRy403e_gr1)" d="m27,42l-21-4V10l21-4v36Z"></path><path fill="#fff" d="m19.13,31l-2.41-4.56c-.09-.17-.19-.48-.28-.94h-.04c-.05.22-.15.54-.32.98l-2.42,4.52h-3.76l4.46-7-4.08-7h3.84l2,4.2c.16.33.3.73.42,1.18h.04c.08-.27.22-.68.44-1.22l2.23-4.16h3.51l-4.2,6.94,4.32,7.06h-3.74Z"></path>
-                  </svg>
-                </button>
-            </ng-template>
-            
-              
-          </p-toolbar>
-            <p-table #dt [value]="listClientes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedClientes" selectionMode="multiple" dataKey="_id" [globalFilterFields]="['numero_documento_cliente', 'tipo_cliente','nombre_contacto']">
-              <ng-template pTemplate="caption">
-                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">Lista de Clientes</h5>
-                  <span class="block mt-2 md:mt-0 p-input-icon-left">
-                      <i class="pi pi-search"></i>
-                      <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
-                  </span>
+    <div class="card px-6 py-6">
+      <p-toast></p-toast>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="Crear cliente" icon="pi pi-user-plus" class="p-button-success mr-2"
+              (click)="openNewClienteDialog()"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="right">
+          <button (click)="descargarExcel()"
+            style="background: none; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; outline: none; padding: 5px;">
+            <svg xmlns="http://www.w3.org/2000/svg" x="25px" y="0px" width="30" height="30" viewBox="0 0 48 48"
+              style=" top: 50%; left: 50%; ">
+              <defs>
+                <linearGradient id="G7C1BuhajJQaEWHVlNUzHa_BEMhRoRy403e_gr1" x1="6" x2="27" y1="24" y2="24"
+                  data-name="ÐÐµÐ·ÑÐ¼ÑÐ½Ð½ÑÐ¹ Ð³ÑÐ°Ð´Ð¸ÐµÐ½Ñ 10" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#21ad64"></stop>
+                  <stop offset="1" stop-color="#088242"></stop>
+                </linearGradient>
+              </defs>
+              <path fill="#31c447" d="m41,10h-16v28h16c.55,0,1-.45,1-1V11c0-.55-.45-1-1-1Z"></path>
+              <path fill="#fff"
+                d="m32,15h7v3h-7v-3Zm0,10h7v3h-7v-3Zm0,5h7v3h-7v-3Zm0-10h7v3h-7v-3Zm-7-5h5v3h-5v-3Zm0,10h5v3h-5v-3Zm0,5h5v3h-5v-3Zm0-10h5v3h-5v-3Z">
+              </path>
+              <path fill="url(#G7C1BuhajJQaEWHVlNUzHa_BEMhRoRy403e_gr1)" d="m27,42l-21-4V10l21-4v36Z"></path>
+              <path fill="#fff"
+                d="m19.13,31l-2.41-4.56c-.09-.17-.19-.48-.28-.94h-.04c-.05.22-.15.54-.32.98l-2.42,4.52h-3.76l4.46-7-4.08-7h3.84l2,4.2c.16.33.3.73.42,1.18h.04c.08-.27.22-.68.44-1.22l2.23-4.16h3.51l-4.2,6.94,4.32,7.06h-3.74Z">
+              </path>
+            </svg>
+          </button>
+        </ng-template>
+
+
+      </p-toolbar>
+      <p-table #dt [value]="listClientes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+        [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+        [(selection)]="selectedClientes" selectionMode="multiple" dataKey="_id"
+        [globalFilterFields]="['numero_documento_cliente', 'tipo_cliente','nombre_contacto']">
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Lista de Clientes</h5>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                class="w-full sm:w-auto" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+
+            <th pSortableColumn="name" field="tipo_cliente">Tipo cliente</th>
+            <th pSortableColumn="name" field="numero_documento_cliente">Numero de identificacion</th>
+            <th pSortableColumn="name" field="nombre_contacto">Nombre contacto</th>
+            <th pSortableColumn="name">Celular</th>
+            <th pSortableColumn="name">Dirección</th>
+            <th pSortableColumn="name">Estado</th>
+            <th pSortableColumn="name">Aciones</th>
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-clientes>
+          <tr>
+
+
+            <td style="width:15%; min-width:9rem;">
+              {{ clientes.tipo_cliente }}
+            </td>
+            <td style="width:15%; min-width:8rem;">
+              {{ clientes.numero_documento_cliente}}
+            </td>
+            <td style="width:15%; min-width:10rem;">
+              {{ clientes.nombre_contacto }}
+            </td>
+            <td style="width:15%; min-width:8rem;">
+              {{ clientes.telefono_cliente }}
+            </td>
+            <td style="width:15%; min-width:9rem;">
+              {{ clientes.direccion_cliente }}
+            </td>
+            <td style="width:15%; min-width:5rem;">
+              <div class="flex" style="align-items: center;">
+                <br>
+                <p-inputSwitch [ngModel]="clientes.estado_cliente"
+                  (onChange)="confirmarCambioEstado(clientes)"></p-inputSwitch>
               </div>
-              </ng-template>
-              <ng-template pTemplate="header">
-                  <tr>
-                      
-                      <th pSortableColumn="name" field="tipo_cliente">Tipo cliente</th>
-                      <th pSortableColumn="name" field="numero_documento_cliente">Numero de identificacion</th>
-                      <th pSortableColumn="name" field="nombre_contacto">Nombre contacto</th>
-                      <th pSortableColumn="name">Celular</th>
-                      <th pSortableColumn="name">Dirección</th>
-                      <th pSortableColumn="name">Estado</th>
-                      <th pSortableColumn="name">Aciones</th>
-                      
-                  </tr>
-               </ng-template>
-              <ng-template pTemplate="body" let-clientes>
-                  <tr>
-                      
-                      
-                      <td style="width:15%; min-width:9rem;">
-                          {{ clientes.tipo_cliente }}
-                      </td>
-                      <td style="width:15%; min-width:8rem;">
-                          {{ clientes.numero_documento_cliente}}
-                      </td>
-                      <td style="width:15%; min-width:10rem;">
-                          {{ clientes.nombre_contacto }}
-                      </td>
-                      <td style="width:15%; min-width:8rem;">
-                          {{ clientes.telefono_cliente }}
-                      </td>
-                      <td style="width:15%; min-width:9rem;">
-                        {{ clientes.direccion_cliente }}
-                    </td>
-                      <td style="width:15%; min-width:5rem;">
-                        <div class="flex" style="align-items: center;" >
-                          <br>
-                          <p-inputSwitch [ngModel]="clientes.estado_cliente" (onChange)="confirmarCambioEstado(clientes)"></p-inputSwitch>
-                      </div>
-                      </td>
-                      <td>
-                          <div class="flex" style="align-items: center;">
-                              <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2" (click) = "openDetalleClienteDialog(clientes._id)" style=" width: 2.5rem; height: 2.5rem; " ></button>
-                              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarClienteDialog(clientes._id)" style=" width: 2.5rem; height: 2.5rem; ;"></button>
-                          </div>
-                      </td>
-                  </tr>
-              </ng-template>
-          </p-table>
-      </div> 
+            </td>
+            <td>
+              <div class="flex" style="align-items: center;">
+                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
+                  (click)="openDetalleClienteDialog(clientes._id)" style=" width: 2.5rem; height: 2.5rem; "></button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                  (click)="openEditarClienteDialog(clientes._id)" style=" width: 2.5rem; height: 2.5rem; ;"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 </div>
-<p-dialog [(visible)]="estadoClienteDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
-<div class="flex align-items-center justify-content-center">
+<p-dialog [(visible)]="estadoClienteDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}"
+  (onHide)="noCambiarEstado()">
+  <div class="flex align-items-center justify-content-center">
     <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-    <span *ngIf="clientes">¿Está seguro de que desea cambiar el estado del cliente <b>{{clientes.nombre_contacto}}</b>?</span>
-</div>
-<ng-template pTemplate="footer">
+    <span *ngIf="clientes">¿Está seguro de que desea cambiar el estado del cliente
+      <b>{{clientes.nombre_contacto}}</b>?</span>
+  </div>
+  <ng-template pTemplate="footer">
     <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
-    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoCliente(clientes._id)"></button>
-</ng-template>
+    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+      (click)="cambiarEstadoCliente(clientes._id)"></button>
+  </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '450px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
-<form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
-  <br>
-  <div class="formgrid grid">
-    <div class="field col">
-      <span class="p-float-label">
-        <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
-        <label for="tipo_cliente">Tipo cliente</label>
-      </span>
-      <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-        El tipo de cliente es requerido
-      </span>       
-      <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-        El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
-      </span>
+<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '450px' }" header="Crear Cliente" [modal]="true"
+  class="p-fluid">
+  <form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
+    <br>
+    <div class="formgrid grid">
+      <div class="field col">
+        <span class="p-float-label">
+          <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
+            placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
+          <label for="tipo_cliente">Tipo cliente</label>
+        </span>
+        <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
+          style="color: red;">
+          El tipo de cliente es requerido
+        </span>
+        <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
+          style="color: red;">
+          El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
+        </span>
+      </div>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
+          <label for="nombre_contacto">Nombre de contacto</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
+          style="color: red;">
+          El nombre es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
+          style="color: red;">
+          El nombre solo debe contener letras y tener máximo 20 caracteres
+        </span>
+      </div>
     </div>
-        <div class="field col">
-            <span class="p-float-label">
-              <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
-              <label for="nombre_contacto">Nombre de contacto</label>
-            </span>
-              <span *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
-              style="color: red;">
-                El nombre es requerido
-              </span>       
-              <span *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
-              style="color: red;">
-                El nombre solo debe contener letras y tener máximo 20 caracteres
-              </span>
-         </div>
-        </div>
-        <div class="formgrid grid mt-4">
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-              <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
-              <label for="nombre_juridico">nombre juridico</label>
-          </span>
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
+    <div class="formgrid grid mt-4">
+      <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+        <span class="p-float-label">
+          <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
+          <label for="nombre_juridico">nombre juridico</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
           style="color: red;">
-              El nombre juridico es requerido
-          </span>       
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
+          El nombre juridico es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
           style="color: red;">
-              El nombre juridico solo puede tener letras y tener máximo 20 caracteres
-          </span>
-        </div>
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-            <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
-            <label for="nit_empresa_cliente">Nit de la empresa</label>
+          El nombre juridico solo puede tener letras y tener máximo 20 caracteres
         </span>
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa es requerido
-        </span>       
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa solo puede tener números y tener máximo 12 caracteres
-        </span>
-        </div>
       </div>
-      <br>
-      <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
-            <label for="numero_documento_cliente">Número de Identificación</label>
+      <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+        <span class="p-float-label">
+          <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
+          <label for="nit_empresa_cliente">Nit de la empresa</label>
         </span>
-        <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
-        style="color: red;">
-            El Número de Identificación es requerido
-        </span>       
-        <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
-        style="color: red;">
-            El número de Identificación solo puede tener números y tener máximo 10 caracteres
+        <span
+          *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
+          style="color: red;">
+          El nit de la empresa es requerido
         </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
-            <label for="telefono_cliente">Número de celular</label>
+        <span
+          *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
+          style="color: red;">
+          El nit de la empresa solo puede tener números y tener máximo 12 caracteres
         </span>
-        <span *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
-        style="color: red;">
-            El número de celular es requerido
-        </span>       
-        <span *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
-        style="color: red;">
-            El número de celular solo puede tener números y tener máximo 10 caracteres
-        </span>
-        </div>
       </div>
-      <div class="formgrid grid mt-4">
-        <div class="field col ">
-          <span class="p-float-label">
-            <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-           placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
-            <label for="ciudad_cliente">Ciudad</label>
-          </span>
-        <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
-        style="color: red;">
-            La Ciudad es requerida
-        </span>       
-        <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"
-        style="color: red;">
-            La Ciudad solo puede tener letras y tener máximo 20 caracteres
+    </div>
+    <br>
+    <div class="formgrid grid">
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
+          <label for="numero_documento_cliente">Número de Identificación</label>
         </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
-            <label for="barrio_cliente">Barrio</label>
+        <span
+          *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
+          style="color: red;">
+          El Número de Identificación es requerido
         </span>
-        <span *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
-        style="color: red;">
-            El barrio es requerido
-        </span>       
-        <span *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
-        style="color: red;">
-            El barrio solo puede tener letras y tener máximo 20 caracteres 
+        <span
+          *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
+          style="color: red;">
+          El número de Identificación solo puede tener números y tener máximo 10 caracteres
         </span>
-        </div>
       </div>
-      <br>
-      <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
-            <label for="direccion_cliente">Dirección</label>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
+          <label for="telefono_cliente">Número de celular</label>
         </span>
-        <span *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
-        style="color: red;">
-            La dirección es requerido
-        </span>       
-        <span *ngIf="formCliente.get('direccion_cliente')?.hasError('pattern') && formCliente.get('direccion_cliente')?.touched"
-        style="color: red;">
-            La dirección no es valida
+        <span
+          *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
+          style="color: red;">
+          El número de celular es requerido
         </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-              <input type="email" pInputText id="correo_cliente" formControlName="correo_cliente" />
-              <label for="correo_cliente">Correo electrónico</label>
-          </span>
-          <span
-              *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
-              style="color: red;">Correo electrónico
-              requerido.</span>
-          <span *ngIf="formCliente.get('correo_cliente').hasError('email')" style="color: red;">Correo
-              electrónico no
-              válido.</span>
+        <span
+          *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
+          style="color: red;">
+          El número de celular solo puede tener números y tener máximo 10 caracteres
+        </span>
       </div>
-      
-   
+    </div>
+    <div class="formgrid grid mt-4">
+      <div class="field col ">
+        <span class="p-float-label">
+          <p-dropdown formControlName="ciudad_cliente"
+            [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
+            placeholder="Selecciona ciudad" name="ciudad_cliente"></p-dropdown>
+          <label for="ciudad_cliente">Ciudad</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
+          style="color: red;">
+          La Ciudad es requerida
+        </span>
+        <span
+          *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"
+          style="color: red;">
+          La Ciudad solo puede tener letras y tener máximo 20 caracteres
+        </span>
       </div>
-      <div class="formgrid grid mt-4">
-        <div class="field col">
-          <span class="p-float-label">
-              <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
-              <label for="contrasena_usuario">Contraseña</label>
-          </span>
-          <span
-              *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
-              style="color: red;">La
-              contraseña
-              es requerida.</span>
-          <span *ngIf="formCliente.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
-              contraseña debe
-              tener al menos 6 caracteres.</span>
-          <span
-              *ngIf="formCliente.get('contrasena_usuario')?.hasError('pattern') && formCliente.get('contrasena_usuario')?.touched"
-              style="color: red;">
-              La contraseña debe contar con una mayúscula, una minúscula y un número.
-          </span>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
+          <label for="barrio_cliente">Barrio</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
+          style="color: red;">
+          El barrio es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
+          style="color: red;">
+          El barrio solo puede tener letras y tener máximo 20 caracteres
+        </span>
       </div>
-        <div class="field col">
-          <span class="p-float-label">
-              <input type="password" pInputText id="confirmar_contrasena"
-                  formControlName="confirmar_contrasena" />
-              <label for="confirmar_contrasena">Confirmar Contraseña</label>
-          </span>
-          <span
-              *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
-              style="color: red;">Confirmación de contraseña requerida.</span>
-          <span *ngIf="formCliente.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no
-              coinciden.</span>
-          <span
-              *ngIf="formCliente.get('confirmar_contrasena')?.value !== formCliente.get('contrasena_usuario')?.value && formCliente.get('confirmar_contrasena')?.touched"
-              style="color: red;">Las contraseñas no coinciden.</span>
+    </div>
+    <br>
+    <div class="formgrid grid">
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
+          <label for="direccion_cliente">Dirección</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
+          style="color: red;">
+          La dirección es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('direccion_cliente')?.hasError('pattern') && formCliente.get('direccion_cliente')?.touched"
+          style="color: red;">
+          La dirección no es valida
+        </span>
       </div>
+      <div class="field col">
+        <span class="p-float-label">
+          <input type="email" pInputText id="correo_cliente" formControlName="correo_cliente" />
+          <label for="correo_cliente">Correo electrónico</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
+          style="color: red;">Correo electrónico
+          requerido.</span>
+        <span *ngIf="formCliente.get('correo_cliente').hasError('email')" style="color: red;">Correo
+          electrónico no
+          válido.</span>
       </div>
-       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
+
+
+    </div>
+    <div class="formgrid grid mt-4">
+      <div class="field col">
+        <span class="p-float-label">
+          <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
+          <label for="contrasena_usuario">Contraseña</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
+          style="color: red;">La
+          contraseña
+          es requerida.</span>
+        <span *ngIf="formCliente.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
+          contraseña debe
+          tener al menos 6 caracteres.</span>
+        <span
+          *ngIf="formCliente.get('contrasena_usuario')?.hasError('pattern') && formCliente.get('contrasena_usuario')?.touched"
+          style="color: red;">
+          La contraseña debe contar con una mayúscula, una minúscula y un número.
+        </span>
+      </div>
+      <div class="field col">
+        <span class="p-float-label">
+          <input type="password" pInputText id="confirmar_contrasena" formControlName="confirmar_contrasena" />
+          <label for="confirmar_contrasena">Confirmar Contraseña</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
+          style="color: red;">Confirmación de contraseña requerida.</span>
+        <span *ngIf="formCliente.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no
+          coinciden.</span>
+        <span
+          *ngIf="formCliente.get('confirmar_contrasena')?.value !== formCliente.get('contrasena_usuario')?.value && formCliente.get('confirmar_contrasena')?.touched"
+          style="color: red;">Las contraseñas no coinciden.</span>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+        (click)="crearClienteDialog = false"></button>
       <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
     </div>
-</form>  
+  </form>
 </p-dialog>
 
 <p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true"
-    [style]="{width:'450px'}">
-    <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span>¿Está seguro de que desea crear este usuario <b>{{ formCliente.get('correo_cliente').value
-                }}</b>?</span>
-    </div>
-    <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-            (click)="mostrarConfirmacionUsuario = false"></button>
-            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmarCreacionUsuario()"></button>
-          </ng-template>
+  [style]="{width:'450px'}">
+  <div class="flex align-items-center justify-content-center">
+    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    <span>¿Está seguro de que desea crear este usuario <b>{{ formCliente.get('correo_cliente').value
+        }}</b>?</span>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+      (click)="mostrarConfirmacionUsuario = false"></button>
+    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+      (click)="confirmarCreacionUsuario()"></button>
+  </ng-template>
 </p-dialog>
 
 
-<p-dialog [(visible)]="editarClienteaDialog" [style]="{ width: '450px' }" header="Editar Cliente" [modal]="true" class="p-fluid">
-<form [formGroup]="formCliente" (ngSubmit)="actualizarCliente()">
-  <br>
-  <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
-            <label for="tipo_cliente">Tipo cliente</label>
-          </span>
-          <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-            El tipo de cliente es requerido
-          </span>       
-          <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-            El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
-          </span>
-        </div>
-        <div class="field col">
-            <span class="p-float-label">
-              <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
-              <label for="nombre_contacto">Nombre de contacto</label>
-            </span>
-              <span *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
-              style="color: red;">
-                El nombre es requerido
-              </span>       
-              <span *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
-              style="color: red;">
-                El nombre solo debe contener letras y tener máximo 20 caracteres
-              </span>
-         </div>
-        </div>
-        <div class="formgrid grid mt-4">
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-              <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
-              <label for="nombre_juridico">Nombre juridico</label>
-          </span>
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
+<p-dialog [(visible)]="editarClienteaDialog" [style]="{ width: '450px' }" header="Editar Cliente" [modal]="true"
+  class="p-fluid">
+  <form [formGroup]="formCliente" (ngSubmit)="actualizarCliente()">
+    <br>
+    <div class="formgrid grid">
+      <div class="field col">
+        <span class="p-float-label">
+          <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
+            placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
+          <label for="tipo_cliente">Tipo cliente</label>
+        </span>
+        <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
           style="color: red;">
-              El nombre juridico es requerido
-          </span>       
-          <span *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
+          El tipo de cliente es requerido
+        </span>
+        <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
           style="color: red;">
-              El nombre juridico solo puede tener letras y tener máximo 20 caracteres
-          </span>
-        </div>
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <span class="p-float-label">
-            <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
-            <label for="nit_empresa_cliente">Nit de la empresa</label>
+          El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
         </span>
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa es requerido
-        </span>       
-        <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
-        style="color: red;">
-            El nit de la empresa solo puede tener números y tener máximo 12 caracteres
-        </span>
-        </div>
       </div>
-      <br>
-      <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
-            <label for="numero_documento_cliente">Número de Identificación</label>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
+          <label for="nombre_contacto">Nombre de contacto</label>
         </span>
-        <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
-        style="color: red;">
-            El Número de Identificación es requerido
-        </span>       
-        <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
-        style="color: red;">
-            El número de Identificación solo puede tener números y tener máximo 10 caracteres
+        <span
+          *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
+          style="color: red;">
+          El nombre es requerido
         </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
-            <label for="telefono_cliente">Número de celular</label>
+        <span
+          *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
+          style="color: red;">
+          El nombre solo debe contener letras y tener máximo 20 caracteres
         </span>
-        <span *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
-        style="color: red;">
-            El número de celular es requerido
-        </span>       
-        <span *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
-        style="color: red;">
-            El número de celular solo puede tener números y tener máximo 10 caracteres
-        </span>
-        </div>
       </div>
-      <div class="formgrid grid mt-4">
-        <div class="field col ">
-          <span class="p-float-label">
-            <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-           placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
-            <label for="ciudad_cliente">Ciudad</label>
-          </span>
-        <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
-        style="color: red;">
-            La Ciudad es requerida
-        </span>       
-        <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"
-        style="color: red;">
-            La Ciudad solo puede tener letras y tener máximo 20 caracteres
-        </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
-            <label for="barrio_cliente">Barrio</label>
-        </span>
-        <span *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
-        style="color: red;">
-            El barrio es requerido
-        </span>       
-        <span *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
-        style="color: red;">
-            El barrio solo puede tener letras y tener máximo 20 caracteres 
-        </span>
-        </div>
-      </div>
-      <br>
-      <div class="formgrid grid">
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
-            <label for="direccion_cliente">Dirección</label>
-        </span>
-        <span *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
-        style="color: red;">
-            La dirección es requerido
-        </span>       
-        <span *ngIf="formCliente.get('direccion_cliente')?.hasError('pattern') && formCliente.get('direccion_cliente')?.touched"
-        style="color: red;">
-            La dirección no es valida
-        </span>
-        </div>
-        <div class="field col">
-          <span class="p-float-label">
-            <input formControlName="correo_cliente" id="correo_cliente" type="text" pInputText [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;">
-            <label for="correo_cliente">Correo electronico</label>
-        </span>
-        <span *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
-        style="color: red;">
-            El correo es requerido
-        </span>       
-        <span *ngIf="formCliente.get('correo_cliente')?.hasError('pattern') && formCliente.get('correo_cliente')?.touched"
-        style="color: red;">
-            El correo no cumple.
-        </span>
-        </div>
-      </div>
-       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarClienteaDialog = false" ></button>
-      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
     </div>
-</form>  
+    <div class="formgrid grid mt-4">
+      <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+        <span class="p-float-label">
+          <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
+          <label for="nombre_juridico">Nombre juridico</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
+          style="color: red;">
+          El nombre juridico es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
+          style="color: red;">
+          El nombre juridico solo puede tener letras y tener máximo 20 caracteres
+        </span>
+      </div>
+      <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+        <span class="p-float-label">
+          <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
+          <label for="nit_empresa_cliente">Nit de la empresa</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
+          style="color: red;">
+          El nit de la empresa es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('pattern') && formCliente.get('nit_empresa_cliente')?.touched"
+          style="color: red;">
+          El nit de la empresa solo puede tener números y tener máximo 12 caracteres
+        </span>
+      </div>
+    </div>
+    <br>
+    <div class="formgrid grid">
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
+          <label for="numero_documento_cliente">Número de Identificación</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
+          style="color: red;">
+          El Número de Identificación es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
+          style="color: red;">
+          El número de Identificación solo puede tener números y tener máximo 10 caracteres
+        </span>
+      </div>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
+          <label for="telefono_cliente">Número de celular</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
+          style="color: red;">
+          El número de celular es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('telefono_cliente')?.hasError('pattern') && formCliente.get('telefono_cliente')?.touched"
+          style="color: red;">
+          El número de celular solo puede tener números y tener máximo 10 caracteres
+        </span>
+      </div>
+    </div>
+    <div class="formgrid grid mt-4">
+      <div class="field col ">
+        <span class="p-float-label">
+          <p-dropdown formControlName="ciudad_cliente"
+            [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
+            placeholder="Selecciona ciudad" name="ciudad_cliente"></p-dropdown>
+          <label for="ciudad_cliente">Ciudad</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
+          style="color: red;">
+          La Ciudad es requerida
+        </span>
+        <span
+          *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"
+          style="color: red;">
+          La Ciudad solo puede tener letras y tener máximo 20 caracteres
+        </span>
+      </div>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
+          <label for="barrio_cliente">Barrio</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
+          style="color: red;">
+          El barrio es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
+          style="color: red;">
+          El barrio solo puede tener letras y tener máximo 20 caracteres
+        </span>
+      </div>
+    </div>
+    <br>
+    <div class="formgrid grid">
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
+          <label for="direccion_cliente">Dirección</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
+          style="color: red;">
+          La dirección es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('direccion_cliente')?.hasError('pattern') && formCliente.get('direccion_cliente')?.touched"
+          style="color: red;">
+          La dirección no es valida
+        </span>
+      </div>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="correo_cliente" id="correo_cliente" type="text" pInputText [readonly]="true"
+            style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;">
+          <label for="correo_cliente">Correo electronico</label>
+        </span>
+        <span
+          *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
+          style="color: red;">
+          El correo es requerido
+        </span>
+        <span
+          *ngIf="formCliente.get('correo_cliente')?.hasError('pattern') && formCliente.get('correo_cliente')?.touched"
+          style="color: red;">
+          El correo no cumple.
+        </span>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+        (click)="editarClienteaDialog = false"></button>
+      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+    </div>
+  </form>
 </p-dialog>
 
 
-<p-dialog [(visible)]="detalleClienteDialog" [style]="{ width: '450px' }" header="Detalle del Cliente" [modal]="true" class="p-fluid">
-<form [formGroup]="formCliente">
-  <div class="formgrid grid">
-    <div class="field col">
-      <label for="tipo_cliente" style="margin-bottom: 5px;">Tipo cliente:</label>
-      <input type="text" formControlName="tipo_cliente" pInputText id="tipo_cliente" required autofocus
-         name="tipo_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
+<p-dialog [(visible)]="detalleClienteDialog" [style]="{ width: '450px' }" header="Detalle del Cliente" [modal]="true"
+  class="p-fluid">
+  <form [formGroup]="formCliente">
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="tipo_cliente" style="margin-bottom: 5px;">Tipo cliente:</label>
+        <input type="text" formControlName="tipo_cliente" pInputText id="tipo_cliente" required autofocus
+          name="tipo_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+      <div class="field col">
+        <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
+        <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
+          name="nombre_contacto" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
     </div>
-        <div class="field col">
-           <label for="nombre_contacto" style="margin-bottom: 5px;">Nombre de contacto:</label>
-           <input type="text" formControlName="nombre_contacto" pInputText id="nombre_contacto" required autofocus
-              name="nombre_contacto" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-         </div>
+    <div class="formgrid grid">
+      <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+        <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
+        <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus
+          name="nit_empresa_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
       </div>
-      <div class="formgrid grid">
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <label for="nit_empresa_cliente" style="margin-bottom: 5px;">Nit de la empresa:</label>
-          <input type="text" formControlName="nit_empresa_cliente" pInputText id="nit_empresa_cliente" required autofocus name="nit_empresa_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-        <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
-          <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
-          <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
-            name="nombre_juridico" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
+      <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
+        <label for="nombre_juridico" style="margin-bottom: 5px;">Nombre Juridico:</label>
+        <input type="text" formControlName="nombre_juridico" pInputText id="nombre_juridico" required autofocus
+          name="nombre_juridico" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
       </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
-          <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required autofocus
-             name="numero_documento_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-        <div class="field col">
-          <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
-          <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
-             name="telefono_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
-          <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
-             name="ciudad_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-        <div class="field col">
-          <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
-          <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
-             name="barrio_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-      </div>
-      <div class="formgrid grid">
-        <div class="field col">
-          <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
-          <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
-             name="direccion_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-        <div class="field col">
-          <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
-          <input type="text"  formControlName= "correo_cliente" pInputText id="correo_cliente" required autofocus
-             name="correo_cliente" [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;"/>
-        </div>
-      </div>
-       <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-text" (click)="detalleClienteDialog = false" ></button>
     </div>
-</form>  
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="numero_documento_cliente" style="margin-bottom: 5px;">Numero de documento:</label>
+        <input type="text" formControlName="numero_documento_cliente" pInputText id="numero_documento_cliente" required
+          autofocus name="numero_documento_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+      <div class="field col">
+        <label for="telefono_cliente" style="margin-bottom: 5px;">telefono:</label>
+        <input type="text" formControlName="telefono_cliente" pInputText id="telefono_cliente" required autofocus
+          name="telefono_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
+        <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
+          name="ciudad_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+      <div class="field col">
+        <label for="barrio_cliente" style="margin-bottom: 5px;">Barrio:</label>
+        <input type="text" formControlName="barrio_cliente" pInputText id="barrio_cliente" required autofocus
+          name="barrio_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="direccion_cliente" style="margin-bottom: 5px;">Dirección:</label>
+        <input type="text" formControlName="direccion_cliente" pInputText id="direccion_cliente" required autofocus
+          name="direccion_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+      <div class="field col">
+        <label for="correo_cliente" style="margin-bottom: 5px;">Correo electronico:</label>
+        <input type="text" formControlName="correo_cliente" pInputText id="correo_cliente" required autofocus
+          name="correo_cliente" [readonly]="true"
+          style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />
+      </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <button pButton pRipple label="Cerrar" icon="pi pi-times" class="p-button-text"
+        (click)="detalleClienteDialog = false"></button>
+    </div>
+  </form>
 </p-dialog>
