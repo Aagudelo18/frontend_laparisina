@@ -31,6 +31,7 @@ import { tap } from 'rxjs/operators';
           setTimeout(() => {
             localStorage.removeItem('token');
             localStorage.removeItem('rol');
+            localStorage.removeItem('currentUser');
             localStorage.removeItem('expirationTime');
             this.isAuthenticatedSubject.next(false);
           }, 60 * 60 * 1000); // 1 hora en milisegundos
