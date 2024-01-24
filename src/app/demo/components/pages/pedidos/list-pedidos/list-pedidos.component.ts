@@ -67,8 +67,11 @@ export class ListPedidosComponent implements OnInit {
             nombre_juridico: [''],
             aumento_empresa: [''],
             detalle_pedido: [''],
+            domiciliario: [''],
         });
     }
+    idPedidoSeleccionado: string;
+
 
     ngOnInit() {
         this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {
@@ -90,13 +93,6 @@ export class ListPedidosComponent implements OnInit {
         });
       }
 
-    //Cargar Domiciliarios
-    cargarDomiciliarios() {
-        this.pedidosService.getDomiciliarios().subscribe((data: Pedido[]) => {
-            this.domiciliarios = data;
-            console.log(this.domiciliarios);
-        });
-    }
 
     //Cambiar de pestañas en el listar ----------------------------------------------------------------
     cambiarPestana(event) {
@@ -158,7 +154,6 @@ export class ListPedidosComponent implements OnInit {
     getPedidoDetalle(id: string) {
         this.pedidosService.getPedidoDetalle(id).subscribe((data) => {
             let aumento = data.subtotal_venta * 0.08;
-
             this.formPedidos.setValue({
                 documento_cliente: data.documento_cliente,
                 tipo_cliente: data.tipo_cliente,
@@ -180,7 +175,17 @@ export class ListPedidosComponent implements OnInit {
                 nit_empresa_cliente: data.nit_empresa_cliente || '',
                 nombre_juridico: data.nombre_juridico || '',
                 detalle_pedido: data.detalle_pedido || [],
+                domiciliario: ''
             });
+            this.getDomiciliario(data.empleado_id);
+
+        });
+    }
+
+    getDomiciliario(id){
+        this.pedidosService.getDomiciliariosXId(id).subscribe((data) => {
+            console.log(data);
+            this.formPedidos.controls['domiciliario'].setValue(data.nombre_empleado);
         });
     }
 
@@ -336,13 +341,13 @@ export class ListPedidosComponent implements OnInit {
         this.cambiarEstadoPDialogAnular = false;
     }
 
-    // Añade la lógica para abrir el diálogo
     async abrirModalDomicilio(id: string, estado_pedido: string) {
+        this.idPedidoSeleccionado = id; // Guarda el ID del pedido seleccionado
         this.asignarDomiciliarioDialog = true;
-
+        this.cargarDomiciliarios();
         // Espera hasta que se resuelva la promesa
         const respuesta = await this.esperarRespuesta();
-
+    
         // Ahora puedes usar la respuesta como necesites    
         if (respuesta) {
             this.cambiarPedido(id, estado_pedido);
@@ -352,73 +357,77 @@ export class ListPedidosComponent implements OnInit {
             this.confirmarAsignacionDialog = false;
         }
     }
-
-
-   
-    // Actualiza el método para manejar el botón "Sí"
+    
     onYesButtonClickDomicilio() {
-        this.resolverPromesa(true); // Resuelve la promesa con "true"
+        // Resuelve la promesa con "true"
+        this.resolverPromesa(true);
+        console.log('Domiciliario seleccionado:', this.domiciliarioSeleccionado);
+        // Asigna el pedido al domiciliario
+        this.asignarPedidoADomiciliario(this.idPedidoSeleccionado, this.domiciliarioSeleccionado);
     }
-
+    
+    
+    
     // Actualiza el método para manejar el botón "No"
     onNoButtonClickDomicilio() {
         this.resolverPromesa(false); // Resuelve la promesa con "false"
         this.asignarDomiciliarioDialog = false; // Esto cerrará el diálogo automáticamente
     }
-
-    enviarDomicilio(id: string) {
-        const pedido = this.pedidos.find((pedido) => pedido._id === id);
-        console.log(pedido);
-      // Pasa el pedido al método updatePedido()
-      this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
-        (response) => {
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Cambio de estado con Éxito',
-                life: 5000,
-            });
-            // Actualizar la lista de pedidos
-            this.cargarPedidosTerminados();
-            // Cierra el segundo modal de confirmación
-            this.confirmarAsignacionDialog = false;
-            // Cierra el primer modal de asignación de domiciliario
-            this.asignarDomiciliarioDialog = false;
-        },
-            (error) => {
-                if (error.error && error.error.error) {
-                    const errorMessage = error.error.error;
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Error al cambiar el estado del Pedido',
-                        detail: errorMessage,
-                        life: 5000,
-                    });
-                } else {
-                    console.error(
-                        'Error desconocido al crear el Pedido:',
-                        error
-                    );
-                }
-            }
-        );
-         // Cierra el segundo modal de confirmación
-        this.confirmarAsignacionDialog = false;
-        // Cierra el primer modal de asignación de domiciliario
-        this.asignarDomiciliarioDialog = false;
+    
+    cargarDomiciliarios() {
+        this.pedidosService.getDomiciliarios().subscribe((data: any[]) => {
+            this.domiciliarios = data;
+            console.log('Domiciliarios cargados:', this.domiciliarios);
+        });
     }
+    asignarPedidoADomiciliario(idPedido: string, idDomiciliario: string) {
+        console.log('ID del pedido y del domiciliario:', idPedido, idDomiciliario);
 
-    //confirmación de la asignación del domiciliario 
-    confirmarAsignacion(confirmacion: boolean) {
+        this.pedidosService.asignarPedidoADomiciliario(idPedido, idDomiciliario).subscribe(
+          (response: any) => {
+            // Manejar la respuesta del servidor
+            console.log(response);
+    
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Cambio de estado con Éxito',
+              life: 5000,
+            });
+    
+            // Actualizar la lista de pedidos terminados
+            this.cargarPedidosTerminados();
+    
+            // Cierra los modales
+            this.confirmarAsignacionDialog = false;
+            this.asignarDomiciliarioDialog = false;
+          },
+          (error) => {
+            // Manejar errores
+            if (error.error && error.error.error) {
+              const errorMessage = error.error.error;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error al cambiar el estado del Pedido',
+                detail: errorMessage,
+                life: 5000,
+              });
+            } else {
+              console.error('Error desconocido al asignar el Pedido:', error);
+            }
+          }
+        );
+      }
+    
+      confirmarAsignacion(confirmacion: boolean) {
         if (confirmacion) {
             this.messageService.add({
                 severity: 'success',
                 summary: 'Pedido asignado con éxito',
                 life: 5000,
             });
+            console.log("id del domiciliario", this.domiciliarioSeleccionado);
         } else {
-            console.error(
-                'Error desconocido al asignar el Pedido.'
-            );
+            console.error('Error desconocido al asignar el Pedido.');
         }
     
         // Cierra el segundo modal
@@ -427,6 +436,5 @@ export class ListPedidosComponent implements OnInit {
         // Cierra el primer modal de asignación de domiciliario
         this.asignarDomiciliarioDialog = false;
     }
-    
     
 }

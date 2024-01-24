@@ -65,7 +65,7 @@ export class NewPedidosComponent implements OnInit {
       correo_domiciliario: ['', [Validators.required, Validators.email]],
       metodo_pago: ['', Validators.required],
       estado_pago: ['', Validators.required],
-      valor_domicilio: [0, [Validators.required, Validators.min(0)]],
+      valor_domicilio: [null, [Validators.required, Validators.min(1)]],
       subtotal_venta: [0, Validators.min(0)],
       precio_total_venta: [0, Validators.min(0)],
       aumento_empresa: [0, Validators.min(0)],

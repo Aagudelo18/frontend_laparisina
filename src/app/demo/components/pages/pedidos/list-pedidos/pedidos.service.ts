@@ -42,10 +42,26 @@ export class PedidosService {
     return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`);
   }
 
+  getDomiciliarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/domiciliarios`);
+  }
 
-  getDomiciliarios(): Observable<any>{
-    return this.http.get(this.apiUrl + 'domiciliarios')
-   }
+  getDomiciliariosXId(id: string): Observable<any> {
+    console.log(`${this.apiUrl}/domiciliarios/${id}`);
+
+    return this.http.get<any[]>(`${this.apiUrl}empleados/${id}`);
+  }
+
+  asignarPedidoADomiciliario(idPedido: string, idDomiciliario: string): Observable<any> {
+    const url = `${this.apiUrl}empleados/asignar-pedido`;
+    const body = { id_pedido: idPedido, id_empleado_domiciliario: idDomiciliario };
+    return this.http.post(url, body);
+  }
+}
+  
+  // getDomiciliarios(): Observable<any>{
+  //   return this.http.get(this.apiUrl + 'domiciliarios')
+  //  }
 
   
-}
+

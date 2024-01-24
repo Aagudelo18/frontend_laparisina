@@ -328,37 +328,39 @@
         </div>
               
 
-        <!-- Valor Domicilio -->
-        <div class="field col-12 md:col-2 md:col-3">          
-            <span class="p-float-label">
-                <input
-                class="form-control"
-                type="number"
-                [readonly]="!clienteExistente" 
-                    inputId="valor_domicilio"
-                    [formControl]="pedido.get('valor_domicilio')"
-                    (input)="calcularPrecioTotalVenta()"
-                /><label for="valor_domicilio" class="input-label">Valor Domicilio</label>
-            </span>
-            <div
-                *ngIf="
-                    pedido.get('valor_domicilio')?.hasError('required') &&
-                    pedido.get('valor_domicilio')?.touched
-                "
-                style="color: red"
-            >
-                El valor del domicilio es requerido
+      <!-- Valor Domicilio -->
+            <div class="field col-12 md:col-2 md:col-3">
+                <span class="p-float-label">
+                    <input
+                        class="form-control"
+                        type="number"
+                        [readonly]="!clienteExistente" 
+                        inputId="valor_domicilio"
+                        [formControl]="pedido.get('valor_domicilio')"
+                        (input)="calcularPrecioTotalVenta()"
+                    />
+                    <label for="valor_domicilio" class="input-label">Valor Domicilio</label>
+                </span>
+                <div
+                    *ngIf="
+                        pedido.get('valor_domicilio')?.hasError('required') &&
+                        pedido.get('valor_domicilio')?.touched
+                    "
+                    style="color: red"
+                >
+                    El valor del domicilio es requerido
+                </div>
+                <div
+                    *ngIf="
+                        pedido.get('valor_domicilio')?.hasError('min') &&
+                        pedido.get('valor_domicilio')?.touched
+                    "
+                    style="color: red"
+                >
+                    El valor del domicilio 
+                </div>
             </div>
-            <div
-                *ngIf="
-                    pedido.get('valor_domicilio')?.hasError('min') &&
-                    pedido.get('valor_domicilio')?.touched
-                "
-                style="color: red"
-            >
-                El valor del domicilio debe ser mayor a cero
-            </div>
-        </div>
+
          
                 <!-- Método de Pago -->
                 <div class="field col-12 md:col-3">

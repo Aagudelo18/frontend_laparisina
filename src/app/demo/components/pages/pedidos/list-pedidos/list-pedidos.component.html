@@ -615,19 +615,22 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <span class="p-float-label">
-                        <textarea
+                        <input
                         style="resize: none;"
                             [readonly]="true"
                             style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
+                                resize: none;
+                overflow: auto; /* o overflow: scroll; */
+                width: 100%; /* Ajusta el ancho según tus necesidades */
+                pointer-events: none;
+                background-color: #f4f4f4;
+                caret-color: transparent;
+            "
                             formControlName="direccion_entrega"
                             id="direccion_entrega"
                             type="text"
                             pInputText
-                        ></textarea>
+                        >
                         <label for="direccion_entrega">Direccion Entrega</label>
                     </span>
                 </div>
@@ -755,6 +758,27 @@
                             pInputText
                         />
                         <label for="estado_pago">Estado de Pago</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">          
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="domiciliario"
+                            id="domiciliario"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="domiciliario">domiciliario</label>
                     </span>
                 </div>
             </div>
@@ -935,7 +959,7 @@
     header="Cambiar Estado del Pedido"
     [modal]="true"
     [style]="{ width: '450px' }"
-    (onHide)="(cambiarEstadoPDialogAnular == false)"
+    (onHide)="(cambiarEstadoPDialogAnular = false)"
 >
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
@@ -977,9 +1001,9 @@
             <select [(ngModel)]="domiciliarioSeleccionado">
                 <option
                     *ngFor="let domiciliario of domiciliarios"
-                    [value]="domiciliario?.id"
+                    [value]="domiciliario?._id"
                 >
-                    {{ domiciliario?.correo_electronico }}
+                    {{ domiciliario?.nombre_empleado }}
                 </option>
             </select>
         </span>
