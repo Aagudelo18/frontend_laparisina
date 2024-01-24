@@ -33,6 +33,10 @@ export class AppTopBarComponent {
         this.confirmarCerrarSesionDialog = false;
         this.loginService.logout(); // Llamar al servicio para cerrar sesión o ejecutar las acciones correspondientes para cerrar la sesión del usuario
         this.router.navigate(['/auth/login']); // Redirigir al usuario a la página de inicio de sesión después de cerrar sesión
+        localStorage.removeItem('token');
+        localStorage.removeItem('rol');
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('expirationTime');
     }
 
     perfil() {
