@@ -89,7 +89,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  
+
   //Abre o muestra el dialog o el modal del Editar Usuario
   openEditarUsuarioDialog() {
     this.editarUsuarioDialog = true;
@@ -141,7 +141,7 @@ export class UsuariosComponent implements OnInit {
   confirmarCrearUsuario() {
     if (this.formularioUsuario.valid) {
       const nuevoUsuario = this.formularioUsuario.value;
-  
+
       if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
         this.usuarioService.createUsuario(nuevoUsuario)
           .subscribe(
@@ -167,7 +167,16 @@ export class UsuariosComponent implements OnInit {
                   life: 5000
                 });
               } else {
-                console.error('Error desconocido al crear el usuario:', error);
+                let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
+                if (error && error.error && error.error.msg) {
+                  errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
+                }
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error al crear el usuario',
+                  detail: errorMessage,
+                  life: 6000
+                });
               }
             }
           );
@@ -181,7 +190,7 @@ export class UsuariosComponent implements OnInit {
       }
     }
   }
-  
+
 
   //Método par apoder filtrar, o el campo de buscador.
   onGlobalFilter(table: Table, event: Event) {
@@ -229,7 +238,16 @@ export class UsuariosComponent implements OnInit {
                 life: 5000
               });
             } else {
-              console.error('Error al actualizar el usuario:', error);
+              let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
+              if (error && error.error && error.error.msg) {
+                errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
+              }
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error al editar el usuario',
+                detail: errorMessage,
+                life: 6000
+              });
             }
             return throwError(error); // Propaga el error
           })
@@ -256,7 +274,7 @@ export class UsuariosComponent implements OnInit {
     this.estadoUsuarioDialog = true;
     this.usuario = usuario
   }
-  
+
   // Función para cambiar el estado de una categoría
   cambiarEstadoUsuario(uid: string, nuevoEstado: boolean) {
     const usuarioData = {
@@ -273,6 +291,16 @@ export class UsuariosComponent implements OnInit {
         this.estadoUsuarioDialog = false;
       },
       error: (error) => {
+        let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
+        if (error && error.error && error.error.msg) {
+          errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
+        }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al cambiar el estado del usuario',
+          detail: errorMessage,
+          life: 6000
+        });
         console.error('Error cambiando el estado del usuario:', error);
         // Manejar errores según sea necesario
       }

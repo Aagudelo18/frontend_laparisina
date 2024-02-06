@@ -78,6 +78,11 @@
                                 field="estado_pedido"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -104,6 +109,9 @@
                 
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -197,6 +205,11 @@
                                 field="estado_pedido"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -222,6 +235,9 @@
                         </td>
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -302,6 +318,11 @@
                                 field="estado_pedido"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -327,6 +348,9 @@
                         </td>
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -412,6 +436,11 @@
                                 field="estado_pedido"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -435,15 +464,12 @@
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.fecha_entrega_pedido | slice : 0 : 10 }}
                         </td>
-                        <!-- <td style="width:30%; min-width:10rem;">
-                <ul>
-                    <li *ngFor="let detalle of pedido.detalle_pedido">
-                        {{ detalle.nombre_producto}}
-                    </li>
-                </ul>
-            </td> -->
+                        
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -711,6 +737,24 @@
                             pInputText
                         />
                         <label for="metodo_pago">Método de Pago</label>
+                    </span>
+                </div>
+
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="estado_pago"
+                            id="estado_pago"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="estado_pago">Estado de Pago</label>
                     </span>
                 </div>
             </div>

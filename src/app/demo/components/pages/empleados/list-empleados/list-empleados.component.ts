@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { EmpleadosService } from './empleados.service';
+import { UsuarioService } from '../../usuarios/usuarios.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empleado } from './empleados.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import {   FormArray } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 
 
@@ -39,6 +41,10 @@ export class ListEmpleadosComponent implements OnInit {
   fileEditar: any;
   file: null;
   editarEmpleadoaDialog: boolean = false;
+  private confirmacionUsuarioSubject = new Subject<boolean>();
+  mostrarConfirmacionUsuario = false; 
+
+
 
   constructor(
     private empleadosService: EmpleadosService,
@@ -46,6 +52,7 @@ export class ListEmpleadosComponent implements OnInit {
     private fb: FormBuilder,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private usuarioService :UsuarioService,
     ) 
     // {this.formEmpleados = this.fb.group({
     //   contacto_emergencia: this.fb.array([]),
@@ -77,10 +84,22 @@ export class ListEmpleadosComponent implements OnInit {
       area_empleado: ['', Validators.required],
       // estado_empleado: ['', Validators.required],
       detalle_empleado:this.fb.array([]),
-      
+      contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
+      confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
       }); 
      }
 
+     //Verifica o se asegura de que el campo de confirmar contraseña coincida con la contraseña.
+     validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
+      const contrasena = control.root.get('contrasena_usuario');
+      const confirmarContrasena = control.value;
+
+      if (contrasena && contrasena.value !== confirmarContrasena) {
+        return { contrasenaNoCoincide: true };
+      }
+
+      return null;
+    }
     ngOnInit() {
       
       this.empleadosService.getEmpleado().subscribe((data: Empleado[]) => {
@@ -161,7 +180,8 @@ export class ListEmpleadosComponent implements OnInit {
          pension_empleado: data.pension_empleado,
          cuenta_bancaria_empleado:data.cuenta_bancaria_empleado,
          area_empleado: data.area_empleado,
-        
+         contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
+         confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
       });
       const contactoEmergenciaArray = this.formEmpleados.get('contacto_emergencia') as FormArray;
       contactoEmergenciaArray.clear();  // Limpia los controles actuales
@@ -361,6 +381,7 @@ actualizarEmpleado() {
         detail: 'Empleado actualizado',
         life: 6000
       });
+      
       this.getListEmpleados();
       this.editarEmpleadoDialog = false;
     });

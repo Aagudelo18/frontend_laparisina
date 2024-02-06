@@ -60,7 +60,6 @@ export class RegistrarseComponent implements OnInit {
             correo_cliente: ['', [Validators.required, Validators.email]],
             contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
             confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
-
         })
         this.aRouter.params.subscribe(params => {
             this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
@@ -75,12 +74,10 @@ export class RegistrarseComponent implements OnInit {
         if (contrasena && contrasena.value !== confirmarContrasena) {
             return { contrasenaNoCoincide: true };
         }
-
         return null;
     }
 
     ngOnInit(): void {
-        this.getListUsuarios();
         this.getListClientes();
     }
 
@@ -88,14 +85,6 @@ export class RegistrarseComponent implements OnInit {
         this.clienteService.getListClientes().subscribe((data) => {
             this.listClientes = data;
         })
-    }
-
-    getListUsuarios() {
-        this.signInService.getUsuarios().subscribe((data: any) => {
-            if (data && data.usuarios) {
-                this.usuarios = data.usuarios;
-            }
-        });
     }
 
     // Función para crear una categoría
@@ -141,7 +130,7 @@ export class RegistrarseComponent implements OnInit {
                                 console.error('Error al crear el cliente:', error);
                                 this.messageService.add({
                                     severity: 'error',
-                                    summary: 'Error al crear el cliente',
+                                    summary: 'Error al crear la cuenta',
                                     detail: 'Error al crear el cliente',
                                     life: 3000,
                                 });
@@ -149,7 +138,7 @@ export class RegistrarseComponent implements OnInit {
                         );
                     } else {
                         // El usuario no fue confirmado, puedes manejarlo según tus necesidades
-                        console.log('Error por no fonfirmar el usuario')
+                        console.log('Error por no confirmar el usuario')
                     }
                 },
                 (error) => {
@@ -223,6 +212,6 @@ export class RegistrarseComponent implements OnInit {
 
     irALogin() {
         this.router.navigate(['/auth/login']); // Reemplaza '/ruta-del-login' con la ruta real de tu componente de login
-      }
-      
+    }
+
 }

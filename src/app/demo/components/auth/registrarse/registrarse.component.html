@@ -13,13 +13,16 @@
                     <br>
                     <div class="formgrid grid">
                         <div class="field col">
-                            <p-dropdown formControlName="tipo_cliente"
-                                [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente"
-                                name="tipo_cliente"></p-dropdown>
+                            <span class="p-float-label">
+                                <p-dropdown formControlName="tipo_cliente"
+                                    [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente"
+                                    name="tipo_cliente"></p-dropdown>
+                                <label for="tipo_cliente">Tipo cliente</label>
+                            </span>
                             <span
                                 *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
                                 style="color: red;">
-                                El tipo de cliente es requerida
+                                El tipo de cliente es requerido
                             </span>
                             <span
                                 *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
@@ -117,10 +120,12 @@
                     </div>
                     <div class="formgrid grid mt-4">
                         <div class="field col ">
-                            <p-dropdown formControlName="ciudad_cliente"
-                                [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-                                placeholder="Selecciona ciudad" name="ciudad_cliente"></p-dropdown>
-
+                            <span class="p-float-label">
+                                <p-dropdown formControlName="ciudad_cliente"
+                                    [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
+                                    placeholder="Selecciona ciudad" name="ciudad_cliente"></p-dropdown>
+                                <label for="ciudad_cliente">Ciudad</label>
+                            </span>
                             <span
                                 *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
                                 style="color: red;">
@@ -181,14 +186,12 @@
                                 electrónico no
                                 válido.</span>
                         </div>
-
-
                     </div>
                     <div class="formgrid grid mt-4">
                         <div class="field col">
                             <span class="p-float-label">
-                                <p-password type="password" id="contrasena_usuario" formControlName="contrasena_usuario"
-                                    [toggleMask]="true"></p-password>
+                                <input type="password" pInputText id="contrasena_usuario"
+                                    formControlName="contrasena_usuario" />
                                 <label for="contrasena_usuario">Contraseña</label>
                             </span>
                             <span
@@ -208,8 +211,8 @@
                         </div>
                         <div class="field col">
                             <span class="p-float-label">
-                                <p-password type="password" id="confirmar_contrasena"
-                                    formControlName="confirmar_contrasena" [toggleMask]="true"></p-password>
+                                <input type="password" pInputText id="confirmar_contrasena"
+                                    formControlName="confirmar_contrasena" />
                                 <label for="confirmar_contrasena">Confirmar Contraseña</label>
                             </span>
                             <span
