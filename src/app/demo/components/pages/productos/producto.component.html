@@ -232,20 +232,11 @@
                                     style="color: red"
                                 >
                                     El nombre es requerido
-                                </span>
-                                <span
-                                    *ngIf="
-                                        formProducto
-                                            .get('nombre_producto')
-                                            ?.hasError('pattern') &&
-                                        formProducto.get('nombre_producto')
-                                            ?.touched
-                                    "
-                                    style="color: red"
-                                >
-                                    El nombre solo puede tener letras y máximo
-                                    20 caracteres
-                                </span>
+                                </span>       
+                                <span *ngIf="formProducto.get('nombre_producto')?.hasError('pattern') && formProducto.get('nombre_producto')?.touched"
+                                style="color: red;">
+                                    El nombre solo puede tener letras y máximo 30 caracteres
+                                </span>                
                             </div>
                         </div>
 
@@ -1063,18 +1054,8 @@
 
                     <div class="field col-6">
                         <div class="card">
-                            <p-galleria
-                                [(value)]="imagenes"
-                                [showItemNavigators]="true"
-                                [showThumbnails]="false"
-                                [showIndicators]="true"
-                                [showIndicatorsOnItem]="true"
-                                [responsiveOptions]="galleriaResponsiveOptions"
-                                [containerStyle]="{
-                                    'max-width': '600px',
-                                    'margin-top': '2em'
-                                }"
-                            >
+                            <p-galleria [(value)]="imagenes" [activeIndex]="activeIndex" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showIndicatorsOnItem]="false" 
+                                        [responsiveOptions]="galleriaResponsiveOptions" [containerStyle]="{ 'max-width': '600px', 'margin-top': '2em' }">
                                 <ng-template pTemplate="item" let-imagen>
                                     <img
                                         [src]="imagen"
@@ -1102,23 +1083,11 @@
                         </div>
                     </div>
                 </div>
-
-                <div
-                    style="
-                        display: flex;
-                        justify-content: flex-end;
-                        margin-top: 20px;
-                    "
-                >
-                    <button
-                        pButton
-                        pRipple
-                        label="Cerrar"
-                        class="p-button-text"
-                        (click)="detalleProductoDialog = false"
-                    ></button>
-                </div>
-            </form>
+    
+                <!-- <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button pButton pRipple label="Cerrar" class="p-button-text" (click)="detalleProductoDialog = false"></button>
+                </div>    -->
+            </form>             
         </p-dialog>
 
         <p-dialog

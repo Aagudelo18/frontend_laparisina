@@ -35,6 +35,7 @@ export class ProductoComponent implements OnInit {
     displayDialog: boolean = false;
     imagenDialogSrc: string = '';
     imagenes_seleccionadas_producto: string[] = [];
+    activeIndex: number = 0;  // Variable para rastrear el índice activo
 
     //Configuración carrusel de imagenes
     galleriaResponsiveOptions: any[] = [
@@ -76,7 +77,7 @@ export class ProductoComponent implements OnInit {
 
         this.formProducto = this.fb.group({
           codigo_producto: ['',[Validators.required, Validators.pattern(/^[0-9]{3,4}$/),]],
-          nombre_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\d\s-]{1,20}$/)]],
+          nombre_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\d\s-]{1,30}$/)]],
           nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
           descripcion_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s:-]+$/)]],
           precio_ico: ['',[Validators.required, Validators.pattern(/^[0-9]{4,6}$/)]],

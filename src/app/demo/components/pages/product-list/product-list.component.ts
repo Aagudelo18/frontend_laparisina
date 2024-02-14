@@ -23,6 +23,8 @@ export class ProductComponent implements OnInit {
     id: string = '';
     categoriaSeleccionada: string = 'Todas las categorías';
 
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //Variables para controlar el carrito
     productosCarrito: ProductoCarrito[] = [];
     cantidad?: number;
     cantidadSeleccionada: number = 1;
@@ -78,6 +80,8 @@ export class ProductComponent implements OnInit {
     //Variables para controlar dialogs
     detalleProductoDialog: boolean = false;
 
+    
+
     constructor(
       private fb:FormBuilder,
       private productService: ProductService,
@@ -90,6 +94,8 @@ export class ProductComponent implements OnInit {
         this.aRouter.params.subscribe(params => {
           this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
         });
+
+        this.productosCarrito = productService.obtenerCarrito();
       }
 
     //---------------------------------------------------------------------------------------------------------------------------------
@@ -217,6 +223,8 @@ export class ProductComponent implements OnInit {
         this.productosCarrito.push(nuevoProductoCarrito);
 
         this.totalCarrito += nuevoProductoCarrito.precio_total_producto;
+
+        this.productService.guardarCarrito(this.productosCarrito);
         
         console.log(this.productosCarrito);
       } else {
@@ -226,8 +234,9 @@ export class ProductComponent implements OnInit {
         productoExistente.precio_total_producto = precioTotalProducto;
         
         this.totalCarrito += productoExistente.precio_total_producto;
-                
-        // Si ya existe, puedes realizar alguna acción adicional o simplemente no hacer nada
+
+        this.productService.guardarCarrito(this.productosCarrito);
+
         console.log('El producto ya está en el carrito');
       }
     }
@@ -242,6 +251,8 @@ export class ProductComponent implements OnInit {
     
         // Elimina el producto del array
         this.productosCarrito.splice(index, 1);
+
+        this.productService.guardarCarrito(this.productosCarrito);
     
         console.log('Producto eliminado:', producto);
         console.log('Productos en el carrito:', this.productosCarrito);
