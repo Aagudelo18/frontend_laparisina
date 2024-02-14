@@ -58,3 +58,17 @@ input{
   margin-top: 5px; /* Espaciado superior para los mensajes de error */
   font-size: 12px; /* Tamaño de fuente para los mensajes de error */
 }
+
+
+
+.input-label {
+  position: absolute;
+  top: -10px;
+  left: -20px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+
+
+

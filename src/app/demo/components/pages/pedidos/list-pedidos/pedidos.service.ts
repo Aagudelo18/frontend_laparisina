@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pedido } from './pedidos.model';
 import { Observable } from 'rxjs';
@@ -14,8 +14,26 @@ export class PedidosService {
 
   constructor(private http: HttpClient) { }
 
-  getPedidos() {
-    return this.http.get<Pedido[]>(this.apiUrl + 'pedidos');
+  // getPedidos() {
+  //   return this.http.get<Pedido[]>(this.apiUrl + 'pedidos');
+    
+  // }
+  getPedidos(): Observable<Pedido[]> {
+    const url = `${this.apiUrl}pedidos`;
+
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    });
+
+    // Hacer la solicitud HTTP con los encabezados
+    return this.http.get<Pedido[]>(url, { headers });
   }
 
   getPedidoDetalle(id: string): Observable<any> {

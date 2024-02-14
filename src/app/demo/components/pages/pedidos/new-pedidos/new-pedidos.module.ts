@@ -53,6 +53,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 	ToastModule,
 	
   ],
+  
   declarations: [NewPedidosComponent],
+ 
 })
 export class NewPedidosModule { }
