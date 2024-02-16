@@ -22,7 +22,7 @@ export class AppMenuComponent implements OnInit {
     createMenu(){
         let rol: any = localStorage.getItem('rol');
         console.log(rol)
-        if (rol == '656126cb933d1fae687598fd'){
+        if (rol == 'Super Admin'){
             this.model = [
                 {
                     label: 'Menú',
@@ -102,7 +102,7 @@ export class AppMenuComponent implements OnInit {
             ];
             return;
         }
-        if (rol == '654a96ebdbe2126f5a74161e'){
+        if (rol == 'Cliente'){
             this.model = [
                 {
                     label: 'Menú',
