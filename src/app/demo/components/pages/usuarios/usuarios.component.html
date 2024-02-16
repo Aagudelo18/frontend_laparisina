@@ -60,11 +60,11 @@
     </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="estadoUsuarioDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}"
-    (onHide)="noCambiarEstado()">
+<p-dialog [(visible)]="estadoUsuarioDialog" header="Confirmar cambio de estado" [modal]="true" [draggable]="false"
+    [style]="{width:'450px'}" (onHide)="noCambiarEstado()">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="usuario">¿Está seguro de que desea cambiar el estado de la categoría
+        <span *ngIf="usuario">¿Está seguro de que desea cambiar el estado del usuario
             <b>{{usuario.correo_electronico}}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
@@ -76,9 +76,17 @@
 </p-dialog>
 
 <p-dialog [(visible)]="usuarioDialog" [style]="{ width: '450px' }" header="Crear Usuario" [modal]="true"
-    class="p-fluid">
+    [draggable]="false" class="p-fluid">
     <ng-template pTemplate="content">
         <form [formGroup]="formularioUsuario" (ngSubmit)="crearUsuario()">
+
+            <div class="field mt-4">
+                <label for="rol_usuario">Seleccione el rol del Usuario</label>
+                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario"
+                    [options]="rolesForCreation" [optionLabel]="'nombre_rol'"
+                    placeholder="Seleccionar rol para el usuario"></p-dropdown>
+            </div>
+
             <div class="field mt-4">
                 <span class="p-float-label">
                     <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico" />
@@ -129,13 +137,6 @@
                     style="color: red;">Las contraseñas no coinciden.</span>
             </div>
 
-            <div class="field">
-                <label for="rol_usuario">Seleccione el rol del Usuario</label>
-                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario"
-                    [options]="rolesForCreation" [optionLabel]="'nombre_rol'"
-                    placeholder="Seleccionar rol para el usuario"></p-dropdown>
-            </div>
-
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                 <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
                     (click)="usuarioDialog = false"></button>
@@ -147,7 +148,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="mostrarConfirmacionUsuario" header="Confirmar creación de usuario" [modal]="true"
-    [style]="{width:'450px'}">
+    [draggable]="false" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
         <span>¿Está seguro de que desea crear este usuario <b>{{ formularioUsuario.get('correo_electronico').value
@@ -174,10 +175,17 @@
 
 
 <p-dialog [(visible)]="editarUsuarioDialog" [style]="{ width: '450px' }" header="Editar Usuario" [modal]="true"
-    class="p-fluid">
+    [draggable]="false" class="p-fluid">
     <ng-template pTemplate="content">
         <form [formGroup]="formularioEditarUsuario" (ngSubmit)="actualizarUsuario()">
             <!-- Aquí muestra los campos del formulario para editar los datos del usuario -->
+
+            <div class="field">
+                <label for="rol_usuario">Rol del Usuario</label>
+                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol" appendTo="body" ></p-dropdown>
+            </div>
+            
             <div class="field">
                 <label for="correo_electronico">Correo electrónico</label>
                 <input type="text" pInputText id="correo_electronico" formControlName="correo_electronico" />
@@ -189,13 +197,6 @@
                     style="color: red;">Correo
                     electrónico no
                     válido.</span>
-            </div>
-
-
-            <div class="field">
-                <label for="rol_usuario">Seleccione el rol del Usuario</label>
-                <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol" appendTo="body"></p-dropdown>
             </div>
 
             <div class="field">

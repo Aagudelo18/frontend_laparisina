@@ -45,7 +45,7 @@ export class UsuariosComponent implements OnInit {
     });
     this.formularioEditarUsuario = fb.group({
       correo_electronico: ['', [Validators.required, Validators.email]],
-      rol_usuario: ['', [Validators.required]],
+      rol_usuario: [{value: '', disabled: true}, [Validators.required]],
       estado_usuario: [true, Validators.required],
     });
     this.submitted = false;
@@ -275,7 +275,7 @@ export class UsuariosComponent implements OnInit {
     this.usuario = usuario
   }
 
-  // Función para cambiar el estado de una categoría
+  // Función para cambiar el estado de un usuario
   cambiarEstadoUsuario(uid: string, nuevoEstado: boolean) {
     const usuarioData = {
       estado_usuario: nuevoEstado

@@ -77,9 +77,7 @@ export class PedidosService {
   }
 }
   
-  // getDomiciliarios(): Observable<any>{
-  //   return this.http.get(this.apiUrl + 'domiciliarios')
-  //  }
+  
 
   
 
