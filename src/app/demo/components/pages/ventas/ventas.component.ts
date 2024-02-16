@@ -82,7 +82,6 @@ export class VentasComponent implements OnInit {
   ngOnInit() {
     this.ventasService.getVentas().subscribe(
       (data: any) => {
-        console.log('Datos de ventas:', data);
         this.ventas = data.ventas; // Asignar el campo 'ventas' al arreglo this.ventas
       },
       (error) => {
