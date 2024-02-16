@@ -6,12 +6,20 @@ export interface Product {
   descripcion_producto?: string;
   precio_ico?: number;
   precio_por_mayor_ico?: number;
-  cantidad?: number;
-  precioTotal?:number;
-  cantidadSeleccionada?: number;
+  cantidad_producto?: number;
+  precio_total_producto?:number;
   durabilidad_producto?: string;
   imagenes_producto?: string[]; // El signo de interrogación indica que este campo es opcional
   estado_producto?: boolean;
+};
+
+export interface ProductoCarrito {
+  nombre_producto: string;
+  cantidad_producto: number;
+  estado_producto: string;
+  precio_ico: number;
+  precio_por_mayor_ico: number;
+  precio_total_producto: number;
 }
 
   

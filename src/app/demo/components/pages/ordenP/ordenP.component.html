@@ -49,14 +49,13 @@
                             {{ ordenP.fecha_actualizacion_estado }}
                         </td>
                         <td style="width:13%; min-width:5rem;"><span class="p-column-title"></span>
-                            {{ ordenP.fecha_entrega_pedido }}
+                            {{ ordenP.fecha_entrega_pedido | slice:0:10 }}
                         </td>
                         <td style="width:13%; min-width:5rem;"><span class="p-column-title"></span>
                             {{ ordenP.estado_orden }}
                         </td>
                         <td style="width:30%; min-width:10rem;">
                             <div class="flex">
-                                
                                 <button pButton pRipple class="p-button-rounded p-button-warning mr-2" label="" (click)="confirmarActualizarOrdenDeProduccion(ordenP._id)">Terminado</button>                               
                             </div>
                         </td>

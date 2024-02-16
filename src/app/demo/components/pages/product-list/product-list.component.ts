@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Product } from './product-list.model';
+import { Product, ProductoCarrito } from './product-list.model';
 import { MessageService } from 'primeng/api';
 import { ProductService } from './product-list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../categoria/categoria.service';
-import { CartService } from '../cart/cart.service';
 
 
 
@@ -23,10 +22,13 @@ export class ProductComponent implements OnInit {
     formProduct:FormGroup;
     id: string = '';
     categoriaSeleccionada: string = 'Todas las categorías';
-    carrito: Product[] = [];
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //Variables para controlar el carrito
+    productosCarrito: ProductoCarrito[] = [];
     cantidad?: number;
-    cantidadSeleccionada: number = 1; // Valor predeterminado
-    precioTotal: number;
+    cantidadSeleccionada: number = 1;
+    totalCarrito: number = 0;
     
     //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control de la imagen
@@ -78,6 +80,8 @@ export class ProductComponent implements OnInit {
     //Variables para controlar dialogs
     detalleProductoDialog: boolean = false;
 
+    
+
     constructor(
       private fb:FormBuilder,
       private productService: ProductService,
@@ -90,6 +94,8 @@ export class ProductComponent implements OnInit {
         this.aRouter.params.subscribe(params => {
           this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
         });
+
+        this.productosCarrito = productService.obtenerCarrito();
       }
 
     //---------------------------------------------------------------------------------------------------------------------------------
@@ -182,6 +188,7 @@ export class ProductComponent implements OnInit {
     detalleProducto(product: Product) {
       this.producto = product;
       this.detalleProductoDialog = true;
+      this.cantidadSeleccionada = 1;
 
       const rutaImagenes = 'http://localhost:3000/uploads/';
         this.imagenes = product.imagenes_producto.map(imagen => rutaImagenes + imagen);
@@ -193,6 +200,68 @@ export class ProductComponent implements OnInit {
       this.detalleProductoDialog = false;
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función agrear un producto al carrito
+    agregarProductoCarrito(nuevoProducto: ProductoCarrito, cantidaProducto: number) {
+      const precioTotalProducto = nuevoProducto.precio_ico * cantidaProducto
+      
+      // Crear un nuevo objeto ProductoCarrito con la información necesaria
+      const nuevoProductoCarrito: ProductoCarrito = {
+        nombre_producto: nuevoProducto.nombre_producto,
+        cantidad_producto: cantidaProducto,
+        estado_producto: "",
+        precio_ico: nuevoProducto.precio_ico,
+        precio_por_mayor_ico: nuevoProducto.precio_por_mayor_ico,
+        precio_total_producto: precioTotalProducto,
+      };
+
+      // Verificar si ya existe un producto con el mismo nombre_producto
+      const productoExistente = this.productosCarrito.find(p => p.nombre_producto === nuevoProductoCarrito.nombre_producto);
+
+      if (!productoExistente) {
+        // Si no existe, agregar el nuevo producto al carrito
+        this.productosCarrito.push(nuevoProductoCarrito);
+
+        this.totalCarrito += nuevoProductoCarrito.precio_total_producto;
+
+        this.productService.guardarCarrito(this.productosCarrito);
+        
+        console.log(this.productosCarrito);
+      } else {
+        this.totalCarrito -= productoExistente.precio_total_producto;
+
+        productoExistente.cantidad_producto = cantidaProducto;
+        productoExistente.precio_total_producto = precioTotalProducto;
+        
+        this.totalCarrito += productoExistente.precio_total_producto;
+
+        this.productService.guardarCarrito(this.productosCarrito);
+
+        console.log('El producto ya está en el carrito');
+      }
+    }
+
+    eliminarProductoCarrito(producto: ProductoCarrito) {
+      // Encuentra el índice del producto en el array
+      const index = this.productosCarrito.findIndex(p => p.nombre_producto === producto.nombre_producto);
+    
+      if (index !== -1) {
+        // Resta el precio_total_producto del producto eliminado al totalCarrito
+        this.totalCarrito -= this.productosCarrito[index].precio_total_producto;
+    
+        // Elimina el producto del array
+        this.productosCarrito.splice(index, 1);
+
+        this.productService.guardarCarrito(this.productosCarrito);
+    
+        console.log('Producto eliminado:', producto);
+        console.log('Productos en el carrito:', this.productosCarrito);
+      } else {
+        console.log('El producto no se encontró en el carrito');
+      }
+    }
+    
+    
    
     
     //-------------------------------------------------------------------------------------------------------------------------------
