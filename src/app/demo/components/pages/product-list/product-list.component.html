@@ -6,7 +6,7 @@
         <ng-template pTemplate="end">
 
             <button type="button" icon="pi pi-shopping-cart" pButton label="{{productosCarrito.length}}" (click)="op2.toggle($event)" class="p-button-text p-button-lg ml-4"></button>
-                <p-overlayPanel #op2 [showCloseIcon]="false" [style]="{width: '40%'}">
+                <p-overlayPanel #op2 [showCloseIcon]="false" [style]="{width: '60%'}">
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
                             <ng-template pTemplate="left">
@@ -177,13 +177,20 @@
                             <i class="pi pi-dollar mr-2 "></i>
                             <span class="font-semibold text-xl">Precio: <span style="font-weight: normal;">{{producto.precio_ico | number}}</span></span>
                         </div>
-                        <div class="flex align-items-center justify-content-between ml-6 mt-3">
-                            <div class="formgrid grid mt-4">
-                                <div class="field col-4">
+                        <div class="flex align-items-center">
+                            <div class="field col">
+                                <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
+                                decrementButtonClass="p-button-sm" incrementButtonClass="p-button-sm" incrementButtonIcon="pi pi-plus" 
+                                decrementButtonIcon="pi pi-minus" [min]="1" [max]="100" [ngStyle]="{ 'height.px': 34 }"></p-inputNumber>
+                            </div>
+                        </div>
+                        <div class="flex align-items-center justify-content-between">
+                            <div class="formgrid grid">
+                                <!-- <div class="field col">
                                     <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
                                     decrementButtonClass="p-button-sm" incrementButtonClass="p-button-sm" incrementButtonIcon="pi pi-plus" 
                                     decrementButtonIcon="pi pi-minus" [min]="1" [max]="100" [ngStyle]="{ 'height.px': 34 }"></p-inputNumber>
-                                </div>
+                                </div> -->
                                 <div class="field col">
                                     <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" styleClass="mb-2 p-button-sm"
                                     (click)="agregarProductoCarrito(producto, cantidadSeleccionada)"></p-button>  

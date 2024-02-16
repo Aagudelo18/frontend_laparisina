@@ -7,6 +7,7 @@ import { Product } from './product-list.model';
   export class ProductService {
 
     private carritoProductos = 'carritoProductosParisina';
+    private datosCliente = 'currentUser'
 
     private apiUrl = 'http://localhost:3000/api'; // URL de API
   
@@ -31,12 +32,18 @@ import { Product } from './product-list.model';
     }
   
     obtenerCarrito(): any[] {
-      const listaGuardada = localStorage.getItem(this.carritoProductos);
-      return listaGuardada ? JSON.parse(listaGuardada) : [];
+      const carrito = localStorage.getItem(this.carritoProductos);
+      return carrito ? JSON.parse(carrito) : [];
     }
   
     limpiarLocalStorage(): void {
       localStorage.removeItem(this.carritoProductos);
+    }
+
+    //Servicios cliente login
+    obtenerDatosCliente(): any[] {
+      const cliente = localStorage.getItem(this.datosCliente);
+      return cliente ? JSON.parse(cliente) : [];
     }
   }
   
