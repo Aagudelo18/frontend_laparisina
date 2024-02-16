@@ -12,7 +12,7 @@ import { tap } from 'rxjs/operators';
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  //Proceso de login, donde el páramettro Usuario data envía los datos del usaurio par avalidar su inicio de sesión
+  //Proceso de login, donde el párametro Usuario data envía los datos del usuario par validar su inicio de sesión
   login(credentials: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
@@ -20,21 +20,27 @@ import { tap } from 'rxjs/operators';
         const userRole = response?.usuario?.rol_usuario; // Obtener el rol del usuario
 
         if (token && userRole) {
-          const expirationTime = new Date().getTime() + 60 * 60 * 1000; // Tiempo de expiración: una hora en milisegundos
-          localStorage.setItem('token', token);
-          localStorage.setItem('rol', userRole);
-          localStorage.setItem('expirationTime', expirationTime.toString());
-
-          this.isAuthenticatedSubject.next(true);
-
-          // Eliminar el token después de una hora
-          setTimeout(() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('rol');
-            localStorage.removeItem('currentUser');
-            localStorage.removeItem('expirationTime');
-            this.isAuthenticatedSubject.next(false);
-          }, 60 * 60 * 1000); // 1 hora en milisegundos
+          // Realizar una solicitud adicional al servidor para obtener el nombre del rol
+          this.http.get<any>(`${this.apiUrl}/roles/${userRole}`).subscribe(roleResponse => {
+            const roleName = roleResponse?.nombre_rol; // Obtener el nombre del rol
+            if (roleName) {
+              const expirationTime = new Date().getTime() + 60 * 60 * 1000; // Tiempo de expiración: una hora en milisegundos
+              localStorage.setItem('token', token);
+              localStorage.setItem('rol', roleName); // Almacena el nombre del rol
+              localStorage.setItem('expirationTime', expirationTime.toString());
+  
+              this.isAuthenticatedSubject.next(true);
+  
+              // Eliminar el token después de una hora
+              setTimeout(() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('rol');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('expirationTime');
+                this.isAuthenticatedSubject.next(false);
+              }, 60 * 60 * 1000); // 1 hora en milisegundos
+            }
+          });
         }
       })
     );

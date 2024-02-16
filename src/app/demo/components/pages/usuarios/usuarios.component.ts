@@ -275,7 +275,7 @@ export class UsuariosComponent implements OnInit {
     this.usuario = usuario
   }
 
-  // Función para cambiar el estado de una categoría
+  // Función para cambiar el estado de un usuario
   cambiarEstadoUsuario(uid: string, nuevoEstado: boolean) {
     const usuarioData = {
       estado_usuario: nuevoEstado

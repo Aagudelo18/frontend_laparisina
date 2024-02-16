@@ -5,7 +5,7 @@
             <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
                 <div class="text-center mb-5">
                     <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="160" class="mb-3">
-                    <div class="text-900 text-3xl font-medium mb-3">¡Bienvenue!</div>
+                    <div class="text-900 text-3xl font-medium mb-3">¡Bienvenido a la Parisina!</div>
                     <span class="text-600 font-medium">Inicia sesión para continuar</span>
                 </div>
 
@@ -34,16 +34,14 @@
                         <div *ngIf="correoNoRegistradoError" class="text-red-600">{{ correoNoRegistradoError }}</div>
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                            <div class="flex align-items-center">
-                                <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-                                <label for="rememberme1">Recuerdame</label>
-                            </div>
-                            <a (click)="recuperarContrasena()" class="font-medium no-underline ml-2 text-right cursor-pointer"
+                            <a (click)="recuperarContrasena()"
+                                class="font-medium no-underline ml-2 text-right cursor-pointer"
                                 style="color: var(--primary-color)">¿Olvidaste tu contraseña?</a>
                         </div>
                     </div>
                 </form>
-                <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl" [disabled]="!loginFormulario.valid"></button>
+                <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl"
+                    [disabled]="!loginFormulario.valid"></button>
                 <br><br>
                 <button (click)="registro()" pButton pRipple label="Registrarse" class="w-full p-3 text-xl"></button>
             </div>
