@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable(
-
-)
+@Injectable()
 
   export class PedidoClienteService {
 
@@ -12,6 +10,10 @@ import { HttpClient } from '@angular/common/http';
     private apiUrl = 'http://localhost:3000/api'; // URL de API
 
   constructor(private http: HttpClient) { }
+
+  // public createPedidoCliente(pedidos: any): Observable<any>{
+  //   return this.http.post(this.apiUrl + 'pedidos', pedidos)
+  // }
 
   //Servicios carrito localStorage
   guardarCarrito(carrito: any[]): void {
