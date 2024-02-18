@@ -107,17 +107,30 @@
         <!-- Cedula Cliente-->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input inputId="documento_cliente" pInputText />
-                <label for="inputtext">Cedula</label>
+                <input
+                    type="text"
+                    id="nombre_contacto"
+                    pInputText
+                    [formControl]="pedido.get('nombre_contacto')"
+                    
+                />
+                <label for="nombre_contacto">Nombre cliente</label>
             </span>
         </div>
-        <!-- nombre Cliente -->
+        <!-- Nombre Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input inputId="nombre_contacto" pInputText />
-                <label for="inputtext">Nombre Cliente</label>
+                <input
+                    type="text"
+                    id="documento_cliente"
+                    pInputText
+                    [formControl]="pedido.get('documento_cliente')"
+                    
+                />
+                <label for="documento_cliente">Documento</label>
             </span>
         </div>
+
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input type="text" id="quien_recibe" pInputText />
@@ -173,13 +186,13 @@
                 <label for="dropdown">Método de Pago</label>
             </span>
         </div>
-        <br><br>
-   
+        <br /><br />
     </div>
 </div>
 
 <div class="card">
-    <div class="text-center"> <!-- Agregamos esta clase para centrar el contenido -->
+    <div class="text-center">
+        <!-- Agregamos esta clase para centrar el contenido -->
         <div class="grid p-fluid mt-3 table-container">
             <p-table>
                 <ng-template pTemplate="header">
@@ -198,7 +211,11 @@
                 <ng-template pTemplate="body" let-product>
                     <tr>
                         <td>{{ product.get("nombre_producto")?.value }}</td>
-                        <td>{{ product.get("nombre_categoria_producto")?.value }}</td>
+                        <td>
+                            {{
+                                product.get("nombre_categoria_producto")?.value
+                            }}
+                        </td>
                         <td>{{ product.get("cantidad_producto")?.value }}</td>
                         <td>
                             {{
@@ -208,7 +225,9 @@
                                     : product.get("precio_ico")?.value
                             }}
                         </td>
-                        <td>{{ product.get("precio_total_producto")?.value }}</td>
+                        <td>
+                            {{ product.get("precio_total_producto")?.value }}
+                        </td>
                         <td>
                             <button
                                 pButton
@@ -223,7 +242,7 @@
                 </ng-template>
             </p-table>
         </div>
-        <br>
+        <br />
         <div class="my-2">
             <button
                 pButton
@@ -242,5 +261,3 @@
         </div>
     </div>
 </div>
-
-

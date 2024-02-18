@@ -12,11 +12,13 @@ import {
 import { MessageService } from 'primeng/api';
 import { timer } from 'rxjs';
 
+
 @Component({
     selector: 'app-new-pedidos',
     templateUrl: './new-pedidos.component.html',
     styleUrls: ['./new-pedidos.component.scss'],
     providers: [MessageService],
+    
 })
 export class NewPedidosComponent implements OnInit {
     precio_total_venta: number;
