@@ -1,3 +1,4 @@
+
 /* Ajustes generales para la tabla y su contenedor */
 .grid {
   width: 90%;
@@ -36,4 +37,38 @@ label {
     width: 120px; 
     text-align: right;
 }
+ 
+input{
+  height: 45px;
+}
+
+.field input {
+  border: 1px solid #ccc; /* Borde del input */
+  border-radius: 5px; /* Esquinas redondeadas */
+  padding: 8px; /* Espaciado interno */
+}
+
+.field input:focus {
+  outline: none; /* Elimina el contorno cuando el input está enfocado */
+  border-color: #007bff; /* Cambia el color del borde al enfocar el input */
+}
+
+/* Estilos para los mensajes de error */
+.field div[style^="color: red"] {
+  margin-top: 5px; /* Espaciado superior para los mensajes de error */
+  font-size: 12px; /* Tamaño de fuente para los mensajes de error */
+}
+
+
+
+.input-label {
+  position: absolute;
+  top: -10px;
+  left: -20px;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+
+
 

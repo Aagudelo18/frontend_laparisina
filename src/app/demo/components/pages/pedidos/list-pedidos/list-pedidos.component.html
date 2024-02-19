@@ -13,24 +13,13 @@
                 ></button>
             </div>
         </ng-template>
-
-        <ng-template pTemplate="right">
-            <button
-                pButton
-                pRipple
-                label="Export"
-                icon="pi pi-upload"
-                class="p-button-help"
-                (click)="dt.exportCSV()"
-            ></button>
-        </ng-template>
     </p-toolbar>
 
     <p-tabView>
         <!-- Listado de pedidos Tomados---------------------------------------------->
         <p-tabPanel header="Listado de Pedidos Tomados">
             <p-table
-                #dt
+                #dtPendientes
                 [value]="pedidosPendientes"
                 [rows]="10"
                 [globalFilterFields]="['nombre_contacto']"
@@ -42,23 +31,21 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-                <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
-                        <h4 class="m-0">Listado de Pendientes</h4>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Buscar..."
-                                class="w-full sm:w-auto"
-                            />
-                        </span>
-                    </div>
-                </ng-template>
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h4 class="m-0">Listado de Pendientes</h4>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dtPendientes, $event, 'Pendientes')"
+                            placeholder="Buscar..."
+                            class="w-full sm:w-auto"
+                        />
+                    </span>
+                </div>
+            </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -78,6 +65,11 @@
                                 field="estado_pedido"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -89,29 +81,26 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-pedido>
                     <tr>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 10rem">
                             {{ pedido.nombre_contacto }}
                         </td>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 10rem">
                             {{ pedido.tipo_cliente }}
                         </td>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 10rem">
                             {{ pedido.direccion_entrega }}
                         </td>
-                        <td style="width: 20%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 10rem">
                             {{ pedido.fecha_entrega_pedido | slice : 0 : 10 }}
                         </td>
-                        <!-- <td style="width:30%; min-width:10rem;">
-                    <ul>
-                        <li *ngFor="let detalle of pedido.detalle_pedido">
-                            {{ detalle.nombre_producto}}
-                        </li>
-                    </ul>
-                </td> -->
-                        <td style="width: 20%; min-width: 10rem">
+
+                        <td style="width: 15%; min-width: 5rem">
                             {{ pedido.estado_pedido }}
                         </td>
-                        <td style="width: 30%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.estado_pago }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
                             {{ pedido.precio_total_venta }}
                         </td>
                         <td>
@@ -123,6 +112,7 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
+                                    pTooltip="Ver"
                                 ></button>
                                 <button
                                     pButton
@@ -135,6 +125,7 @@
                                             pedido.estado_pedido
                                         )
                                     "
+                                    pTooltip="Cambiar Estado"
                                 ></button>
                                 <button
                                     pButton
@@ -142,6 +133,7 @@
                                     icon="pi pi-times"
                                     class="p-button-rounded p-button-danger"
                                     (click)="abrirModalAnular(pedido._id)"
+                                    pTooltip="Anular"
                                 ></button>
                             </div>
                         </td>
@@ -152,7 +144,7 @@
         <!-- Listado de pedidos Terminados---------------------------------------------->
         <p-tabPanel header="Pedidos por Enviar">
             <p-table
-                #dt
+                #dtTerminados
                 [value]="pedidosTerminados"
                 [rows]="10"
                 [globalFilterFields]="['nombre_contacto']"
@@ -164,23 +156,22 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-                <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
-                        <h4 class="m-0">Listado de Terminados</h4>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Buscar..."
-                                class="w-full sm:w-auto"
-                            />
-                        </span>
-                    </div>
-                </ng-template>
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h4 class="m-0">Listado de Terminados</h4>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dtTerminados, $event, 'Terminados')"
+                            placeholder="Buscar..."
+                            class="w-full sm:w-auto"
+                        />
+                    </span>
+                </div>
+            </ng-template>
+            
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -198,6 +189,11 @@
                         <th pSortableColumn="estado_pedido">
                             Estado<p-sortIcon
                                 field="estado_pedido"
+                            ></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
                             ></p-sortIcon>
                         </th>
                         <th pSortableColumn="precio_total_venta">
@@ -226,6 +222,9 @@
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
                         </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
+                        </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
                         </td>
@@ -238,13 +237,20 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
+                                    pTooltip="Ver"
                                 ></button>
                                 <button
                                     pButton
                                     pRipple
                                     icon="pi pi-truck"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="abrirModalDomicilio(pedido._id, pedido.estado_pedido)"
+                                    (click)="
+                                        abrirModalDomicilio(
+                                            pedido._id,
+                                            pedido.estado_pedido
+                                        )
+                                    "
+                                    pTooltip="Asignar Domiciliario"
                                 ></button>
                             </div>
                         </td>
@@ -255,7 +261,7 @@
         <!-- Listado de pedidos Enviados---------------------------------------------->
         <p-tabPanel header="Lista de Pedidos Enviados">
             <p-table
-                #dt
+                #dtEnviados
                 [value]="pedidosEnviados"
                 [rows]="10"
                 [globalFilterFields]="['nombre_contacto']"
@@ -267,23 +273,21 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-                <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
-                        <h4 class="m-0">Listado de Enviados</h4>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Buscar..."
-                                class="w-full sm:w-auto"
-                            />
-                        </span>
-                    </div>
-                </ng-template>
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h4 class="m-0">Listado de Enviados</h4>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dtEnviados, $event, 'Enviados')"
+                            placeholder="Buscar..."
+                            class="w-full sm:w-auto"
+                        />
+                    </span>
+                </div>
+            </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -301,6 +305,11 @@
                         <th pSortableColumn="estado_pedido">
                             Estado<p-sortIcon
                                 field="estado_pedido"
+                            ></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
                             ></p-sortIcon>
                         </th>
                         <th pSortableColumn="precio_total_venta">
@@ -329,6 +338,9 @@
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
                         </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
+                        </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
                         </td>
@@ -341,6 +353,7 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
+                                    pTooltip="Ver"
                                 ></button>
                                 <!-- <button
                                     pButton
@@ -363,7 +376,7 @@
         <!-- Listado de pedidos anulados---------------------------------------------->
         <p-tabPanel header="Lista de Pedidos Anulados">
             <p-table
-                #dt
+                #dtAnulados
                 [value]="pedidosAnulados"
                 [rows]="10"
                 [globalFilterFields]="['nombre_contacto']"
@@ -375,23 +388,21 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-                <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
-                        <h4 class="m-0">Listado de Anulados</h4>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Buscar..."
-                                class="w-full sm:w-auto"
-                            />
-                        </span>
-                    </div>
-                </ng-template>
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h4 class="m-0">Listado de Anulados</h4>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dtAnulados, $event, 'Anulados')"
+                            placeholder="Buscar..."
+                            class="w-full sm:w-auto"
+                        />
+                    </span>
+                </div>
+            </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -409,6 +420,11 @@
                         <th pSortableColumn="estado_pedido">
                             Estado<p-sortIcon
                                 field="estado_pedido"
+                            ></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon
+                                field="estado_pago"
                             ></p-sortIcon>
                         </th>
                         <th pSortableColumn="precio_total_venta">
@@ -434,15 +450,12 @@
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.fecha_entrega_pedido | slice : 0 : 10 }}
                         </td>
-                        <!-- <td style="width:30%; min-width:10rem;">
-                <ul>
-                    <li *ngFor="let detalle of pedido.detalle_pedido">
-                        {{ detalle.nombre_producto}}
-                    </li>
-                </ul>
-            </td> -->
+
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 20%; min-width: 10rem">
+                            {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -456,18 +469,6 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
-                                ></button>
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-chevron-right"
-                                    class="p-button-rounded p-button-warning mr-2"
-                                    (click)="
-                                        abrirModal(
-                                            pedido._id,
-                                            pedido.estado_pedido
-                                        )
-                                    "
                                 ></button>
                             </div>
                         </td>
@@ -495,6 +496,9 @@
                         <input
                             [readonly]="true"
                             style="
+                             resize: none;
+                             overflow: auto; 
+                             width: 100%; 
                                 pointer-events: none;
                                 background-color: #f4f4f4;
                                 caret-color: transparent;
@@ -544,6 +548,7 @@
                 <div class="field col" *ngIf="esEmpresa()">
                     <span class="p-float-label">
                         <input
+                            style="resize: none"
                             [readonly]="true"
                             style="
                                 pointer-events: none;
@@ -554,7 +559,7 @@
                             id="nombre_juridico"
                             type="text"
                             pInputText
-                        />
+                        >
                         <label for="nombre_juridico">Nombre Empresa</label>
                     </span>
                 </div>
@@ -600,8 +605,12 @@
                 <div class="field col">
                     <span class="p-float-label">
                         <input
+                            style="resize: none"
                             [readonly]="true"
                             style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 100%; 
                                 pointer-events: none;
                                 background-color: #f4f4f4;
                                 caret-color: transparent;
@@ -619,6 +628,9 @@
                         <input
                             [readonly]="true"
                             style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 80%; 
                                 pointer-events: none;
                                 background-color: #f4f4f4;
                                 caret-color: transparent;
@@ -669,7 +681,7 @@
         </div>
 
         <div class="formgrid grid mt-3">
-            <div class="formgrid grid">          
+            <div class="formgrid grid">
                 <div class="field col">
                     <span class="p-float-label">
                         <input
@@ -692,6 +704,9 @@
                         <input
                             [readonly]="true"
                             style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 70%; 
                                 pointer-events: none;
                                 background-color: #f4f4f4;
                                 caret-color: transparent;
@@ -704,12 +719,14 @@
                         <label for="estado_pedido"> Estado </label>
                     </span>
                 </div>
-                
                 <div class="field col">
                     <span class="p-float-label">
                         <input
                             [readonly]="true"
                             style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 80%; 
                                 pointer-events: none;
                                 background-color: #f4f4f4;
                                 caret-color: transparent;
@@ -722,15 +739,55 @@
                         <label for="metodo_pago">Método de Pago</label>
                     </span>
                 </div>
+
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 80%;
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="estado_pago"
+                            id="estado_pago"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="estado_pago">Estado de Pago</label>
+                    </span>
+                </div>
             </div>
         </div>
-        <!-- <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-            
-            </div>
-        </div> -->
 
-        <!-- Detalle del Producto -->
+        <div class="formgrid grid mt-3" *ngIf= "formPedidos.get('estado_pedido').value == 'Enviado' || formPedidos.get('estado_pedido').value == 'Entregado'">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="domiciliario"
+                            id="domiciliario"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="domiciliario">domiciliario</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 
+
+        Detalle del Producto -->
         <div class="formgrid grid mt-5" *ngIf="detallePedidoDialog">
             <table class="table custom-table">
                 <thead>
@@ -753,7 +810,7 @@
                         <td>{{ detalle.cantidad_producto }}</td>
                         <td>
                             {{
-                                formPedidos.tipo_cliente == "Empresa"
+                                formPedidos.tipo_cliente == "Persona jurídica"
                                     ? detalle.precio_por_mayor_ico
                                     : detalle.precio_ico
                             }}
@@ -764,7 +821,7 @@
                 </tbody>
             </table>
         </div>
-        <br>
+        <br />
 
         <!-- Resumen del Pago -->
         <div class="formgrid grid mt-5">
@@ -838,13 +895,6 @@
             </div>
         </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px">
-            <button
-                pButton
-                pRipple
-                label="Cerrar"
-                class="p-button-text"
-                (click)="detallePedidoDialog = false"
-            ></button>
         </div>
     </form>
 </p-dialog>
@@ -900,7 +950,7 @@
     header="Cambiar Estado del Pedido"
     [modal]="true"
     [style]="{ width: '450px' }"
-    (onHide)="(cambiarEstadoPDialogAnular == false)"
+    (onHide)="cambiarEstadoPDialogAnular = false"
 >
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
@@ -942,9 +992,9 @@
             <select [(ngModel)]="domiciliarioSeleccionado">
                 <option
                     *ngFor="let domiciliario of domiciliarios"
-                    [value]="domiciliario?.id"
+                    [value]="domiciliario?._id"
                 >
-                    {{ domiciliario?.correo_electronico }}
+                    {{ domiciliario?.nombre_empleado }}
                 </option>
             </select>
         </span>
@@ -968,7 +1018,6 @@
         ></button>
     </ng-template>
 </p-dialog>
-
 
 <!-- Modal para confirmar la asignacion del domiciliario-->
 <p-dialog [(visible)]="confirmarAsignacionDialog" header="Confirmar Asignación">
@@ -994,4 +1043,3 @@
         ></button>
     </ng-template>
 </p-dialog>
-

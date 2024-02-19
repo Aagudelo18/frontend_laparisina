@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { ImageModule } from 'primeng/image';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ImageModule } from 'primeng/image';
         ReactiveFormsModule,
         InputSwitchModule,
         AutoCompleteModule,
-        ImageModule
+        ImageModule,
+        TooltipModule
     ],
     declarations: [CategoriaComponent],
     providers: [

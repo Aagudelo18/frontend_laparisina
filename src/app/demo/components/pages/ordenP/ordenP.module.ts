@@ -20,6 +20,10 @@ import { OrdenDeProduccionService } from './ordenP.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AutoCompleteModule } from "primeng/autocomplete";
+import { TooltipModule } from 'primeng/tooltip';
+import { DataViewModule } from 'primeng/dataview';
+import { MenubarModule } from 'primeng/menubar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     imports: [
@@ -42,6 +46,10 @@ import { AutoCompleteModule } from "primeng/autocomplete";
         ReactiveFormsModule,
         InputSwitchModule,
         AutoCompleteModule,
+        TooltipModule,
+        DataViewModule,
+        MenubarModule,
+        OverlayPanelModule
     ],
     declarations: [OrdenDeProduccionComponent],
     providers: [

@@ -2,24 +2,38 @@
     <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
         <i class="pi pi-bars"></i>
     </button>
-    
+
     <a class="layout-topbar-logo" routerLink="">
-        <img src="assets/layout/images/logo-parisina.png" alt="logo">
+        <img src="assets/layout/images/Logo-parisina-Login-menú.png" alt="logo">
         <span></span>
     </a>
-    
-    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
+        (click)="layoutService.showProfileSidebar()">
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
-    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <button class="p-link layout-topbar-button" (click)="perfil()">
+    <div #topbarmenu class="layout-topbar-menu"
+        [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+        <button class="p-link layout-topbar-button" (click)="perfil()" pTooltip="Ver mi perfil" tooltipPosition="left">
             <i class="pi pi-user"></i>
             <span>Mi perfil</span>
         </button>
-        <button class="p-link layout-topbar-button" (click)="logout()">
+        <button class="p-link layout-topbar-button" (click)="logout()" pTooltip="Cerrar sesión" tooltipPosition="left">
             <i class="pi pi-sign-out"></i>
             <span>Cerrar sesión</span>
         </button>
     </div>
 </div>
+
+<p-dialog [(visible)]="confirmarCerrarSesionDialog" header="Confirmar para cerrar la sesión" [modal]="true"
+    [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>¿Está seguro de que desea cerrar sesión?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCerrarSesion()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cerrarSesion()"></button>
+    </ng-template>
+</p-dialog>

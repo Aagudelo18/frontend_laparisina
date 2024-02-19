@@ -1,43 +1,58 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 }) export class LoginService {
-    private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-    public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-    //Traer todos los usuarios
-    getUsuarios() {
-        return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
-    }
+  //Proceso de login, donde el párametro Usuario data envía los datos del usuario par validar su inicio de sesión
+  login(credentials: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials);
+  }
 
-    //Proceso de login, donde el páramettro Usuario data envía los datos del usaurio par avalidar su inicio de sesión
-    login(credentials: any): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-            tap((response: any) => {
-                const token = response?.token;
-                if (token) {
-                    localStorage.setItem('token', token);
-                    this.isAuthenticatedSubject.next(true);
-                }
-            })
-        );
-    }
+  getRol(userRole: any, token: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/roles/${userRole}`);
+    
+  }
 
-    logout(): void {
-        // Eliminar el token y actualizar el estado de autenticación
-        localStorage.removeItem('token');
-        this.isAuthenticatedSubject.next(false);
-    }
+  setisAuthenticatedSubject(value: any){
+    this.isAuthenticatedSubject.next(value);
+  }
 
-    getAuthenticated(): Observable<boolean> {
-        return this.isAuthenticated;
-    }
 
+  logout(): void {
+    // Eliminar el token y actualizar el estado de autenticación
+    localStorage.removeItem('token');
+    this.isAuthenticatedSubject.next(false);
+  }
+
+
+  getAuthenticated(): Observable<boolean> {
+    return this.isAuthenticated;
+  }
+
+  private sessionExpired = new Subject<void>();
+  sessionExpired$ = this.sessionExpired.asObservable();
+
+  // checkSessionValidity() {
+  //   const expirationTime = localStorage.getItem('expirationTime');
+  //   if (expirationTime) {
+  //     const currentTime = new Date().getTime();
+  //     if (parseInt(expirationTime, 10) < currentTime) {
+  //       // Emitir un evento para mostrar el diálogo de sesión expirada
+  //       this.sessionExpired.next();
+  //       // Limpiar el almacenamiento local y realizar otras tareas necesarias
+  //       localStorage.removeItem('token');
+  //       localStorage.removeItem('rol');
+  //       localStorage.removeItem('expirationTime');
+  //     }
+  //   }
+  // }
 }

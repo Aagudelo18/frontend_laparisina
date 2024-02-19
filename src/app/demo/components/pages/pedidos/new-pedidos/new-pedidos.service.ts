@@ -12,7 +12,6 @@ export class NewPedidosService {
   constructor(private http: HttpClient) { }
 
   public createPedido(pedidos: any): Observable<any>{
-    
     return this.http.post(this.apiUrl + 'pedidos', pedidos)
   }
 

@@ -41,6 +41,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    [readonly]="true"
                     type="text"
                     id="tipo_cliente"
                     pInputText
@@ -63,11 +64,13 @@
             </div>
         </div>
         <!-- NIT Empresa (solo visible si el tipo de cliente es Empresa) -->
-        <div class="field col-12 md:col-3"
+        <div
+            class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
                 <input
+                    [readonly]="true"
                     type="text"
                     id="nit_empresa_cliente"
                     pInputText
@@ -92,11 +95,13 @@
             </div>
         </div>
         <!-- Nombre Jurídico (solo visible si el tipo de cliente es Empresa) -->
-        <div class="field col-12 md:col-3"
+        <div
+            class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
-                <input
+                <textarea
+                    [readonly]="true"
                     type="text"
                     id="nombre_juridico"
                     pInputText
@@ -107,7 +112,7 @@
                             .setValue($event.target.value)
                     "
                     disabled
-                />
+                ></textarea>
                 <label for="inputtext">Nombre Empresa</label>
             </span>
             <div
@@ -121,11 +126,13 @@
             </div>
         </div>
         <!-- Nombre Contacto (solo visible si el tipo de cliente es Persona natural) -->
-        <div class="field col-12 md:col-3"
+        <div
+            class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'"
         >
             <span class="p-float-label">
                 <input
+                    [readonly]="true"
                     type="text"
                     id="nombre_contacto"
                     pInputText
@@ -135,6 +142,7 @@
                             .get('nombre_contacto')
                             .setValue($event.target.value)
                     "
+                    f
                     disabled
                 />
                 <label for="inputtext">Nombre cliente</label>
@@ -150,11 +158,13 @@
             </div>
         </div>
         <!-- Quien Recibe (solo visible si el tipo de cliente es Persona natural) -->
-        <div class="field col-12 md:col-3"
+        <div
+            class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'"
         >
             <span class="p-float-label">
                 <input
+                    [readonly]="!clienteExistente"
                     type="text"
                     id="quien_recibe"
                     pInputText
@@ -179,6 +189,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    [readonly]="!clienteExistente"
                     type="text"
                     id="telefono_cliente"
                     pInputText
@@ -205,6 +216,9 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    style="resize: none"
+                    style="resize: none"
+                    [readonly]="!clienteExistente"
                     type="text"
                     id="direccion_entrega"
                     pInputText
@@ -231,6 +245,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    [readonly]="!clienteExistente"
                     type="text"
                     id="ciudad_cliente"
                     pInputText
@@ -257,6 +272,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    [readonly]="!clienteExistente"
                     type="text"
                     id="barrio_cliente"
                     pInputText
@@ -283,27 +299,21 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-calendar
-                    inputId="calendar"
+                    disabled
                     [formControl]="pedido.get('fecha_entrega_pedido')"
+                    dateFormat="yy/mm/dd"
+                    inputId="calendar"
+                    [minDate]="minDate"
                 ></p-calendar>
                 <label for="calendar">Fecha Entrega</label>
             </span>
-            <div
-                *ngIf="
-                    pedido.get('fecha_entrega_pedido').invalid &&
-                    pedido.get('fecha_entrega_pedido').touched &&
-                    pedido.get('fecha_entrega_pedido').hasError('fechaMenorActual')
-                "
-                style="color: red"
-            >
-                La fecha de entrega no puede ser menor a la fecha actual.
-            </div>
         </div>
-        
+
         <!-- Método de Pago -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
+                    [readonly]="!clienteExistente"
                     inputId="dropdown"
                     id="metodo_pago"
                     [autoDisplayFirst]="false"
@@ -322,15 +332,46 @@
                 El método de pago es requerido
             </div>
         </div>
-        <!-- Valor Domicilio -->
-        <div class="field col-12 md:col-2">
+
+        <!-- Método de Pago -->
+        <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <p-inputNumber
+                <p-dropdown
+                    [readonly]="!clienteExistente"
+                    inputId="dropdown"
+                    id="estado_pago"
+                    [autoDisplayFirst]="false"
+                    [options]="estadoPago"
+                    [formControl]="pedido.get('estado_pago')"
+                ></p-dropdown>
+                <label for="dropdown">Estado de Pago</label>
+            </span>
+            <div
+                *ngIf="
+                    pedido.get('estado_pago').invalid &&
+                    pedido.get('estado_pago').touched
+                "
+                style="color: red"
+            >
+                El estado del pago es requerido
+            </div>
+        </div>
+
+        <!-- Valor Domicilio -->
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <label for="valor_domicilio" class="input-label"
+                    >Valor Domicilio</label
+                >
+                <input
+                    class="form-control valor-domicilio-input"
+                    type="number"
+                    [readonly]="!clienteExistente"
                     inputId="valor_domicilio"
                     [formControl]="pedido.get('valor_domicilio')"
-                    (input)="calcularPrecioTotalVenta()"
-                ></p-inputNumber>
-                <label for="valor_domicilio">Valor Domicilio</label>
+                    (input)="eliminarCerosIzquierda($event)"
+                    (paste)="eliminarCerosIzquierda($event)"
+                />
             </span>
             <div
                 *ngIf="
@@ -348,10 +389,12 @@
                 "
                 style="color: red"
             >
-                El valor del domicilio debe ser mayor a cero
+                El valor del domicilio es menor al mínimo permitido
             </div>
         </div>
     </div>
+
+    <!-- Categoria -->
 
     <div
         *ngIf="
@@ -360,10 +403,10 @@
         "
         class="grid p-fluid mt-3"
     >
-
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <select
+                    [readonly]="!clienteExistente"
                     class="p-element p-inputtext ng-star-inserted"
                     [(ngModel)]="categoriaSeleccionada"
                     (change)="categoriaOnChange()"
@@ -391,6 +434,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
+                    [readonly]="!clienteExistente"
                     inputId="productosCategoria"
                     [autoDisplayFirst]="false"
                     [options]="productosCategoria"
@@ -411,6 +455,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-inputNumber
+                    [readonly]="!clienteExistente"
                     inputId="cantidad_producto"
                     [(ngModel)]="cantidad_producto"
                     [ngModelOptions]="{ standalone: true }"
@@ -435,10 +480,18 @@
                 icon="pi pi-user-plus"
                 class="p-button-success mr-2"
                 (click)="agregarProductoExistente()"
-                [disabled]="!productoSeleccionado && productoSeleccionado !== 0 || cantidad_producto == 0 || cantidad_producto == e"
+                [disabled]="
+                    (!productoSeleccionado && productoSeleccionado !== 0) ||
+                    cantidad_producto == 0 ||
+                    cantidad_producto == e
+                "
             ></button>
             <div
-                *ngIf="!productoSeleccionado && productoSeleccionado !== 0 || cantidad_producto == 0 || cantidad_producto == e"
+                *ngIf="
+                    (!productoSeleccionado && productoSeleccionado !== 0) ||
+                    cantidad_producto == 0 ||
+                    cantidad_producto == e
+                "
                 style="color: red"
             >
                 Agregue un producto válido antes de continuar
@@ -471,7 +524,8 @@
                     <td>{{ product.get("cantidad_producto")?.value }}</td>
                     <td>
                         {{
-                            pedido.get("tipo_cliente").value === "Persona jurídica"
+                            pedido.get("tipo_cliente").value ===
+                            "Persona jurídica"
                                 ? product.get("precio_por_mayor_ico")?.value
                                 : product.get("precio_ico")?.value
                         }}
