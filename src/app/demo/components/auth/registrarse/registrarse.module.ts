@@ -10,6 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RegistrarseComponent } from './registrarse.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { TooltipModule } from 'primeng/tooltip';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     imports: [
@@ -22,7 +24,9 @@ import { DropdownModule } from 'primeng/dropdown';
         FormsModule,
         PasswordModule,
         DropdownModule,
-        DialogModule
+        DialogModule,
+        TooltipModule,
+        ToastModule
     ],
     declarations: [RegistrarseComponent]
 })

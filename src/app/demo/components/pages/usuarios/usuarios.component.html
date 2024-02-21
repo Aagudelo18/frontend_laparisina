@@ -8,7 +8,7 @@
     </ng-template>
 
 </p-toolbar>
-<p-table #dt [value]="usuarios" [globalFilterFields]="['correo_electronico']" [rows]="10" [paginator]="true"
+<p-table #dt [value]="usuarios" [globalFilterFields]="['correo_electronico', 'nombre_usuario']" [rows]="10" [paginator]="true"
     [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedUsuarios"
     selectionMode="multiple" dataKey="uid">
@@ -24,9 +24,9 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="correo_electronico">Correo
-                electronico<p-sortIcon field="correo_electronico"></p-sortIcon></th>
-            <th pSortableColumn="rol_usuario.nombre_rol">Rol usuario<p-sortIcon field="rol_usuario"></p-sortIcon></th>
+            <th pSortableColumn="correo_electronico">Correo electronico<p-sortIcon field="correo_electronico"></p-sortIcon></th>
+            <th pSortableColumn="nombre_usuario">Nombre de usuario<p-sortIcon field="nombre_usuario"></p-sortIcon></th>
+            <th pSortableColumn="rol_usuario.nombre_rol">Rol usuario<p-sortIcon field="rol_usuario.nombre_rol"></p-sortIcon></th>
             <th pSortableColumn="estado_usuario">Estado<p-sortIcon field="estado_usuario"></p-sortIcon>
             </th>
             <th pSortableColumn="name">Acciones</th>
@@ -35,11 +35,15 @@
     <ng-template pTemplate="body" let-usuario>
         <tr>
 
-            <td style="width:30%; min-width:10rem;">
+            <td style="width:40%; min-width:10rem;">
                 {{ usuario.correo_electronico }}
             </td>
 
-            <td style="width:30%; min-width:10rem;">
+            <td style="width:40%; min-width:10rem;">
+                {{ usuario.nombre_usuario }}
+            </td>
+
+            <td style="width:20%; min-width:8rem;">
                 {{ usuario.rol_usuario.nombre_rol }}
             </td>
             <td style="width:10%; min-width:10rem;">
@@ -48,7 +52,7 @@
                 <p-inputSwitch class="mr-2" [ngModel]="usuario.estado_usuario"
                     (onChange)="confirmarCambioEstado(usuario)" pTooltip="Cambiar estado"></p-inputSwitch>
             </td>
-            <td>
+            <td style="width:10%; min-width:10rem;">
                 <div class="flex">
                     <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
                         (click)="editProduct(product)"></button> -->
@@ -81,7 +85,8 @@
         <form [formGroup]="formularioUsuario" (ngSubmit)="crearUsuario()">
 
             <div class="field mt-4">
-                <label for="rol_usuario">Seleccione el rol del Usuario</label>
+                <label for="rol_usuario">Seleccione el rol del Usuario<span *ngIf="isRequired"
+                        style="color: red;">*</span></label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario"
                     [options]="rolesForCreation" [optionLabel]="'nombre_rol'"
                     placeholder="Seleccionar rol para el usuario"></p-dropdown>
@@ -89,8 +94,19 @@
 
             <div class="field mt-4">
                 <span class="p-float-label">
-                    <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico" />
-                    <label for="correo_electronico">Correo electrónico</label>
+                    <input type="email" pInputText id="nombre_usuario" formControlName="nombre_usuario" />
+                    <label for="nombre_usuario">Nombre del usuario</label>
+                </span>
+                <span
+                    *ngIf="formularioUsuario.get('correo_electronico')?.hasError('required') && formularioUsuario.get('correo_electronico')?.touched"
+                    style="color: red;">Nombre requerido.</span>
+            </div>
+
+            <div class="field mt-4">
+                <span class="p-float-label">
+                    <input type="text" pInputText id="correo_electronico" formControlName="correo_electronico" />
+                    <label for="correo_electronico">Correo electrónico<span *ngIf="isRequired"
+                            style="color: red;">*</span></label>
                 </span>
                 <span
                     *ngIf="formularioUsuario.get('correo_electronico')?.hasError('required') && formularioUsuario.get('correo_electronico')?.touched"
@@ -104,7 +120,8 @@
             <div class="field mt-4" style="margin-bottom: 15px;">
                 <span class="p-float-label">
                     <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
-                    <label for="contrasena_usuario">Contraseña</label>
+                    <label for="contrasena_usuario">Contraseña<span *ngIf="isRequired"
+                            style="color: red;">*</span></label>
                 </span>
                 <span
                     *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('required') && formularioUsuario.get('contrasena_usuario')?.touched"
@@ -125,7 +142,8 @@
                 <span class="p-float-label">
                     <input type="password" pInputText id="confirmar_contrasena"
                         formControlName="confirmar_contrasena" />
-                    <label for="confirmar_contrasena">Confirmar Contraseña</label>
+                    <label for="confirmar_contrasena">Confirmar Contraseña<span *ngIf="isRequired"
+                            style="color: red;">*</span></label>
                 </span>
                 <span
                     *ngIf="formularioUsuario.get('confirmar_contrasena')?.hasError('required') && formularioUsuario.get('confirmar_contrasena')?.touched"
@@ -183,12 +201,25 @@
             <div class="field">
                 <label for="rol_usuario">Rol del Usuario</label>
                 <p-dropdown formControlName="rol_usuario" inputId="rol_usuario" id="rol_usuario" [options]="roles"
-                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol" appendTo="body" ></p-dropdown>
+                    [optionLabel]="'nombre_rol'" placeholder="Seleccionar rol" appendTo="body"></p-dropdown>
             </div>
-            
+
             <div class="field">
                 <label for="correo_electronico">Correo electrónico</label>
                 <input type="text" pInputText id="correo_electronico" formControlName="correo_electronico" />
+                <span
+                    *ngIf="formularioEditarUsuario.get('correo_electronico')?.hasError('required') && formularioEditarUsuario.get('correo_electronico')?.touched"
+                    style="color: red;">Correo electrónico
+                    requerido.</span>
+                <span *ngIf="formularioEditarUsuario.get('correo_electronico').hasError('email')"
+                    style="color: red;">Correo
+                    electrónico no
+                    válido.</span>
+            </div>
+
+            <div class="field">
+                <label for="nombre_usuario">Nombre de usuario</label>
+                <input type="text" pInputText id="nombre_usuario" formControlName="nombre_usuario" />
                 <span
                     *ngIf="formularioEditarUsuario.get('correo_electronico')?.hasError('required') && formularioEditarUsuario.get('correo_electronico')?.touched"
                     style="color: red;">Correo electrónico

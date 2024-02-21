@@ -183,9 +183,27 @@ export class RegistrarseComponent implements OnInit {
                                 observer.complete();
                             },
                             (error) => {
-                                console.error('Error al confirmar el usuario:', error);
-                                observer.error('Error al confirmar el usuario');
-                            }
+                                if (error && error.error && error.error.errors && error.error.errors.length > 0) {
+                                  const errorMessage = error.error.errors[0].msg; // Acceder al mensaje de error específico
+                                  this.messageService.add({
+                                    severity: 'error',
+                                    summary: 'Error al crear el usuario',
+                                    detail: errorMessage,
+                                    life: 5000
+                                  });
+                                } else {
+                                  let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
+                                  if (error && error.error && error.error.msg) {
+                                    errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
+                                  }
+                                  this.messageService.add({
+                                    severity: 'error',
+                                    summary: 'Error al crear el usuario',
+                                    detail: errorMessage,
+                                    life: 6000
+                                  });
+                                }
+                              }
                         );
                     } else {
                         observer.next(false);  // Usuario no confirmado
