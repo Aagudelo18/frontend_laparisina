@@ -52,7 +52,7 @@ export class clientesComponent implements OnInit {
             numero_documento_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
             nit_empresa_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,12}$/),]],
             telefono_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
-            direccion_cliente: ['',[Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'-]+$/),]],
+            direccion_cliente: ['',[Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'#-]+$/),]],
             barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{1,20}$/),]],
             ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
             estado_cliente: ['', Validators.required],
@@ -134,7 +134,7 @@ export class clientesComponent implements OnInit {
           })
         })
       }
-      // Función para crear una categoría
+      // Función para crear un cliente
       crearCliente() {
         const nuevoCliente: Clientes = {
             tipo_cliente: this.formCliente.value.tipo_cliente,
@@ -259,7 +259,7 @@ confirmarCreacionUsuario() {
 }
 
   
-      // Función para actualizar una categoría
+      // Función para actualizar un cliente
       actualizarCliente() {
         const clienteActualizado: Clientes = {
             tipo_cliente: this.formCliente.value.tipo_cliente,

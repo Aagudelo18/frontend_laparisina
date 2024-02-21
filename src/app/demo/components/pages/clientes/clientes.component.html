@@ -121,11 +121,11 @@
     <br>
     <div class="formgrid grid">
           <div class="field col">
-           <p-dropdown formControlName= "tipo_cliente" [options]="['Persona jurídica','Persona natural']"
+           <p-dropdown formControlName= "tipo_cliente"  [options]="['Persona jurídica','Persona natural']"
             placeholder="Tipo cliente"  name="tipo_cliente" ></p-dropdown>
             <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
             style="color: red;">
-              El tipo de cliente es requerida
+              El tipo de cliente es requerida 
             </span>       
             <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
             style="color: red;">
@@ -135,7 +135,7 @@
           <div class="field col">
               <span class="p-float-label">
                 <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
-                <label for="nombre_contacto">Nombre de contacto</label>
+                <label for="nombre_contacto">Nombre de contacto <span style="color: red;">*</span></label>
               </span>
                 <span *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
                 style="color: red;">
@@ -152,7 +152,7 @@
           <div class="field col">
             <span class="p-float-label">
               <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
-              <label for="numero_documento_cliente">Número de Identificación</label>
+              <label for="numero_documento_cliente">Número de Identificación <span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
           style="color: red;">
@@ -166,7 +166,7 @@
           <div class="field col">
             <span class="p-float-label">
               <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
-              <label for="telefono_cliente">Número de celular</label>
+              <label for="telefono_cliente">Número de celular <span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
           style="color: red;">
@@ -182,7 +182,7 @@
           <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
             <span class="p-float-label">
                 <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
-                <label for="nombre_juridico">Nombre juridico</label>
+                <label for="nombre_juridico">Nombre juridico <span style="color: red;">*</span></label>
             </span>
             <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
             style="color: red;">
@@ -196,7 +196,7 @@
           <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
             <span class="p-float-label">
               <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
-              <label for="nit_empresa_cliente">Nit de la empresa</label>
+              <label for="nit_empresa_cliente">Nit de la empresa <span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
           style="color: red;">
@@ -224,7 +224,7 @@
           <div class="field col">
             <span class="p-float-label">
               <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
-              <label for="barrio_cliente">Barrio</label>
+              <label for="barrio_cliente">Barrio <span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
           style="color: red;">
@@ -241,7 +241,7 @@
           <div class="field col">
             <span class="p-float-label">
               <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
-              <label for="direccion_cliente">Dirección</label>
+              <label for="direccion_cliente">Dirección <span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
           style="color: red;">
@@ -255,7 +255,7 @@
           <div class="field col">
             <span class="p-float-label">
                 <input type="email" pInputText id="correo_cliente" formControlName="correo_cliente" />
-                <label for="correo_cliente">Correo electrónico</label>
+                <label for="correo_cliente">Correo electrónico <span style="color: red;">*</span></label>
             </span>
             <span
                 *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
@@ -272,7 +272,7 @@
           <div class="field col">
             <span class="p-float-label">
                 <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
-                <label for="contrasena_usuario">Contraseña</label>
+                <label for="contrasena_usuario">Contraseña <span style="color: red;">*</span></label>
             </span>
             <span
                 *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
@@ -292,7 +292,7 @@
             <span class="p-float-label">
                 <input type="password" pInputText id="confirmar_contrasena"
                     formControlName="confirmar_contrasena" />
-                <label for="confirmar_contrasena">Confirmar Contraseña</label>
+                <label for="confirmar_contrasena">Confirmar Contraseña <span style="color: red;">*</span></label>
             </span>
             <span
                 *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
@@ -334,7 +334,7 @@
         <div class="field col">
           <span class="p-float-label">
             <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
-            <label for="tipo_cliente">Tipo cliente</label>
+            <label for="tipo_cliente">Tipo cliente <span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
             El tipo de cliente es requerido
@@ -346,7 +346,7 @@
         <div class="field col">
             <span class="p-float-label">
               <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
-              <label for="nombre_contacto">Nombre de contacto</label>
+              <label for="nombre_contacto">Nombre de contacto<span style="color: red;">*</span></label>
             </span>
               <span *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
               style="color: red;">
@@ -362,7 +362,7 @@
         <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
           <span class="p-float-label">
               <input formControlName="nombre_juridico" id="nombre_juridico" type="text" pInputText>
-              <label for="nombre_juridico">Nombre juridico</label>
+              <label for="nombre_juridico">Nombre juridico<span style="color: red;">*</span></label>
           </span>
           <span *ngIf="formCliente.get('nombre_juridico')?.hasError('required') && formCliente.get('nombre_juridico')?.touched"
           style="color: red;">
@@ -376,7 +376,7 @@
         <div class="field col" *ngIf="formCliente.get('tipo_cliente').value === 'Persona jurídica'">
           <span class="p-float-label">
             <input formControlName="nit_empresa_cliente" id="nit_empresa_cliente" type="text" pInputText>
-            <label for="nit_empresa_cliente">Nit de la empresa</label>
+            <label for="nit_empresa_cliente">Nit de la empresa<span style="color: red;">*</span></label>
         </span>
         <span *ngIf="formCliente.get('nit_empresa_cliente')?.hasError('required') && formCliente.get('nit_empresa_cliente')?.touched"
         style="color: red;">
@@ -393,7 +393,7 @@
         <div class="field col">
           <span class="p-float-label">
             <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
-            <label for="numero_documento_cliente">Número de Identificación</label>
+            <label for="numero_documento_cliente">Número de Identificación<span style="color: red;">*</span></label>
         </span>
         <span
           *ngIf="formCliente.get('numero_documento_cliente')?.hasError('required') && formCliente.get('numero_documento_cliente')?.touched"
@@ -409,7 +409,7 @@
       <div class="field col">
         <span class="p-float-label">
           <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
-          <label for="telefono_cliente">Número de celular</label>
+          <label for="telefono_cliente">Número de celular<span style="color: red;">*</span></label>
         </span>
         <span
           *ngIf="formCliente.get('telefono_cliente')?.hasError('required') && formCliente.get('telefono_cliente')?.touched"
@@ -428,7 +428,7 @@
           <span class="p-float-label">
             <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
            placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
-            <label for="ciudad_cliente">Ciudad</label>
+            <label for="ciudad_cliente">Ciudad<span style="color: red;">*</span></label>
           </span>
         <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
         style="color: red;">
@@ -442,7 +442,7 @@
       <div class="field col">
         <span class="p-float-label">
           <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
-          <label for="barrio_cliente">Barrio</label>
+          <label for="barrio_cliente">Barrio<span style="color: red;">*</span></label>
         </span>
         <span
           *ngIf="formCliente.get('barrio_cliente')?.hasError('required') && formCliente.get('barrio_cliente')?.touched"
@@ -461,7 +461,7 @@
       <div class="field col">
         <span class="p-float-label">
           <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
-          <label for="direccion_cliente">Dirección</label>
+          <label for="direccion_cliente">Dirección<span style="color: red;">*</span></label>
         </span>
         <span
           *ngIf="formCliente.get('direccion_cliente')?.hasError('required') && formCliente.get('direccion_cliente')?.touched"
@@ -478,7 +478,7 @@
         <span class="p-float-label">
           <input formControlName="correo_cliente" id="correo_cliente" type="text" pInputText [readonly]="true"
             style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;">
-          <label for="correo_cliente">Correo electronico</label>
+          <label for="correo_cliente">Correo electronico<span style="color: red;">*</span></label>
         </span>
         <span
           *ngIf="formCliente.get('correo_cliente')?.hasError('required') && formCliente.get('correo_cliente')?.touched"
