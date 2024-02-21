@@ -6,7 +6,7 @@ import { CanActivate, Router } from '@angular/router';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   canActivate(): boolean {
     const token = localStorage.getItem('token');
@@ -17,4 +17,5 @@ export class AuthGuard implements CanActivate {
       return false; // Evita el acceso a la ruta protegida
     }
   }
+
 }
