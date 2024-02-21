@@ -96,6 +96,7 @@ export class ProductComponent implements OnInit {
         });
 
         this.productosCarrito = productService.obtenerCarrito();
+        this.calcularPrecioTotalCarrito();
       }
 
     //---------------------------------------------------------------------------------------------------------------------------------
@@ -200,6 +201,11 @@ export class ProductComponent implements OnInit {
       this.detalleProductoDialog = false;
     }
 
+
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //FUNCIONES CARRITO
+
     //-------------------------------------------------------------------------------------------------------------------------------
     //función agrear un producto al carrito
     agregarProductoCarrito(nuevoProducto: ProductoCarrito, cantidaProducto: number) {
@@ -241,6 +247,8 @@ export class ProductComponent implements OnInit {
       }
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función eliminar un producto del carrito
     eliminarProductoCarrito(producto: ProductoCarrito) {
       // Encuentra el índice del producto en el array
       const index = this.productosCarrito.findIndex(p => p.nombre_producto === producto.nombre_producto);
@@ -260,7 +268,14 @@ export class ProductComponent implements OnInit {
         console.log('El producto no se encontró en el carrito');
       }
     }
-    
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función calcular precio total del carrito
+    calcularPrecioTotalCarrito(): void {
+      this.totalCarrito = this.productosCarrito.reduce((total, producto) => {
+        return total + (producto.precio_total_producto || 0);  // Asegúrate de manejar el caso de que precio_total_producto sea undefined
+      }, 0);
+    }
     
    
     
