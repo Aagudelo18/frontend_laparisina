@@ -9,8 +9,6 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Usuario } from './usuarios.model';
 
-
-
 @Component({
   templateUrl: './usuarios.component.html',
   providers: [UsuarioService, MessageService]
@@ -30,6 +28,7 @@ export class UsuariosComponent implements OnInit {
   formularioUsuario: FormGroup;
   formularioEditarUsuario: FormGroup;
   submitted: boolean = false;
+  isRequired: boolean = true;
 
 
   constructor(
@@ -38,14 +37,16 @@ export class UsuariosComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.formularioUsuario = fb.group({
+      nombre_usuario: ['', [Validators.minLength(2), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
       correo_electronico: ['', [Validators.required, Validators.email]],
-      contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
+      contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,15}$/),]],
       confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
       rol_usuario: ['', [Validators.required]],// Establece el valor predeterminado a "Activo"
     });
     this.formularioEditarUsuario = fb.group({
+      nombre_usuario: ['', [Validators.minLength(2), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
       correo_electronico: ['', [Validators.required, Validators.email]],
-      rol_usuario: [{value: '', disabled: true}, [Validators.required]],
+      rol_usuario: [{ value: '', disabled: true }, [Validators.required]],
       estado_usuario: [true, Validators.required],
     });
     this.submitted = false;
@@ -208,6 +209,7 @@ export class UsuariosComponent implements OnInit {
 
     // Llenar el formulario de edición con los datos del usuario seleccionado
     this.formularioEditarUsuario.patchValue({
+      nombre_usuario: usuarioAEditar.nombre_usuario,
       correo_electronico: usuarioAEditar.correo_electronico,
       rol_usuario: usuarioAEditar.rol_usuario,
       estado_usuario: usuarioAEditar.estado_usuario
@@ -220,9 +222,10 @@ export class UsuariosComponent implements OnInit {
   //Método para actualizar el usuario.
   actualizarUsuario() {
     if (this.usuarioAEditar) {
-      const { correo_electronico, rol_usuario, estado_usuario } = this.formularioEditarUsuario.value;
+      const { nombre_usuario, correo_electronico, rol_usuario, estado_usuario } = this.formularioEditarUsuario.value;
 
       this.usuarioService.updateUsuario(this.usuarioAEditar.uid, {
+        nombre_usuario,
         correo_electronico,
         rol_usuario,
         estado_usuario,
@@ -291,7 +294,7 @@ export class UsuariosComponent implements OnInit {
         this.estadoUsuarioDialog = false;
       },
       error: (error) => {
-        let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
+        let errorMessage = 'Usuario no editado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
         if (error && error.error && error.error.msg) {
           errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
         }
