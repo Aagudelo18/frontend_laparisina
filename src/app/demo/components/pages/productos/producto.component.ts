@@ -77,12 +77,12 @@ export class ProductoComponent implements OnInit {
 
         this.formProducto = this.fb.group({
           codigo_producto: ['',[Validators.required, Validators.pattern(/^[0-9]{3,4}$/),]],
-          nombre_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\d\s-]{1,30}$/)]],
-          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-          descripcion_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s:-]+$/)]],
+          nombre_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,30}$/)]],
+          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{3,20}$/),]],
+          descripcion_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s:-]{4,500}$/)]],
           precio_ico: ['',[Validators.required, Validators.pattern(/^[0-9]{4,6}$/)]],
           precio_por_mayor_ico: ['',[Validators.required, Validators.pattern(/^[0-9]{4,6}$/)]],
-          durabilidad_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9,.\s:-]{1,50}$/)]],
+          durabilidad_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9,.°\s:-]{3,50}$/)]],
           imagenes_producto: [null],
 
         });
@@ -173,8 +173,8 @@ export class ProductoComponent implements OnInit {
             // Realiza otras operaciones después de la creación de la categoría si es necesario
             this.messageService.add({
               severity: 'success',
-              summary: 'El producto fue creado con éxito',
-              detail: 'Producto creada',
+              summary: 'Producto creado',
+              detail: 'El producto fue creado con éxito',
               life: 3000
             });
             this.getListProductos();
@@ -243,6 +243,11 @@ export class ProductoComponent implements OnInit {
               life: 3000
             });
           } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'El archivo seleccionado no es una imagen.',
+              life: 3000
+            });
             console.log("El archivo seleccionado no es una imagen.");
           }
         }
@@ -250,7 +255,12 @@ export class ProductoComponent implements OnInit {
         console.log('Array imagenes: ',this.files)
       } else {
         this.files = [];
-        console.log("No se seleccionó ningún archivo o se seleccionó más de uno.");
+        this.messageService.add({
+          severity: 'error',
+          summary: 'El archivo seleccionado no es una imagen.',
+          life: 3000
+        });
+        console.log("No se seleccionó ningún archivo de imagen.");
       }
     }
     
@@ -281,8 +291,8 @@ export class ProductoComponent implements OnInit {
             () => {
             this.messageService.add({
               severity: 'success',
-              summary: 'El producto fue actualizado con éxito',
-              detail: 'Producto actualizado',
+              summary: 'Producto actualizado',
+              detail: 'El producto fue actualizado con éxito',
               life: 3000
             });
             this.getListProductos();
@@ -316,22 +326,60 @@ export class ProductoComponent implements OnInit {
     }
     
     // Función para cambiar el estado de un producto
-    cambiarEstadoProducto(id: string) {
-      this.productoService.actualizarEstadoProducto(id).subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'El estado del producto fue cambiado con éxito',
-            life: 3000
-          });
-          this.estadoProductoDialog = false;
+    // cambiarEstadoProducto(id: string) {
+    //   this.productoService.actualizarEstadoProducto(id).subscribe({
+    //     next: () => {
+    //       this.messageService.add({
+    //         severity: 'success',
+    //         summary: 'El estado del producto fue cambiado con éxito',
+    //         life: 3000
+    //       });
+    //       this.estadoProductoDialog = false;
+    //     },
+    //     error: (error) => {
+    //       console.error('Error cambiando el estado del producto:', error);
+    //       // Manejar errores según sea necesario
+    //     }
+    //   });
+    // }
+
+    cambiarEstadoProducto(id: string, nombreCategoriaProducto: string) {
+      // Buscar la categoría correspondiente en tu base de datos
+      this.categoriaService.obtenerCategoriaPorNombre(nombreCategoriaProducto).subscribe({
+        next: (categoria) => {
+          // Verificar el estado de la categoría
+          if (categoria && categoria.estado_categoria_producto) {
+            // Cambiar el estado del producto solo si la categoría está activa (estado `true`)
+            this.productoService.actualizarEstadoProducto(id).subscribe({
+              next: () => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'El estado del producto fue cambiado con éxito',
+                  life: 3000
+                });
+                this.estadoProductoDialog = false;
+              },
+              error: (error) => {
+                console.error('Error cambiando el estado del producto:', error);
+                // Manejar errores según sea necesario
+              }
+            });
+          } else {
+            // Notificar al usuario que la categoría no está activa
+            this.messageService.add({
+              severity: 'error',
+              summary: 'La categoría asociada a este producto no está activa. No se puede cambiar el estado del producto.',
+              life: 3000
+            });
+          }
         },
         error: (error) => {
-          console.error('Error cambiando el estado del producto:', error);
+          console.error('Error obteniendo la categoría:', error);
           // Manejar errores según sea necesario
         }
       });
     }
+    
 
     //Función para no cambiar el estado de un producto
     noCambiarEstado() {

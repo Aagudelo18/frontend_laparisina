@@ -55,8 +55,8 @@ export class CategoriaComponent implements OnInit {
       private aRouter:ActivatedRoute){ 
 
         this.formCategoria = this.fb.group({
-          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\d\s-]{1,20}$/),]],
-          descripcion_categoria_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s-]+$/),]],
+          nombre_categoria_producto: ['',[Validators.required, Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/),]],
+          descripcion_categoria_producto: ['',[Validators.required, Validators.pattern(/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s-]{4,300}$/),]],
           image: [null],
 
         });
@@ -118,8 +118,8 @@ export class CategoriaComponent implements OnInit {
           () => {
             this.messageService.add({
               severity: 'success', //'success', 'info', 'warn' o 'error'
-              summary: 'La categoría fue creada con éxito',
-              detail: 'Categoría creada',
+              summary: 'Categoría creada',
+              detail: 'La categoría fue creada con éxito',
               life: 3000
             });
             this.getListCategorias();
@@ -165,11 +165,23 @@ export class CategoriaComponent implements OnInit {
           });
           console.log('Verificar: ', this.file);
         } else {
+          this.fileSelected = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'El archivo seleccionado no es una imagen.',
+            life: 3000
+          });
           console.log("El archivo seleccionado no es una imagen.");
         }
       } else {
         this.file = null;
-        console.log("No se seleccionó ningún archivo o se seleccionó más de uno.");
+        this.fileSelected = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'El archivo seleccionado no es una imagen.',
+          life: 3000
+        });
+        console.log("No se seleccionó ningún archivo de imagen o se seleccionó más de uno.");
       }
     }
     
@@ -216,8 +228,8 @@ export class CategoriaComponent implements OnInit {
             () => {
               this.messageService.add({
                 severity: 'success',
-                summary: 'La categoría fue actualizada con éxito',
-                detail: 'Categoría actualizada',
+                summary: 'Categoría actualizada',
+                detail: 'La categoría fue actualizada con éxito',
                 life: 3000
               });
               this.getListCategorias();
@@ -261,6 +273,12 @@ export class CategoriaComponent implements OnInit {
           this.estadoCategoriaDialog = false;
         },
         error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al cambiar el estado de la categoría',
+            detail: error.error.msg,
+            life: 6000
+          });
           console.error('Error cambiando el estado de la categoría:', error);
           // Manejar errores según sea necesario
         }
@@ -279,6 +297,7 @@ export class CategoriaComponent implements OnInit {
         this.id = '';                
         this.formCategoria.reset()
         this.crearCategoriaDialog = true;
+        this.imagen_categoria = "";
     }
     
     //-------------------------------------------------------------------------------------------------------------------------------

@@ -5,6 +5,10 @@ import { ProductService } from './product-list.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriaService } from '../categoria/categoria.service';
+import { LayoutService } from "../../../../layout/service/app.layout.service";
+import { Location } from '@angular/common';
+
+
 
 
 
@@ -88,6 +92,8 @@ export class ProductComponent implements OnInit {
       private messageService: MessageService,
       private aRouter:ActivatedRoute,
       private categoriaService: CategoriaService,
+      public layoutService: LayoutService,
+      private location: Location
      
       ){
 
@@ -230,7 +236,7 @@ export class ProductComponent implements OnInit {
 
         this.totalCarrito += nuevoProductoCarrito.precio_total_producto;
 
-        this.productService.guardarCarrito(this.productosCarrito);
+        this.layoutService.guardarCarrito(this.productosCarrito);
         
         console.log(this.productosCarrito);
       } else {
@@ -241,10 +247,11 @@ export class ProductComponent implements OnInit {
         
         this.totalCarrito += productoExistente.precio_total_producto;
 
-        this.productService.guardarCarrito(this.productosCarrito);
+        this.layoutService.guardarCarrito(this.productosCarrito);
 
         console.log('El producto ya está en el carrito');
       }
+      window.location.reload();
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -270,7 +277,7 @@ export class ProductComponent implements OnInit {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
-    //función calcular precio total del carrito
+    //función calcular precio total del carritoa
     calcularPrecioTotalCarrito(): void {
       this.totalCarrito = this.productosCarrito.reduce((total, producto) => {
         return total + (producto.precio_total_producto || 0);  // Asegúrate de manejar el caso de que precio_total_producto sea undefined

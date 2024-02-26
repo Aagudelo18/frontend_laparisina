@@ -21,7 +21,6 @@ export class AppMenuComponent implements OnInit {
 
     createMenu(){
         let rol: any = localStorage.getItem('rol');
-        console.log(rol)
         if (rol == 'Super Admin'){
             this.model = [
                 {
@@ -46,9 +45,9 @@ export class AppMenuComponent implements OnInit {
                 {
                     label: 'Producción',
                     items: [
-                        { label: 'Categorias', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/categorias'] },
-                        { label: 'Productos', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/productos'] },
-                        { label: 'Orden de producción', icon: 'pi pi-spin pi-cog', routerLink: ['/pages/ordenP'] },
+                        { label: 'Categorias', icon: 'pi pi-tag', routerLink: ['/pages/categorias'] },
+                        { label: 'Productos', icon: 'pi pi-tags', routerLink: ['/pages/productos'] },
+                        { label: 'Orden de producción', icon: 'pi pi-shopping-bag', routerLink: ['/pages/ordenP'] },
                         { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink: ['/pages/empleados'] },
                     ]
                 },
