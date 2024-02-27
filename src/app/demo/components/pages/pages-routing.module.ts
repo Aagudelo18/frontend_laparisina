@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from 'src/app/demo/components/auth/login/login.guard'; // Importa tu guard de autenticación
+import { AuthGuard } from 'src/app/demo/components/auth/guard/auth.guard'; // Importa tu guard de autenticación
 
 @NgModule({
     imports: [RouterModule.forChild([

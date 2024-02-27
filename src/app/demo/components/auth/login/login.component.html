@@ -25,10 +25,12 @@
 
                         <label for="contrasena_usuario"
                             class="block text-900 font-medium text-xl mb-2">Contraseña</label>
-                        <p-password id="contrasena_usuario" formControlName="contrasena_usuario"
-                            placeholder="Contraseña usuario" [toggleMask]="true" styleClass="mb-5"
-                            inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-
+                        <input id="contrasena_usuario" type="password" placeholder="Contraseña usuario"
+                            formControlName="contrasena_usuario" pInputText class="w-full md:w-30rem mb-5"
+                            style="padding:1rem">
+                        <small
+                            *ngIf="loginFormulario.get('contrasena_usuario').hasError('required') && loginFormulario.get('contrasena_usuario').touched"
+                            class="text-red-600">Contraseña es requerida</small>
 
                         <!-- Mostrar el mensaje de error -->
                         <div *ngIf="correoNoRegistradoError" class="text-red-600">{{ correoNoRegistradoError }}</div>

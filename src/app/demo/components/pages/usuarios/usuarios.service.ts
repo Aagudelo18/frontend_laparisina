@@ -13,12 +13,34 @@ import { Observable } from 'rxjs';
 
   //Traer todos los usuarios
   getUsuarios() {
-    return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<any[]>(`${this.apiUrl}/usuarios`, { headers });
   }
 
   //Método para obtener la lista de roles desde la API
   getRoles() {
-    return this.http.get<any[]>(`${this.apiUrl}/roles`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<any[]>(`${this.apiUrl}/roles`, { headers });
   }
 
   // Crear usuario con token y rol en el encabezado
@@ -41,7 +63,19 @@ import { Observable } from 'rxjs';
   //Obtener un usuario por ID
   getUsuarioPorId(uid: string) {
     const url = `${this.apiUrl}/usuarios/${uid}`;
-    return this.http.get<any>(url);
+
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<any>(url, { headers });
   }
 
   //Actualizar un usuario
