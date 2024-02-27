@@ -40,11 +40,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    semanaSeleccionadaCambiada(event: any) {
-        const semanaSeleccionada = event.target.value;
-        console.log("Semana seleccionada:", semanaSeleccionada);
-        // Aquí podrías hacer cualquier lógica adicional necesaria con la semana seleccionada
-    }
     fechaActual: Date = new Date(); // Fecha actual para calcular las ventas
     fechaLunes: Date; // Fecha del lunes de la semana actual
 
