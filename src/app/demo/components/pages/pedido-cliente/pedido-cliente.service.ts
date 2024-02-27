@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Pedido } from './pedido-cliente.model';
+
 
 @Injectable()
 
@@ -13,7 +13,13 @@ import { Pedido } from './pedido-cliente.model';
 
   constructor(private http: HttpClient) { }
 
+  // public createPedidoCliente(pedidos: any): Observable<any>{
+  //   return this.http.post(this.apiUrl + '/pedidosCliente', pedidos)
+  // }
 
+  public createPedido(pedidos: any): Observable<any>{
+    return this.http.post(this.apiUrl + '/pedidos', pedidos)
+  }
 
 // Método para obtener los datos del cliente por su ID
 obtenerClientePorCorreo(correo_cliente: string): Observable<any> {

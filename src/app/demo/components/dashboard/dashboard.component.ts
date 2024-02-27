@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DashboardService } from './dashboard.service';
 import { Pedido } from '../pages/ventas/ventas.model';
+import { PedidoClienteService } from '../pages/pedido-cliente/pedido-cliente.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -32,7 +33,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService, private dashboardService: DashboardService) {
+    constructor(private productService: ProductService, public layoutService: LayoutService, private dashboardService: DashboardService, private pedidoClienteService: PedidoClienteService) {
+
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
@@ -47,6 +49,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ];
 
         this.getListDashboard();
+        this.getDocumentoCliente();
+    }
+
+
+    getDocumentoCliente(){
+        let correo_cliente = JSON.parse(localStorage.getItem('currentUser')).correo_electronico;
+        console.log(correo_cliente)
+        this.pedidoClienteService
+        .obtenerClientePorCorreo(correo_cliente)
+        .subscribe(
+            (data: any) => {
+          
+                localStorage.setItem('documento_cliente', data.numero_documento_cliente);
+
+                // Luego, realizar la validación del tipo de cliente y calcular el precio total de venta
+            },
+            (error) => {
+                console.error(error);
+                // Manejar errores según sea necesario
+            }
+        );
     }
 
     getListDashboard() {
