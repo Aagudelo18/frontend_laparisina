@@ -41,7 +41,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
+    fechaActual: Date = new Date(); // Fecha actual para calcular las ventas
+    fechaLunes: Date; // Fecha del lunes de la semana actual
+
     constructor(private productService: ProductService, public layoutService: LayoutService, private dashboardService: DashboardService, private pedidoClienteService: PedidoClienteService) {
+   
 
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
