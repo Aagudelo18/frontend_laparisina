@@ -10,6 +10,8 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { PedidoClienteService } from '../pages/pedido-cliente/pedido-cliente.service';
+import { CalendarModule } from "primeng/calendar";
+
 
 @NgModule({
     imports: [
@@ -21,6 +23,7 @@ import { PedidoClienteService } from '../pages/pedido-cliente/pedido-cliente.ser
         StyleClassModule,
         PanelMenuModule,
         ButtonModule,
+        CalendarModule,
         DashboardsRoutingModule
     ],
     declarations: [DashboardComponent],

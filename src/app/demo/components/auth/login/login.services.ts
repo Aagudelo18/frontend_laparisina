@@ -19,7 +19,6 @@ import { tap } from 'rxjs/operators';
 
   getRol(userRole: any, token: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/roles/${userRole}`);
-    
   }
 
   setisAuthenticatedSubject(value: any){

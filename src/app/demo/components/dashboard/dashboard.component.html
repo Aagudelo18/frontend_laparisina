@@ -1,33 +1,37 @@
 <div class="grid">
     <div class="col-12 lg:col-6 xl:col-6">
         <div class="card mb-0">
+            <span class="p-float-label">
+                <p-calendar inputId="calendar" [(ngModel)]="fechaSeleccionada"
+                    (onSelect)="actualizarVentas()"></p-calendar>
+                <label for="calendar">Seleccionar semana</label>
+            </span>
             <div class="flex justify-content-between mb-3">
                 <div>
                     <span class="block text-500 font-medium mb-3">Ventas de la semana</span>
-                    <div class="text-900 font-medium text-xl">{{ calcularNuevasVentas() }}</div>
-                    <!-- Muestra la cantidad de ventas -->
+                    <div class="text-900 font-medium text-xl">{{ cantidadVentasSemana }}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
                     [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                     <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium"></span> <!-- Muestra la cantidad de nuevas ventas -->
-            <span class="text-500"></span>
-            <div class="flex justify-content-between mt-3">
-                <label for="semanaSeleccionada">Selecciona una semana:</label>
-                <input type="week" id="semanaSeleccionada" name="semanaSeleccionada" (change)="semanaSeleccionadaCambiada($event)">
-            </div>
         </div>
+
     </div>
-    
+
 
     <div class="col-12 lg:col-6 xl:col-6">
         <div class="card mb-0">
+            <span class="p-float-label">
+                <p-calendar inputId="calendar" [(ngModel)]="fechaSeleccionada1"
+                    (onSelect)="actualizarGanancia()"></p-calendar>
+                <label for="calendar">Seleccionar semana</label>
+            </span>
             <div class="flex justify-content-between mb-3">
                 <div>
                     <span class="block text-500 font-medium mb-3">Ganancia de las ventas totales en la semana</span>
-                    <div class="text-900 font-medium text-xl">${{ formatearGanancia(calcularGanancia()) }}</div>
+                    <div class="text-900 font-medium text-xl">{{ formatearGanancia(gananciaSemana) }}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
                     [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
@@ -46,9 +50,13 @@
 
     <div class="col-12 xl:col-6">
         <div class="card">
+            <span class="p-float-label">
+                <p-calendar inputId="calendar" [(ngModel)]="fechaSeleccionada3"
+                    (onSelect)="actualizarGraficoProductosVendidos()"></p-calendar>
+                <label for="calendar">Seleccionar semana</label>
+            </span>
             <h5>Los 5 productos más vendidos en la semana</h5>
             <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
         </div>
-
     </div>
 </div>
