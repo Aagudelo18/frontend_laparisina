@@ -63,7 +63,7 @@ export class OrdenDeProduccionComponent implements OnInit {
     //Función para listar todas las ordenes de produccion
     getListOrdenesDeProduccion(){     
         this.ordenPService.getListOrdenesDeProduccion().subscribe((data) =>{      
-          this.listOrdenesDeProduccion = data.filter(orden => orden.estado_orden === 'En preparacion');        
+          this.listOrdenesDeProduccion = data.filter(orden => orden.estado_orden === 'En preparación');        
         })        
     }
 
@@ -87,7 +87,7 @@ export class OrdenDeProduccionComponent implements OnInit {
     //Función para listar los pedidos enviados a producción
     getPedidos(){     
       this.ordenPService.getPedidos().subscribe((data) =>{      
-        this.listPedidosOrden = data.filter(pedido => pedido.estado_pedido === 'En produccion');
+        this.listPedidosOrden = data.filter(pedido => pedido.estado_pedido === 'En producción');
       })
       
   }
@@ -100,8 +100,8 @@ export class OrdenDeProduccionComponent implements OnInit {
           if (response && response.message === 'Órdenes de producción generadas exitosamente.') {
             this.messageService.add({
               severity: 'success',
-              summary: 'Se han generado nuevas ordenes de producción exitosamente',
-              detail: 'Ordenes de producción',
+              summary: 'Ordenes de producción',
+              detail: 'Se han generado nuevas órdenes de producción exitosamente',
               life: 3000
             });
             this.getListOrdenesDeProduccion();

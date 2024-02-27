@@ -10,11 +10,26 @@ import { Categoria } from './categoria.model';
     constructor(private http: HttpClient) {}
 
     getListCategorias(): Observable<Categoria[]>{
-      return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`)    
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'Content-Type': 'application/json',
+        'token': token || '',
+        'rol': rol || ''
+      };
+
+      return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`, { headers})    
     }
 
     getCategoria(id:string): Observable<Categoria>{
       return this.http.get<Categoria>(`${this.apiUrl}/categorias/${id}`)
+    }
+
+    obtenerCategoriaPorNombre(nombreCategoria:string): Observable<Categoria>{
+      return this.http.get<Categoria>(`${this.apiUrl}/categorias/consultar/${nombreCategoria}`)
     }
   
     postCategoria(categoria : Categoria):Observable<void>{
@@ -26,7 +41,17 @@ import { Categoria } from './categoria.model';
     }
 
     crearCategoria(data : FormData): Observable<Object>{
-      return this.http.post<Object>(`${this.apiUrl}/categorias`,data)
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'Content-Type': 'application/json',
+        'token': token || '',
+        'rol': rol || ''
+      };
+      return this.http.post<Object>(`${this.apiUrl}/categorias`,data, { headers})
     }
 
     actualizarCategoria(id:string, data : FormData): Observable<Object>{
@@ -34,7 +59,17 @@ import { Categoria } from './categoria.model';
     }
   
     actualizarEstadoCategoria(id:string): Observable<void>{
-      return this.http.put<void>(`${this.apiUrl}/categoria-estado/${id}`,{})
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'Content-Type': 'application/json',
+        'token': token || '',
+        'rol': rol || ''
+      };
+      return this.http.put<void>(`${this.apiUrl}/categoria-estado/${id}`,{}, { headers})
     }
   }
   

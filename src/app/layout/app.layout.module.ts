@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,6 +20,13 @@ import { AppLayoutComponent } from "./app.layout.component";
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { FileUploadModule } from 'primeng/fileupload';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { MenubarModule } from 'primeng/menubar';
+import { DataViewModule } from 'primeng/dataview';
+import { CarouselModule } from 'primeng/carousel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ToolbarModule } from 'primeng/toolbar';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -47,7 +54,16 @@ import { FileUploadModule } from 'primeng/fileupload';
         AppConfigModule,
         DialogModule,
         TooltipModule,
-        FileUploadModule
+        FileUploadModule,
+
+        DataViewModule,
+        MenubarModule,
+        OverlayPanelModule,
+        CarouselModule,
+        AutoCompleteModule,
+        ReactiveFormsModule,
+        ToolbarModule,
+        TableModule
     ],
     exports: [AppLayoutComponent]
 })
