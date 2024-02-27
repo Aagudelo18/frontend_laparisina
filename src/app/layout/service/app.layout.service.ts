@@ -23,6 +23,9 @@ interface LayoutState {
     providedIn: 'root',
 })
 export class LayoutService {
+    private carritoProductos = 'carritoProductosParisina';
+
+    
 
     config: AppConfig = {
         ripple: false,
@@ -95,6 +98,18 @@ export class LayoutService {
 
     onConfigUpdate() {
         this.configUpdate.next(this.config);
+    }
+
+    
+
+    //Servicios carrito localStorage
+    guardarCarrito(carrito: any[]): void {
+        localStorage.setItem(this.carritoProductos, JSON.stringify(carrito));
+    }
+    
+    obtenerCarrito(): any[] {
+        const carrito = localStorage.getItem(this.carritoProductos);
+        return carrito ? JSON.parse(carrito) : [];
     }
 
 }

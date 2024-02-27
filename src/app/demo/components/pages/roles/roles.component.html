@@ -68,7 +68,7 @@
         <div class="field">
          <span class="p-float-label">
             <input formControlName="nombre_rol" id="nombre_rol" type="text" pInputText>
-            <label for="nombre_rol">Nombre rol</label>
+            <label for="nombre_rol">Nombre rol<span style="color: red;">*</span></label>
         </span>
         <span *ngIf="formRoles.get('nombre_rol')?.hasError('required') && formRoles.get('nombre_rol')?.touched"
         style="color: red;">
@@ -80,7 +80,7 @@
         </span>  
          </div>
          <div>
-            <label for=""> Permisos</label>
+            <label for=""> Permisos<span style="color: red;">*</span></label>
           <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1"> 
             <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true"></p-checkbox>
             <label class="ml-2">{{ rol.nombre_permiso }}</label>
@@ -104,7 +104,7 @@
         <div class="field">
          <span class="p-float-label">
             <input formControlName="nombre_rol" id="nombre_rol" type="text" pInputText>
-            <label for="nombre_rol">Nombre rol</label>
+            <label for="nombre_rol">Nombre rol<span style="color: red;">*</span></label>
         </span>
         <span *ngIf="formRoles.get('nombre_rol')?.hasError('required') && formRoles.get('nombre_rol')?.touched"
         style="color: red;">
@@ -116,6 +116,7 @@
         </span> 
          </div>
          <div>
+            <label for=""> Permisos<span style="color: red;">*</span></label>
           <div *ngFor="let rol of selectedRoles" class="mt-1 ml-1">
             <p-checkbox [value]="rol.nombre_permiso" [formControl]="formRoles.get(rol.nombre_permiso)" binary="true" (onChange)="onCheckboxChange($event, rol)"></p-checkbox>
             <label class="ml-2">{{ rol.nombre_permiso }}</label>

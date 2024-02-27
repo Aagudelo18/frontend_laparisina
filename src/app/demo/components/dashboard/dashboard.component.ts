@@ -38,6 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
+        // Inicializar fechaLunes a la fecha del lunes de esta semana
+        this.calcularFechaLunes();
     }
 
     ngOnInit() {
@@ -88,24 +90,40 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Método para calcular las nuevas ventas desde la última semana
     calcularNuevasVentas() {
-        // Obtener la fecha actual
-        const fechaActual = new Date();
-        const diaSemanaActual = fechaActual.getDay(); // Obtener el día de la semana (0 para domingo, 1 para lunes, ...)
-
-        // Obtener la fecha del lunes de esta semana
-        const fechaLunes = new Date(fechaActual);
-        fechaLunes.setDate(fechaActual.getDate() - diaSemanaActual - 1);
-
         // Filtrar las ventas de la semana
         const nuevasVentas = this.ventas.filter(venta => {
             const fechaVenta = new Date(venta.fecha_entrega_pedido);
-            return fechaVenta >= fechaLunes;
+            return fechaVenta >= this.fechaLunes;
         });
 
         // Devolver la cantidad de ventas filtradas
         const cantidadNuevasVentas = nuevasVentas.length;
         return cantidadNuevasVentas;
     }
+
+    // Método para calcular la fecha del lunes de esta semana
+    calcularFechaLunes() {
+        const diaSemanaActual = this.fechaActual.getDay(); // Obtener el día de la semana (0 para domingo, 1 para lunes, ...)
+        this.fechaLunes = new Date(this.fechaActual);
+        this.fechaLunes.setDate(this.fechaActual.getDate() - diaSemanaActual + 1);
+    }
+
+    // Método para avanzar una semana
+    avanzarSemana() {
+        this.fechaLunes.setDate(this.fechaLunes.getDate() + 7);
+        // Vuelve a calcular las ventas con la nueva fecha del lunes
+        // Aquí podrías llamar a un método que recargue las ventas para esta nueva semana si es necesario
+        // this.calcularNuevasVentas();
+    }
+
+    // Método para retroceder una semana
+    retrocederSemana() {
+        this.fechaLunes.setDate(this.fechaLunes.getDate() - 7);
+        // Vuelve a calcular las ventas con la nueva fecha del lunes
+        // Aquí podrías llamar a un método que recargue las ventas para esta nueva semana si es necesario
+        // this.calcularNuevasVentas();
+    }
+
 
     // Calcula la suma de los precios totales de las ventas de la semana
     calcularGanancia(): number {
@@ -134,7 +152,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     formatearGanancia(ganancia: number): string {
         return ganancia.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
-      }
+    }
 
     async obtenerProductosMasVendidosSemana(): Promise<void> {
         const fechaActual = new Date();

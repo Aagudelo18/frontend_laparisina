@@ -97,6 +97,18 @@ getRoles(id: string) {
 
 // Función para crear un rol 
 crearRol() {
+  // Verifica si al menos un permiso está seleccionado
+  const alMenosUnPermisoSeleccionado = this.selectedRoles.some(rol => this.formRoles.get(rol.nombre_permiso)?.value);
+
+  if (!alMenosUnPermisoSeleccionado) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al crear el rol',
+      detail: 'Debes seleccionar al menos un permiso.',
+      life: 6000
+    });
+    return; // Detiene la ejecución de la función
+  }
   const permisosRol: Permiso[] = this.selectedRoles
   .filter(rol => this.formRoles.get(rol.nombre_permiso)?.value)
   .map(rol => ({ nombre_permiso: rol.nombre_permiso }));
@@ -122,6 +134,31 @@ const nuevoRol: Roles = {
 
  // Función para actualizar un rol
  actualizarRol() {
+   // Verifica si el nombre del rol es 'Super Admin'
+   if (this.formRoles.value.nombre_rol === 'Super Admin') {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al editar',
+      detail: 'El rol "Super Admin" no puede ser editado.',
+      life: 6000
+    });
+    this.getListRoles();
+    this.editarRolDialog = false;
+    return; // Detiene la ejecución de la función
+  }
+  // Verifica si al menos un permiso está seleccionado
+  const alMenosUnPermisoSeleccionado = this.selectedRoles.some(rol => this.formRoles.get(rol.nombre_permiso)?.value);
+
+  if (!alMenosUnPermisoSeleccionado) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al crear el rol',
+      detail: 'Debes seleccionar al menos un permiso.',
+      life: 6000
+    });
+    return; // Detiene la ejecución de la función
+  }
+
   const permisosRol: Permiso[] = this.selectedRoles
     .filter(rol => this.formRoles.get(rol.nombre_permiso)?.value)
     .map(rol => ({ nombre_permiso: rol.nombre_permiso }));
