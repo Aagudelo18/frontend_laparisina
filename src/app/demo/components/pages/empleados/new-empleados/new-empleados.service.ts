@@ -14,7 +14,12 @@ export class NewEmpleadosService {
   public createEmpleado(empleados: any): Observable<any>{
     
     return this.http.post(this.apiUrl + 'empleados', empleados)
+  
+  
   }
+  
+  
+
 
   
  

@@ -19,6 +19,7 @@ import { ListEmpleadosComponent } from './list-empleados.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
 
+
 @NgModule({
   
   imports: [

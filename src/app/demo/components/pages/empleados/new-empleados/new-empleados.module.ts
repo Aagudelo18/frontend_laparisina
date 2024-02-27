@@ -23,6 +23,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogModule } from 'primeng/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
  
@@ -50,7 +51,9 @@ import { DialogModule } from 'primeng/dialog';
 	ProgressBarModule,
 	ToastModule,
 	DialogModule,
+	ReactiveFormsModule,
   ],
   declarations: [NewEmpleadosComponent],
 })
 export class NewEmpleadosModule { }
+export class TuModule { }
