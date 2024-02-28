@@ -67,11 +67,14 @@ export class UsuariosComponent implements OnInit {
     this.getListRolesForCreation();
   }
 
-  //Método para traer todos los usuarios. signIn
+  // Método para traer todos los usuarios.
   getListUsuarios() {
     this.usuarioService.getUsuarios().subscribe((data: any) => {
       if (data && data.usuarios) {
-        this.usuarios = data.usuarios;
+        // Filtrar los usuarios para excluir aquellos con roles "Cliente" y "Empleado"
+        this.usuarios = data.usuarios.filter(usuario => {
+          return usuario.rol_usuario && usuario.rol_usuario.nombre_rol !== 'Cliente' && usuario.rol_usuario.nombre_rol !== 'Empleado';
+        });
       }
     });
   }
@@ -79,7 +82,10 @@ export class UsuariosComponent implements OnInit {
   getListRolesForCreation() {
     this.usuarioService.getRoles().subscribe((data: any[]) => {
       // Filtrar los roles para mostrar solo el rol de Administrador para la creación
-      this.rolesForCreation = data.filter(rol => rol._id === '6547f25b67ec1e25d0c5d17a');
+      this.rolesForCreation = data.filter(rol => {
+        // Excluir roles con nombre "Cliente" y "Empleado"
+        return rol.nombre_rol !== 'Cliente' && rol.nombre_rol !== 'Empleado' && rol.nombre_rol !== 'Super Admin';
+      });
     });
   }
 

@@ -224,10 +224,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
             data: [product.quantitySold] // La cantidad vendida del producto
         }));
 
-        console.log(this.topSellingProducts.map(product => ({
-            label: `${product.name} (${product.quantitySold})`,
-        })));
-
         // Actualizar el gráfico con los datos de los productos más vendidos
         this.barData = {
             labels: ['Semana'],
@@ -243,15 +239,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-        const labels = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        // Obtener la fecha del lunes de la semana seleccionada
+        const fechaLunes = new Date(this.fechaSeleccionada);
+        fechaLunes.setDate(fechaLunes.getDate() - fechaLunes.getDay() + 1);
+
+        // Obtener la fecha del domingo de la semana seleccionada
+        const fechaDomingo = new Date(fechaLunes);
+        fechaDomingo.setDate(fechaLunes.getDate() + 6);
+
+        // Filtrar las ventas de la semana seleccionada
+        const ventasSemana = this.ventas.filter(venta => {
+            const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
+            return fechaEntregaPedido >= fechaLunes && fechaEntregaPedido <= fechaDomingo;
+        });
+
+        // Inicializar el arreglo de ventas diarias para la semana seleccionada
         const ventasDiarias = [0, 0, 0, 0, 0, 0, 0];
 
-        this.ventas.forEach(venta => {
+        // Contar las ventas por día dentro de la semana seleccionada
+        ventasSemana.forEach(venta => {
             const fechaEntregaPedido = new Date(venta.fecha_entrega_pedido);
             const diaEntrega = fechaEntregaPedido.getDay();
             ventasDiarias[diaEntrega]++;
         });
 
+        // Definir los datos del gráfico con las ventas diarias de la semana seleccionada
+        const labels = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
         const data = ventasDiarias;
 
         this.chartData = {
