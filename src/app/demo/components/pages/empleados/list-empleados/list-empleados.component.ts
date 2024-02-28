@@ -265,7 +265,7 @@ export class ListEmpleadosComponent implements OnInit {
       this.formEmpleados.get('municipio_domicilio_empleado').setValue(data.municipio_domicilio_empleado);
       this.formEmpleados.get('estado_civil_empleado').setValue(data.estado_civil_empleado);
       this.formEmpleados.get('celular_empleado').setValue(data.celular_empleado);
-      this.formEmpleados.get('correo_electronico:').setValue(data.correo_electronico);
+      this.formEmpleados.get('correo_electronico').setValue(data.correo_electronico);
       this.formEmpleados.get('alergia_empleado').setValue(data.alergia_empleado);
       this.formEmpleados.get('grupo_sanguineo_empleado').setValue(data.grupo_sanguineo_empleado);
       this.formEmpleados.get('eps_empleado').setValue(data.eps_empleado);
@@ -287,78 +287,7 @@ export class ListEmpleadosComponent implements OnInit {
     });
   });
 }}
-  //   esPersonaNatural() {
-  //     return this.formEmpleados.get('tipo_cliente').value === 'Persona natura';
-  //  }
    
-  //  esEmpresa() {
-  //     return this.formEmpleados.get('tipo_cliente').value === 'Empresa';
-  //  }
-   
-
-    
-  //  cambiarEstadoPedido(empleado: Empleado, nuevoEstado: string) {
-  //   // Validación: Solo permitir cambiar de 'Pendiente' a 'Tomado'
-  //   if (empleado.estado_empleado === 'Pendiente' && nuevoEstado === 'Tomado') {
-  //     // Actualizar el estado del pedido
-  //     this.empleadosService.updateEmpleado(empleado._id, empleado).subscribe(
-  //       () => {
-  //         console.log(`Estado del pedido con ID ${empleado._id} actualizado a 'Tomado'.`);
-  //         // Actualizar la lista de pedidos después de la actualización
-  //         this.cargarEmpleados();
-  //       },
-  //       (error) => {
-  //         console.error('Error al actualizar el estado del pedido:', error);
-  //         // Manejar el error según tus necesidades
-  //       }
-  //     );
-  //   } else {
-  //     console.warn(`No se puede cambiar el estado del pedido con ID ${empleado._id}.`);
-  //     // Puedes mostrar un mensaje al usuario indicando que no se puede cambiar el estado
-  //   }
-
-   
-  
-
-
-  // cambiarEmpleado(id: string) {
-  //   const empleado = this.empleados.find((empleado) => empleado._id === id);
-  
-  //   // Si el pedido está en el estado "Pendiente", establece el estado siguiente
-  //   if (empleado.estado_empleado === 'Pendiente') {
-  //     empleado.estado_empleado = 'Tomado';
-  //   }
-  //   else {
-  //     empleado.estado_empleado = empleado.estado_empleado;
-  //   }
-  
-    // Pasa el pedido al método updatePedido()
-  //   this.empleadosService.updateEmpleado(empleado._id, empleado).subscribe(
-  //     (response) => {
-  //       this.messageService.add({
-  //         severity: 'success',
-  //         summary: 'Cambio de estado con Éxito',
-  //         life: 5000
-  //       }); 
-  //       // Actualizar la lista de pedidos
-  //       this.cargarEmpleados();
-  //     },
-  //     (error) => {
-  //       if (error.error && error.error.error) {
-  //         const errorMessage = error.error.error;
-  //         this.messageService.add({
-  //           severity: 'error',
-  //           summary: 'Error al cambiar el estado del Pedido',
-  //           detail: errorMessage,
-  //           life: 5000
-  //         });
-  //       } else {
-  //         console.error('Error desconocido al crear el Pedido:', error);
-  //       }
-  //     }
-  //   );
-  // }
-
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

@@ -8,6 +8,7 @@ import { Empleado } from '../list-empleados/empleados.model';
 import { Observable, Subject, throwError } from 'rxjs';
 import { UsuarioService } from '../new-empleados/usuarios.service'
 
+
 @Component({
     selector: 'app-new-empleados',
     templateUrl: './new-empleados.component.html',
@@ -194,41 +195,16 @@ cuenta_bancaria_empleado: '',
     
 
     crearEmpleado() {
-      console.log("clicl");
-  //     const nuevoEmpleado: Empleado = {
-  //       codigo_rotulacion_empleado: this.formEmpleados.value.codigo_rotulacion_empleado,
-  //   nombre_empleado: this.formEmpleados.value.nombre_empleado,
-  //   tipo_contrato_empleado: this.formEmpleados.value.tipo_contrato_empleado,
-  //   fecha_inicio_empleado: this.formEmpleados.value.fecha_inicio_empleado,
-  //   fecha_vencimiento_contrato_empleado: this.formEmpleados.value.fecha_vencimiento_contrato_empleado,
-  //   tipo_documento_empleado: this.formEmpleados.value.tipo_documento_empleado,
-  //   identificacion_empleado: this.formEmpleados.value.identificacion_empleado,
-  //   fecha_nacimiento_empleado: this.formEmpleados.value.fecha_nacimiento_empleado,
-  //   edad_empleado: this.formEmpleados.value.edad_empleado,
-  //   lugar_nacimiento_empleado: this.formEmpleados.value.lugar_nacimiento_empleado,
-  //   direccion_empleado: this.formEmpleados.value.direccion_empleado,
-  //   municipio_domicilio_empleado: this.formEmpleados.value.municipio_domicilio_empleado,
-  //   estado_civil_empleado: this.formEmpleados.value.estado_civil_empleado,
-  //   celular_empleado: this.formEmpleados.value.celular_empleado,
-  //   correo_electronico: this.formEmpleados.value.correo_electronico,
-  //   alergia_empleado: this.formEmpleados.value.alergia_empleado,
-  //   contacto_emergencia: this.formEmpleados.value.contacto_emergencia as { nombre_contacto_emergencia: string; parentesco_empleado: string; telefono_contacto_emergencia: string }[],
-  
-  //   eps_empleado: this.formEmpleados.value.eps_empleado,
-  //   pension_empleado: this.formEmpleados.value.pension_empleado,
-  //   cuenta_bancaria_empleado: this.formEmpleados.value.cuenta_bancaria_empleado,
-  //   area_empleado: this.formEmpleados.value.area_empleado,
-    
-  
-  // };
-
-   const nuevoUsuario = {
-    rol_usuario:'654aefc54524da3db0bc3a18',
-    correoElectronico: this.empleado.correo_electronico,
-     contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
-     confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
- };
- nuevoUsuario['rol'] = 'Empleado';
+      
+        // Establecer directamente el rol de empleado
+        this.empleado.rol_usuario = '654aefc54524da3db0bc3a18'; 
+      
+        const nuevoUsuario = {
+          rol_usuario: '654aefc54524da3db0bc3a18',
+          correoElectronico: this.empleado.correo_electronico,
+          contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
+          confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
+        };
  // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
 if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
 this.confirmarCrearUsuario().subscribe(
@@ -301,6 +277,7 @@ return new Observable<boolean>((observer) => {
            detail: 'Usuario creado',
            life: 3000
          });
+         
          observer.next(true);  // Usuario creado exitosamente
          observer.complete();
        },

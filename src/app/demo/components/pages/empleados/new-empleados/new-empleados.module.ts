@@ -24,6 +24,11 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogModule } from 'primeng/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
  
@@ -52,7 +57,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 	ToastModule,
 	DialogModule,
 	ReactiveFormsModule,
+	
   ],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' },
+  ],
+  
   declarations: [NewEmpleadosComponent],
 })
 export class NewEmpleadosModule { }

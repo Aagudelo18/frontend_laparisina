@@ -35,6 +35,9 @@
   <div class="field col-12 md:col-3">
     <span class="p-float-label">
       <p-calendar [(ngModel)]="empleado.fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" dateFormat="yy-mm-dd"
+      inputId="calendar"
+      
+
         showIcon="true" inputStyle="width: 100%;" required #fechaNacimiento="ngModel"
         name="fecha_nacimiento_empleado"></p-calendar>
       <label for="fecha_nacimiento_empleado" style="width: 100%;">Fecha nacimiento*</label>
