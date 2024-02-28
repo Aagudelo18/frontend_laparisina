@@ -1,103 +1,57 @@
 <div>
     <p-menubar>
         <ng-template pTemplate="start">
-            <img
-                src="https://laparisina.co/wp-content/uploads/2021/10/reposteria-francesa-medellin.png"
-                height="50"
-                class="mr-2"
-            />
+            <img src="https://laparisina.co/wp-content/uploads/2021/10/reposteria-francesa-medellin.png" height="50" class="mr-2" />
         </ng-template>
         <ng-template pTemplate="end">
-            <button
-                type="button"
-                icon="pi pi-shopping-cart"
-                pButton
-                label="{{ productosCarrito.length }}"
-                (click)="op2.toggle($event)"
-                class="p-button-text p-button-lg ml-4"
-            ></button>
-            <p-overlayPanel
-                #op2
-                [showCloseIcon]="false"
-                [style]="{ width: '40%' }"
-            >
-                <ng-template pTemplate>
-                    <p-toolbar styleClass="mb-4">
-                        <ng-template pTemplate="left">
-                            <button
-                                pButton
-                                type="button"
-                                label="Hacer pedido"
-                                class="p-button-text p-button-lg ml-4"
-                            ></button>
-                        </ng-template>
-
-                        <ng-template pTemplate="right">
-                            <div
-                                style="
-                                    display: flex;
-                                    flex-direction: column;
-                                    align-items: center;
-                                    margin-bottom: -20px;
-                                "
-                            >
-                                <h5 class="mb-0">Total pedido:</h5>
-                                <h5 class="mt-2">
-                                    {{ totalCarrito | number }}
-                                </h5>
-                            </div>
-                        </ng-template>
-                    </p-toolbar>
-
-                    <p-table
-                        [value]="productosCarrito"
-                        selectionMode="single"
-                        [(selection)]="selectedProduct"
-                        (onRowSelect)="op2.hide()"
-                        responsiveLayout="scroll"
-                    >
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th style="min-width: 12rem">Producto</th>
-                                <th style="max-width: 8rem">Precio Und</th>
-                                <th style="max-width: 8rem">Cantidad</th>
-                                <th style="min-width: 8rem">Precio Total</th>
-                                <th style="max-width: 3rem">Borrar</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-rowData let-product>
-                            <tr [pSelectableRow]="rowData">
-                                <td>{{ product.nombre_producto }}</td>
-                                <td>{{ product.precio_ico | number }}</td>
-                                <td>{{ product.cantidad_producto }}</td>
-                                <td>
-                                    {{ product.precio_total_producto | number }}
-                                </td>
-                                <td>
-                                    <button
+            <button type="button" icon="pi pi-shopping-cart" pButton label="{{productosCarrito.length}}" (click)="op2.toggle($event)" class="p-button-text p-button-lg ml-4"></button>
+                <p-overlayPanel #op2 [showCloseIcon]="false" [style]="{width: '60%'}">
+                    <ng-template pTemplate>
+                        <p-toolbar styleClass="mb-4">
+                            <ng-template pTemplate="left">
+                                <button pButton type="button" [routerLink]="['/vistaCliente']" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
+                            </ng-template>
+                    
+                            <ng-template pTemplate="right">
+                                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: -20px;">
+                                  <h5 class="mb-0">Total pedido:</h5>
+                                  <h5 class="mt-2">{{totalCarrito | number}}</h5>
+                                </div>
+                              </ng-template>
+                              
+                        </p-toolbar>
+                        
+                        <p-table [value]="productosCarrito" selectionMode="single" [(selection)]="selectedProduct" (onRowSelect)="op2.hide()" responsiveLayout="scroll">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="min-width:12rem">Producto</th>
+                                    <th style="max-width:8rem">Precio Und</th>
+                                    <th style="max-width:8rem">Cantidad</th>
+                                    <th style="min-width:8rem">Precio Total</th>
+                                    <th style="max-width:3rem">Borrar</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-product>
+                                <tr [pSelectableRow]="rowData">
+                                    <td>{{product.nombre_producto}}</td>
+                                    <td>{{product.precio_ico | number}}</td>
+                                    <td>{{product.cantidad_producto}}</td>
+                                    <td>{{product.precio_total_producto | number}}</td>
+                                    <td><button
                                         pButton
                                         pRipple
                                         icon="pi pi-times"
                                         class="p-button-rounded p-button-danger mr-2"
-                                        (click)="
-                                            eliminarProductoCarrito(product)
-                                        "
-                                    ></button>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </ng-template>
-            </p-overlayPanel>
+                                        (click)="eliminarProductoCarrito(product)"
+                                    ></button></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </ng-template>
+                </p-overlayPanel>
 
             <!-- <button pButton type="button" icon="pi pi-shopping-cart" class="p-button-text p-button-lg ml-3"></button> -->
-            <button
-                pButton
-                type="button"
-                (click)="visibleSidebarCarrito = true"
-                icon="pi pi-sign-out"
-                class="p-button-text p-button-lg ml-4"
-            ></button>
+            <button pButton type="button" (click)="visibleSidebarCarrito = true" icon="pi pi-sign-out" class="p-button-text p-button-lg ml-4"></button>
         </ng-template>
     </p-menubar>
 </div>
@@ -105,37 +59,96 @@
     <h1>CREAR PEDIDO CLIENTE</h1>
     <div class="grid p-fluid mt-3">
         <!-- Cedula Cliente-->
-        <div class="field col-12 md:col-3">
+        <div class="field col-12 md:col-3"
+            *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'">
             <span class="p-float-label">
-                <input inputId="documento_cliente" pInputText />
-                <label for="inputtext">Cedula</label>
+                <input
+                    type="text"
+                    id="nombre_contacto"
+                    pInputText
+                    [formControl]="pedido.get('nombre_contacto')"
+                />
+                <label for="nombre_contacto">Nombre cliente</label>
             </span>
         </div>
-        <!-- nombre Cliente -->
-        <div class="field col-12 md:col-3">
+        <!-- Nombre Cliente -->
+        <div class="field col-12 md:col-3"
+            *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'">
             <span class="p-float-label">
-                <input inputId="nombre_contacto" pInputText />
-                <label for="inputtext">Nombre Cliente</label>
+                <input
+                    type="number"
+                    id="documento_cliente"
+                    pInputText
+                    [formControl]="pedido.get('documento_cliente')"
+                />
+                <label for="documento_cliente">Documento</label>
             </span>
         </div>
+                <!-- NIT Empresa (solo visible si el tipo de cliente es Empresa) -->
+                <div
+                class="field col-12 md:col-3"
+                *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
+            >
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        type="text"
+                        id="nit_empresa_cliente"
+                        pInputText
+                        [formControl]="pedido.get('nit_empresa_cliente')"
+                    />
+                    <label for="inputtext">NIT Empresa</label>
+                </span>
+            </div>
+             <!-- Nombre Jurídico (solo visible si el tipo de cliente es Empresa) -->
+        <div
+        class="field col-12 md:col-3"
+        *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'">
+        <span class="p-float-label">
+            <textarea
+                [readonly]="true"
+                type="text"
+                id="nombre_juridico"
+                pInputText
+                [formControl]="pedido.get('nombre_juridico')"
+            ></textarea>
+            <label for="inputtext">Nombre Empresa</label>
+        </span>
+    </div>
+    <!-- Nombre quien recibe -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input type="text" id="quien_recibe" pInputText />
-                <label for="inputtext">Quien Recibe</label>
+                <input
+                    type="text"
+                    id="quien_recibe"
+                    pInputText
+                    [formControl]="pedido.get('quien_recibe')"
+                />
+                <label for="quien_recibe">Quien_recibe</label>
             </span>
         </div>
         <!-- Ciudad Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input type="text" id="ciudad_cliente" pInputText />
-                <label for="inputtext">Ciudad</label>
+                <input
+                    type="text"
+                    id="ciudad_cliente"
+                    pInputText
+                    [formControl]="pedido.get('ciudad_cliente')"
+                />
+                <label for="ciudad_cliente">Ciudad</label>
             </span>
         </div>
         <!-- Barrio Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input type="text" id="barrio_cliente" pInputText />
-                <label for="inputtext">Barrio</label>
+                <input
+                    type="text"
+                    id="barrio_cliente"
+                    pInputText
+                    [formControl]="pedido.get('barrio_cliente')"
+                />
+                <label for="barrio_cliente">Barrio</label>
             </span>
         </div>
 
@@ -143,20 +156,34 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
-                    style="resize: none"
                     type="text"
                     id="direccion_entrega"
                     pInputText
+                    [formControl]="pedido.get('direccion_entrega')"
                 />
-                <label for="inputtext">Dirección</label>
+                <label for="direccion_entrega">Dirección</label>
+            </span>
+        </div>
+        <!-- Telefono cliente -->
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <input
+                    type="text"
+                    id="telefono_cliente"
+                    pInputText
+                    [formControl]="pedido.get('telefono_cliente')"
+                />
+                <label for="telefono_cliente">Telefono</label>
             </span>
         </div>
         <!-- Fecha Entrega Pedido -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-calendar
-                    dateFormat="yy/mm/dd"
-                    inputId="calendar"
+                [formControl]="pedido.get('fecha_entrega_pedido')"
+                dateFormat="yy/mm/dd"
+                inputId="calendar"
+                [minDate]="minDate"
                 ></p-calendar>
                 <label for="calendar">Fecha Entrega</label>
             </span>
@@ -169,68 +196,83 @@
                     inputId="dropdown"
                     id="metodo_pago"
                     [autoDisplayFirst]="false"
+                    [options]="metodoPago"
+                    [formControl]="pedido.get('metodo_pago')" 
                 ></p-dropdown>
                 <label for="dropdown">Método de Pago</label>
             </span>
         </div>
-        <br><br>
-   
+        <br /><br />
     </div>
 </div>
 
 <div class="card">
-    <div class="text-center"> <!-- Agregamos esta clase para centrar el contenido -->
+    <div class="text-center">
+        <!-- Agregamos esta clase para centrar el contenido -->
         <div class="grid p-fluid mt-3 table-container">
-            <p-table>
+
+            <p-table [value]="productosCarrito">
                 <ng-template pTemplate="header">
                     <tr>
                         <th colspan="12">Lista de Productos</th>
                     </tr>
                     <tr>
                         <th>Nombre Producto</th>
-                        <th>Categoria</th>
-                        <th>cantidad</th>
+                        <th>Cantidad</th>
                         <th>Precio Unitario</th>
-                        <th>SubTotal</th>
-                        <th>Accion</th>
+                        <th>Subtotal</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product>
                     <tr>
-                        <td>{{ product.get("nombre_producto")?.value }}</td>
-                        <td>{{ product.get("nombre_categoria_producto")?.value }}</td>
-                        <td>{{ product.get("cantidad_producto")?.value }}</td>
+                        <td>{{ product.nombre_producto }}</td>
+                        <td>{{ product.cantidad_producto }}</td>
                         <td>
                             {{
-                                pedido.get("tipo_cliente").value ===
+                                product.tipo_cliente ===
                                 "Persona jurídica"
-                                    ? product.get("precio_por_mayor_ico")?.value
-                                    : product.get("precio_ico")?.value
+                                    ? product.precio_por_mayor_ico
+                                    : product.precio_ico
                             }}
                         </td>
-                        <td>{{ product.get("precio_total_producto")?.value }}</td>
-                        <td>
-                            <button
-                                pButton
-                                pRipple
-                                icon="pi pi-times"
-                                class="p-button-rounded p-button-danger mr-2"
-                                (click)="eliminarProducto(product)"
-                                style="width: 2.5rem; height: 2.5rem"
-                            ></button>
-                        </td>
+                        <td>{{  product.precio_total_producto}}</td>
                     </tr>
                 </ng-template>
             </p-table>
+            
         </div>
-        <br>
+        <br />
+        <div class="formgrid grid justify-end">
+            <div class="field col-6 md-3">
+                <span class="p-float-label">
+                    <p-inputNumber
+                        inputId="subtotal_venta"
+                        [formControl]="pedido.get('subtotal_venta')"
+                        readonly="true"
+                    ></p-inputNumber>
+                    <label for="subtotal_venta">Subtotal Venta</label>
+                </span>
+            </div>
+    
+            <div class="field col-6 md-3">
+                <span class="p-float-label">
+                    <p-inputNumber
+                        inputId="precio_total_venta"
+                        [formControl]="pedido.get('precio_total_venta')"
+                        readonly="true"
+                    ></p-inputNumber>
+                    <label for="precio_total_venta">Precio Total Venta</label>
+                </span>
+            </div>
+        </div>
         <div class="my-2">
             <button
                 pButton
                 pRipple
-                label="Crear Pedido"
+                label="Hacer Pedido"
                 icon="pi pi-user-plus"
                 class="p-button-success mr-2"
+                (click)="crearPedidoCliente()"
             ></button>
             <button
                 pButton
@@ -242,5 +284,6 @@
         </div>
     </div>
 </div>
+
 
 

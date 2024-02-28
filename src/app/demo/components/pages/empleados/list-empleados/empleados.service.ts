@@ -32,13 +32,13 @@ export class EmpleadosService {
 
   }
 
-  getEmpleadosPendientes(): Observable<Empleado[]> {
-    return this.http.get<Empleado[]>(`${this.apiUrl}empleados/pendientes`);
-  }
+  // getEmpleadosPendientes(): Observable<Empleado[]> {
+  //   return this.http.get<Empleado[]>(`${this.apiUrl}empleados/pendientes`);
+  // }
 
-  getEmpleadosTerminados(): Observable<Empleado[]> {
-    return this.http.get<Empleado[]>(`${this.apiUrl}empleados/terminados`);
-  }
+  // getEmpleadosTerminados(): Observable<Empleado[]> {
+  //   return this.http.get<Empleado[]>(`${this.apiUrl}empleados/terminados`);
+  // }
   
   getEmpleados(id:string): Observable<Empleado>{
     return this.http.get<Empleado>(`${this.apiUrl}empleados/${id}`)

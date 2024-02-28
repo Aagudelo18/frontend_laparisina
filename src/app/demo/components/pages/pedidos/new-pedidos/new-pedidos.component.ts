@@ -12,11 +12,13 @@ import {
 import { MessageService } from 'primeng/api';
 import { timer } from 'rxjs';
 
+
 @Component({
     selector: 'app-new-pedidos',
     templateUrl: './new-pedidos.component.html',
     styleUrls: ['./new-pedidos.component.scss'],
     providers: [MessageService],
+    
 })
 export class NewPedidosComponent implements OnInit {
     precio_total_venta: number;
@@ -113,9 +115,9 @@ export class NewPedidosComponent implements OnInit {
         );
     }
 
-    getCliente(documento_cliente: string) {
+    getCliente(numero_documento_cliente: string) {
         // Verificar si el documento está vacío
-        if (!documento_cliente) {
+        if (!numero_documento_cliente) {
             // Limpiar los valores de los campos relacionados con el cliente
             this.pedido.get('tipo_cliente').reset();
             this.pedido.get('nit_empresa_cliente').reset();
@@ -132,7 +134,7 @@ export class NewPedidosComponent implements OnInit {
 
             // Puedes agregar cualquier otro campo que necesites reiniciar aquí
         } else {
-            this.newpedidosService.getCliente(documento_cliente).subscribe(
+            this.newpedidosService.getCliente(numero_documento_cliente).subscribe(
                 (data: any) => {
                     // Verificar si el cliente existe
                     if (data) {
@@ -277,6 +279,7 @@ export class NewPedidosComponent implements OnInit {
         // }
 
         const subTotal = this.calcularSubtotal();
+        
         this.aumento_empresa = subTotal * 0.08;
 
         // Asegúrate de que la propiedad 'detalle_pedido' esté definida como un array
@@ -392,7 +395,6 @@ export class NewPedidosComponent implements OnInit {
         this.productsFormArray.controls.forEach((product: any) => {
             subTotal += product.get('precio_total_producto')?.value;
         });
-        console.log(this.aumento_empresa);
         // Calcular el IVA (con un 8%)
         this.aumento_empresa = subTotal * 0.08;
 
@@ -408,9 +410,9 @@ export class NewPedidosComponent implements OnInit {
             valor_domicilio = 0;
         }
 
-        this.aumento_empresa = subTotal * 0.08;
+
         
-        if (this.pedido.get('tipo_cliente')?.value == 'Empresa') {
+        if (this.pedido.get('tipo_cliente')?.value == 'Persona jurídica') {
             this.pedido
                 .get('precio_total_venta')
                 ?.setValue(subTotal + this.aumento_empresa + valor_domicilio);

@@ -110,6 +110,13 @@ const routes: Routes = [
                                     './demo/components/pages/pedido-cliente/pedido-cliente.module'
                                 ).then((m) => m.PedidoClienteModule),
                         },
+                        {
+                            path: 'pedidoListar',
+                            loadChildren: () =>
+                                import(
+                                    './demo/components/pages/pedido-list/pedido-list.module'
+                                ).then((m) => m.PedidoListModule),
+                        },
                     ],
                 },      
                

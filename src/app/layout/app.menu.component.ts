@@ -115,7 +115,7 @@ export class AppMenuComponent implements OnInit {
                     label: 'Pedidos',
                     items: [
                         
-                        { label: 'Mis Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pages/listarPedido'] },
+                        { label: 'Mis Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pedidoListar'] },
                         { label: 'Catalogo', icon: 'pi pi-fw pi-money-bill', routerLink: ['/vistaCliente'] },
                     ]
                 }

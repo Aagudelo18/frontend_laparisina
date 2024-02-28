@@ -14,9 +14,9 @@ export interface Empleado {
   municipio_domicilio_empleado: string;
   estado_civil_empleado: string;
   celular_empleado: string;
-  correo_empleado: string;
+  correo_electronico: string;
   alergia_empleado: string;
- //  grupo_sanguineo_empleado: string;
+  grupo_sanguineo_empleado: string;
   contacto_emergencia: {
     nombre_contacto_emergencia: string;
     parentesco_empleado: string;
@@ -27,26 +27,26 @@ export interface Empleado {
   cuenta_bancaria_empleado: string;
   area_empleado: string;
  //  estado_empleado: string;
-  detalle_empleado: DetalleEmpleado[];
-}
+//   detalle_empleado: DetalleEmpleado[];
+// }
 
-export interface DetalleEmpleado {
-  _id: string;
-  tipo_contrato_empleado: string;
-  fecha_inicio_empleado: Date;
-  fecha_vencimiento_contrato_empleado: Date;
-  fecha_nacimiento_empleado: Date;
-  edad_empleado: string;
-  lugar_nacimiento_empleado: string;
-  direccion_empleado: string;
-  municipio_domicilio_empleado: string;
-  estado_civil_empleado: string;
-  celular_empleado: string;
-  correo_empleado: string;
-  alergia_empleado: string;
- //  grupo_sanguineo_empleado: string;
-  eps_empleado: string;
-  pension_empleado: string;
- //  cuenta_bancaria_empleado: string;
-  area_empleado: string;
+// export interface DetalleEmpleado {
+//   _id: string;
+//   tipo_contrato_empleado: string;
+//   fecha_inicio_empleado: Date;
+//   fecha_vencimiento_contrato_empleado: Date;
+//   fecha_nacimiento_empleado: Date;
+//   edad_empleado: string;
+//   lugar_nacimiento_empleado: string;
+//   direccion_empleado: string;
+//   municipio_domicilio_empleado: string;
+//   estado_civil_empleado: string;
+//   celular_empleado: string;
+//   correo_empleado: string;
+//   alergia_empleado: string;
+//   grupo_sanguineo_empleado: string;
+//   eps_empleado: string;
+//   pension_empleado: string;
+//  //  cuenta_bancaria_empleado: string;
+//   area_empleado: string;
 }

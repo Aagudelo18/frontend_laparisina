@@ -136,3 +136,19 @@ margin-right: 15px; /* Ajusta según sea necesario */
 .custom-title {
 color: #888; /* Cambia el color a gris o el color que desees */
 }
+
+.p-dropdown {
+  max-height: 2px;  /* Ajusta el valor según tus necesidades */
+}
+.p-field {
+   height: 2px;  /* Ajusta el valor según tus necesidades */
+}
+
+
+div[role="alert"] {
+  color: red;
+}
+label.required::after {
+  content: " *";
+  color: red;
+}
