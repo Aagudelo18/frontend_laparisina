@@ -309,6 +309,7 @@
                             <label for="cuenta_bancaria_empleado">Numero de cuenta</label>
                         </span>
                     </div>
+                    
                     <div class="field col" >
                       <span class="p-float-label" >
                           <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -327,6 +328,20 @@
                             <label for="area_empleado">Area</label>
                         </span>
                       </div>
+                      <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="banco_cuenta" id="banco_cuenta" type="text" pInputText>
+                            <label for="banco_cuenta">Banco</label>
+                        </span>
+                    </div>
+                    <div class="field col">
+                      <span class="p-float-label">
+                          <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                          formControlName="tipo_cuenta" id="tipo_cuenta" type="text" pInputText>
+                          <label for="tipo_cuenta">Tipo de cuenta</label>
+                      </span>
+                  </div>
                 </div></div>
                 
 
@@ -442,7 +457,7 @@
             <span class="p-float-label">
               <p-dropdown
                 id="tipo_contrato_empleado"
-                [options]="['Fijo', 'Indefinido']"
+                [options]="['Termino fijo', 'Termino indefinido']"
                 formControlName="tipo_contrato_empleado"
                 placeholder="Selecciona tipo de contrato"
                 
@@ -791,12 +806,10 @@
                                                                           El grupo sanguíneo es requerido.
                                                                         </div>
                                                                       </div>
-                                                                      
                                                                        
-                                                                         
                                                                     </div> 
-                                                                    <div class="formgrid grid mt-3">
-                                                                    <div class="field ">
+   <div class="formgrid grid mt-3">
+     <div class="field col-3" style="width: 25%;">
     <span class="p-float-label">
     <p-dropdown
       [options]="['Producción', 'Domiciliario']"
@@ -808,7 +821,39 @@
   <div *ngIf="formEmpleados.get('area_empleado').hasError('required') && formEmpleados.get('area_empleado').touched" style="color: red">
     Por favor, selecciona un área.
   </div>
-</div></div>
+</div>
+<div class="field col-3" style="width: 25%;">
+  <span class="p-float-label" >
+    <p-dropdown
+      id="banco_cuenta"
+      [options]="['Bancolombia', 'Banco de Bogotá', 'Davivienda', 'BBVA', 'Banco de Occidente', 'Scotiabank Colpatria', 'Banco Itaú', 'GNB Sudameris', 'Banco Agrario', 'Banco Popular', 'Banco Caja Social', 'Banco AV Villas', 'Banco Union', 'Bancoomeva', 'Banco Falabella', 'Banco Pichincha', 'Banco W', 'Banco Finandina', 'Bancamía', 'Ban100', 'Banco Cooperativo Coopcentral', 'Bancoldex', 'Banco Mundo Mujer']"
+      formControlName="banco_cuenta"
+      placeholder="Selecciona el banco"
+      
+    ></p-dropdown>
+    <label class="full-width-label" for="banco_cuenta">Banco*</label>
+  </span>
+  <div *ngIf="formEmpleados.get('banco_cuenta').hasError('required') && formEmpleados.get('banco_cuenta').touched" style="color: red">
+    Por favor, selecciona un banco.
+  </div>
+
+</div>
+<div class="field col-3" style="width: 25%;">
+  <span class="p-float-label" >
+    <p-dropdown
+      id="tipo_cuenta"
+      [options]="['Cuenta de Ahorros', 'Cuenta Corriente', 'Cuenta de Cheques', 'Cuenta de Crédito', 'Cuenta de Nómina', 'Cuenta de Inversión', 'Cuenta Empresarial', 'Cuenta Conjunta']"
+      formControlName="tipo_cuenta"
+      placeholder="Selecciona un tipo de cuenta"
+      
+    ></p-dropdown>
+    <label class="full-width-label" for="tipo_cuenta">Tipo de cuenta*</label>
+  </span>
+  <div *ngIf="formEmpleados.get('tipo_cuenta').hasError('required') && formEmpleados.get('tipo_cuenta').touched" style="color: red">
+    Por favor, selecciona un tipo de cuenta.
+  </div>
+</div>
+</div>
             
                                                                     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                                                                         <div style="display: flex; gap: 10px;">
