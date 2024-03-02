@@ -50,25 +50,16 @@ export class NewPedidosComponent implements OnInit {
         this.productoSeleccionado = [];
 
         this.pedido = this.fb.group({
-            documento_cliente: [
-                '',
-                [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)],
-            ],
+            documento_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
             tipo_cliente: ['', Validators.required],
             nombre_contacto: ['', Validators.required],
-            quien_recibe: ['', Validators.required],
+            quien_recibe: ['',[Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/)]],
             nombre_juridico: ['', Validators.required],
-            nit_empresa_cliente: [
-                '',
-                [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)],
-            ],
-            telefono_cliente: [
-                '',
-                [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)],
-            ],
+            nit_empresa_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
+            telefono_cliente: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^\d*$/)]],
             direccion_entrega: ['', Validators.required],
-            ciudad_cliente: ['', Validators.required],
-            barrio_cliente: ['', Validators.required],
+            ciudad_cliente: ['',[Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/)]],
+            barrio_cliente: ['',[Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/)]],
             fecha_entrega_pedido: ['', [Validators.required]],
             correo_domiciliario: ['', [Validators.required, Validators.email]],
             metodo_pago: ['', Validators.required],
@@ -142,31 +133,14 @@ export class NewPedidosComponent implements OnInit {
                         if (data.estado_cliente) {
                             this.clienteExistente = true;
                             // Actualizar las propiedades del formulario 'pedido' con la información del cliente
-                            this.pedido
-                                .get('tipo_cliente')
-                                ?.setValue(data.tipo_cliente);
-                            this.pedido
-                                .get('nombre_contacto')
-                                ?.setValue(data.nombre_contacto);
-                            this.pedido
-                                .get('telefono_cliente')
-                                ?.setValue(data.telefono_cliente);
-                            this.pedido
-                                .get('direccion_entrega')
-                                ?.setValue(data.direccion_cliente);
-                            this.pedido
-                                .get('ciudad_cliente')
-                                ?.setValue(data.ciudad_cliente);
-                            this.pedido
-                                .get('barrio_cliente')
-                                ?.setValue(data.barrio_cliente);
-                            this.pedido
-                                .get('nombre_juridico')
-                                ?.setValue(data.nombre_juridico);
-                            this.pedido
-                                .get('nit_empresa_cliente')
-                                ?.setValue(data.nit_empresa_cliente);
-                            console.log(data);
+                            this.pedido.get('tipo_cliente')?.setValue(data.tipo_cliente);
+                            this.pedido.get('nombre_contacto')?.setValue(data.nombre_contacto);
+                            this.pedido.get('telefono_cliente')?.setValue(data.telefono_cliente);
+                            this.pedido.get('direccion_entrega')?.setValue(data.direccion_cliente);
+                            this.pedido.get('ciudad_cliente')?.setValue(data.ciudad_cliente);
+                            this.pedido.get('barrio_cliente')?.setValue(data.barrio_cliente);
+                            this.pedido.get('nombre_juridico')?.setValue(data.nombre_juridico);
+                            this.pedido.get('nit_empresa_cliente')?.setValue(data.nit_empresa_cliente);
                         } else {
                             this.clienteExistente = false;
                             // El estado_cliente es False, puedes manejarlo según tus necesidades
@@ -254,39 +228,57 @@ export class NewPedidosComponent implements OnInit {
                 summary: 'La fecha de entrega es requerida',
                 life: 3000,
             });
-            return; // Salir del método si la fecha de entrega está vacía
+            
         }
-
+    
+        // Verificar la validación de los campos antes de continuar
+        const camposRequeridos = [
+            'ciudad_cliente',
+            'barrio_cliente',
+            'telefono_cliente',
+            'direccion_entrega',
+            'metodo_pago',
+            'estado_pago'
+        ];
+    
+        for (const campo of camposRequeridos) {
+            if (this.pedido.get(campo).invalid) {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: `El campo ${campo} es requerido.`,
+                });
+                return; // Salir del método si hay campos inválidos
+            }
+        }
+    
         // Formatear la fecha de entrega en formato YY/MM/DD
         const fechaEntrega = this.pedido
             .get('fecha_entrega_pedido')
             .value.toISOString()
             .substring(0, 10);
         this.pedido.get('fecha_entrega_pedido').setValue(fechaEntrega);
-
-        // // Obtener el valor del campo "Valor Domicilio" del formulario
-        // const valorDomicilio = this.pedido.get('valor_domicilio').value;
-
-        // // Verificar si el valor del domicilio es menor o igual a 0
-        // if (valorDomicilio <= 0) {
-        //     // Mostrar mensaje de advertencia
-        //     this.messageService.add({
-        //         severity: 'warn',
-        //         summary: 'Advertencia',
-        //         detail: 'El valor del domicilio es CERO.',
-        //     });
-        //     return; // Detener la creación del pedido
-        // }
-
+    
         const subTotal = this.calcularSubtotal();
-        
         this.aumento_empresa = subTotal * 0.08;
-
+    
+        // Agregar mensajes de validación para otros campos aquí...
+        if (this.pedido.get('tipo_cliente').value === 'Persona natural') {
+            if (this.pedido.get('quien_recibe').invalid) {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'El nombre de quien recibe es requerido.',
+                });
+                return;
+            }
+        }
+    
         // Asegúrate de que la propiedad 'detalle_pedido' esté definida como un array
         this.pedido
             .get('detalle_pedido')
             ?.patchValue(this.productsFormArray.value || []);
-
+    
         this.newpedidosService
             .createPedido(this.pedido.getRawValue())
             .subscribe(
@@ -296,7 +288,7 @@ export class NewPedidosComponent implements OnInit {
                         summary: 'Pedido creado con Éxito',
                         life: 3000,
                     });
-
+    
                     // Agregar un pequeño retraso antes de navegar a la página de listado de pedidos
                     timer(1000).subscribe(() => {
                         this.router.navigate(['/list-pedidos']);
@@ -320,7 +312,7 @@ export class NewPedidosComponent implements OnInit {
                 }
             );
     }
-
+    
     agregarProductoExistente() {
         const existingProductIndex = this.productsFormArray.controls.findIndex(
             (control) =>
@@ -431,5 +423,19 @@ export class NewPedidosComponent implements OnInit {
         this.pedido.get('valor_domicilio').setValue(valor); // Establecer el valor en el formulario
         this.calcularPrecioTotalVenta(); // Recalcular el precio total de venta
     }
+
+    quitarEspaciosBlancos(controlName: string): void {
+        const control = this.pedido.get(controlName);
+        if (control && control.value) {
+            control.setValue(control.value.trim());
+        }
+    }
+
+    limpiarCampos() {
+        this.productosCategoria = null; 
+        this.categoriaSeleccionada = null; 
+        this.cantidad_producto = null;
+    }
+    
     
 }

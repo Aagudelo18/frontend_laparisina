@@ -254,7 +254,7 @@ export class ProductComponent implements OnInit {
       window.location.reload();
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------------------------------
     //función eliminar un producto del carrito
     eliminarProductoCarrito(producto: ProductoCarrito) {
       // Encuentra el índice del producto en el array

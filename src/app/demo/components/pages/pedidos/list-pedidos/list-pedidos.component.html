@@ -49,17 +49,21 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-                        <th pSortableColumn="">
+                        <th pSortableColumn="nombre_contacto">
                             Nombre Cliente
                             <p-sortIcon field="nombre_contacto"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="name">
+                        <th pSortableColumn="tipo_cliente">
                             Tipo Cliente<p-sortIcon
                                 field="tipo_cliente"
                             ></p-sortIcon>
                         </th>
                         <th pSortableColumn="name">Dirección</th>
-                        <th pSortableColumn="name">Fecha Entrega</th>
+                        <th pSortableColumn="fecha_entrega_pedido">
+                            Fecha Entrega<p-sortIcon
+                                field="fecha_entrega_pedido"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="estado_pedido">
                             Estado<p-sortIcon
                                 field="estado_pedido"
