@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { UsuarioService } from './usuarios.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
@@ -37,14 +37,14 @@ export class UsuariosComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.formularioUsuario = fb.group({
-      nombre_usuario: ['', [Validators.minLength(2), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+      nombre_usuario: ['', [Validators.minLength(2), Validators.maxLength(25), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s\D]{1,25}$/), this.noCaracteresEspeciales()]],
       correo_electronico: ['', [Validators.required, Validators.email]],
       contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,15}$/),]],
       confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
       rol_usuario: ['', [Validators.required]],// Establece el valor predeterminado a "Activo"
     });
     this.formularioEditarUsuario = fb.group({
-      nombre_usuario: ['', [Validators.minLength(2), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+      nombre_usuario: ['', [Validators.minLength(2), Validators.maxLength(25), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s\D]{1,25}$/)]],
       correo_electronico: ['', [Validators.required, Validators.email]],
       rol_usuario: [{ value: '', disabled: true }, [Validators.required]],
       estado_usuario: [true, Validators.required],
@@ -61,17 +61,19 @@ export class UsuariosComponent implements OnInit {
   ngOnInit() {
     //Traemos el método para traer todos los usuarios
     this.getListUsuarios();
-
     //Traemos el método para traer todos los roles
     this.getListRoles();
     this.getListRolesForCreation();
   }
 
-  //Método para traer todos los usuarios. signIn
+  // Método para traer todos los usuarios.
   getListUsuarios() {
     this.usuarioService.getUsuarios().subscribe((data: any) => {
       if (data && data.usuarios) {
-        this.usuarios = data.usuarios;
+        // Filtrar los usuarios para excluir aquellos con roles "Cliente" y "Empleado"
+        this.usuarios = data.usuarios.filter(usuario => {
+          return usuario.rol_usuario && usuario.rol_usuario.nombre_rol !== 'Cliente' && usuario.rol_usuario.nombre_rol !== 'Empleado';
+        });
       }
     });
   }
@@ -79,7 +81,10 @@ export class UsuariosComponent implements OnInit {
   getListRolesForCreation() {
     this.usuarioService.getRoles().subscribe((data: any[]) => {
       // Filtrar los roles para mostrar solo el rol de Administrador para la creación
-      this.rolesForCreation = data.filter(rol => rol._id === '6547f25b67ec1e25d0c5d17a');
+      this.rolesForCreation = data.filter(rol => {
+        // Excluir roles con nombre "Cliente" y "Empleado"
+        return rol.nombre_rol !== 'Cliente' && rol.nombre_rol !== 'Empleado' && rol.nombre_rol !== 'Super Admin';
+      });
     });
   }
 
@@ -88,6 +93,16 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.getRoles().subscribe((data: any[]) => {
       this.roles = data;
     });
+  }
+
+  noCaracteresEspeciales(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const caracteresEspeciales = /[!@#$%^&*(),.?":{}|<>]/;
+      if (caracteresEspeciales.test(control.value)) {
+        return { 'caracteresEspeciales': true };
+      }
+      return null;
+    };
   }
 
 

@@ -8,6 +8,7 @@ import { PedidoListComponent } from './pedido-list.component';
 @NgModule({
   
   imports: [ RouterModule.forChild([
+    
     { path: '', component : PedidoListComponent}
   ])],
   exports: [RouterModule]

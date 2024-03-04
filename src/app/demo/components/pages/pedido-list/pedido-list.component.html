@@ -1,1 +1,437 @@
-<p>pedido-list works!</p>
+<div class="card px-6 py-6">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <div class="my-2">
+                <button
+                    pButton
+                    pRipple
+                    [routerLink]="['/vistaCliente']"
+                    label="Hacer Pedido"
+                    icon="pi pi-user-plus"
+                    class="p-button-success mr-2"            
+                ></button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+    <!-- Modal para anular un pedido --------------------------------->
+    <p-tabView>
+        <!-- Listado de pedidos Tomados---------------------------------------------->
+        <p-tabPanel header="Mis Pedidos Realizados">
+            <p-table
+                #dtPendientes
+                [value]="pedidosCliente"
+                [rows]="10"
+                [globalFilterFields]="['nombre_contacto']"
+                [paginator]="true"
+                [rowsPerPageOptions]="[5, 10, 15]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"          
+                selectionMode="multiple"
+                dataKey="_id"
+            >
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h4 class="m-0">Mis Pedidos</h4>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dtPendientes, $event)"
+                            placeholder="Buscar..."
+                            class="w-full sm:w-auto"
+                        />
+                    </span>
+                </div>
+            </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="">
+                            Nombre Cliente
+                            <p-sortIcon field="nombre_contacto"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name">Dirección</th>
+                        <th pSortableColumn="name">Fecha Entrega</th>
+                        <th pSortableColumn="estado_pedido">
+                            Estado<p-sortIcon
+                                field="estado_pedido"
+                            ></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="precio_total_venta">
+                            Valor Total<p-sortIcon
+                                field="precio_total_venta"
+                            ></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="name">Aciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pedido>
+                    <tr>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.nombre_contacto }}
+                        </td>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.direccion_entrega }}
+                        </td>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.fecha_entrega_pedido | slice : 0 : 10 }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.precio_total_venta }}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button
+                                    type="button"
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-eye"
+                                    class="p-button-rounded p-button-primary mr-2"
+                                    (click)="verDetallePedidoCliente(pedido._id)"
+                                    pTooltip="Ver"
+                                ></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-times"
+                                    class="p-button-rounded p-button-danger"
+                                    (click)="abrirModalAnular(pedido._id)"
+                                    pTooltip="Anular"
+                                ></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+       
+    </p-tabView>
+
+    <!-- Modal para confirmar cambiar el estado del pedido a anulado -->
+    <p-dialog
+    [(visible)]="cambiarEstadoPDialogAnular"
+    header="Cambiar Estado del Pedido"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+    (onHide)="cambiarEstadoPDialogAnular = false"
+>
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
+        <span>¿Está seguro de que desea anular el pedido?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="No"
+            (click)="onNoButtonClickAnular()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Si"
+            (click)="onYesButtonClickAnular()"
+        ></button>
+    </ng-template>
+    </p-dialog>
+
+    <!-- Modal para ver el detalle del pedido -->
+    <p-dialog
+    [(visible)]="detallePedidoDialog"
+    [style]="{ width: '900px' }"
+    header="Detalles de mi Pedido"
+    [modal]="true"
+    class="p-fluid"
+>
+    <br />
+    <form [formGroup]="formPedidos">
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                             resize: none;
+                             overflow: auto; 
+                             width: 100%; 
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="tipo_cliente"
+                            id="tipo_cliente"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="tipo_cliente">tipo cliente</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="nombre_contacto"
+                            id="nombre_contacto"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="nombre_contacto">Nombre</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="quien_recibe"
+                            id="quien_recibe"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="quien_recibe">Nombre Quien Recibe</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            style="resize: none"
+                            [readonly]="true"
+                            style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 100%; 
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="direccion_entrega"
+                            id="direccion_entrega"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="direccion_entrega">Direccion Entrega</label>
+                    </span>
+                </div>
+             
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="barrio_cliente"
+                            id="barrio_cliente"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="barrio_cliente">Barrio Cliente</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="fecha_entrega_pedido"
+                            id="fecha_entrega_pedido"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="fecha_entrega_pedido">Fecha Entrega</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="formgrid grid mt-3">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="fecha_pedido_tomado"
+                            id="fecha_pedido_tomado"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="fecha_pedido_tomado">Fecha Tomado</label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 70%; 
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="estado_pedido"
+                            id="estado_pedido"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="estado_pedido"> Estado </label>
+                    </span>
+                </div>
+                <div class="field col">
+                    <span class="p-float-label">
+                        <input
+                            [readonly]="true"
+                            style="
+                                resize: none;
+                                overflow: auto; 
+                                width: 80%; 
+                                pointer-events: none;
+                                background-color: #f4f4f4;
+                                caret-color: transparent;
+                            "
+                            formControlName="metodo_pago"
+                            id="metodo_pago"
+                            type="text"
+                            pInputText
+                        />
+                        <label for="metodo_pago">Método de Pago</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    
+
+        <!-- 
+
+        Detalle del Producto -->
+        <div class="formgrid grid mt-5" *ngIf="detallePedidoDialog">
+            <table class="table custom-table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Estado</th>
+                        <th>Precio Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="
+                            let detalle of formPedidos.get('detalle_pedido')
+                                .value
+                        "
+                    >
+                        <td>{{ detalle.nombre_producto }}</td>
+                        <td>{{ detalle.cantidad_producto }}</td>
+                        <td>
+                            {{
+                                formPedidos.tipo_cliente == "Persona jurídica"
+                                    ? detalle.precio_por_mayor_ico
+                                    : detalle.precio_ico
+                            }}
+                        </td>
+                        <td>{{ detalle.estado_producto }}</td>
+                        <td>{{ detalle.precio_total_producto }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
+
+        <!-- Resumen del Pago -->
+        <div class="formgrid grid mt-5">
+            <div class="field col">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="subtotal_venta"
+                        id="subtotal_venta"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="subtotal_venta">Subtotal Venta</label>
+                </span>
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="valor_domicilio"
+                        id="valor_domicilio"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="valor_domicilio">Valor Domicilio</label>
+                </span>
+            </div>
+            <div class="field col">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="precio_total_venta"
+                        id="precio_total_venta"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="precio_total_venta">Precio Total Venta</label>
+                </span>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px">
+        </div>
+    </form>
+</p-dialog>
+</div>

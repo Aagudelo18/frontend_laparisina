@@ -136,3 +136,42 @@ margin-right: 15px; /* Ajusta según sea necesario */
 .custom-title {
 color: #888; /* Cambia el color a gris o el color que desees */
 }
+
+.p-dropdown {
+  max-height: 2px;  /* Ajusta el valor según tus necesidades */
+}
+.p-field {
+   height: 2px;  /* Ajusta el valor según tus necesidades */
+}
+
+
+div[role="alert"] {
+  color: red;
+}
+label.required::after {
+  content: " *";
+  color: red;
+}
+.field .p-dropdown,
+.field .p-dropdown-label,
+.field .p-dropdown-trigger {
+  width: 200px !important; /* Ajusta según sea necesario */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Puedes ajustar el ancho según tus necesidades */
+}
+
+.button-container button {
+  margin: 0 8px; /* Ajusta el espacio entre los botones según tus necesidades */
+}
+
+/* Esto centra los botones horizontalmente */
+.button-container {
+  margin: 0 auto;
+}
+

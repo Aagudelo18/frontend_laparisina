@@ -75,7 +75,6 @@ export class ListPedidosComponent implements OnInit {
 
     ngOnInit() {
         this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {
-            debugger
             this.pedidos = data;
         });
         this.cargarDomiciliarios();
@@ -236,7 +235,7 @@ export class ListPedidosComponent implements OnInit {
         if (estado_pedido === 'Pendiente') {
             pedido.estado_pedido = 'Tomado';
         } else if (estado_pedido == 'Tomado') {
-            pedido.estado_pedido = 'En produccion';
+            pedido.estado_pedido = 'En producción';
         } else if (estado_pedido == 'Terminado') {
             pedido.estado_pedido = 'Enviado';
         }

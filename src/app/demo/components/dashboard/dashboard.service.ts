@@ -15,12 +15,34 @@ export class DashboardService {
   constructor(private http: HttpClient) { }
 
   getVentas() {
-    return this.http.get<Pedido[]>(this.apiUrl + '/ventas');
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<Pedido[]>(this.apiUrl + '/ventas', { headers });
   }
 
   getVentaDetalle(id: string): Observable<any> {
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
     return this.http.get<any>(this.apiUrl + `/ventas/${id}`);
   }
-  
-  
+
+
 }

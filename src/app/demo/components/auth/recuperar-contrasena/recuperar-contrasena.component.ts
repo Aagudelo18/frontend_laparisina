@@ -23,7 +23,8 @@ export class RecuperarContrasenaComponent implements OnInit {
         public layoutService: LayoutService,
         private formBuilder: FormBuilder,
         private resetPasswordService: RecuperarContrasenaService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {
     }
 
@@ -71,4 +72,7 @@ export class RecuperarContrasenaComponent implements OnInit {
         }
     }
 
+    enviarlogin() {
+        this.router.navigate(['/auth/login']); 
+    }
 }

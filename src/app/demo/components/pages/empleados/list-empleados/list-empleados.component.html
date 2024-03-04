@@ -64,8 +64,8 @@
                 field="codigo_rotulacion_empleado"></p-sortIcon></th>
         <th pSortableColumn="nombre_empleado">Nombre <p-sortIcon field="nombre_empleado"></p-sortIcon>
         </th>
-        <th pSortableColumn="tipo_documento_empleado">tipo documento <p-sortIcon
-            field="tipo_documento_empleado"></p-sortIcon></th>
+        <!-- <th pSortableColumn="tipo_documento_empleado">tipo documento <p-sortIcon
+            field="tipo_documento_empleado"></p-sortIcon></th> -->
     <th pSortableColumn="identificacion_empleado">Identificacion <p-sortIcon
             field="identificacion_empleado"></p-sortIcon></th>
             <th pSortableColumn="contacto_emergencia">Contacto emergencia <p-sortIcon
@@ -76,20 +76,20 @@
     </ng-template>
     <ng-template pTemplate="body" let-empleado>
         <tr>
-            <td style="width:14%; min-width:15rem;"><span class="p-column-title">Code</span>
+            <td style="width:20%; min-width:15rem;"><span class="p-column-title">Code</span>
                 {{empleado.codigo_rotulacion_empleado}}
             </td>
-            <td style="width:14%; min-width:15rem;">
+            <td style="width:20%; min-width:15rem;">
                 <span class="p-column-title">Name</span>
                 {{empleado.nombre_empleado}}
             </td>
-            <td style="width:14%; min-width: 15rem;"><span class="p-column-title">document type</span>
+            <!-- <td style="width:14%; min-width: 15rem;"><span class="p-column-title">document type</span>
                 {{empleado.tipo_documento_empleado}}
-            </td>
-            <td style="width:14%; min-width: 15rem;"><span class="p-column-title">id</span>
+            </td> -->
+            <td style="width:20%; min-width: 15rem;"><span class="p-column-title">id</span>
                 {{empleado.identificacion_empleado}}
             </td>
-            <td style="width:14%; min-width: 10rem;"><span class="p-column-title">id</span>
+            <td style="width:20%; min-width: 10rem;"><span class="p-column-title">id</span>
                 <ul>
                     <li *ngFor="let contacto of empleado.contacto_emergencia">
                         {{ contacto.nombre_contacto_emergencia }}
@@ -109,7 +109,7 @@
                         class="p-button-rounded p-button-primary mr-2"
                         (click)="verDetalleEmpleado(empleado._id)"
                     ></button>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarEmpleadoDialog(empleado._id)" style=" width: 2.5rem; height: 2.5rem; ;"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarEmpleadoDialog(empleado._id)"></button>
                     <!-- <button
                         pButton
                         pRipple
@@ -136,6 +136,38 @@
         <!-- Primera fila -->
         <div class="formgrid grid mt-3">
             <div class="formgrid grid">
+              <div class="field col" >
+                <span class="p-float-label" >
+                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                    formControlName="codigo_rotulacion_empleado" id="codigo_rotulacion_empleado" type="text" pInputText>
+                    <label for="codigo_rotulacion_empleado">Codigo</label>
+                </span>             
+            </div>
+            <div class="field col" >
+              <span class="p-float-label" >
+                  <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                  formControlName="nombre_empleado" id="nombre_empleado" type="text" pInputText>
+                  <label for="nombre_empleado">Nombre</label>
+              </span>             
+          </div>
+          <div class="field col" >
+            <span class="p-float-label" >
+                <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                formControlName="tipo_documento_empleado" id="tipo_documento_empleado" type="text" pInputText>
+                <label for="tipo_documento_empleado">Tipo de documento</label>
+            </span>             
+        </div>
+        <div class="field col" >
+          <span class="p-float-label" >
+              <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+              formControlName="identificacion_empleado" id="identificacion_empleado" type="text" pInputText>
+              <label for="identificacion_empleado">Número de identificacion</label>
+          </span>             
+      </div>
+            </div></div>
+            <div class="formgrid grid mt-3">
+              <div class="formgrid grid">
+          
             <div class="field col">
                 <span class="p-float-label">
                     <input
@@ -149,21 +181,24 @@
                     <label for="tipo_contrato_empleado">Tipo de contrato</label>
                 </span>
             </div>
-            <div class="field col" >
-                <span class="p-float-label" >
-                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
-                    formControlName="fecha_inicio_empleado" id="fecha_inicio_empleado" type="text" pInputText>
-                    <label for="fecha_inicio_empleado">Fecha de inicio</label>
-                </span>             
-            </div>
-            <div class="field col" >
-                <span class="p-float-label" >
-                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
-                    formControlName="fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado" type="text" pInputText>
-                    <label for="fecha_vencimiento_contrato_empleado">Fecha vencimiento</label>
-                </span>             
-            </div>
-            
+            <div class="field col">
+              <span class="p-float-label">
+                  <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                         formControlName="fecha_inicio_empleado" id="fecha_inicio_empleado" type="text" pInputText
+                         [value]="formEmpleados.get('fecha_inicio_empleado').value | date:'yyyy-MM-dd'">
+                  <label for="fecha_inicio_empleado">Fecha de inicio</label>
+              </span>
+          </div>
+          
+          <div class="field col">
+            <span class="p-float-label">
+                <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                       formControlName="fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado" type="text" pInputText
+                       [value]="formEmpleados.get('fecha_vencimiento_contrato_empleado').value | date:'yyyy-MM-dd'">
+                <label for="fecha_vencimiento_contrato_empleado">Fecha vencimiento</label>
+            </span>
+        </div>
+        
             <div class="field col">
                 <span class="p-float-label">
                     <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -174,15 +209,18 @@
         </div>
      </div>
 
-        <div class="formgrid grid mt-3">
-        <div class="formgrid grid">
-            <div class="field col">
-                <span class="p-float-label">
-                    <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
-                    formControlName="fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" type="text" pInputText>
-                    <label for="fecha_nacimiento_empleado">Fecha nacimiento</label>
-                </span>             
-            </div>
+     <div class="formgrid grid mt-3">
+      <div class="formgrid grid">
+          <div class="field col">
+              <span class="p-float-label">
+                  <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                         formControlName="fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" type="text" pInputText
+                         [value]="formEmpleados.get('fecha_nacimiento_empleado').value | date:'yyyy-MM-dd'">
+                  <label for="fecha_nacimiento_empleado">Fecha nacimiento</label>
+              </span>
+          </div>
+      
+  
             <div class="field col">
                 <span class="p-float-label">
                     <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -209,7 +247,7 @@
         </div>
 
         <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
+          <div class="formgrid grid">
                 <div class="field col">
                     <span class="p-float-label">
                         <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
@@ -227,8 +265,8 @@
                 <div class="field col">
                     <span class="p-float-label">
                         <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
-                        formControlName="correo_empleado" id="correo_empleado" type="text" pInputText>
-                        <label for="correo_empleado">Correo</label>
+                        formControlName="correo_electronico" id="correo_electronico" type="text" pInputText>
+                        <label for="correo_electronico">Correo</label>
                     </span>
                 </div>
                 <div class="field col">
@@ -241,7 +279,7 @@
             </div>
             </div>
             <div class="formgrid grid mt-3">
-                <div class="formgrid grid">
+              <div class="formgrid grid">
                     
                     <!-- <div class="field col">
                         <span class="p-float-label">
@@ -271,15 +309,40 @@
                             <label for="cuenta_bancaria_empleado">Numero de cuenta</label>
                         </span>
                     </div>
-                   
+                    
+                    <div class="field col" >
+                      <span class="p-float-label" >
+                          <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                          formControlName="grupo_sanguineo_empleado" id="grupo_sanguineo_empleado" type="text" pInputText>
+                          <label for="grupo_sanguineo_empleado">Grupo sanguineo</label>
+                      </span>             
+                  </div>
+                </div></div>
+                <div class="formgrid grid mt-3">
+                  <div class="formgrid grid">
+                      <div class="field col" >
+                      
                         <span class="p-float-label">
                             <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
                             formControlName="area_empleado" id="area_empleado" type="text" pInputText>
                             <label for="area_empleado">Area</label>
                         </span>
-                </div>
-                </div>
-                
+                      </div>
+                      <div class="field col">
+                        <span class="p-float-label">
+                            <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                            formControlName="banco_cuenta" id="banco_cuenta" type="text" pInputText>
+                            <label for="banco_cuenta">Banco</label>
+                        </span>
+                    </div>
+                    <div class="field col">
+                      <span class="p-float-label">
+                          <input [readonly]="true" style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" 
+                          formControlName="tipo_cuenta" id="tipo_cuenta" type="text" pInputText>
+                          <label for="tipo_cuenta">Tipo de cuenta</label>
+                      </span>
+                  </div>
+                </div></div>
                 
 
   <!-- Detalle del Producto -->
@@ -298,7 +361,7 @@
                             <td>{{ detalle.municipio_domicilio_empleado }}</td>
                             <td>{{ detalle.estado_civil_empleado }}</td>
                             <td>{{ detalle.celular_empleado }}</td>
-                            <td>{{ detalle.correo_empleado }}</td>
+                            <td>{{ detalle.correo_electronico }}</td>
                             <td>{{ detalle.alergia_empleado }}</td>
                             <td>{{ detalle.grupo_sanguineo_empleado }}</td>
                             <td>{{ detalle.eps_empleado }}</td>
@@ -341,9 +404,9 @@
         </span>
     </div>
 </div> -->
-        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <!-- <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
             <button pButton pRipple label="Cerrar" class="p-button-text" (click)="detalleEmpleadoDialog = false"></button>
-        </div>   
+        </div>    -->
     </form>             
 </p-dialog>
 
@@ -351,134 +414,320 @@
     <form [formGroup]="formEmpleados" (ngSubmit)="actualizarEmpleado()" style="margin-top: 30px;">
       <!-- Primera fila -->
       <div class="formgrid grid mt-3">
-        <div class="formgrid grid">
+        
+          <div class="field col" >
+            <span class="p-float-label">
+              <input 
+                type="text"
+                id="codigo_rotulacion_empleado_editable"
+                pInputText
+                formControlName="codigo_rotulacion_empleado"
+                required
+                pattern="[0-9]*"
+                [(ngModel)]="empleado.codigo_rotulacion_empleado"
+                
+              />
+              <label class="full-width-label" for="codigo_rotulacion_empleado_editable">Código de rotulación*</label>
+            </span>
+            <div *ngIf="formEmpleados.get('codigo_rotulacion_empleado').hasError('required') && formEmpleados.get('codigo_rotulacion_empleado').touched" style="color: red">
+              Campo requerido
+            </div>
+            <div *ngIf="formEmpleados.get('codigo_rotulacion_empleado').hasError('pattern') && formEmpleados.get('codigo_rotulacion_empleado').touched" style="color: red">
+              Ingrese solo números
+            </div>
+          </div>
+       
+            
+            
           <div class="field col">
             <span class="p-float-label">
-              <input formControlName="codigo_rotulacion_empleado" id="codigo_rotulacion_empleado" type="text" pInputText>
-              <label for="codigo_rotulacion_empleado">Codigo del empleado</label>
+              <input formControlName="nombre_empleado" id="nombre_empleado" type="text" pInputText>
+              <label for="nombre_empleado">Nombre</label>
             </span>
-          </div>    
+            <div *ngIf="formEmpleados.get('nombre_empleado').hasError('required') && formEmpleados.get('nombre_empleado').touched" style="color: red">
+              Campo requerido
+            </div>
+            <div *ngIf="formEmpleados.get('nombre_empleado').hasError('pattern') && formEmpleados.get('nombre_empleado').touched" style="color: red">
+              Ingrese solo letras
+            </div>
+          </div>
+          
             
-            
-                  <div class="field col">
-                    <span class="p-float-label">
-                      <input formControlName="nombre_empleado" id="nombre_empleado" type="text" pInputText>
-                      <label for="nombre_empleado">Nombre</label>
-                    </span>
-                  </div>  
-            
-                  <div class="field col">
-                    <span class="p-float-label">
-                      <input formControlName="tipo_contrato_empleado" id="tipo_contrato_empleado" type="text" pInputText>
-                      <label for="tipo_contrato_empleado">Tipo de contrato</label>
-                    </span>
-                  </div>                  
-            
+          <div class="field col">
+            <span class="p-float-label">
+              <p-dropdown
+                id="tipo_contrato_empleado"
+                [options]="['Termino fijo', 'Termino indefinido']"
+                formControlName="tipo_contrato_empleado"
+                placeholder="Selecciona tipo de contrato"
+                
+              ></p-dropdown>
+              <label class="full-width-label" for="tipo_contrato_empleado">Tipo de Contrato*</label>
+            </span>
+            <div *ngIf="formEmpleados.get('tipo_contrato_empleado').hasError('required') && formEmpleados.get('tipo_contrato_empleado').touched" style="color: red">
+              Por favor, selecciona un tipo de contrato.
+            </div>
+          </div>
                   
-                      <div class="field col">
-                        <span class="p-float-label">
-                          <input formControlName="fecha_inicio_empleado" id="fecha_inicio_empleado" type="text" pInputText>
-                          <label for="fecha_inicio_empleado">Fecha de inicio</label>
-                        </span>
-                      </div>  
-                    </div>
+          <div class="field col">
+    <span class="p-float-label">
+        <input 
+            formControlName="fecha_inicio_empleado"
+            id="fecha_inicio_empleado"
+            type="text"
+            pInputText
+            [value]="formEmpleados.get('fecha_inicio_empleado').value | date:'yyyy-MM-dd'"
+            required
+            pattern="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4}"
+        />
+        <label for="fecha_inicio_empleado">Fecha de inicio (DD/MM/YYYY)</label>
+    </span>
+
+    <div *ngIf="formEmpleados.get('fecha_inicio_empleado').hasError('required') && formEmpleados.get('fecha_inicio_empleado').touched" style="color: red">
+        Por favor, ingrese la fecha.
+    </div>
+
+    <div *ngIf="formEmpleados.get('fecha_inicio_empleado').hasError('pattern') && formEmpleados.get('fecha_inicio_empleado').touched" style="color: red">
+        Por favor, ingrese una fecha válida en formato DD/MM/YYYY.
+    </div>
+</div>
+        
+          
+        
+      </div>
+      <div class="mt-3"></div>
+
+      <div class="formgrid grid mt-3">
+        
+          <div class="field col" >
+                <span class="p-float-label">
+                    <input formControlName="fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado" type="text" pInputText
+                        [value]="formEmpleados.get('fecha_vencimiento_contrato_empleado').value | date:'yyyy-MM-dd'"
+                        required pattern="\d{4}-\d{2}-\d{2}">
+                    <label for="fecha_vencimiento_contrato_empleado">Fecha Fin (YYYY-MM-DD)</label>
+                </span>
+    
+                <div *ngIf="formEmpleados.get('fecha_vencimiento_contrato_empleado').hasError('required') && formEmpleados.get('fecha_vencimiento_contrato_empleado').touched"
+                    style="color: red">
+                    Por favor, ingrese la fecha.
                 </div>
-                      <div class="formgrid grid mt-3">
-                        <div class="formgrid grid">
-                          <div class="field col">
-                            <span class="p-float-label">
-                              <input formControlName="fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado" type="text" pInputText>
-                              <label for="fecha_vencimiento_contrato_empleado">Fecha Fin</label>
-                            </span>
-                          </div>                   
-            
+    
+                <div *ngIf="formEmpleados.get('fecha_vencimiento_contrato_empleado').hasError('pattern') && formEmpleados.get('fecha_vencimiento_contrato_empleado').touched"
+                    style="color: red">
+                    El formato de fecha debe ser YYYY-MM-DD.
+                </div>
+            </div>
+       
+    
+              
                           
-                              <div class="field col">
-                                <span class="p-float-label">
-                                  <input formControlName="tipo_documento_empleado" id="tipo_documento_empleado" type="text" pInputText>
-                                  <label for="tipo_documento_empleado">Tipo de documento</label>
-                                </span>
-                              </div>  
+            <div class="field col" >
+              <span class="p-float-label">
+                
+                <p-dropdown
+                  formControlName="tipo_documento_empleado"
+                  [options]="['Cédula de Ciudadanía', 'Cédula de Extranjería', 'Tarjeta de Identidad']"
+                  placeholder="Selecciona tipo de documento"
+                  
+                ></p-dropdown>
+                <label class="full-width-label" for="tipo_documento_empleado">Tipo de Documento*</label>
+              </span>
+              <div
+                *ngIf="formEmpleados.get('tipo_documento_empleado').hasError('required') && formEmpleados.get('tipo_documento_empleado').touched"
+                style="color: red"
+              >
+                Por favor, selecciona un tipo de documento.
+              </div>
+            </div>
                               
-                                  <div class="field col">
-                                    <span class="p-float-label">
-                                      <input formControlName="identificacion_empleado" id="identificacion_empleado" type="text" pInputText>
-                                      <label for="identificacion_empleado">Número de identificación</label>
-                                    </span>
-                                  </div> 
+            <div class="field col" >
+              <span class="p-float-label">
+                <input
+                  formControlName="identificacion_empleado"
+                  id="identificacion_empleado"
+                  type="text"
+                  pInputText
+                />
+                <label for="identificacion_empleado">Identificación*</label>
+              </span>
+              <div *ngIf="formEmpleados.get('identificacion_empleado').hasError('required') && formEmpleados.get('identificacion_empleado').touched" style="color: red">
+                Campo requerido
+              </div>
+              <div *ngIf="formEmpleados.get('identificacion_empleado').hasError('pattern') && formEmpleados.get('identificacion_empleado').touched" style="color: red">
+                Ingrese solo números
+              </div>
+              <div *ngIf="formEmpleados.get('identificacion_empleado').hasError('maxlength') && formEmpleados.get('identificacion_empleado').touched" style="color: red">
+                Máximo 10 números permitidos
+              </div>
+            </div>
+            
+            
                                   
-                                      <div class="field col">
-                                        <span class="p-float-label">
-                                          <input formControlName="fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" type="text" pInputText>
-                                          <label for="fecha_nacimiento_empleado">Fecha de nacimiento</label>
-                                        </span>
-                                      </div> 
-                                    </div> 
+            <div class="field col">
+              <span class="p-float-label">
+                  <input formControlName="fecha_nacimiento_empleado" id="fecha_nacimiento_empleado" type="text" pInputText
+                      [value]="formEmpleados.get('fecha_nacimiento_empleado').value | date:'yyyy-MM-dd'"
+                      required pattern="\d{4}-\d{2}-\d{2}">
+                  <label for="fecha_nacimiento_empleado">Fecha de nacimiento*</label>
+              </span>
+          
+              <div *ngIf="formEmpleados.get('fecha_nacimiento_empleado').hasError('required') && formEmpleados.get('fecha_nacimiento_empleado').touched"
+                  style="color: red">
+                  Por favor, selecciona una fecha de nacimiento.
+              </div>
+          
+              <div *ngIf="formEmpleados.get('fecha_nacimiento_empleado').hasError('pattern') && formEmpleados.get('fecha_nacimiento_empleado').touched"
+                  style="color: red">
+                  El formato de fecha debe ser YYYY-MM-DD.
+              </div>
+          </div>
+          
+            
+          
+            
                                 </div> 
-                                      <div class="formgrid grid mt-3">
-                                        <div class="formgrid grid">
-                                          <div class="field col">
+                                <div class="formgrid grid mt-3">
+                                  
+                                    <div class="field col">
                                             <span class="p-float-label">
-                                              <input formControlName="edad_empleado" id="edad_empleado" type="text" pInputText>
-                                              <label for="edad_empleado">Edad</label>
+                                              <input
+                                                type="text"
+                                                id="edad_empleado"
+                                                pInputText
+                                                formControlName="edad_empleado"
+                                                required
+                                                pattern="[0-9]+"
+                                              />
+                                              <label for="edad_empleado" >Edad*</label>
                                             </span>
-                                          </div>                    
+                                            <div *ngIf="formEmpleados.get('edad_empleado').hasError('required') && formEmpleados.get('edad_empleado').touched" style="color: red">
+                                              Campo requerido
+                                            </div>
+                                            <div *ngIf="formEmpleados.get('edad_empleado').hasError('pattern') && formEmpleados.get('edad_empleado').touched" style="color: red">
+                                              Ingrese solo números
+                                            </div>
+                                          </div>
+                                                           
             
                                           
-                                              <div class="field col">
-                                                <span class="p-float-label">
-                                                  <input formControlName="lugar_nacimiento_empleado" id="lugar_nacimiento_empleado" type="text" pInputText>
-                                                  <label for="lugar_nacimiento_empleado">Lugar de nacimiento</label>
-                                                </span>
-                                              </div> 
+                                          <div class="field col" >
+                                            <span class="p-float-label">
+                                              <input
+                                                type="text"
+                                                id="lugar_nacimiento_empleado"
+                                                pInputText
+                                                formControlName="lugar_nacimiento_empleado"
+                                                required
+                                              />
+                                              <label for="lugar_nacimiento_empleado">Lugar de nacimiento*</label>
+                                            </span>
+                                            <div *ngIf="formEmpleados.get('lugar_nacimiento_empleado').hasError('required') && formEmpleados.get('lugar_nacimiento_empleado').touched" style="color: red">
+                                              Campo requerido
+                                            </div>
+                                          </div>
                                               
-                                                  <div class="field col">
-                                                    <span class="p-float-label">
-                                                      <input formControlName="direccion_empleado" id="direccion_empleado" type="text" pInputText>
-                                                      <label for="direccion_empleado">Dirección</label>
-                                                    </span>
-                                                  </div> 
+                                          <div class="field col">
+                                            <span class="p-float-label">
+                                              <input formControlName="direccion_empleado" id="direccion_empleado" type="text" pInputText />
+                                              <label for="direccion_empleado">Dirección</label>
+                                            </span>
+                                            <div *ngIf="formEmpleados.get('direccion_empleado').hasError('required') && formEmpleados.get('direccion_empleado').touched" style="color: red">
+                                              Campo requerido
+                                            </div>
+                                          </div>
                                                   
-                                                      <div class="field col">
-                                                        <span class="p-float-label">
-                                                          <input formControlName="municipio_domicilio_empleado" id="municipio_domicilio_empleado" type="text" pInputText>
-                                                          <label for="municipio_domicilio_empleado">Municipio domicilio</label>
-                                                        </span>
-                                                      </div> 
-                                                    </div> 
-                                                </div> 
-                                                      <div class="formgrid grid mt-3">
-                                                        <div class="formgrid grid">
-                                                          <div class="field col">
+                                          <div class="field col">
+                                            <span class="p-float-label">
+                                              <input
+                                                formControlName="municipio_domicilio_empleado"
+                                                id="municipio_domicilio_empleado"
+                                                type="text"
+                                                pInputText
+                                              />
+                                              <label for="municipio_domicilio_empleado">Municipio domicilio</label>
+                                            </span>
+                                            <div *ngIf="formEmpleados.get('municipio_domicilio_empleado').hasError('required') && formEmpleados.get('municipio_domicilio_empleado').touched" style="color: red">
+                                              Campo requerido
+                                            </div>
+                                          </div>
+                                          
+                                                 </div> 
+                                                <div class="formgrid grid mt-3">
+                                                  
+                                                    <div class="field col" >
                                                             <span class="p-float-label">
-                                                              <input formControlName="estado_civil_empleado" id="estado_civil_empleado" type="text" pInputText>
-                                                              <label for="estado_civil_empleado">Estado civil</label>
+                                                              <p-dropdown
+                                                                id="estado_civil_empleado"
+                                                                [options]="['Soltero', 'Casado', 'Divorciado', 'Viudo']"
+                                                                formControlName="estado_civil_empleado"
+                                                                placeholder="Selecciona estado civil"
+                                                                
+                                                              ></p-dropdown>
+                                                              <label for="estado_civil_empleado">Estado civil*</label>
                                                             </span>
-                                                          </div> 
+                                                            <div *ngIf="formEmpleados.get('estado_civil_empleado').hasError('required') && formEmpleados.get('estado_civil_empleado').touched" style="color: red">
+                                                              Por favor, selecciona un estado civil.
+                                                            </div>
+                                                          </div>
+
+                                                          <div class="field col" >
+                                                            <span class="p-float-label">
+                                                              <input
+                                                                type="text"
+                                                                id="celular_empleado"
+                                                                pInputText
+                                                                [formControl]="formEmpleados.get('celular_empleado')"
+                                                                
+                                                              />
+                                                              <label for="celular_empleado">Celular*</label>
+                                                            </span>
+                                                            <div *ngIf="formEmpleados.get('celular_empleado').hasError('pattern') && formEmpleados.get('celular_empleado').touched" style="color: red">
+                                                              Por favor, ingresa un número de celular válido (10 números).
+                                                            </div>
+                                                            <div *ngIf="formEmpleados.get('celular_empleado').hasError('required') && formEmpleados.get('celular_empleado').touched" style="color: red">
+                                                              Campo requerido.
+                                                            </div>
+                                                          </div>
                                                           
-                                                              <div class="field col">
-                                                                <span class="p-float-label">
-                                                                  <input formControlName="celular_empleado" id="celular_empleado" type="text" pInputText>
-                                                                  <label for="celular_empleado">Telefono</label>
-                                                                </span>
-                                                              </div>                  
+                                                                          
            
                                                               
-                                                                  <div class="field col">
-                                                                    <span class="p-float-label">
-                                                                      <input formControlName="correo_empleado" id="correo_empleado" type="text" pInputText>
-                                                                      <label for="correo_empleado">Correo</label>
-                                                                    </span>
-                                                                  </div>  
-                                                                  
-                                                                      <div class="field col">
-                                                                        <span class="p-float-label">
-                                                                          <input formControlName="alergia_empleado" id="alergia_empleado" type="text" pInputText>
-                                                                          <label for="alergia_empleado">Alergias</label>
-                                                                        </span>
-                                                                      </div> 
-                                                                    </div> 
-                                                                </div>                    
+                                                          <div class="field col">
+                                                            <span class="p-float-label">
+                                                              <input
+                                                                formControlName="correo_electronico"
+                                                                id="correo_electronico"
+                                                                type="text"
+                                                                pInputText
+                                                                
+                                                              />
+                                                              <label for="correo_electronico">Correo*</label>
+                                                            </span>
+                                                            <div *ngIf="formEmpleados.get('correo_electronico').hasError('email') && formEmpleados.get('correo_electronico').touched" style="color: red">
+                                                              Por favor, ingresa un correo válido.
+                                                            </div>
+                                                            <div *ngIf="formEmpleados.get('correo_electronico').hasError('required') && formEmpleados.get('correo_electronico').touched" style="color: red">
+                                                              Campo requerido.
+                                                            </div>
+                                                          </div>
+                                                          
+                                                         
+                                                          
+                                                          <div class="field col" >
+                                                            <span class="p-float-label">
+                                                              <input
+                                                                type="text"
+                                                                id="alergia_empleado"
+                                                                pInputText
+                                                                formControlName="alergia_empleado"
+                                                              />
+                                                              <label for="alergia_empleado">Alergias*</label>
+                                                            </span>
+                                                            <div *ngIf="formEmpleados.get('alergia_empleado').hasError('required') && formEmpleados.get('alergia_empleado').touched" style="color: red">
+                                                              Campo requerido.
+                                                            </div>
+                                                          </div>
+                                                           </div>        
             
                                                         <div
                                                         *ngFor="let contacto of empleado.contacto_emergencia; let i = index">
@@ -490,39 +739,121 @@
                                                             [(ngModel)]="contacto.nombre_contacto_emergencia"required> </div>
                                                         </div>
                                                         <div class="formgrid grid mt-3">
-                                                            <div class="formgrid grid">
+                                                            
                                                               <div class="field col">
-                                                                <span class="p-float-label">
-                                                                  <input formControlName="eps_empleado" id="eps_empleado" type="text" pInputText>
-                                                                  <label for="eps_empleado">Eps</label>
-                                                                </span>
+                                                               <span class="p-float-label">
+                                                      <input
+                                                        type="text"
+                                                        id="eps_empleado"
+                                                        pInputText
+                                                        formControlName="eps_empleado"
+                                                        
+                                                      />
+                                                      <label for="eps_empleado">EPS*</label>
+                                                    </span>
+                                                    <div *ngIf="formEmpleados.get('eps_empleado').hasError('required') && formEmpleados.get('eps_empleado').touched" style="color: red">
+                                                      La EPS es requerida.
+                                                    </div>
                                                               </div>                   
             
                                                               
-                                                                  <div class="field col">
-                                                                    <span class="p-float-label">
-                                                                      <input formControlName="pension_empleado" id="pension_empleado" type="text" pInputText>
-                                                                      <label for="pension_empleado">Pensión</label>
-                                                                    </span>
-                                                                  </div>            
+                                                              <div class="field col" >
+                                                                <span class="p-float-label">
+                                                                  <p-dropdown
+                                                                    id="pension_empleado"
+                                                                    [options]="['Protección', 'Porvenir', 'Colfondos', 'Old Mutual', 'Colpensiones']"
+                                                                    formControlName="pension_empleado"
+                                                                    
+                                                                  ></p-dropdown>
+                                                                  <label class="full-width-label" for="pension_empleado">Pensión*</label>
+                                                                </span>
+                                                                <div *ngIf="formEmpleados.get('pension_empleado').hasError('required') && formEmpleados.get('pension_empleado').touched" style="color: red">
+                                                                  Por favor, selecciona un tipo de pensión.
+                                                                </div>
+                                                              </div>         
                                                                   
                                                                       <div class="field col">
                                                                         <span class="p-float-label">
-                                                                          <input formControlName="cuenta_bancaria_empleado" id="cuenta_bancaria_empleado" type="text" pInputText>
-                                                                          <label for="cuenta_bancaria_empleado">Número de cuenta</label>
+                                                                          <input
+                                                                            type="text"
+                                                                            id="cuenta_bancaria_empleado"
+                                                                            pInputText
+                                                                            formControlName="cuenta_bancaria_empleado"
+                                                                            
+                                                                          />
+                                                                          <label for="cuenta_bancaria_empleado">Cuenta bancaria*</label>
                                                                         </span>
-                                                                      </div>  
+                                                                        <div *ngIf="formEmpleados.get('cuenta_bancaria_empleado').hasError('required') && formEmpleados.get('cuenta_bancaria_empleado').touched" style="color: red">
+                                                                          La cuenta bancaria es requerida.
+                                                                        </div>
+                                                                        <div *ngIf="formEmpleados.get('cuenta_bancaria_empleado').hasError('pattern') && formEmpleados.get('cuenta_bancaria_empleado').touched" style="color: red">
+                                                                          La cuenta bancaria debe tener exactamente 10 dígitos.
+                                                                        </div>
+                                                                      </div> 
+                                                                       
                                                                       
-                                                                          <div class="field col">
-                                                                            <span class="p-float-label">
-                                                                              <input formControlName="area_empleado" id="area_empleado" type="text" pInputText>
-                                                                              <label for="area_empleado">Área</label>
-                                                                            </span>
-                                                                          </div>  
-                                                                        </div> 
+                                                                      <div class="field col">
+                                                                        <span class="p-float-label" >
+                                                                          <p-dropdown
+                                                                            [options]="['AB+', 'AB-', 'A+', 'A-', 'B+', 'B-', 'O+', 'O-']"
+                                                                            formControlName="grupo_sanguineo_empleado"
+                                                                            placeholder="Selecciona el grupo sanguíneo"
+                                                                            
+                                                                          ></p-dropdown>
+                                                                          <label for="grupo_sanguineo_empleado">Grupo sanguíneo</label>
+                                                                        </span>
+                                                                        <div *ngIf="formEmpleados.get('grupo_sanguineo_empleado').hasError('required') && formEmpleados.get('grupo_sanguineo_empleado').touched" style="color: red">
+                                                                          El grupo sanguíneo es requerido.
+                                                                        </div>
+                                                                      </div>
+                                                                       
                                                                     </div> 
-                            
-            
+   <div class="formgrid grid mt-3">
+     <div class="field col-3" style="width: 25%;">
+    <span class="p-float-label">
+    <p-dropdown
+      [options]="['Producción', 'Domiciliario']"
+      formControlName="area_empleado"
+      placeholder="Selecciona área"
+    ></p-dropdown>
+    <label for="area_empleado">Área</label>
+  </span>
+  <div *ngIf="formEmpleados.get('area_empleado').hasError('required') && formEmpleados.get('area_empleado').touched" style="color: red">
+    Por favor, selecciona un área.
+  </div>
+</div>
+<div class="field col-3" style="width: 25%;">
+  <span class="p-float-label" >
+    <p-dropdown
+      id="banco_cuenta"
+      [options]="['Bancolombia', 'Banco de Bogotá', 'Davivienda', 'BBVA', 'Banco de Occidente', 'Scotiabank Colpatria', 'Banco Itaú', 'GNB Sudameris', 'Banco Agrario', 'Banco Popular', 'Banco Caja Social', 'Banco AV Villas', 'Banco Union', 'Bancoomeva', 'Banco Falabella', 'Banco Pichincha', 'Banco W', 'Banco Finandina', 'Bancamía', 'Ban100', 'Banco Cooperativo Coopcentral', 'Bancoldex', 'Banco Mundo Mujer']"
+      formControlName="banco_cuenta"
+      placeholder="Selecciona el banco"
+      
+    ></p-dropdown>
+    <label class="full-width-label" for="banco_cuenta">Banco*</label>
+  </span>
+  <div *ngIf="formEmpleados.get('banco_cuenta').hasError('required') && formEmpleados.get('banco_cuenta').touched" style="color: red">
+    Por favor, selecciona un banco.
+  </div>
+
+</div>
+<div class="field col-3" style="width: 25%;">
+  <span class="p-float-label" >
+    <p-dropdown
+      id="tipo_cuenta"
+      [options]="['Cuenta de Ahorros', 'Cuenta Corriente', 'Cuenta de Cheques', 'Cuenta de Crédito', 'Cuenta de Nómina', 'Cuenta de Inversión', 'Cuenta Empresarial', 'Cuenta Conjunta']"
+      formControlName="tipo_cuenta"
+      placeholder="Selecciona un tipo de cuenta"
+      
+    ></p-dropdown>
+    <label class="full-width-label" for="tipo_cuenta">Tipo de cuenta*</label>
+  </span>
+  <div *ngIf="formEmpleados.get('tipo_cuenta').hasError('required') && formEmpleados.get('tipo_cuenta').touched" style="color: red">
+    Por favor, selecciona un tipo de cuenta.
+  </div>
+</div>
+</div>
             
                                                                     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                                                                         <div style="display: flex; gap: 10px;">

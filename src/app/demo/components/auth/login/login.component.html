@@ -10,29 +10,39 @@
                 </div>
 
                 <form [formGroup]="loginFormulario" (ngSubmit)="login()">
-                    <div>
-                        <label for="correo_electronico" class="block text-900 text-xl font-medium mb-2">Email</label>
-                        <input id="correo_electronico" type="text" placeholder="Correo Electrónico"
-                            formControlName="correo_electronico" pInputText class="w-full md:w-30rem mb-5"
-                            style="padding:1rem">
-                        <small
-                            *ngIf="loginFormulario.get('correo_electronico').hasError('required') && loginFormulario.get('correo_electronico').touched"
-                            class="text-red-600">Correo electrónico es requerido</small>
-                        <small>
-                            <div *ngIf="loginFormulario.get('correo_electronico').hasError('email') && loginFormulario.get('correo_electronico').touched"
-                                class="text-red-600">Correo electrónico no válido</div>
-                        </small>
-
-                        <label for="contrasena_usuario"
-                            class="block text-900 font-medium text-xl mb-2">Contraseña</label>
-                        <p-password id="contrasena_usuario" formControlName="contrasena_usuario"
-                            placeholder="Contraseña usuario" [toggleMask]="true" styleClass="mb-5"
-                            inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-
+                    <div class="field mt-4">
+                        <div style="display: block;">
+                            <label for="correo_electronico"
+                                class="block text-900 text-xl font-medium mb-2">Email</label>
+                            <input id="correo_electronico" type="text" placeholder="Correo Electrónico"
+                                formControlName="correo_electronico" pInputText class="w-full md:w-30rem mb-1"
+                                style="padding:1rem">
+                            <span
+                                *ngIf="loginFormulario.get('correo_electronico').hasError('required') && loginFormulario.get('correo_electronico').touched"
+                                style="color: red; display: block;">Correo electrónico es requerido.</span>
+                            <span
+                                *ngIf="loginFormulario.get('correo_electronico').hasError('email') && loginFormulario.get('correo_electronico').touched"
+                                style="color: red; display: block;">Correo electrónico no válido.</span>
+                        </div>
+                        <br>
+                        <div style="display: block;">
+                            <label for="contrasena_usuario"
+                                class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                            <input id="contrasena_usuario" type="password" placeholder="Contraseña usuario"
+                                formControlName="contrasena_usuario" pInputText class="w-full md:w-30rem mb-1"
+                                style="padding:1rem">
+                            <span
+                                *ngIf="loginFormulario.get('contrasena_usuario').hasError('required') && loginFormulario.get('contrasena_usuario').touched"
+                                style="color: red; display: block;">Contraseña es requerida</span>
+                            <span *ngIf="loginFormulario.get('contrasena_usuario').hasError('minlength')"
+                                style="color: red; display: block;">La contraseña debe tener al menos 6
+                                caracteres.</span>
+                        </div>
 
                         <!-- Mostrar el mensaje de error -->
-                        <div *ngIf="correoNoRegistradoError" class="text-red-600">{{ correoNoRegistradoError }}</div>
-
+                        <span *ngIf="correoNoRegistradoError" style="color: red; display: block;">{{
+                            correoNoRegistradoError }}</span>
+                        <br>
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <a (click)="recuperarContrasena()"
                                 class="font-medium no-underline ml-2 text-right cursor-pointer"
@@ -42,8 +52,12 @@
                 </form>
                 <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl"
                     [disabled]="!loginFormulario.valid"></button>
-                <br><br>
-                <button (click)="registro()" pButton pRipple label="Registrarse" class="w-full p-3 text-xl"></button>
+                <hr>
+                <div style="width: 100%; text-align: center;">
+                    <a (click)="registro()" class="p-3 text-xl cursor-pointer" style="color: var(--primary-color)">
+                        ¿No tienes una cuenta? <span style="font-weight: bold;">Regístrate aquí</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

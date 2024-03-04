@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthGuard } from 'src/app/demo/components/auth/login/login.guard'; // Importa tu guard de autenticación
+import { AuthGuard } from 'src/app/demo/components/auth/guard/auth.guard'; // Importa tu guard de autenticación
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -19,6 +19,7 @@ import { AuthGuard } from 'src/app/demo/components/auth/login/login.guard'; // I
         { path: 'productos', loadChildren: () => import('./productos/producto.module').then(m => m.ProductoModule), canActivate: [AuthGuard] },
         { path: 'pedidos', loadChildren: () => import('./pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule), canActivate: [AuthGuard] },
         { path: 'pedido-cliente', loadChildren: () => import('./pedido-cliente/pedido-cliente.module').then(m => m.PedidoClienteModule), canActivate: [AuthGuard] },
+        { path: 'pedido-list', loadChildren: () => import('./pedido-list/pedido-list.module').then(m => m.PedidoListModule), canActivate: [AuthGuard] },
         { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard] },
         { path: 'perfil', loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule), canActivate: [AuthGuard] },
         { path: 'new-pedidos', loadChildren: () => import('./pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule), canActivate: [AuthGuard] },

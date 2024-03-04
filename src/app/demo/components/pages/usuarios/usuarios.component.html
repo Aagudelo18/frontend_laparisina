@@ -8,8 +8,8 @@
     </ng-template>
 
 </p-toolbar>
-<p-table #dt [value]="usuarios" [globalFilterFields]="['correo_electronico', 'nombre_usuario']" [rows]="10" [paginator]="true"
-    [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+<p-table #dt [value]="usuarios" [globalFilterFields]="['correo_electronico', 'nombre_usuario']" [rows]="10"
+    [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedUsuarios"
     selectionMode="multiple" dataKey="uid">
     <ng-template pTemplate="caption">
@@ -24,9 +24,11 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="correo_electronico">Correo electronico<p-sortIcon field="correo_electronico"></p-sortIcon></th>
+            <th pSortableColumn="correo_electronico">Correo electronico<p-sortIcon
+                    field="correo_electronico"></p-sortIcon></th>
             <th pSortableColumn="nombre_usuario">Nombre de usuario<p-sortIcon field="nombre_usuario"></p-sortIcon></th>
-            <th pSortableColumn="rol_usuario.nombre_rol">Rol usuario<p-sortIcon field="rol_usuario.nombre_rol"></p-sortIcon></th>
+            <th pSortableColumn="rol_usuario.nombre_rol">Rol usuario<p-sortIcon
+                    field="rol_usuario.nombre_rol"></p-sortIcon></th>
             <th pSortableColumn="estado_usuario">Estado<p-sortIcon field="estado_usuario"></p-sortIcon>
             </th>
             <th pSortableColumn="name">Acciones</th>
@@ -43,16 +45,16 @@
                 {{ usuario.nombre_usuario }}
             </td>
 
-            <td style="width:20%; min-width:8rem;">
+            <td style="width:20%; min-width:7rem;">
                 {{ usuario.rol_usuario.nombre_rol }}
             </td>
-            <td style="width:10%; min-width:10rem;">
+            <td style="width:10%; min-width:7rem;">
                 <span class="p-column-title">Estado</span>
                 <!-- {{ categoria.estado_categoria_producto ? 'Activo' : 'Inactivo' }} -->
                 <p-inputSwitch class="mr-2" [ngModel]="usuario.estado_usuario"
                     (onChange)="confirmarCambioEstado(usuario)" pTooltip="Cambiar estado"></p-inputSwitch>
             </td>
-            <td style="width:10%; min-width:10rem;">
+            <td style="width:10%; min-width:5rem;">
                 <div class="flex">
                     <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
                         (click)="editProduct(product)"></button> -->
@@ -72,9 +74,8 @@
             <b>{{usuario.correo_electronico}}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-            (click)="noCambiarEstado()"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+        <button pButton pRipple class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+        <button pButton pRipple class="p-button-text" label="Si"
             (click)="cambiarEstadoUsuario(usuario.uid, !usuario.estado_usuario)"></button>
     </ng-template>
 </p-dialog>
@@ -98,8 +99,17 @@
                     <label for="nombre_usuario">Nombre del usuario</label>
                 </span>
                 <span
-                    *ngIf="formularioUsuario.get('correo_electronico')?.hasError('required') && formularioUsuario.get('correo_electronico')?.touched"
-                    style="color: red;">Nombre requerido.</span>
+                    *ngIf="formularioUsuario.get('nombre_usuario')?.hasError('pattern') && formularioUsuario.get('nombre_usuario')?.touched && !formularioUsuario.get('nombre_usuario')?.hasError('maxlength')"
+                    style="color: red;">El nombre no puede contener números.</span>
+                <span
+                    *ngIf="formularioUsuario.get('nombre_usuario')?.hasError('minlength') && formularioUsuario.get('nombre_usuario')?.touched"
+                    style="color: red;">El nombre debe tener al menos 2 caracteres.</span>
+                <span
+                    *ngIf="formularioUsuario.get('nombre_usuario')?.hasError('maxlength') && formularioUsuario.get('nombre_usuario')?.touched"
+                    style="color: red;">El nombre no puede tener más de 20 caracteres.</span>
+                <span
+                    *ngIf="formularioUsuario.get('nombre_usuario')?.hasError('caracteresEspeciales') && formularioUsuario.get('nombre_usuario')?.touched"
+                    style="color: red;">El nombre no puede contener caracteres especiales.</span>
             </div>
 
             <div class="field mt-4">
@@ -156,9 +166,8 @@
             </div>
 
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-                    (click)="usuarioDialog = false"></button>
-                <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                <button pButton pRipple label="Cancelar" class="p-button-text" (click)="usuarioDialog = false"></button>
+                <button type="submit" pButton pRipple label="Guardar" class="p-button-text"
                     [disabled]="!formularioUsuario.valid"></button>
             </div>
         </form>
@@ -173,10 +182,8 @@
                 }}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-            (click)="mostrarConfirmacionUsuario = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
-            (click)="confirmarCrearUsuario()"></button>
+        <button pButton pRipple class="p-button-text" label="No" (click)="mostrarConfirmacionUsuario = false"></button>
+        <button pButton pRipple class="p-button-text" label="Sí" (click)="confirmarCrearUsuario()"></button>
     </ng-template>
 </p-dialog>
 
@@ -221,13 +228,14 @@
                 <label for="nombre_usuario">Nombre de usuario</label>
                 <input type="text" pInputText id="nombre_usuario" formControlName="nombre_usuario" />
                 <span
-                    *ngIf="formularioEditarUsuario.get('correo_electronico')?.hasError('required') && formularioEditarUsuario.get('correo_electronico')?.touched"
-                    style="color: red;">Correo electrónico
-                    requerido.</span>
-                <span *ngIf="formularioEditarUsuario.get('correo_electronico').hasError('email')"
-                    style="color: red;">Correo
-                    electrónico no
-                    válido.</span>
+                    *ngIf="formularioEditarUsuario.get('nombre_usuario')?.hasError('pattern') && formularioEditarUsuario.get('nombre_usuario')?.touched && !formularioEditarUsuario.get('nombre_usuario')?.hasError('maxlength')"
+                    style="color: red;">El nombre no puede contener números.</span>
+                <span
+                    *ngIf="formularioEditarUsuario.get('nombre_usuario')?.hasError('minlength') && formularioEditarUsuario.get('nombre_usuario')?.touched"
+                    style="color: red;">El nombre debe tener al menos 2 caracteres.</span>
+                <span
+                    *ngIf="formularioEditarUsuario.get('nombre_usuario')?.hasError('maxlength') && formularioEditarUsuario.get('nombre_usuario')?.touched"
+                    style="color: red;">El nombre no puede tener más de 20 caracteres.</span>
             </div>
 
             <div class="field">
@@ -239,9 +247,9 @@
             <!-- Otros campos de edición -->
 
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                <button pButton pRipple label="Cancelar" class="p-button-text"
                     (click)="editarUsuarioDialog = false"></button>
-                <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                <button type="submit" pButton pRipple label="Guardar" class="p-button-text"
                     [disabled]="!formularioEditarUsuario.valid"></button>
             </div>
         </form>

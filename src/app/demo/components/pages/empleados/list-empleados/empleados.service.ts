@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Empleado } from './empleados.model';
 import { Observable } from 'rxjs';
+import { tap  , catchError} from 'rxjs/operators';
 
 
 
@@ -31,18 +32,37 @@ export class EmpleadosService {
     return this.http.put<void>(`${this.apiUrl}empleados/${id}`, empleado);
 
   }
-
-  getEmpleadosPendientes(): Observable<Empleado[]> {
-    return this.http.get<Empleado[]>(`${this.apiUrl}empleados/pendientes`);
+  getEmpleadoPorCedula(cedula: string): Observable<Empleado> {
+    const url = `${this.apiUrl}/buscarPorCedula/${cedula}`; // Ajusta la URL según tu implementación del servicio
+    return this.http.get<Empleado>(url);
   }
+  // getEmpleadosPendientes(): Observable<Empleado[]> {
+  //   return this.http.get<Empleado[]>(`${this.apiUrl}empleados/pendientes`);
+  // }
 
-  getEmpleadosTerminados(): Observable<Empleado[]> {
-    return this.http.get<Empleado[]>(`${this.apiUrl}empleados/terminados`);
-  }
+  // getEmpleadosTerminados(): Observable<Empleado[]> {
+  //   return this.http.get<Empleado[]>(`${this.apiUrl}empleados/terminados`);
+  // }
   
   getEmpleados(id:string): Observable<Empleado>{
     return this.http.get<Empleado>(`${this.apiUrl}empleados/${id}`)
 
 
   }
+  
+  obtenerEmpleadoPorIdentificacion(identificacion_empleado: string): Observable<any> {
+    const url = `${this.apiUrl}obtenerDatosEmpleado/${identificacion_empleado}`;
+    
+    console.log('URL:', url); // Agrega este log para verificar la URL
+    
+    return this.http.get(url).pipe(
+      tap(data => console.log('Data from server:', data)), // Agrega este log para verificar la respuesta del servidor
+      catchError(error => {
+        console.error('Error fetching employee data:', error);
+        throw error; // Puedes manejar el error según tus necesidades
+      })
+    );
+  }
 }
+
+

@@ -23,8 +23,8 @@ export class NewPedidosService {
     return this.http.get(this.apiUrl + 'productos')
   }
  
-  public getCliente(documento_cliente: string): Observable<any>{
-      return this.http.get(this.apiUrl + `clientes/consultar/${documento_cliente}`)
+  public getCliente(numero_documento_cliente: string): Observable<any>{
+      return this.http.get(this.apiUrl + `clientes/consultar/${numero_documento_cliente}`)
      }
   
 }
