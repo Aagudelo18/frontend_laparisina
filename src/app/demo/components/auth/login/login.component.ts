@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     ) {
         this.loginFormulario = this.formBuilder.group({
             correo_electronico: ['', [Validators.required, Validators.email]], // Agrega Validators.email para validar el formato del correo electrónico
-            contrasena_usuario: ['', Validators.required]
+            contrasena_usuario: ['', [Validators.minLength(6), Validators.required]]
         });
     }
 
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
                     localStorage.removeItem('currentUser');
                     localStorage.removeItem('expirationTime');
                     this.loginService.setisAuthenticatedSubject(false);
-                  }, 60 * 60 * 1000); // 1 hora en milisegundos
+                  }, 60 * 60 * 1000 * 8); // 1 hora en milisegundos
                   resolve('');
                 } 
             })
@@ -75,7 +75,6 @@ export class LoginComponent implements OnInit {
             const usuarioData = this.loginFormulario.value;
             this.loginService.login(usuarioData).subscribe(
                 async (response: any) => {
-                    console.log(response)
                     if (response && response.usuario) {
                         const token = response?.token;
                         const userRole = response?.usuario?.rol_usuario; // Obtener el rol del usuario

@@ -17,6 +17,11 @@ import { tap } from 'rxjs/operators';
         return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
     }
 
+    //Método para obtener la lista de roles desde la API
+    getRoles() {
+        return this.http.get<any[]>(`${this.apiUrl}/roles`);
+    }
+
     //Proceso de login, donde el páramettro Usuario data envía los datos del usaurio par avalidar su inicio de sesión
     login(credentials: any): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(

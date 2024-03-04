@@ -12,224 +12,239 @@ import { Subject, Observable, throwError } from 'rxjs';
 
 
 @Component({
-    selector: 'app-registrarse',
-    templateUrl: './registrarse.component.html',
-    providers: [MessageService]
+  selector: 'app-registrarse',
+  templateUrl: './registrarse.component.html',
+  providers: [MessageService]
 })
 export class RegistrarseComponent implements OnInit {
-    usuarios: any[] = [];
-    crearClienteDialog: boolean = false;
+  usuarios: any[] = [];
+  crearClienteDialog: boolean = false;
 
-    private confirmacionUsuarioSubject = new Subject<boolean>();
-    mostrarConfirmacionUsuario = false;
-    listClientes: Clientes[] = []
-    clientes: Clientes = {}
-    formCliente: FormGroup;
-    id: string = '';
+  private confirmacionUsuarioSubject = new Subject<boolean>();
+  mostrarConfirmacionUsuario = false;
+  listClientes: Clientes[] = []
+  clientes: Clientes = {}
+  formCliente: FormGroup;
+  id: string = '';
+  roles: any[] = []; // Se declara una lista para roles
+  rolCliente: any[] = [];
+
+  estado: SelectItem[] = [
+    { label: 'Activo', value: true },
+    { label: 'Inactivo', value: false }
+  ];
+
+  selectedEstado: SelectItem = { value: '' };
 
 
-    estado: SelectItem[] = [
-        { label: 'Activo', value: true },
-        { label: 'Inactivo', value: false }
-    ];
+  constructor(
+    public layoutService: LayoutService,
+    private registrarseService: RegistrarseService,
+    private fb: FormBuilder,
+    private clienteService: ClienteService,
+    private usuarioService: UsuarioService,
+    private messageService: MessageService,
+    private router: Router,
+    private aRouter: ActivatedRoute
+  ) {
+    this.formCliente = this.fb.group({
+      tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+      nombre_contacto: ['', [Validators.minLength(3), Validators.maxLength(50), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]+$/),]],
+      nombre_juridico: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]+$/),]],
+      numero_documento_cliente: ['', [Validators.minLength(7), Validators.maxLength(10), Validators.required, Validators.pattern(/^[0-9]+$/),]],
+      nit_empresa_cliente: ['', [Validators.minLength(7), Validators.maxLength(12), Validators.required, Validators.pattern(/^[0-9]+$/),]],
+      telefono_cliente: ['', [Validators.minLength(7), Validators.maxLength(10), Validators.required, Validators.pattern(/^[0-9]+$/),]],
+      direccion_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'#-]+$/),]],
+      barrio_cliente: ['', [Validators.minLength(3), Validators.maxLength(20), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]+$/),]],
+      ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+      estado_cliente: ['', Validators.required],
+      correo_cliente: ['', [Validators.required, Validators.email]],
+      contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
+      confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
+    })
+    this.aRouter.params.subscribe(params => {
+      this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
+    });
+  }
 
-    selectedEstado: SelectItem = { value: '' };
+  //Verifica o se asegura de que el campo de confirmar contraseña coincida con la contraseña.
+  validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
+    const contrasena = control.root.get('contrasena_usuario');
+    const confirmarContrasena = control.value;
 
-
-    constructor(
-        public layoutService: LayoutService,
-        private signInService: RegistrarseService,
-        private fb: FormBuilder,
-        private clienteService: ClienteService,
-        private usuarioService: UsuarioService,
-        private messageService: MessageService,
-        private router: Router,
-        private aRouter: ActivatedRoute
-    ) {
-        this.formCliente = this.fb.group({
-            tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            nombre_contacto: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            nombre_juridico: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            numero_documento_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
-            nit_empresa_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,12}$/),]],
-            telefono_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
-            direccion_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'-]+$/),]],
-            barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            estado_cliente: ['', Validators.required],
-            correo_cliente: ['', [Validators.required, Validators.email]],
-            contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
-            confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
-        })
-        this.aRouter.params.subscribe(params => {
-            this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
-        });
+    if (contrasena && contrasena.value !== confirmarContrasena) {
+      return { contrasenaNoCoincide: true };
     }
+    return null;
+  }
 
-    //Verifica o se asegura de que el campo de confirmar contraseña coincida con la contraseña.
-    validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
-        const contrasena = control.root.get('contrasena_usuario');
-        const confirmarContrasena = control.value;
+  ngOnInit(): void {
+    this.getListClientes();
+    this.getRolCliente();
+  }
 
-        if (contrasena && contrasena.value !== confirmarContrasena) {
-            return { contrasenaNoCoincide: true };
-        }
-        return null;
-    }
+  getListClientes() {
+    this.clienteService.getListClientes().subscribe((data) => {
+      this.listClientes = data;
+    })
+  }
 
-    ngOnInit(): void {
-        this.getListClientes();
-    }
+  getRolCliente() {
+    this.registrarseService.getRoles().subscribe((data: any[]) => {
+      // Filtrar los roles para traer solo el rol de cliente para la creación
+      this.rolCliente = data.find(rol => rol.nombre_rol === 'Cliente');
+    });
+  }
 
-    getListClientes() {
-        this.clienteService.getListClientes().subscribe((data) => {
-            this.listClientes = data;
-        })
-    }
-
-    // Función para crear una categoría
-    crearCliente() {
-        const nuevoCliente: Clientes = {
-            tipo_cliente: this.formCliente.value.tipo_cliente,
-            nombre_contacto: this.formCliente.value.nombre_contacto,
-            nombre_juridico: this.formCliente.value.nombre_juridico,
-            numero_documento_cliente: this.formCliente.value.numero_documento_cliente,
-            nit_empresa_cliente: this.formCliente.value.nit_empresa_cliente,
-            correo_cliente: this.formCliente.value.correo_cliente,
-            telefono_cliente: this.formCliente.value.telefono_cliente,
-            direccion_cliente: this.formCliente.value.direccion_cliente,
-            barrio_cliente: this.formCliente.value.barrio_cliente,
-            ciudad_cliente: this.formCliente.value.ciudad_cliente,
-            estado_cliente: true,
-        };
-
-        const nuevoUsuario = {
-            correo_electronico: this.formCliente.value.correo_cliente,
-            contrasena_usuario: this.formCliente.value.contrasena_usuario,
-            confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
-        };
-
-        // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
-        if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
-            this.confirmarCrearUsuario().subscribe(
-                (usuarioConfirmado) => {
-                    if (usuarioConfirmado) {
-                        // El usuario fue confirmado, ahora puedes crear el cliente
-                        this.clienteService.postClientes(nuevoCliente).subscribe(
-                            () => {
-                                this.messageService.add({
-                                    severity: 'success',
-                                    summary: 'Se registró la cuenta con éxito',
-                                    detail: 'Cliente creado',
-                                    life: 6000,
-                                });
-                                this.getListClientes();
-                                this.crearClienteDialog = false;
-                            },
-                            (error) => {
-                                console.error('Error al crear el cliente:', error);
-                                this.messageService.add({
-                                    severity: 'error',
-                                    summary: 'Error al crear la cuenta',
-                                    detail: 'Error al crear el cliente',
-                                    life: 3000,
-                                });
-                            }
-                        );
-                    } else {
-                        // El usuario no fue confirmado, puedes manejarlo según tus necesidades
-                        console.log('Error por no confirmar el usuario')
-                    }
-                },
-                (error) => {
-                    console.error('Error al confirmar el usuario:', error);
-                    // Manejar errores al confirmar el usuario
-                }
-            );
-        } else {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al registrar la cuenta',
-                life: 3000,
-            });
-        }
+  // Función para crear una categoría
+  crearCliente() {
+    const nuevoCliente: Clientes = {
+      tipo_cliente: this.formCliente.value.tipo_cliente,
+      nombre_contacto: this.formCliente.value.nombre_contacto,
+      nombre_juridico: this.formCliente.value.nombre_juridico,
+      numero_documento_cliente: this.formCliente.value.numero_documento_cliente,
+      nit_empresa_cliente: this.formCliente.value.nit_empresa_cliente,
+      correo_cliente: this.formCliente.value.correo_cliente,
+      telefono_cliente: this.formCliente.value.telefono_cliente,
+      direccion_cliente: this.formCliente.value.direccion_cliente,
+      barrio_cliente: this.formCliente.value.barrio_cliente,
+      ciudad_cliente: this.formCliente.value.ciudad_cliente,
+      estado_cliente: true,
     };
 
-    confirmarCrearUsuario() {
-        const nuevoUsuario = {
-            correo_electronico: this.formCliente.value.correo_cliente,
-            contrasena_usuario: this.formCliente.value.contrasena_usuario,
-            confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
-        };
+    const nuevoUsuario = {
+      correo_electronico: this.formCliente.value.correo_cliente,
+      correo_electronio: this.formCliente.value.correo_cliente,
+      rol_usuario: this.rolCliente,
+      contrasena_usuario: this.formCliente.value.contrasena_usuario,
+      confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
+    };
 
-        if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
-            this.mostrarConfirmacionUsuario = true;
-
-            return new Observable<boolean>((observer) => {
-                this.confirmacionUsuarioSubject.subscribe((respuesta) => {
-                    this.mostrarConfirmacionUsuario = false;
-
-                    if (respuesta) {
-                        this.usuarioService.createUsuario(nuevoUsuario).subscribe(
-                            () => {
-                                this.messageService.add({
-                                    severity: 'success',
-                                    summary: 'El usuario fue creado con éxito',
-                                    detail: 'Usuario creado',
-                                    life: 3000
-                                });
-                                observer.next(true);  // Usuario creado exitosamente
-                                observer.complete();
-                            },
-                            (error) => {
-                                if (error && error.error && error.error.errors && error.error.errors.length > 0) {
-                                  const errorMessage = error.error.errors[0].msg; // Acceder al mensaje de error específico
-                                  this.messageService.add({
-                                    severity: 'error',
-                                    summary: 'Error al crear el usuario',
-                                    detail: errorMessage,
-                                    life: 5000
-                                  });
-                                } else {
-                                  let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
-                                  if (error && error.error && error.error.msg) {
-                                    errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
-                                  }
-                                  this.messageService.add({
-                                    severity: 'error',
-                                    summary: 'Error al crear el usuario',
-                                    detail: errorMessage,
-                                    life: 6000
-                                  });
-                                }
-                              }
-                        );
-                    } else {
-                        observer.next(false);  // Usuario no confirmado
-                        observer.complete();
-                    }
+    // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
+    if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
+      this.confirmarCrearUsuario().subscribe(
+        (usuarioConfirmado) => {
+          if (usuarioConfirmado) {
+            // El usuario fue confirmado, ahora puedes crear el cliente
+            this.clienteService.postClientes(nuevoCliente).subscribe(
+              () => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Se registró la cuenta con éxito',
+                  detail: 'Cliente creado',
+                  life: 5000,
                 });
-            });
-        } else {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Las contraseñas no coinciden al confirmar',
-                life: 3000,
-            });
-            return throwError('Las contraseñas no coinciden');
+                this.getListClientes();
+                this.crearClienteDialog = false;
+                // Navegar al login después de 6 segundos
+                setTimeout(() => {
+                  this.router.navigate(['/auth/login']);
+                }, 5000);
+              },
+              (error) => {
+                console.error('Error al crear el cliente:', error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error al crear la cuenta',
+                  detail: 'Error al crear el cliente',
+                  life: 3000,
+                });
+              }
+            );
+          } else {
+            // El usuario no fue confirmado, puedes manejarlo según tus necesidades
+            console.log('Error por no confirmar el usuario')
+          }
+        },
+        (error) => {
+          console.error('Error al confirmar el usuario:', error);
+          // Manejar errores al confirmar el usuario
         }
+      );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error al registrar la cuenta',
+        life: 3000,
+      });
     }
+  };
 
-    confirmarCreacionUsuario() {
-        this.mostrarConfirmacionUsuario = false;
-        this.confirmacionUsuarioSubject.next(true); // Confirmar la creación del usuario
-        this.router.navigate(['/auth/login']);
-    }
+  confirmarCrearUsuario() {
+    const nuevoUsuario = {
+      correo_electronico: this.formCliente.value.correo_cliente,
+      contrasena_usuario: this.formCliente.value.contrasena_usuario,
+      confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
+      rol_usuario: this.rolCliente
+    };
 
-    irALogin() {
-        this.router.navigate(['/auth/login']); // Reemplaza '/ruta-del-login' con la ruta real de tu componente de login
+    if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
+      this.mostrarConfirmacionUsuario = true;
+
+      return new Observable<boolean>((observer) => {
+        this.confirmacionUsuarioSubject.subscribe((respuesta) => {
+          this.mostrarConfirmacionUsuario = false;
+
+          if (respuesta) {
+            this.usuarioService.createUsuario(nuevoUsuario).subscribe(
+              () => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'El usuario fue creado con éxito',
+                  detail: 'Usuario creado',
+                  life: 3000
+                });
+                observer.next(true);  // Usuario creado exitosamente
+                observer.complete();
+              },
+              (error) => {
+                if (error && error.error && error.error.errors && error.error.errors.length > 0) {
+                  const errorMessage = error.error.errors[0].msg; // Acceder al mensaje de error específico
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error al crear el usuario',
+                    detail: errorMessage,
+                    life: 5000
+                  });
+                } else {
+                  let errorMessage = 'Usuario no creado'; // Mensaje predeterminado en caso de que no se encuentre un mensaje específico
+                  if (error && error.error && error.error.msg) {
+                    errorMessage = error.error.msg; // Accede al mensaje de error específico del servidor
+                  }
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error al crear el usuario',
+                    detail: errorMessage,
+                    life: 6000
+                  });
+                }
+              }
+            );
+          } else {
+            observer.next(false);  // Usuario no confirmado
+            observer.complete();
+          }
+        });
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Las contraseñas no coinciden al confirmar',
+        life: 3000,
+      });
+      return throwError('Las contraseñas no coinciden');
     }
+  }
+
+  confirmarCreacionUsuario() {
+    this.mostrarConfirmacionUsuario = false;
+    this.confirmacionUsuarioSubject.next(true); // Confirmar la creación del usuario
+  }
+
+  irALogin() {
+    this.router.navigate(['/auth/login']); // Reemplaza '/ruta-del-login' con la ruta real de tu componente de login
+  }
 
 }
