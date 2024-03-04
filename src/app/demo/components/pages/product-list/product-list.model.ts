@@ -22,4 +22,12 @@ export interface ProductoCarrito {
   precio_total_producto: number;
 }
 
+export interface DatosUsuario {
+  correo_electronico: string;
+  estado_usuario: boolean;
+  nombre_usuario: string;
+  rol_usuario: string;
+  uid: string;
+}
+
   

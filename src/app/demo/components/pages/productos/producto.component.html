@@ -604,7 +604,7 @@
         </p-dialog>
 
         <p-dialog [(visible)]="detalleProductoDialog" [style]="{ width: '70%' }" header="Detalles Producto"
-            [modal]="true" class="p-fluid" (onHide)="cerrarDialog()" [dismissableMask]="true">
+            [modal]="true" class="p-fluid" (onHide)="cerrarDetalleDialog()" [dismissableMask]="false">
             <form [formGroup]="formProducto">
                 <div class="formgrid grid mt-4">
                     <div class="field col">
@@ -686,7 +686,7 @@
                                             'pointer-events': 'none',
                                             'background-color': '#f4f4f4',
                                             'caret-color': 'transparent'
-                                        }" rows="12" cols="30" pInputTextarea formControlName="descripcion_producto"
+                                        }" rows="8" cols="30" pInputTextarea formControlName="descripcion_producto"
                                         id="descripcion_producto"></textarea>
                                     <label for="descripcion_producto">Descripción</label>
                                 </span>
@@ -694,7 +694,7 @@
                         </div>
                     </div>
 
-                    <div class="field col-6">
+                    <div class="field col">
                         <div class="card">
                             <p-galleria [(value)]="imagenes" [activeIndex]="activeIndex" [showItemNavigators]="true"
                                 [showThumbnails]="false" [showIndicators]="true" [showIndicatorsOnItem]="true"
@@ -703,8 +703,8 @@
                                 <ng-template pTemplate="item" let-imagen>
                                     <img [src]="imagen" style="
                                             width: 100%;
-                                            height: 400px;
-                                            max-width: 600px;
+                                            height: auto;
+                                            max-width: 800px;
                                             object-fit: cover;
                                             display: block;
                                             margin: 0 auto;
@@ -716,13 +716,10 @@
                                     </div>
                                 </ng-template>
                             </p-galleria>
+                            
                         </div>
                     </div>
                 </div>
-
-                <!-- <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                    <button pButton pRipple label="Cerrar" class="p-button-text" (click)="detalleProductoDialog = false"></button>
-                </div>    -->
             </form>
         </p-dialog>
 
@@ -741,9 +738,5 @@
             </ng-template>
         </p-dialog>
 
-        <p-dialog header="" [(visible)]="displayDialog" [modal]="true" [responsive]="true"
-            [style]="{ 'max-width': '40%', width: 'auto', overflow: 'hidden' }" [dismissableMask]="true">
-            <img [src]="imagenDialogSrc" alt="Imagen del producto" style="width: 100%" />
-        </p-dialog>
     </div>
 </div>

@@ -21,7 +21,7 @@ export class ProductoComponent implements OnInit {
 
   //---------------------------------------------------------------------------------------------------------------------------------
     listProductos: Producto[] = [];
-    categorias: string [] = []
+    categorias: string [] = [];
     producto: Producto = {};
     formProducto:FormGroup;
     formEditarProducto: FormGroup;
@@ -33,7 +33,6 @@ export class ProductoComponent implements OnInit {
     fileSelected: boolean = false;
     imagenes: string[] = [];
     displayDialog: boolean = false;
-    imagenDialogSrc: string = '';
     imagenes_seleccionadas_producto: string[] = [];
     activeIndex: number = 0;  // Variable para rastrear el índice activo
 
@@ -116,6 +115,7 @@ export class ProductoComponent implements OnInit {
         .map(categoria => categoria.nombre_categoria_producto);
       })        
     }
+    
     onCategoriaChange(event) {
       console.log('Categoría seleccionada:', event.value);
       // Realizar otras acciones según sea necesario
@@ -388,7 +388,7 @@ export class ProductoComponent implements OnInit {
     }
     
     //-------------------------------------------------------------------------------------------------------------------------------
-    //función para abrir un dialog para crear un nuevo producto
+    //funciónes para abrir y cerrar un dialog para crear un nuevo producto
     nuevoProducto() {
         this.id = '';                
         this.formProducto.reset()
@@ -398,9 +398,17 @@ export class ProductoComponent implements OnInit {
         this.fileSelected = false;
         this.imagenes = ['../../../../../assets/Imagenes/No IMG 2.png'];
     }
+
+    //función para cerrar un dialog y limpiar el fileUpload de crear producto
+    cerrarDialog() {
+      this.crearProductoDialog = false;
+      this.fileCrear.clear();
+      this.files = [];
+      this.fileSelected = false;
+    }
     
     //-------------------------------------------------------------------------------------------------------------------------------
-    //función para abrir un dialog para editar un producto
+    //funciónes para abrir y cerrar un dialog para editar un producto
     editarProducto(id:string) {
         this.id = id;
         this.editarProductoDialog = true;
@@ -409,16 +417,6 @@ export class ProductoComponent implements OnInit {
         this.files = [];
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para cerrar un dialog y limpiar el fileUpload de crear producto
-    cerrarDialog() {
-      this.crearProductoDialog = false;
-      this.fileCrear.clear();
-      this.files = [];
-      this.fileSelected = false;
-    }
-
-    //-------------------------------------------------------------------------------------------------------------------------------
     //función para cerrar un dialog y limpiar el fileUpload de editar producto
     cerrarEditarDialog() {
       this.editarProductoDialog = false;
@@ -432,15 +430,11 @@ export class ProductoComponent implements OnInit {
       this.detalleProductoDialog = true;
       this.getProducto(id);
     }
-
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para abrir un dialog y imagen mas grande
-    abrirImagenDialog(imagenSrc: string) {
-      this.imagenDialogSrc = imagenSrc;
-      this.displayDialog = true;
-    }    
     
-    
+    //función para cerrar un dialog y limpiar el fileUpload de editar producto
+    cerrarDetalleDialog() {
+      this.detalleProductoDialog = false;
+    }
 
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para filtar la tabla en el buscador

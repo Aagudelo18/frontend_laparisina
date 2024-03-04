@@ -6,9 +6,7 @@
             <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
                 <div class="text-center mb-5">
                     <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="160" class="mb-3">
-                    <br>
                     <div class="text-900 text-3xl font-medium mb-5">Recuperar contraseña</div>
-                    <br>
                 </div>
 
                 <form [formGroup]="formularioCorreo" (ngSubmit)="enviarCorreo()">
@@ -16,7 +14,7 @@
                         <span class="p-float-label">
                             <input type="email" pInputText id="correo_electronico" formControlName="correo_electronico"
                                 style="width: 100%;" />
-                            <label for="correo_electronico">Digite su correo electrónico</label>
+                            <label for="correo_electronico">Ingrese su correo electrónico</label>
                         </span>
                         <span
                             *ngIf="formularioCorreo.get('correo_electronico')?.hasError('required') && formularioCorreo.get('correo_electronico')?.touched"
@@ -32,10 +30,12 @@
                     <button pButton pRipple label="Enviar correo" class="w-full p-3 text-xl" type="submit"
                         [disabled]="!formularioCorreo.valid"></button>
                 </form>
+                <hr>
                 <div class="text-center mb-2">
-                    <br>
-                    <br>
-                    <p-button (click)="enviarlogin()" p-button label="Atrás" styleClass="p-button-link"></p-button>
+                    <a (click)="enviarlogin()" class="p-3 text-xl cursor-pointer" style="color: var(--primary-color)"
+                        style="font-weight: bold;">
+                        Atrás
+                    </a>
                 </div>
             </div>
         </div>

@@ -3,7 +3,9 @@ import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { LoginService } from 'src/app/demo/components/auth/login/login.services';
 import { Router } from '@angular/router'; //Se importa el Router
-import { Subscription } from 'rxjs';
+import { DatosUsuario, Product, ProductoCarrito } from '../../app/demo/components/pages/product-list/product-list.model';
+import { map, Observable } from 'rxjs';
+
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
@@ -22,13 +24,19 @@ export class AppTopBarComponent {
 
     //---------------------------------------------------------------------------------------------------------------------------------
     //Variables para controlar el carrito
-    productosCarrito: any[] = [];
+    productosCarrito: ProductoCarrito[] = [];
     cantidad?: number;
     cantidadSeleccionada: number = 1;
     totalCarrito: number = 0;
-    private subscription: Subscription;
-    private subscription2: Subscription;
-    private subscription3: Subscription;
+    // private subscription: Subscription;
+    // private subscription2: Subscription;
+    // private subscription3: Subscription;
+    //---------------------------------------------------------------------------------------------------------------------------------
+    // Variables para capturar y tener control del usuario
+    datosUsuario: DatosUsuario;
+    correoUsuario: string;
+    tipoCliente: string;
+
 
     constructor(
         public layoutService: LayoutService, 
@@ -55,8 +63,39 @@ export class AppTopBarComponent {
 
 
     //función de inicialización del componente
-    ngOnInit():void {        
-        this.layoutService.obtenerCarrito();            
+    ngOnInit():void {
+        //Obtener lista de productos actualizada
+         this.layoutService.products.subscribe(products => {
+          this.productosCarrito = products;
+         })
+
+         //Obtener carrito del localstorage
+        this.layoutService.obtenerCarrito();
+
+        //Obtener precioTotal
+        this.layoutService.products.pipe(map(products => {
+          return products.reduce((total, producto) => total + producto.precio_total_producto, 0)
+        })).subscribe(total => {
+          this.totalCarrito = total
+        });
+
+        this.datosUsuario = this.layoutService.obtenerDatosUsuario();
+        console.log('rrr',this.datosUsuario.rol_usuario)
+        this.correoUsuario = this.datosUsuario.correo_electronico;
+
+        this.obtenerDatosClientePorCorreo(this.correoUsuario).subscribe(
+          (dataCliente) => {
+            this.tipoCliente = dataCliente.tipo_cliente;
+          },
+          (error) => {
+            // Verificar si el error es un error 404
+            if (error.status === 404) {
+              // No hacer nada en caso de un error 404, simplemente ignorarlo
+            } else {
+              console.error('Error al obtener datos del cliente:', error);
+            }
+          }
+        );
     }
 
     reloadComponent() {
@@ -89,36 +128,20 @@ export class AppTopBarComponent {
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
-    //función eliminar un producto del carrito
-    eliminarProductoCarrito(producto: any) {
-        // Encuentra el índice del producto en el array
-        const index = this.productosCarrito.findIndex(p => p.nombre_producto === producto.nombre_producto);
-      
-        if (index !== -1) {
-          // Resta el precio_total_producto del producto eliminado al totalCarrito
-          this.totalCarrito -= this.productosCarrito[index].precio_total_producto;
-      
-          // Elimina el producto del array
-          this.productosCarrito.splice(index, 1);
-          localStorage.removeItem('carritoProductosParisina');
-          localStorage.setItem('carritoProductosParisina', JSON.stringify(this.productosCarrito))
-  
-          //this.layoutService.guardarCarrito(this.productosCarrito);
-      
-          console.log('Producto eliminado:', producto);
-          console.log('Productos en el carrito:', this.productosCarrito);
-        } else {
-          console.log('El producto no se encontró en el carrito');
-        }
-      }
+
+    //FUNCIONES CARRITO Y USUARIO
 
     //-------------------------------------------------------------------------------------------------------------------------------
-    //función calcular precio total del carrito
-    calcularPrecioTotalCarrito(): void {
-        this.totalCarrito = this.productosCarrito.reduce((total, producto) => {
-          return total + (producto.precio_total_producto || 0);  // Asegúrate de manejar el caso de que precio_total_producto sea undefined
-        }, 0);
-      }
+
+    eliminarProductoCarrito(producto: ProductoCarrito){
+      this.layoutService.eliminarProductoCarrito(producto)
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función para obtener datos cliente
+    obtenerDatosClientePorCorreo(correo: string): Observable<any> {
+      return this.layoutService.obtenerDatosClientePorCorreo(correo);
+    }
 
       agregarProductoCarrito(nuevoProducto: any) {
         

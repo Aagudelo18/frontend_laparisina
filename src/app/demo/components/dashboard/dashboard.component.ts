@@ -35,6 +35,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     fechaSeleccionada1: Date; // Variable para almacenar la fecha seleccionada
     gananciaSemana: number; // Variable para mostrar la ganancia de la semana
+    
+    fechaSeleccionada2: Date;
 
     fechaSeleccionada3: Date; // Variable para almacenar la fecha seleccionada
     topSellingProducts: { name: string, quantitySold: number }[]; // Variable para almacenar los productos más vendidos
@@ -97,6 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 this.fechaSeleccionada1 = new Date(); // Inicializar la fecha seleccionada con la fecha actual
                 this.actualizarGanancia(); // Calcular la ganancia correspondiente a la semana actual
                 // Llamar a initChart() después de obtener los datos de ventas
+                this.fechaSeleccionada2 = new Date(); 
                 this.initChart();
                 this.fechaSeleccionada3 = new Date(); // Inicializar la fecha seleccionada con la fecha actual
                 this.actualizarGraficoProductosVendidos(); // Actualizar el gráfico con los productos más vendidos de la semana actual
