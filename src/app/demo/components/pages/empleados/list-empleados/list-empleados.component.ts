@@ -33,8 +33,7 @@ export class ListEmpleadosComponent implements OnInit {
   estadoSiguiente: string;
   formEditarEmpleado: FormGroup;
   //vistas de listar pedidos array
-  empleadosPendientes: Empleado[] = [];
-  empleadosTerminados: Empleado[] = [];
+ 
   pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
   editarEmpleadoDialog: boolean = false;
   fileCrear: any;
@@ -46,6 +45,7 @@ export class ListEmpleadosComponent implements OnInit {
   fechaInicioInvalida: boolean = false;
   fechaVencimientoInvalida: boolean = false;
   touchedCelular = false;
+  empleadoExistente: boolean = false;
 
 
 
@@ -113,6 +113,8 @@ export class ListEmpleadosComponent implements OnInit {
       eps_empleado: ['', Validators.required],
       pension_empleado: ['', Validators.required],
       cuenta_bancaria_empleado: [null, [Validators.required, Validators.pattern('[0-9]{10}')]],
+      tipo_cuenta: ['', Validators.required],
+     banco_cuenta: ['', Validators.required],
       area_empleado: ['', Validators.required],
       // estado_empleado: ['', Validators.required],
       detalle_empleado:this.fb.array([]),
@@ -200,6 +202,8 @@ export class ListEmpleadosComponent implements OnInit {
          eps_empleado: data.eps_empleado,
          pension_empleado: data.pension_empleado,
          cuenta_bancaria_empleado:data.cuenta_bancaria_empleado,
+         tipo_cuenta: data.tipo_cuenta,
+         banco_cuenta: data.banco_cuenta,
          area_empleado: data.area_empleado,
          contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
          confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
@@ -281,6 +285,8 @@ export class ListEmpleadosComponent implements OnInit {
 
       this.formEmpleados.get('pension_empleado').setValue(data.pension_empleado);
       this.formEmpleados.get('cuenta_bancaria_empleado').setValue(data.cuenta_bancaria_empleado);
+      this.formEmpleados.get('tipo_cuenta').setValue(data.tipo_cuenta);
+      this.formEmpleados.get('banco_cuenta').setValue(data.banco_cuenta);
       this.formEmpleados.get('area_empleado').setValue(data.area_empleado);
       // this.formEmpleados.get('detalle_empleado').patchValue(detallesFormateados);
         
@@ -322,7 +328,11 @@ actualizarEmpleado() {
     eps_empleado: this.formEmpleados.value.eps_empleado,
     pension_empleado: this.formEmpleados.value.pension_empleado,
     cuenta_bancaria_empleado: this.formEmpleados.value.cuenta_bancaria_empleado,
+    tipo_cuenta: this.formEmpleados.value.tipo_cuenta,
+    banco_cuenta: this.formEmpleados.value.banco_cuenta,
     area_empleado: this.formEmpleados.value.area_empleado,
+    area_empleado_produccion: this.formEmpleados.value.area_empleado_produccion,
+
     
   
   };
@@ -386,13 +396,103 @@ formatearFecha(fecha: string | Date): string {
   return '';
 }
 
+getEmpleado(numero_identificacion_empleado: string) {
+  // Verificar si el documento está vacío
+  if (!numero_identificacion_empleado) {
+    // Limpiar los valores de los campos relacionados con el empleado
+    this.formEmpleados.reset();
+    // Puedes agregar otros campos que necesites reiniciar aquí
 
+    // Actualiza el valor de la variable 'empleadoExistente'
+    this.empleadoExistente = false;
+  } else {
+    this.empleadosService.obtenerEmpleadoPorIdentificacion(numero_identificacion_empleado).subscribe(
+      (data: any) => {
+        // Verificar si el empleado existe
+        if (data) {
+          this.empleadoExistente = true;
+          // Actualizar las propiedades del formulario 'formEmpleados' con la información del empleado
+          this.formEmpleados.patchValue({
+            codigo_rotulacion_empleado: data.codigo_rotulacion_empleado,
+     nombre_empleado: data.nombre_empleado,
+     tipo_contrato_empleado:data.tipo_contrato_empleado ,
+     fecha_inicio_empleado: data.fecha_inicio_empleado,
+     fecha_vencimiento_contrato_empleado: data.fecha_vencimiento_contrato_empleado,
+     tipo_documento_empleado: data.tipo_documento_empleado,
+     identificacion_empleado: data.identificacion_empleado,
+     fecha_nacimiento_empleado: data.fecha_nacimiento_empleado,
+    edad_empleado: data.edad_empleado,
+     lugar_nacimiento_empleado: data.lugar_nacimiento_empleado,
+     direccion_empleado:data.direccion_empleado,
+     municipio_domicilio_empleado:data.municipio_domicilio_empleado ,
+     estado_civil_empleado: data.estado_civil_empleado,
+     celular_empleado: data.celular_empleado,
+     correo_electronico: data.correo_electronico,
+     alergia_empleado: data.alergia_empleado,
+     grupo_sanguineo_empleado: data.grupo_sanguineo_empleado,
+     eps_empleado: data.eps_empleado,
+     pension_empleado: data.pension_empleado,
+     cuenta_bancaria_empleado:data.cuenta_bancaria_empleado,
+     tipo_cuenta: data.tipo_cuenta,
+     banco_cuenta: data.banco_cuenta,
+     area_empleado: data.area_empleado,
+     contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
+     confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
+  });
+  const contactoEmergenciaArray = this.formEmpleados.get('contacto_emergencia') as FormArray;
+  contactoEmergenciaArray.clear();  // Limpia los controles actuales
+  data.contacto_emergencia.forEach((contacto: any) => {
+    contactoEmergenciaArray.push(this.fb.group({
+      nombre_contacto_emergencia: [contacto.nombre_contacto_emergencia || ''],
+      parentesco_empleado: [contacto.parentesco_empleado || ''],
+      telefono_contacto_emergencia: [contacto.telefono_contacto_emergencia || '']
+    }));
+  });
+
+          console.log(data);
+        } else {
+          // El empleado no existe, puedes manejarlo según tus necesidades
+          this.empleadoExistente = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'El empleado no está registrado',
+            life: 3000,
+          });
+        }
+      },
+      (error) => {
+        console.error(error);
+
+        // Manejar el error de la solicitud HTTP
+        if (error.status === 404) {
+          // El empleado no se encontró en el servidor
+          this.empleadoExistente = false;
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Empleado no encontrado',
+            detail: 'El empleado no está registrado',
+            life: 3000,
+          });
+        } else {
+          // Otro manejo de errores según tus necesidades
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error en la solicitud',
+            detail: 'Ocurrió un error al obtener los detalles del empleado',
+            life: 3000,
+          });
+        }
+      }
+    );
+  }
+}
 
 actualizarFechaInicio(event: any) {
   this.formEmpleados.patchValue({
     fecha_inicio_empleado: event.target.value,
   });
 }
+
 
 
 
