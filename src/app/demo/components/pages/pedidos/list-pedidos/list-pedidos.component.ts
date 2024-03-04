@@ -396,7 +396,7 @@ export class ListPedidosComponent implements OnInit {
 
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Cambio de estado con Éxito',
+                        summary: 'Cambio de estado con Éxito a "Enviado"',
                         life: 5000,
                     });
 

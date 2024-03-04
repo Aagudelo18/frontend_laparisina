@@ -217,6 +217,7 @@
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
                         <th>Subtotal</th>
+                        <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product>
@@ -232,6 +233,13 @@
                             }}
                         </td>
                         <td>{{  product.precio_total_producto}}</td>
+                        <td><button
+                            pButton
+                            pRipple
+                            icon="pi pi-times"
+                            class="p-button-rounded p-button-danger mr-2"
+                            (click)="eliminarProductoCarrito(product)"
+                        ></button></td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -278,6 +286,7 @@
                 label="Cancelar"
                 icon="pi pi-user-plus"
                 class="p-button-danger mr-2"
+                
             ></button>
         </div>
     </div>

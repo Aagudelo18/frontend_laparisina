@@ -215,6 +215,7 @@ export class ProductComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     //función agrear un producto al carrito
     agregarProductoCarrito(nuevoProducto: ProductoCarrito, cantidaProducto: number) {
+      console.log(this.productosCarrito)
       const precioTotalProducto = nuevoProducto.precio_ico * cantidaProducto
       
       // Crear un nuevo objeto ProductoCarrito con la información necesaria
@@ -229,31 +230,33 @@ export class ProductComponent implements OnInit {
 
       // Verificar si ya existe un producto con el mismo nombre_producto
       const productoExistente = this.productosCarrito.find(p => p.nombre_producto === nuevoProductoCarrito.nombre_producto);
-
+      //Se emite el evento
+      
       if (!productoExistente) {
         // Si no existe, agregar el nuevo producto al carrito
         this.productosCarrito.push(nuevoProductoCarrito);
-
+        
         this.totalCarrito += nuevoProductoCarrito.precio_total_producto;
-
+        
         this.layoutService.guardarCarrito(this.productosCarrito);
         
-        console.log(this.productosCarrito);
+        
       } else {
         this.totalCarrito -= productoExistente.precio_total_producto;
-
-        productoExistente.cantidad_producto = cantidaProducto;
+        console.log(productoExistente)
+        productoExistente.cantidad_producto += cantidaProducto;
         productoExistente.precio_total_producto = precioTotalProducto;
         
         this.totalCarrito += productoExistente.precio_total_producto;
-
+        
         this.layoutService.guardarCarrito(this.productosCarrito);
-
+        
         console.log('El producto ya está en el carrito');
       }
-      window.location.reload();
+      
+      this.layoutService.AddProdutCart.emit(nuevoProductoCarrito)
     }
-
+    
     //--------------------------------------------------------------------------------------------------------------------------------
     //función eliminar un producto del carrito
     eliminarProductoCarrito(producto: ProductoCarrito) {

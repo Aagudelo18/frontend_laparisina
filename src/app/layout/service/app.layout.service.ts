@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export interface AppConfig {
@@ -25,6 +25,10 @@ interface LayoutState {
 export class LayoutService {
     private carritoProductos = 'carritoProductosParisina';
 
+//Eventos de emisión
+    // public  ClearCar: EventEmitter<any> = new EventEmitter();
+    // public  DeleteProdutCar: EventEmitter<any> = new EventEmitter();
+    // public  AddProdutCart: EventEmitter<any> = new EventEmitter();
     
 
     config: AppConfig = {

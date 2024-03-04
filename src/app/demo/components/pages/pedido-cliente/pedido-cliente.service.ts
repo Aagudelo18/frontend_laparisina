@@ -41,9 +41,7 @@ obtenerClientePorCorreo(correo_cliente: string): Observable<any> {
 
  
 
-  limpiarLocalStorage(): void {
-    localStorage.removeItem(this.carritoProductos);
-  }
+
 
 
   guardarCarritoEnLocalStorage() {

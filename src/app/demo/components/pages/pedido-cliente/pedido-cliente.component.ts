@@ -6,6 +6,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { ProductoCarrito } from '../product-list/product-list.model';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     selector: 'app-pedido-cliente',
@@ -33,7 +34,7 @@ export class PedidoClienteComponent implements OnInit {
         private fb: FormBuilder,
         private pr: FormBuilder,
         private messageService: MessageService,
-        private confirmationService: ConfirmationService,
+        private LayoutService: LayoutService,
        
         private router: Router,
     ) {
@@ -262,9 +263,7 @@ export class PedidoClienteComponent implements OnInit {
                     life: 3000,
                 }
                 );
-                   // Limpia el carrito después de crear el pedido exitosamente
-                this.pedidoClienteService.limpiarLocalStorage();
-
+               this.limpiarCarrito();
     
                 // Navegar a la página de listado de pedidos después de un pequeño retraso
                 timer(1000).subscribe(() => {
@@ -287,6 +286,10 @@ export class PedidoClienteComponent implements OnInit {
         );
     }
 
+    limpiarCarrito() {
+        this.LayoutService.ClearCar.emit('evento');
+      }
+
     quitarEspaciosBlancos(controlName: string): void {
         const control = this.pedido.get(controlName);
         if (control && control.value) {
@@ -300,12 +303,13 @@ eliminarProductoCarrito(producto: ProductoCarrito) {
       (p) => p.nombre_producto === producto.nombre_producto
     );
     if (index !== -1) {
-      // Elimina el producto del carrito
-      this.productosCarrito.splice(index, 1);
-      // Actualiza el total del carrito
-      this.actualizarTotalCarrito();
-      // Guarda los cambios en el carrito (si es necesario)
-      this.guardarCarritoEnLocalStorage();
+        // Elimina el producto del carrito
+        this.productosCarrito.splice(index, 1);
+        // Actualiza el total del carrito
+        this.actualizarTotalCarrito();
+        // Guarda los cambios en el carrito (si es necesario)
+        this.guardarCarritoEnLocalStorage();
+        this.LayoutService.DeleteProdutCar.emit(producto)
     }
   }
   
