@@ -7,6 +7,9 @@ import { Cliente } from './pedido-model';
 
 export class PedidoListService {
 
+  private carritoProductos = 'carritoProductosParisina';
+  private datosCliente = 'currentUser'
+
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) { }
@@ -23,6 +26,11 @@ export class PedidoListService {
   getPedidoDetalle(id: string): Observable<any> {
     return this.http.get<Cliente[]>(this.apiUrl + `/pedidos/${id}` );
   }
+
+  
+
+
+
 
 
 

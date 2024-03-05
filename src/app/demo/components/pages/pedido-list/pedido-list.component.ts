@@ -3,9 +3,12 @@ import { PedidoListService } from './pedido-list.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
 import { Cliente } from './pedido-model';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService} from 'primeng/api';
+import { ProductoCarrito } from '../product-list/product-list.model';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
+
+
 
 
 @Component({
@@ -23,15 +26,29 @@ export class PedidoListComponent implements OnInit {
   cambiarEstadoPDialogAnular: boolean;
   detallePedidoDialog: boolean = false;
   id: string = '';
+  localStorageService: any;
+  dtPendientes: any;
+     //---------------------------------------------------------------------------------------------------------------------------------
+    //Variables para controlar el carrito
+    productosCarrito: ProductoCarrito[] = [];
+    cantidad?: number;
+    cantidadSeleccionada: number = 1;
+    totalCarrito: number = 0;
+
+   
+    
+  
   
 
 constructor(
+  public layoutService: LayoutService, 
   private pedidoListService: PedidoListService,
   private messageService: MessageService,
   private confirmationService: ConfirmationService,
   private router: Router, 
   private fb: FormBuilder,
   ) {
+   
     this.formPedidos = this.fb.group({
       documento_cliente: [''],
       tipo_cliente: [''],
@@ -56,13 +73,19 @@ constructor(
       domiciliario: [''],
   });
   }
+  
 
  
   ngOnInit() {
-
-  this.cargarPedidosCliente();
   
-  }
+
+    // Cargar los pedidos del cliente
+    this.cargarPedidosCliente();
+}
+
+
+
+  
 
 
   cargarPedidosCliente() {
@@ -85,7 +108,7 @@ cambiarPedidoAnular(id: string) {
       (response) => {
           this.messageService.add({
               severity: 'success',
-              summary: 'Cambio de estado con Éxito',
+              summary: 'El pedido se cancelo Exitosamente',
               life: 5000,
           });
           // Actualizar la lista de pedidos
@@ -97,13 +120,13 @@ cambiarPedidoAnular(id: string) {
               const errorMessage = error.error.error;
               this.messageService.add({
                   severity: 'error',
-                  summary: 'Error al cambiar el estado del Pedido',
+                  summary: 'Error al cancelar el Pedido',
                   detail: errorMessage,
                   life: 5000,
               });
           } else {
               console.error(
-                  'Error desconocido al crear el Pedido:',
+                  'Error desconocido al cancelar el Pedido:',
                   error
               );
           }
@@ -111,38 +134,35 @@ cambiarPedidoAnular(id: string) {
   );
   this.cambiarEstadoPDialogAnular = false;
 }
+   // Añade la lógica para abrir el diálogo
+   async abrirModalAnular(id: string) {
+    this.cambiarEstadoPDialogAnular = true;
 
-  // Actualiza el método para manejar el botón "Sí"
-  onYesButtonClickAnular() {
-    this.resolverPromesa(true); // Resuelve la promesa con "true"
-    this.cambiarEstadoPDialogAnular = false; // Esto cerrará el diálogo automáticamente
+    // Espera hasta que se resuelva la promesa
+    const respuesta = await this.esperarRespuesta();
+
+    // Ahora puedes usar la respuesta como necesites
+    if (respuesta) {
+        this.cambiarPedidoAnular(id);
+    } else {
+        // Lógica si la respuesta es "No"
+    }
+}
+onYesButtonClickAnular() {
+  this.resolverPromesa(true);
+  this.cambiarEstadoPDialogAnular = false;
 }
 
-// Actualiza el método para manejar el botón "No"
 onNoButtonClickAnular() {
-    this.resolverPromesa(false); // Resuelve la promesa con "false"
-    this.cambiarEstadoPDialogAnular = false; // Esto cerrará el diálogo automáticamente
+  this.resolverPromesa(false);
+  this.cambiarEstadoPDialogAnular = false;
 }
 
-    // Añade la lógica para abrir el diálogo
-    async abrirModalAnular(id: string) {
-      this.cambiarEstadoPDialogAnular = true;
 
-      // Espera hasta que se resuelva la promesa
-      const respuesta = await this.esperarRespuesta();
-
-      // Ahora puedes usar la respuesta como necesites
-      if (respuesta) {
-          this.cambiarPedidoAnular(id);
-      } else {
-          // Lógica si la respuesta es "No"
-      }
-  }
-
-  private esperarRespuesta(): Promise<boolean> {
-    return new Promise<boolean>((resolver) => {
-        this.resolverPromesa = resolver;
-    });
+private esperarRespuesta(): Promise<boolean> {
+  return new Promise<boolean>((resolver) => {
+      this.resolverPromesa = resolver;
+  });
 }
 
 verDetallePedidoCliente(id: string) {
@@ -180,6 +200,7 @@ getPedidoDetalleCliente(id: string) {
       
   });
 }
+
 
 
 }

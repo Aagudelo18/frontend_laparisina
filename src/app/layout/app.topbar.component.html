@@ -16,7 +16,8 @@
     <div #topbarmenu class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
 
-        <button type="button" icon="pi pi-shopping-cart" pButton label="{{productosCarrito.length}}" (click)="op2.toggle($event)" class="p-button-text p-button-lg ml-4"></button>
+        <button *ngIf="datosUsuario && (datosUsuario.rol_usuario === undefined || datosUsuario.rol_usuario === '654a96ebdbe2126f5a74161e')" 
+        type="button" icon="pi pi-shopping-cart" pButton label="{{productosCarrito.length}}" (click)="op2.toggle($event)" class="p-button-text p-button-lg ml-4"></button>
                 <p-overlayPanel #op2 [showCloseIcon]="false" [style]="{width: '60%'}">
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
@@ -46,7 +47,7 @@
                             <ng-template pTemplate="body" let-rowData let-product>
                                 <tr [pSelectableRow]="rowData">
                                     <td>{{product.nombre_producto}}</td>
-                                    <td>{{product.precio_ico | number}}</td>
+                                    <td>{{tipoCliente === 'Persona jurídica' ? (product.precio_por_mayor_ico | number) : (product.precio_ico | number)}}</td>
                                     <td>{{product.cantidad_producto}}</td>
                                     <td>{{product.precio_total_producto | number}}</td>
                                     <td><button

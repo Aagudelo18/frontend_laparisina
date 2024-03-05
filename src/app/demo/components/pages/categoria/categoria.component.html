@@ -101,7 +101,7 @@
                         </div>
                     </div>
 
-                    <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imagen" name="image" chooseIcon="pi pi-image"
+                    <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imágen" name="image" chooseIcon="pi pi-image"
                     accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
                     
 
@@ -222,7 +222,7 @@
     </p-dialog>
 
 
-    <p-dialog header="" [(visible)]="imagenDialog" [modal]="true" [responsive]="true"
+    <p-dialog header="Imagen categoría" [(visible)]="imagenDialog" [modal]="true" [responsive]="true"
         [style]="{ 'max-width': '50%', 'width': 'auto', 'overflow': 'hidden' }" [dismissableMask]="true">
             <img [src]="imagen_categoria" alt="Imagen del producto" style="width: 100%">
     </p-dialog>

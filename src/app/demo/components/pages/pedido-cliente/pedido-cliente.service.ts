@@ -39,9 +39,15 @@ obtenerClientePorCorreo(correo_cliente: string): Observable<any> {
     return listaGuardada ? JSON.parse(listaGuardada) : [];
   }
 
-  limpiarLocalStorage(): void {
-    localStorage.removeItem(this.carritoProductos);
+ 
+
+
+
+
+  guardarCarritoEnLocalStorage() {
+    localStorage.setItem('carrito', JSON.stringify(this.carritoProductos));
   }
+  
 
  
 }

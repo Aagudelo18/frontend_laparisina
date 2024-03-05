@@ -36,7 +36,7 @@ export class ListPedidosComponent implements OnInit {
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
     cambiarEstadoPDialogAnular: boolean;
     asignarDomiciliarioDialog: boolean = false;
-    domiciliarioSeleccionado: any; // Puedes ajustar este tipo según tus necesidades
+    domiciliarioSeleccionado: any = '0'; // Puedes ajustar este tipo según tus necesidades
     domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
     confirmarAsignacionDialog: boolean = false;
 
@@ -176,6 +176,10 @@ export class ListPedidosComponent implements OnInit {
         });
     }
 
+    prueba(){
+        console.log(this.domiciliarioSeleccionado)
+    }
+
     getDomiciliario(id) {
         this.pedidosService.getDomiciliariosXId(id).subscribe((data) => {
             console.log(data);
@@ -275,18 +279,60 @@ export class ListPedidosComponent implements OnInit {
 
     // Añade la lógica para abrir el diálogo
     async abrirModalAnular(id: string) {
-        this.cambiarEstadoPDialogAnular = true;
-
-        // Espera hasta que se resuelva la promesa
-        const respuesta = await this.esperarRespuesta();
-
-        // Ahora puedes usar la respuesta como necesites
-        if (respuesta) {
-            this.cambiarPedidoAnular(id);
+        const pedido = this.pedidos.find((pedido) => pedido._id === id);
+    
+        // Verifica si el estado del pedido es "Pendiente" antes de abrir el diálogo de anulación
+        if (pedido.estado_pedido === 'Pendiente') {
+            // Si el estado es "Pendiente", abre el diálogo
+            this.cambiarEstadoPDialogAnular = true;
+    
+            // Espera hasta que se resuelva la promesa
+            const respuesta = await this.esperarRespuesta();
+    
+            // Ahora puedes usar la respuesta como necesites
+            if (respuesta) {
+                // Cambia el estado del pedido a "Anulado"
+                pedido.estado_pedido = 'Anulado';
+    
+                // Actualiza el pedido en el backend
+                this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
+                    (response) => {
+                        // Muestra un mensaje de éxito
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Pedido anulado exitosamente',
+                            life: 5000,
+                        });
+    
+                        // Actualiza la lista de pedidos pendientes
+                        this.cargarPedidosPendientes();
+                    },
+                    (error) => {
+                        // Muestra un mensaje de error si hay algún problema al actualizar el pedido
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error al anular el pedido',
+                            detail: 'Ocurrió un error al anular el pedido. Por favor, inténtalo de nuevo.',
+                            life: 5000,
+                        });
+                        console.error('Error al anular el pedido:', error);
+                    }
+                );
+            } else {
+                // Lógica si la respuesta es "No"
+            }
         } else {
-            // Lógica si la respuesta es "No"
+            // Si el estado no es "Pendiente", muestra un mensaje de error
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error al anular el pedido',
+                detail: 'El pedido solo se puede anular en estado "Pendiente".',
+                life: 5000,
+            });
         }
     }
+    
+    
 
     // Actualiza el método para manejar el botón "Sí"
     onYesButtonClickAnular() {
@@ -337,6 +383,10 @@ export class ListPedidosComponent implements OnInit {
         this.cambiarEstadoPDialogAnular = false;
     }
 
+    esPedidoPendiente(pedido: any): boolean {
+        return pedido.estado_pedido === 'Pendiente';
+    }
+    
     async abrirModalDomicilio(id: string, estado_pedido: string) {
         this.idPedidoSeleccionado = id; // Guarda el ID del pedido seleccionado
         this.asignarDomiciliarioDialog = true;
@@ -355,6 +405,15 @@ export class ListPedidosComponent implements OnInit {
     }
 
     onYesButtonClickDomicilio() {
+        if(this.domiciliarioSeleccionado == '0'){
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Debe de seleccionar un domiciliario',
+                life: 5000,
+            });
+            return;
+        }
+
         // Resuelve la promesa con "true"
         this.resolverPromesa(true);
         console.log(
@@ -388,7 +447,7 @@ export class ListPedidosComponent implements OnInit {
         );
 
         this.pedidosService
-            .asignarPedidoADomiciliario(idPedido, idDomiciliario)
+            .asignarPedidoDomiciliario(idPedido, idDomiciliario)
             .subscribe(
                 (response: any) => {
                     // Manejar la respuesta del servidor
@@ -396,7 +455,7 @@ export class ListPedidosComponent implements OnInit {
 
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Cambio de estado con Éxito',
+                        summary: 'Cambio de estado con Éxito a "Enviado"',
                         life: 5000,
                     });
 

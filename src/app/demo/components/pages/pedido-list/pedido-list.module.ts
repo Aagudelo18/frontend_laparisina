@@ -24,6 +24,8 @@ import { TooltipModule } from 'primeng/tooltip';
 
 
 
+
+
 @NgModule({
  
   imports: [
@@ -47,11 +49,13 @@ import { TooltipModule } from 'primeng/tooltip';
     TabViewModule,
     TooltipModule,
     
+    
   ],
   declarations: [
     PedidoListComponent],
     providers: [
       PedidoListService,
+      
     ]
 })
 export class PedidoListModule { }

@@ -69,6 +69,23 @@ input{
   transition: 0.2s ease all;
 }
 
+.error-message {
+  color: red;
+}
+
+.field label {
+  display: block;
+  text-align: left;
+  margin-bottom: 0.5rem; /* Espacio entre la etiqueta y el campo */
+}
+
+.custom-label {
+  font-size: 20px; /* Tamaño de fuente más grande */
+  font-weight: bold; /* Texto en negrita */
+  color: #333; /* Color del texto */
+}
+
+
 
 
 

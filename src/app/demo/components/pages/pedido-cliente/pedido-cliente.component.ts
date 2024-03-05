@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { PedidoClienteService } from './pedido-cliente.service';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl,Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
+import { ProductoCarrito } from '../product-list/product-list.model';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     selector: 'app-pedido-cliente',
     templateUrl: './pedido-cliente.component.html',
     styleUrls: ['./pedido-cliente.component.scss'],
-    providers: [MessageService],
+    providers: [MessageService, ConfirmationService],
+    
 })
 export class PedidoClienteComponent implements OnInit {
     clienteExistente: boolean = false;
@@ -22,32 +26,44 @@ export class PedidoClienteComponent implements OnInit {
     totalCarrito: number = 0;
     minDate: Date = new Date();
     currentUser: any [];
+    resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
+    cambiarEstadoPDialogAnular: boolean;
+    tipoCliente: string;
+
+    private subscription: Subscription;
 
     constructor(
+        
         private pedidoClienteService: PedidoClienteService,
         private fb: FormBuilder,
         private pr: FormBuilder,
         private messageService: MessageService,
+        private LayoutService: LayoutService,
+       
         private router: Router,
     ) {
-        this.pedido = this.fb.group({
-            tipo_cliente: new FormControl(''),
-            documento_cliente: new FormControl(''),
-            nombre_contacto: new FormControl(''),
-            quien_recibe: new FormControl(''),
-            telefono_cliente: new FormControl(''),
-            ciudad_cliente: new FormControl(''),
-            barrio_cliente: new FormControl(''),
-            direccion_entrega: new FormControl(''),
-            fecha_entrega_pedido: new FormControl(''),
-            metodo_pago: new FormControl(''),
-            subtotal_venta: new FormControl(''), 
-            precio_total_venta: new FormControl(''), 
-            valor_domicilio: new FormControl(0),
-            nit_empresa_cliente: new FormControl(''),
-            nombre_juridico: new FormControl(''),
 
-            detalle_pedido: [],
+        this.subscription = this.LayoutService.DeleteProdutCarView.subscribe(event => {
+            this.eliminarProductoCarrito(event);
+          });
+
+        this.pedido = this.fb.group({
+            tipo_cliente: ['', Validators.required],
+            documento_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)]],
+            nombre_contacto: ['', Validators.required],
+            quien_recibe: ['',[Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/)]],
+            ciudad_cliente: ['',[Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/)]],
+            telefono_cliente: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^\d*$/)]],
+            barrio_cliente: ['',[Validators.required, Validators.maxLength(20), Validators.pattern(/^(?!.*\s{2,})[A-Za-zÑñÁáÉéÍíÓóÚú\s-]{3,20}$/)]],
+            direccion_entrega: ['', Validators.required], 
+            fecha_entrega_pedido: ['', Validators.required],
+            metodo_pago: ['', Validators.required],
+            subtotal_venta: ['', Validators.required], 
+            precio_total_venta: ['', Validators.required], 
+            valor_domicilio: [0, [Validators.required, Validators.min(0)]],
+            nit_empresa_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
+            nombre_juridico: ['', Validators.required],
+            detalle_pedido: [[]],
         });
 
         this.producto = this.pr.group({
@@ -70,12 +86,19 @@ export class PedidoClienteComponent implements OnInit {
        
     }
 
+    private esperarRespuesta(): Promise<boolean> {
+        return new Promise<boolean>((resolver) => {
+            this.resolverPromesa = resolver;
+        });
+    }
+
     // Metodo para traer los datos del cliente logueado------------------------------------------------------>
    obtenerDatosCliente(correo_cliente: string): void {
         this.pedidoClienteService
             .obtenerClientePorCorreo(correo_cliente)
             .subscribe(
                 (data: any) => {
+                    this.tipoCliente = data.tipo_cliente;
                     this.cliente = data;
                     this.pedido.patchValue({
                         tipo_cliente: data.tipo_cliente,
@@ -112,8 +135,10 @@ export class PedidoClienteComponent implements OnInit {
         const carritoString = localStorage.getItem('carritoProductosParisina');
         if (carritoString) {
             this.productosCarrito = JSON.parse(carritoString);
+           
         } else {
             this.productosCarrito = [];
+            
         }
     }
 
@@ -165,6 +190,36 @@ export class PedidoClienteComponent implements OnInit {
             });
             return;
         }
+          // Agregar mensajes de validación para otros campos aquí...
+    if (this.pedido.get('quien_recibe').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El nombre de quien recibe es requerido.' });
+        return;
+    }
+    if (this.pedido.get('ciudad_cliente').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La ciudad es requerida.' });
+        return;
+    }
+    if (this.pedido.get('barrio_cliente').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El barrio es requerido.' });
+        return;
+    }
+    if (this.pedido.get('telefono_cliente').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El teléfono se requerida.' });
+        return;
+    }
+    if (this.pedido.get('fecha_entrega_pedido').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La fecha de entrega es requerida.' });
+        return;
+    }
+    if (this.pedido.get('direccion_entrega').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La dirección es requerida.' });
+        return;
+    }
+    if (this.pedido.get('metodo_pago').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El metodo de pago es requerida.' });
+        return;
+    }
+    
     
         // Obtener la fecha de entrega del formulario
         const fechaEntregaPedido = this.pedido.get('fecha_entrega_pedido').value;
@@ -211,11 +266,14 @@ export class PedidoClienteComponent implements OnInit {
         // Llamar al servicio para crear el pedido
         this.pedidoClienteService.createPedido(pedidoCliente).subscribe(
             () => {
+                
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Pedido creado con Éxito',
                     life: 3000,
-                });
+                }
+                );
+               this.limpiarCarrito();
     
                 // Navegar a la página de listado de pedidos después de un pequeño retraso
                 timer(1000).subscribe(() => {
@@ -237,6 +295,47 @@ export class PedidoClienteComponent implements OnInit {
             }
         );
     }
+
+    limpiarCarrito() {
+        this.LayoutService.ClearCar.emit('evento');
+      }
+
+    quitarEspaciosBlancos(controlName: string): void {
+        const control = this.pedido.get(controlName);
+        if (control && control.value) {
+            control.setValue(control.value.trim());
+        }
+    }
+
+  // Función para eliminar un producto del carrito
+eliminarProductoCarrito(producto: ProductoCarrito) {
+    const index = this.productosCarrito.findIndex(
+      (p) => p.nombre_producto === producto.nombre_producto
+    );
+    if (index !== -1) {
+        // Elimina el producto del carrito
+        this.productosCarrito.splice(index, 1);
+        // Actualiza el total del carrito
+        this.actualizarTotalCarrito();
+        // Guarda los cambios en el carrito (si es necesario)
+        this.guardarCarritoEnLocalStorage();
+        this.LayoutService.DeleteProdutCar.emit(producto)
+    }
+  }
+  
+  // Función para actualizar el total del carrito
+  actualizarTotalCarrito() {
+    this.totalCarrito = this.productosCarrito.reduce(
+      (total, producto) => total + producto.precio_total_producto,
+      0
+    );
+  }
+  guardarCarritoEnLocalStorage() {
+    this.pedidoClienteService.guardarCarrito(this.productosCarrito);
+  }
+    
+  
+    
     
     
     
