@@ -4,7 +4,7 @@ import { LayoutService } from "./service/app.layout.service";
 import { LoginService } from 'src/app/demo/components/auth/login/login.services';
 import { Router } from '@angular/router'; //Se importa el Router
 import { DatosUsuario, Product, ProductoCarrito } from '../../app/demo/components/pages/product-list/product-list.model';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-topbar',
@@ -28,9 +28,9 @@ export class AppTopBarComponent {
     cantidad?: number;
     cantidadSeleccionada: number = 1;
     totalCarrito: number = 0;
-    // private subscription: Subscription;
-    // private subscription2: Subscription;
-    // private subscription3: Subscription;
+    private subscription: Subscription;
+    private subscription2: Subscription;
+    private subscription3: Subscription;
     //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control del usuario
     datosUsuario: DatosUsuario;
@@ -45,19 +45,19 @@ export class AppTopBarComponent {
        
 
         ){
-            // this.productosCarrito = layoutService.obtenerCarrito();
-            // this.calcularPrecioTotalCarrito();
-            // this.subscription = this.layoutService.ClearCar.subscribe(event => {
-            //   this.productosCarrito = [];
-            //   this.cantidad = 0;
-            // });
+            this.productosCarrito = layoutService.obtenerCarrito();
+            this.calcularPrecioTotalCarrito();
+            this.subscription = this.layoutService.ClearCar.subscribe(event => {
+              this.productosCarrito = [];
+              this.cantidad = 0;
+            });
 
-            // this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
-            //   this.eliminarProductoCarrito(event);
-            // });
-            // this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
-            //   this.agregarProductoCarrito(event);
-            // });
+            this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
+              this.eliminarProductoCarrito(event);
+            });
+            this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
+              this.agregarProductoCarrito(event);
+            });
 
         }
 
@@ -135,6 +135,7 @@ export class AppTopBarComponent {
 
     eliminarProductoCarrito(producto: ProductoCarrito){
       this.layoutService.eliminarProductoCarrito(producto)
+      this.layoutService.DeleteProdutCarView.emit(producto)
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
@@ -142,6 +143,14 @@ export class AppTopBarComponent {
     obtenerDatosClientePorCorreo(correo: string): Observable<any> {
       return this.layoutService.obtenerDatosClientePorCorreo(correo);
     }
+
+      //-------------------------------------------------------------------------------------------------------------------------------
+  //función calcular precio total del carrito
+  calcularPrecioTotalCarrito(): void {
+    this.totalCarrito = this.productosCarrito.reduce((total, producto) => {
+      return total + (producto.precio_total_producto || 0);  // Asegúrate de manejar el caso de que precio_total_producto sea undefined
+    }, 0);
+  }
 
       agregarProductoCarrito(nuevoProducto: any) {
         

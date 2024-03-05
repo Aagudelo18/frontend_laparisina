@@ -57,7 +57,7 @@ import { Product, DatosUsuario } from './product-list.model';
     }
 
     obtenerDatosClientePorCorreo(correo:string): Observable<any>{
-      return this.http.get<any>(`${this.apiUrl}/clientes/correo/${correo}`)
+      return this.http.get<any>(`${this.apiUrl}/cliente/${correo}`)
     }
   }
   
