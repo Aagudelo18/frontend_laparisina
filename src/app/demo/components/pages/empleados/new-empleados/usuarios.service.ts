@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
@@ -7,17 +7,40 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 }) export class UsuarioService {
   private apiUrl = 'http://localhost:3000/api';
+  private currentUser: any;
 
   constructor(private http: HttpClient) { }
 
   //Traer todos los usuarios
   getUsuarios() {
-    return this.http.get<any[]>(`${this.apiUrl}/usuarios`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<any[]>(`${this.apiUrl}/usuarios`, { headers });
   }
 
   //Método para obtener la lista de roles desde la API
   getRoles() {
-    return this.http.get<any[]>(`${this.apiUrl}/roles`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<any[]>(`${this.apiUrl}/roles`, { headers });
   }
 
   // Crear usuario con token y rol en el encabezado
@@ -40,7 +63,19 @@ import { Observable } from 'rxjs';
   //Obtener un usuario por ID
   getUsuarioPorId(uid: string) {
     const url = `${this.apiUrl}/usuarios/${uid}`;
-    return this.http.get<any>(url);
+
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+    return this.http.get<any>(url, { headers });
   }
 
   //Actualizar un usuario
@@ -86,5 +121,6 @@ import { Observable } from 'rxjs';
     const url = `${this.apiUrl}/usuarios/${uid}`;
     return this.http.delete(url);
   }
+
 
 }

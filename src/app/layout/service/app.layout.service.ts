@@ -57,6 +57,8 @@ export class LayoutService {
     configUpdate$ = this.configUpdate.asObservable();
 
     overlayOpen$ = this.overlayOpen.asObservable();
+    DeleteProdutCar: any;
+    ClearCar: any;
 
     onMenuToggle() {
         if (this.isOverlay()) {
