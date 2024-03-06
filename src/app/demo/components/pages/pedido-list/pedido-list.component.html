@@ -1,18 +1,6 @@
 <div class="card px-6 py-6">
-    <p-toolbar styleClass="mb-4">
-        <ng-template pTemplate="left">
-            <div class="my-2">
-                <button
-                    pButton
-                    pRipple
-                    [routerLink]="['/vistaCliente']"
-                    label="Hacer Pedido"
-                    icon="pi pi-user-plus"
-                    class="p-button-success mr-2"            
-                ></button>
-            </div>
-        </ng-template>
-    </p-toolbar>
+    <p-toast></p-toast>
+
     <!-- Modal para anular un pedido --------------------------------->
     <p-tabView>
         <!-- Listado de pedidos Tomados---------------------------------------------->
@@ -28,6 +16,7 @@
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"          
                 selectionMode="multiple"
                 dataKey="_id"
+               
             >
             <ng-template pTemplate="caption">
                 <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -52,7 +41,11 @@
                             <p-sortIcon field="nombre_contacto"></p-sortIcon>
                         </th>
                         <th pSortableColumn="name">Dirección</th>
-                        <th pSortableColumn="name">Fecha Entrega</th>
+                        <th pSortableColumn="fecha_entrega_pedido">
+                            Fecha Entrega<p-sortIcon
+                                field="fecha_entrega_pedido"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="estado_pedido">
                             Estado<p-sortIcon
                                 field="estado_pedido"
@@ -94,12 +87,13 @@
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedidoCliente(pedido._id)"
                                     pTooltip="Ver"
-                                ></button>
-                                <button
+                                ></button
+                                >
+                                <button *ngIf="pedido.estado_pedido === 'Pendiente'"
                                     pButton
                                     pRipple
                                     icon="pi pi-times"
-                                    class="p-button-rounded p-button-danger"
+                                    class="p-button-rounded p-button-danger "
                                     (click)="abrirModalAnular(pedido._id)"
                                     pTooltip="Anular"
                                 ></button>
@@ -154,6 +148,7 @@
 >
     <br />
     <form [formGroup]="formPedidos">
+        
         <div class="formgrid grid mt-3">
             <div class="formgrid grid">
                 <div class="field col">
@@ -350,6 +345,7 @@
                         <th>Precio Unitario</th>
                         <th>Estado</th>
                         <th>Precio Total</th>
+                    
                     </tr>
                 </thead>
                 <tbody>
@@ -370,6 +366,7 @@
                         </td>
                         <td>{{ detalle.estado_producto }}</td>
                         <td>{{ detalle.precio_total_producto }}</td>
+                        
                     </tr>
                 </tbody>
             </table>

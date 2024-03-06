@@ -5,37 +5,35 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
+                    maxlength="10"
                     inputId="documento_cliente"
                     pInputText
                     (change)="getCliente(pedido.get('documento_cliente').value)"
                     [formControl]="pedido.get('documento_cliente')"
-                    (input)="
-                        pedido
-                            .get('documento_cliente')
-                            .setValue($event.target.value)
-                    "
+                    (blur)="quitarEspaciosBlancos('documento_cliente')"
                 />
-                <label for="inputtext">Cedula</label>
+                <label for="documento_cliente"
+                    >Cédula <span style="color: red">*</span></label
+                >
             </span>
-            <div
-                *ngIf="
-                    pedido.get('documento_cliente').invalid &&
-                    pedido.get('documento_cliente').touched
-                "
-                style="color: red"
-            >
-                <div
-                    *ngIf="pedido.get('documento_cliente').hasError('required')"
-                >
-                    La cédula es requerida
-                </div>
-                <div
-                    *ngIf="pedido.get('documento_cliente').hasError('pattern')"
-                >
-                    La cédula debe contener solo números y tener una longitud
-                    válida
-                </div>
-            </div>
+              <!-- Mensajes de advertencia -->
+              <div
+              *ngIf="
+                  pedido.get('documento_cliente').invalid &&
+                  pedido.get('documento_cliente').touched
+              "
+              class="error-message"
+          >
+              <div
+                  *ngIf="pedido.get('documento_cliente').hasError('required')"
+              >
+                  La Cédula es requerida.
+              </div>
+              <div *ngIf="pedido.get('documento_cliente').hasError('pattern')">
+                  Solo se permiten números y max de 10 caracteres.
+              </div>
+              <!-- Añade más mensajes de advertencia según sea necesario -->
+          </div>
         </div>
         <!-- Tipo de Cliente -->
         <div class="field col-12 md:col-3">
@@ -63,14 +61,13 @@
                 El tipo de cliente es requerido
             </div>
         </div>
-        <!-- NIT Empresa (solo visible si el tipo de cliente es Empresa) -->
         <div
             class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
                 <input
-                    [readonly]="true"
+                    disabled
                     type="text"
                     id="nit_empresa_cliente"
                     pInputText
@@ -80,27 +77,18 @@
                             .get('nit_empresa_cliente')
                             .setValue($event.target.value)
                     "
-                    disabled
                 />
-                <label for="inputtext">NIT Empresa</label>
+                <label for="nit_empresa_cliente">NIT Empresa</label>
             </span>
-            <div
-                *ngIf="
-                    pedido.get('nit_empresa_cliente').invalid &&
-                    pedido.get('nit_empresa_cliente').touched
-                "
-                style="color: red"
-            >
-                El NIT de la empresa es requerido
-            </div>
         </div>
+
         <!-- Nombre Jurídico (solo visible si el tipo de cliente es Empresa) -->
         <div
             class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'"
         >
             <span class="p-float-label">
-                <textarea
+                <input
                     [readonly]="true"
                     type="text"
                     id="nombre_juridico"
@@ -112,7 +100,7 @@
                             .setValue($event.target.value)
                     "
                     disabled
-                ></textarea>
+                >
                 <label for="inputtext">Nombre Empresa</label>
             </span>
             <div
@@ -142,7 +130,6 @@
                             .get('nombre_contacto')
                             .setValue($event.target.value)
                     "
-                    f
                     disabled
                 />
                 <label for="inputtext">Nombre cliente</label>
@@ -157,7 +144,7 @@
                 El nombre de contacto es requerido
             </div>
         </div>
-        <!-- Quien Recibe (solo visible si el tipo de cliente es Persona natural) -->
+        <!-- Quien recibe -->
         <div
             class="field col-12 md:col-3"
             *ngIf="pedido.get('tipo_cliente').value === 'Persona natural'"
@@ -169,23 +156,29 @@
                     id="quien_recibe"
                     pInputText
                     [formControl]="pedido.get('quien_recibe')"
-                    (input)="
-                        pedido.get('quien_recibe').setValue($event.target.value)
-                    "
+                    maxlength="20"
+                    (blur)="quitarEspaciosBlancos('quien_recibe')"
                 />
-                <label for="inputtext">Quien Recibe</label>
+                <label for="quien_recibe"
+                    >Quien Recibe <span style="color: red">*</span></label
+                >
             </span>
             <div
                 *ngIf="
                     pedido.get('quien_recibe').invalid &&
                     pedido.get('quien_recibe').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                Quien recibe es requerido
+                <div *ngIf="pedido.get('quien_recibe').hasError('required')">
+                    Quien Recibe es requerido.
+                </div>
+                <div *ngIf="pedido.get('quien_recibe').hasError('pattern')">
+                    Solo se permiten letras y hasta 20 caracteres.
+                </div>
             </div>
         </div>
-        <!-- Telefono Cliente -->
+        <!-- Telefono cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
@@ -194,51 +187,61 @@
                     id="telefono_cliente"
                     pInputText
                     [formControl]="pedido.get('telefono_cliente')"
-                    (input)="
-                        pedido
-                            .get('telefono_cliente')
-                            .setValue($event.target.value)
-                    "
+                    maxlength="10"
+                    (blur)="quitarEspaciosBlancos('telefono_cliente')"
                 />
-                <label for="inputtext">Telefono</label>
+                <label for="telefono_cliente"
+                    >Teléfono <span style="color: red">*</span></label
+                >
             </span>
+
+            <!-- Mensajes de advertencia -->
             <div
                 *ngIf="
                     pedido.get('telefono_cliente').invalid &&
                     pedido.get('telefono_cliente').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                El teléfono es requerido
+                <div
+                    *ngIf="pedido.get('telefono_cliente').hasError('required')"
+                >
+                    El teléfono es requerido.
+                </div>
+                <div *ngIf="pedido.get('telefono_cliente').hasError('pattern')">
+                    Solo se permiten números y max de 10 caracteres.
+                </div>
+                <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
         </div>
+
         <!-- Dirección Entrega -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
-                    style="resize: none"
-                    style="resize: none"
                     [readonly]="!clienteExistente"
                     type="text"
                     id="direccion_entrega"
                     pInputText
                     [formControl]="pedido.get('direccion_entrega')"
-                    (input)="
-                        pedido
-                            .get('direccion_entrega')
-                            .setValue($event.target.value)
-                    "
+                    maxlength="40"
                 />
-                <label for="inputtext">Dirección</label>
+                <label for="direccion_entrega"
+                    >Dirección <span style="color: red">*</span></label
+                >
             </span>
             <div
                 *ngIf="
                     pedido.get('direccion_entrega').invalid &&
                     pedido.get('direccion_entrega').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                La dirección de entrega es requerida
+                <div
+                    *ngIf="pedido.get('direccion_entrega').hasError('required')"
+                >
+                    La dirección es requerida.
+                </div>
             </div>
         </div>
         <!-- Ciudad Cliente -->
@@ -250,22 +253,26 @@
                     id="ciudad_cliente"
                     pInputText
                     [formControl]="pedido.get('ciudad_cliente')"
-                    (input)="
-                        pedido
-                            .get('ciudad_cliente')
-                            .setValue($event.target.value)
-                    "
+                    maxlength="15"
+                    (blur)="quitarEspaciosBlancos('ciudad_cliente')"
                 />
-                <label for="inputtext">Ciudad</label>
+                <label for="ciudad_cliente"
+                    >Ciudad <span style="color: red">*</span></label
+                >
             </span>
             <div
                 *ngIf="
                     pedido.get('ciudad_cliente').invalid &&
                     pedido.get('ciudad_cliente').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                La ciudad es requerida
+                <div *ngIf="pedido.get('ciudad_cliente').hasError('required')">
+                    Ciudad es requerida.
+                </div>
+                <div *ngIf="pedido.get('ciudad_cliente').hasError('pattern')">
+                    Solo se permiten letras y máximo 15 caracteres.
+                </div>
             </div>
         </div>
         <!-- Barrio Cliente -->
@@ -277,36 +284,61 @@
                     id="barrio_cliente"
                     pInputText
                     [formControl]="pedido.get('barrio_cliente')"
-                    (input)="
-                        pedido
-                            .get('barrio_cliente')
-                            .setValue($event.target.value)
-                    "
+                    maxlength="20"
+                    (blur)="quitarEspaciosBlancos('barrio_cliente')"
                 />
-                <label for="inputtext">Barrio</label>
+                <label for="barrio_cliente"
+                    >Barrio <span style="color: red">*</span></label
+                >
             </span>
+
+            <!-- Mensajes de advertencia -->
             <div
                 *ngIf="
                     pedido.get('barrio_cliente').invalid &&
                     pedido.get('barrio_cliente').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                El barrio es requerido
+                <div *ngIf="pedido.get('barrio_cliente').hasError('required')">
+                    El barrio es requerido.
+                </div>
+                <div *ngIf="pedido.get('barrio_cliente').hasError('pattern')">
+                    Solo se permiten letras y max de 20 caracteres.
+                </div>
+                <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
         </div>
         <!-- Fecha Entrega Pedido -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-calendar
-                    disabled
+                    readonlyInput="true"
                     [formControl]="pedido.get('fecha_entrega_pedido')"
                     dateFormat="yy/mm/dd"
                     inputId="calendar"
                     [minDate]="minDate"
                 ></p-calendar>
-                <label for="calendar">Fecha Entrega</label>
+                <label for="calendar"
+                    >Fecha Entrega <span style="color: red">*</span></label
+                >
             </span>
+            <div
+                *ngIf="
+                    pedido.get('fecha_entrega_pedido').invalid &&
+                    pedido.get('fecha_entrega_pedido').touched
+                "
+                class="error-message"
+            >
+                <div
+                    *ngIf="
+                        pedido.get('fecha_entrega_pedido').hasError('required')
+                    "
+                >
+                    La fecha de entrega es requerida.
+                </div>
+                <!-- Añade más mensajes de advertencia según sea necesario -->
+            </div>
         </div>
 
         <!-- Método de Pago -->
@@ -320,16 +352,21 @@
                     [options]="metodoPago"
                     [formControl]="pedido.get('metodo_pago')"
                 ></p-dropdown>
-                <label for="dropdown">Método de Pago</label>
+                <label for="dropdown"
+                    >Método de Pago <span style="color: red">*</span></label
+                >
             </span>
             <div
                 *ngIf="
                     pedido.get('metodo_pago').invalid &&
                     pedido.get('metodo_pago').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                El método de pago es requerido
+                <div *ngIf="pedido.get('metodo_pago').hasError('required')">
+                    El metodo de pago es requerido.
+                </div>
+                <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
         </div>
 
@@ -344,16 +381,21 @@
                     [options]="estadoPago"
                     [formControl]="pedido.get('estado_pago')"
                 ></p-dropdown>
-                <label for="dropdown">Estado de Pago</label>
+                <label for="dropdown"
+                    >Estado Pago <span style="color: red">*</span></label
+                >
             </span>
             <div
                 *ngIf="
                     pedido.get('estado_pago').invalid &&
                     pedido.get('estado_pago').touched
                 "
-                style="color: red"
+                class="error-message"
             >
-                El estado del pago es requerido
+                <div *ngIf="pedido.get('estado_pago').hasError('required')">
+                    El metodo de pago es requerido.
+                </div>
+                <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
         </div>
 
@@ -430,6 +472,7 @@
                 La categoría es requerida
             </div>
         </div>
+
         <!-- Productos de la Categoría -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
@@ -479,7 +522,7 @@
                 label="Agregar Producto"
                 icon="pi pi-user-plus"
                 class="p-button-success mr-2"
-                (click)="agregarProductoExistente()"
+                (click)="agregarProductoExistente(); limpiarCampos()"
                 [disabled]="
                     (!productoSeleccionado && productoSeleccionado !== 0) ||
                     cantidad_producto == 0 ||
@@ -509,7 +552,7 @@
                     <th>Nombre Producto</th>
                     <th>Categoria</th>
                     <th>cantidad</th>
-                    <th>Precio Unitario</th>Persona jurídica
+                    <th>Precio Unitario</th>
                     <th>SubTotal</th>
                     <th>Accion</th>
                     <!-- Agrega una columna para los botones de eliminación -->
@@ -555,7 +598,7 @@
                     [formControl]="pedido.get('subtotal_venta')"
                     readonly="true"
                 ></p-inputNumber>
-                <label for="subtotal_venta">Subtotal Venta</label>
+                <label for="subtotal_venta"  class="custom-label">Subtotal Venta</label>
             </span>
         </div>
 
@@ -566,7 +609,7 @@
                     [formControl]="pedido.get('precio_total_venta')"
                     readonly="true"
                 ></p-inputNumber>
-                <label for="precio_total_venta">Precio Total Venta</label>
+                <label for="precio_total_venta"  class="custom-label">Precio Total Venta</label>
             </span>
         </div>
     </div>

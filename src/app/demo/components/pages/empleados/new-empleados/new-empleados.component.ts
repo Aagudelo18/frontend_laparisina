@@ -7,13 +7,17 @@ import { MessageService } from 'primeng/api';
 import { Empleado } from '../list-empleados/empleados.model';
 import { Observable, Subject, throwError } from 'rxjs';
 import { UsuarioService } from '../new-empleados/usuarios.service'
+import { CategoriaService } from '../../categoria/categoria.service';
+import { differenceInYears, isBefore, addYears } from 'date-fns';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 
 @Component({
     selector: 'app-new-empleados',
     templateUrl: './new-empleados.component.html',
     styleUrls: ['./new-empleados.component.scss'],
-    providers: [MessageService],
+    providers: [MessageService, CategoriaService],
 })
 export class NewEmpleadosComponent implements OnInit {
   nuevoUsuario: any = {};
@@ -23,9 +27,11 @@ export class NewEmpleadosComponent implements OnInit {
   touchedCelular = false;
   formEmpleado: FormGroup; 
   ListEmpleados: Empleado[] = [];
+  areas: string[] = [];
   mostrarConfirmacionUsuario = false;
   confirmacionUsuarioSubject = new Subject<boolean>();
-  
+  identificacionEmpleado: string = '';
+  empleadoExistente: boolean = false;
   
   empleado: any = {
     
@@ -58,6 +64,7 @@ pension_empleado: '',
 cuenta_bancaria_empleado: '',
 //area_empleado: '',
 };
+  
       
   
   
@@ -67,6 +74,10 @@ cuenta_bancaria_empleado: '',
         private router: Router,
         private formBuilder: FormBuilder,
         private messageService: MessageService,
+        private categoriaService: CategoriaService,
+        private fb: FormBuilder,
+        private cdr: ChangeDetectorRef
+        
         
        
     ) {
@@ -104,6 +115,8 @@ cuenta_bancaria_empleado: '',
           Validators.pattern(/^[0-9]{10}$/),
         ],
       ],
+      tipo_cuenta:['', Validators.required],
+      banco_cuenta:['', Validators.required],
   
       area_empleado: ['', Validators.required],
       // estado_empleado: ['', Validators.required],
@@ -122,6 +135,7 @@ cuenta_bancaria_empleado: '',
 
       
      }
+     
      
      validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
       console.log('Validando contrasenaConfirmada...');
@@ -188,9 +202,101 @@ cuenta_bancaria_empleado: '',
   
 
     ngOnInit() {
+      this.getListAreas();
        
     }
+    getEmpleado(numero_identificacion_empleado: string) {
+      // Verificar si el documento está vacío
+      if (!numero_identificacion_empleado) {
+        // Limpiar los valores de los campos relacionados con el empleado
+        this.formEmpleados.reset();
+        // Puedes agregar otros campos que necesites reiniciar aquí
     
+        // Actualiza el valor de la variable 'empleadoExistente'
+        this.empleadoExistente = false;
+      } else {
+        this.newempleadosService.obtenerEmpleadoPorIdentificacion(numero_identificacion_empleado).subscribe(
+          (data: any) => {
+            
+            // Verificar si el empleado existe
+            if (data) {
+              this.empleadoExistente = true;
+              // Actualizar las propiedades del formulario 'formEmpleados' con la información del empleado
+              this.formEmpleados.patchValue({
+                codigo_rotulacion_empleado: data.codigo_rotulacion_empleado,
+         nombre_empleado: data.nombre_empleado,
+         tipo_contrato_empleado:data.tipo_contrato_empleado ,
+         fecha_inicio_empleado: data.fecha_inicio_empleado,
+         fecha_vencimiento_contrato_empleado: data.fecha_vencimiento_contrato_empleado,
+         tipo_documento_empleado: data.tipo_documento_empleado,
+         identificacion_empleado: data.identificacion_empleado,
+         fecha_nacimiento_empleado: data.fecha_nacimiento_empleado,
+        edad_empleado: data.edad_empleado,
+         lugar_nacimiento_empleado: data.lugar_nacimiento_empleado,
+         direccion_empleado:data.direccion_empleado,
+         municipio_domicilio_empleado:data.municipio_domicilio_empleado ,
+         estado_civil_empleado: data.estado_civil_empleado,
+         celular_empleado: data.celular_empleado,
+         correo_electronico: data.correo_electronico,
+         alergia_empleado: data.alergia_empleado,
+         grupo_sanguineo_empleado: data.grupo_sanguineo_empleado,
+         eps_empleado: data.eps_empleado,
+         pension_empleado: data.pension_empleado,
+         cuenta_bancaria_empleado:data.cuenta_bancaria_empleado,
+         tipo_cuenta: data.tipo_cuenta,
+         banco_cuenta: data.banco_cuenta,
+         area_empleado: data.area_empleado,
+         contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
+         confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
+      });
+      const contactoEmergenciaArray = this.formEmpleados.get('contacto_emergencia') as FormArray;
+      contactoEmergenciaArray.clear();  // Limpia los controles actuales
+      data.contacto_emergencia.forEach((contacto: any) => {
+        contactoEmergenciaArray.push(this.fb.group({
+          nombre_contacto_emergencia: [contacto.nombre_contacto_emergencia || ''],
+          parentesco_empleado: [contacto.parentesco_empleado || ''],
+          telefono_contacto_emergencia: [contacto.telefono_contacto_emergencia || '']
+        }));
+      });
+      this.cdr.detectChanges();
+    
+              console.log(data);
+            } else {
+              // El empleado no existe, puedes manejarlo según tus necesidades
+              this.empleadoExistente = false;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'El empleado no está registrado',
+                life: 3000,
+              });
+            }
+          },
+          (error) => {
+            console.error(error);
+    
+            // Manejar el error de la solicitud HTTP
+            if (error.status === 404) {
+              // El empleado no se encontró en el servidor
+              this.empleadoExistente = false;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Empleado no encontrado',
+                detail: 'El empleado no está registrado',
+                life: 3000,
+              });
+            } else {
+              // Otro manejo de errores según tus necesidades
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error en la solicitud',
+                detail: 'Ocurrió un error al obtener los detalles del empleado',
+                life: 3000,
+              });
+            }
+          }
+        );
+      }
+    }
     
     
 
@@ -246,7 +352,7 @@ this.confirmarCrearUsuario().subscribe(
 this.messageService.add({
  severity: 'error',
  summary: 'Error',
- detail: 'Error al crear el cliente',
+ detail: 'Error al crear el empleado',
  life: 3000,
 });
 }
@@ -302,6 +408,22 @@ this.messageService.add({
 return throwError('Las contraseñas no coinciden');
 }
 }
+esMayorDeEdad(): boolean {
+  const fechaNacimiento = new Date(this.empleado.fecha_nacimiento_empleado);
+  const hoy = new Date();
+
+  // Calcular la edad utilizando date-fns
+  const edad = differenceInYears(hoy, fechaNacimiento);
+
+  // Calcular la fecha hace 18 años
+  const fechaHace18Anos = addYears(hoy, -18);
+
+  // Verificar que la fecha de nacimiento haya ocurrido y que la persona tenga al menos 18 años
+  return isBefore(fechaNacimiento, fechaHace18Anos);
+}
+
+
+
 
 confirmarCreacionUsuario() {
 this.mostrarConfirmacionUsuario = false;
@@ -310,4 +432,17 @@ this.confirmacionUsuarioSubject.next(true); // Confirmar la creación del usuari
     cancelarCreacion() {
       this.router.navigate(['/list-empleados']);
     }
+    getListAreas(){     
+      this.categoriaService.getListCategorias().subscribe((data) =>{      
+        this.areas = data.
+        filter(categoria => categoria.estado_categoria_producto === true)
+        .map(categoria => categoria.nombre_categoria_producto);
+      })   
+           
+    }
+    onCategoriaChange(event) {
+      console.log('Categoría seleccionada:', event.value);
+      // Realizar otras acciones según sea necesario
+    }
   }
+  

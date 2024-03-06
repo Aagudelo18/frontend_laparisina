@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Product } from './product-list.model';
+import { Product, DatosUsuario } from './product-list.model';
 
 @Injectable()
   export class ProductService {
 
+    datosUsuario: DatosUsuario = {} as DatosUsuario;
+
     private carritoProductos = 'carritoProductosParisina';
-    private datosCliente = 'currentUser'
+    private claveDatosUsuario = 'currentUser'
 
     private apiUrl = 'http://localhost:3000/api'; // URL de API
   
@@ -26,6 +28,11 @@ import { Product } from './product-list.model';
     }
     
 
+  //-------------------------------------------------------------------------------------------------------------------------------
+
+  //SERVICIOS Y FUNCIONES CARRITO
+
+  //-------------------------------------------------------------------------------------------------------------------------------
     //Servicios carrito localStorage
     guardarCarrito(carrito: any[]): void {
       localStorage.setItem(this.carritoProductos, JSON.stringify(carrito));
@@ -40,10 +47,17 @@ import { Product } from './product-list.model';
       localStorage.removeItem(this.carritoProductos);
     }
 
+
+    
+
     //Servicios cliente login
-    obtenerDatosCliente(): any[] {
-      const cliente = localStorage.getItem(this.datosCliente);
-      return cliente ? JSON.parse(cliente) : [];
+    obtenerDatosUsuario(): DatosUsuario {
+      const cliente = localStorage.getItem(this.claveDatosUsuario);
+      return cliente ? JSON.parse(cliente) : {} as DatosUsuario;
+    }
+
+    obtenerDatosClientePorCorreo(correo:string): Observable<any>{
+      return this.http.get<any>(`${this.apiUrl}/cliente/${correo}`)
     }
   }
   

@@ -29,6 +29,8 @@ import { GalleriaModule } from 'primeng/galleria';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MessageService } from 'primeng/api';
+
 
 // Importa el componente PedidoCliente
 import { PedidoClienteComponent } from './pedido-cliente.component';
@@ -68,11 +70,13 @@ import { PedidoClienteService } from './pedido-cliente.service';
         GalleriaModule,
         InputSwitchModule,
         RadioButtonModule,
-        ToolbarModule
+        ToolbarModule,
+        
     ],
     declarations: [PedidoClienteComponent],
     providers: [
-        PedidoClienteService, // Agrega tu servicio como un proveedor aquí
+        PedidoClienteService,
+        MessageService, // Agrega tu servicio como un proveedor aquí
     ],
 })
 export class PedidoClienteModule {}

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { UsuarioService } from './usuarios.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
@@ -37,14 +37,14 @@ export class UsuariosComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.formularioUsuario = fb.group({
-      nombre_usuario: ['', [Validators.minLength(2), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+      nombre_usuario: ['', [Validators.minLength(2), Validators.maxLength(25), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s\D]{1,25}$/), this.noCaracteresEspeciales()]],
       correo_electronico: ['', [Validators.required, Validators.email]],
       contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,15}$/),]],
       confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
       rol_usuario: ['', [Validators.required]],// Establece el valor predeterminado a "Activo"
     });
     this.formularioEditarUsuario = fb.group({
-      nombre_usuario: ['', [Validators.minLength(2), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+      nombre_usuario: ['', [Validators.minLength(2), Validators.maxLength(25), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s\D]{1,25}$/)]],
       correo_electronico: ['', [Validators.required, Validators.email]],
       rol_usuario: [{ value: '', disabled: true }, [Validators.required]],
       estado_usuario: [true, Validators.required],
@@ -61,7 +61,6 @@ export class UsuariosComponent implements OnInit {
   ngOnInit() {
     //Traemos el método para traer todos los usuarios
     this.getListUsuarios();
-
     //Traemos el método para traer todos los roles
     this.getListRoles();
     this.getListRolesForCreation();
@@ -94,6 +93,16 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.getRoles().subscribe((data: any[]) => {
       this.roles = data;
     });
+  }
+
+  noCaracteresEspeciales(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const caracteresEspeciales = /[!@#$%^&*(),.?":{}|<>]/;
+      if (caracteresEspeciales.test(control.value)) {
+        return { 'caracteresEspeciales': true };
+      }
+      return null;
+    };
   }
 
 

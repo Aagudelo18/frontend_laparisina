@@ -25,7 +25,11 @@ export interface Empleado {
   eps_empleado: string;
   pension_empleado: string;
   cuenta_bancaria_empleado: string;
+  tipo_cuenta: string;
+  banco_cuenta: string;
   area_empleado: string;
+  area_empleado_produccion: string;
+
  //  estado_empleado: string;
 //   detalle_empleado: DetalleEmpleado[];
 // }
