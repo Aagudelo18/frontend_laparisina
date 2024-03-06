@@ -17,6 +17,7 @@ import { PagesModule } from './demo/components/pages/pages.module';
 
 
 
+
 @NgModule({
     declarations: [
         AppComponent, NotfoundComponent, 
@@ -24,7 +25,6 @@ import { PagesModule } from './demo/components/pages/pages.module';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
-        PagesModule,
 
     ],
     providers: [

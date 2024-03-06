@@ -6,6 +6,6 @@ import { clientesComponent } from './clientes.component';
 	imports: [RouterModule.forChild([
 		{ path: '', component: clientesComponent }
 	])],
-	exports: [RouterModule]
+	exports: [RouterModule] 
 })
 export class ClientesRoutingModule { }

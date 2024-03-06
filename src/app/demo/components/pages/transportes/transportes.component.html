@@ -1,0 +1,161 @@
+<div class="grid">
+    <div class="col-12">
+      <div class="card px-6 py-6">
+        <p-toast></p-toast>
+        <p-toolbar styleClass="mb-4">
+          <ng-template pTemplate="left">
+            <div class="my-2">
+              <button pButton pRipple label="Crear transporte" icon="pi pi-truck" (click)="openNewTransporteDialog()" class="p-button-success mr-2"></button>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="right">
+          </ng-template>
+  
+  
+        </p-toolbar>
+        <p-table #dt [value]="listTransportes" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+          [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+          [(selection)]="selectedTranspotes"selectionMode="multiple" dataKey="_id"
+          [globalFilterFields]="['ciudad_cliente','precio_transporte']">
+          <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+              <h5 class="m-0">Lista de Precios de Transportes</h5>
+              <span class="block mt-2 md:mt-0 p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                  class="w-full sm:w-auto" />
+              </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+  
+              <th pSortableColumn="name" field="ciudad_cliente">Municipio</th>
+              <th pSortableColumn="name" field="precio_transporte">Precio Transporte</th>
+              <th pSortableColumn="name">Estado</th>
+              <th pSortableColumn="name">Aciones</th>
+  
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-transportes>
+            <tr>
+  
+  
+              <td style="width:30%; min-width:9rem;">
+                {{ transportes.ciudad_cliente }}
+              </td>
+              <td style="width:30%; min-width:8rem;">
+                {{ transportes.precio_transporte}}
+              </td>
+              <td style="width:20%; min-width:5rem;">
+                <div class="flex" style="align-items: center;">
+                  <br>
+                  <p-inputSwitch [ngModel]="transportes.estado_transporte"
+                    (onChange)="confirmarCambioEstado(transportes)"></p-inputSwitch>
+                </div>
+              </td>
+              <td>
+                <div class="flex" style="align-items: center;">
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning" (click)="openEditarTransporteDialog(transportes._id)"
+                     style=" width: 2.5rem; height: 2.5rem; ;"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <p-dialog [(visible)]="estadoTransportesDialog" header="Confirmar cambio de estado" [modal]="true" [style]="{width:'450px'}"
+  (onHide)="noCambiarEstado()">
+  <div class="flex align-items-center justify-content-center">
+    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    <span *ngIf="transportes">¿Está seguro de que desea cambiar el estado del Transporte 
+      <b>{{transportes.ciudad_cliente}}</b>?</span>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
+    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+      (click)="cambiarEstadoTransporte(transportes._id)"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="crearTransportesDialog" [style]="{ width: '450px' }" header="Crear Municipio" [modal]="true" class="p-fluid">
+  <form [formGroup]="formTransportes" (ngSubmit)="crearTransporte()">
+    <br>
+    <div class="field col">
+      <span class="p-float-label">
+        <input formControlName="ciudad_cliente" id="ciudad_cliente" type="text" pInputText>
+        <label for="ciudad_cliente">Municipio<span style="color: red;">*</span></label>
+      </span>
+        <span *ngIf="formTransportes.get('ciudad_cliente')?.hasError('required') && formTransportes.get('ciudad_cliente')?.touched"
+        style="color: red;">
+          El municipio es requerido
+        </span>       
+        <span *ngIf="formTransportes.get('ciudad_cliente')?.hasError('pattern') && formTransportes.get('ciudad_cliente')?.touched"
+        style="color: red;">
+          El municipio solo debe contener letras  minimo 3  y  máximo 30 caracteres
+        </span>
+      </div>
+      <div class="field col">
+        <span class="p-float-label">
+            <p-inputNumber inputId="integeronly" formControlName="precio_transporte"></p-inputNumber>
+            <label for="precio_transporte">Precio del transporte<span style="color: red;">*</span></label>
+        </span>
+        <br />
+        <span *ngIf="formTransportes.get('precio_transporte')?.hasError('required') &&
+        formTransportes.get('precio_transporte')?.touched"style="color: red">
+            El precio del transporte es requerido.
+        </span>
+        <span *ngIf="formTransportes.get('precio_transporte')?.hasError('pattern') &&
+        formTransportes.get('precio_transporte')?.touched" style="color: red">
+            números, mínimo 4 y máximo 5 dígitos.
+        </span>
+      </div>
+         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button pButton pRipple label="Cancelar"  class="p-button-text" (click)="crearTransportesDialog = false" ></button>
+        <button type="submit" pButton pRipple label="Guardar"  class="p-button-text" ></button>
+      </div>
+  </form>  
+  </p-dialog>
+ 
+<p-dialog [(visible)]="editarTransportesDialog" [style]="{ width: '450px' }" header="Editar Transporte" [modal]="true" class="p-fluid">
+    <form [formGroup]="formTransportes" (ngSubmit)="actualizarTransporte()">
+      <br>
+      <div class="field col">
+        <span class="p-float-label">
+          <input formControlName="ciudad_cliente" id="ciudad_cliente" type="text" pInputText>
+          <label for="ciudad_cliente">Municipio<span style="color: red;">*</span></label>
+        </span>
+          <span *ngIf="formTransportes.get('ciudad_cliente')?.hasError('required') && formTransportes.get('ciudad_cliente')?.touched"
+          style="color: red;">
+            El municipio es requerido
+          </span>       
+          <span *ngIf="formTransportes.get('ciudad_cliente')?.hasError('pattern') && formTransportes.get('ciudad_cliente')?.touched"
+          style="color: red;">
+            El municipio solo debe contener letras  minimo 3  y  máximo 30 caracteres
+          </span>
+        </div>
+        <div class="field col">
+          <span class="p-float-label">
+              <p-inputNumber inputId="integeronly" formControlName="precio_transporte"></p-inputNumber>
+              <label for="precio_transporte">Precio del transporte<span style="color: red;">*</span></label>
+          </span>
+          <br />
+          <span *ngIf="formTransportes.get('precio_transporte')?.hasError('required') &&
+          formTransportes.get('precio_transporte')?.touched"style="color: red">
+              El precio del transporte es requerido.
+          </span>
+          <span *ngIf="formTransportes.get('precio_transporte')?.hasError('pattern') &&
+          formTransportes.get('precio_transporte')?.touched" style="color: red">
+              números, mínimo 4 y máximo 5 dígitos.
+          </span>
+        </div>
+           <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+          <button pButton pRipple label="Cancelar"  class="p-button-text" (click)="editarTransportesDialog = false" ></button>
+          <button type="submit" pButton pRipple label="Guardar"  class="p-button-text" ></button>
+        </div>
+    </form>
+    
+    </p-dialog>

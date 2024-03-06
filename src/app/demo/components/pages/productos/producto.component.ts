@@ -11,7 +11,7 @@ import { CategoriaService } from '../categoria/categoria.service';
 
 
 @Component({
-    templateUrl: './producto.component.html',
+    templateUrl: './producto.component.html', 
     providers: [MessageService, CategoriaService]
 })
 

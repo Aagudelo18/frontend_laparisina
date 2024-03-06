@@ -102,7 +102,7 @@ export class RegistrarseComponent implements OnInit {
             ciudad_cliente: this.formCliente.value.ciudad_cliente,
             estado_cliente: true,
         };
-
+ 
         const nuevoUsuario = {
             correo_electronico: this.formCliente.value.correo_cliente,
             contrasena_usuario: this.formCliente.value.contrasena_usuario,
