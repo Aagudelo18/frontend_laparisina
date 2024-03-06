@@ -226,7 +226,7 @@
                         <td>{{ product.cantidad_producto }}</td>
                         <td>
                             {{
-                                product.tipo_cliente ===
+                                tipoCliente ===
                                 "Persona jurídica"
                                     ? product.precio_por_mayor_ico
                                     : product.precio_ico
@@ -249,7 +249,8 @@
         <div class="formgrid grid justify-end">
             <div class="field col-6 md-3">
                 <span class="p-float-label">
-                    <label for="subtotal_venta" class="custom-label">Subtotal Venta</label>
+                    <label for="subtotal_venta" 
+                    class="custom-label">Subtotal Venta</label>
                     <p-inputNumber
                         inputId="subtotal_venta"
                         [formControl]="pedido.get('subtotal_venta')"
@@ -261,7 +262,8 @@
     
             <div class="field col-6 md-3">
                 <span class="p-float-label">
-                    <label for="precio_total_venta" class="custom-label">Precio Total Venta</label>
+                    <label for="precio_total_venta" 
+                    class="custom-label">Precio Total Venta</label>
                     <p-inputNumber
                         inputId="precio_total_venta"
                         [formControl]="pedido.get('precio_total_venta')"

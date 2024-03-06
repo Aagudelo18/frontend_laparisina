@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DatosUsuario, Product, ProductoCarrito } from '../../demo/components/pages/product-list/product-list.model';
@@ -27,9 +27,13 @@ interface LayoutState {
 export class LayoutService {
 
 //Eventos de emisión
-    // public  ClearCar: EventEmitter<any> = new EventEmitter();
-    // public  DeleteProdutCar: EventEmitter<any> = new EventEmitter();
-    // public  AddProdutCart: EventEmitter<any> = new EventEmitter();
+    public  ClearCar: EventEmitter<any> = new EventEmitter();
+    public  DeleteProdutCar: EventEmitter<any> = new EventEmitter();
+    public  AddProdutCart: EventEmitter<any> = new EventEmitter();
+    public  DeleteProdutCarView: EventEmitter<any> = new EventEmitter();
+
+    
+
     
 
     config: AppConfig = {
@@ -234,7 +238,7 @@ export class LayoutService {
     }
   
     obtenerDatosClientePorCorreo(correo:string): Observable<any>{
-        return this.http.get<any>(`${this.apiUrl}/clientes/correo/${correo}`)
+        return this.http.get<any>(`${this.apiUrl}/cliente/${correo}`)
     }
 
     private obtenerYActualizarDatosUsuario() {

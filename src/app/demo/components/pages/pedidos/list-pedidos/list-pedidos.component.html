@@ -132,6 +132,7 @@
                                     pTooltip="Cambiar Estado"
                                 ></button>
                                 <button
+                                *ngIf="esPedidoPendiente(pedido)"
                                     pButton
                                     pRipple
                                     icon="pi pi-times"
@@ -995,12 +996,15 @@
     </div>
     <div class="field col-12 md:col-3">
         <span class="p-float-label">
-            <select [(ngModel)]="domiciliarioSeleccionado">
+            <select [(ngModel)]="domiciliarioSeleccionado" (ngModelChange)="prueba()">
+                <option value="0">
+                    seleccione un Domiciliario
+                </option>
                 <option
                     *ngFor="let domiciliario of domiciliarios"
                     [value]="domiciliario?._id"
                 >
-                    {{ domiciliario?.nombre_empleado }}
+                    {{ domiciliario?.nombre_empleado }} 
                 </option>
             </select>
         </span>

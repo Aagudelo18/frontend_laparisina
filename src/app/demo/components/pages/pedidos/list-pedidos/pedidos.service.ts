@@ -70,11 +70,15 @@ export class PedidosService {
     return this.http.get<any[]>(`${this.apiUrl}empleados/${id}`);
   }
 
-  asignarPedidoADomiciliario(idPedido: string, idDomiciliario: string): Observable<any> {
+  asignarPedidoDomiciliario(idPedido: string, idDomiciliario: string): Observable<any> {
     const url = `${this.apiUrl}empleados/asignar-pedido`;
     const body = { id_pedido: idPedido, id_empleado_domiciliario: idDomiciliario };
     return this.http.post(url, body);
+  
   }
+
+ 
+
 }
   
   

@@ -67,7 +67,7 @@
             <i class="pi pi-user"></i>
             <span>Mi perfil</span>
         </button>
-        <button class="p-link layout-topbar-button" (click)="logout()" pTooltip="Cerrar sesión" tooltipPosition="left">
+        <button *ngIf="hasToken()" class="p-link layout-topbar-button" (click)="logout()" pTooltip="Cerrar sesión" tooltipPosition="left">
             <i class="pi pi-sign-out"></i>
             <span>Cerrar sesión</span>
         </button>
