@@ -98,75 +98,6 @@ export class RegistrarseComponent implements OnInit {
 
   
 
-<<<<<<< HEAD
-    // Función para crear una categoría
-    crearCliente() {
-        const nuevoCliente: Clientes = {
-            tipo_cliente: this.formCliente.value.tipo_cliente,
-            nombre_contacto: this.formCliente.value.nombre_contacto,
-            nombre_juridico: this.formCliente.value.nombre_juridico,
-            numero_documento_cliente: this.formCliente.value.numero_documento_cliente,
-            nit_empresa_cliente: this.formCliente.value.nit_empresa_cliente,
-            correo_cliente: this.formCliente.value.correo_cliente,
-            telefono_cliente: this.formCliente.value.telefono_cliente,
-            direccion_cliente: this.formCliente.value.direccion_cliente,
-            barrio_cliente: this.formCliente.value.barrio_cliente,
-            ciudad_cliente: this.formCliente.value.ciudad_cliente,
-            estado_cliente: true,
-        };
- 
-        const nuevoUsuario = {
-            correo_electronico: this.formCliente.value.correo_cliente,
-            contrasena_usuario: this.formCliente.value.contrasena_usuario,
-            confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
-        };
-
-        // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
-        if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
-            this.confirmarCrearUsuario().subscribe(
-                (usuarioConfirmado) => {
-                    if (usuarioConfirmado) {
-                        // El usuario fue confirmado, ahora puedes crear el cliente
-                        this.clienteService.postClientes(nuevoCliente).subscribe(
-                            () => {
-                                this.messageService.add({
-                                    severity: 'success',
-                                    summary: 'Se registró la cuenta con éxito',
-                                    detail: 'Cliente creado',
-                                    life: 6000,
-                                });
-                                this.getListClientes();
-                                this.crearClienteDialog = false;
-                            },
-                            (error) => {
-                                console.error('Error al crear el cliente:', error);
-                                this.messageService.add({
-                                    severity: 'error',
-                                    summary: 'Error al crear la cuenta',
-                                    detail: 'Error al crear el cliente',
-                                    life: 3000,
-                                });
-                            }
-                        );
-                    } else {
-                        // El usuario no fue confirmado, puedes manejarlo según tus necesidades
-                        console.log('Error por no confirmar el usuario')
-                    }
-                },
-                (error) => {
-                    console.error('Error al confirmar el usuario:', error);
-                    // Manejar errores al confirmar el usuario
-                }
-            );
-        } else {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al registrar la cuenta',
-                life: 3000,
-            });
-        }
-=======
   // Función para crear un cliente
   crearCliente() {
     const nuevoCliente: Clientes = {
@@ -181,7 +112,6 @@ export class RegistrarseComponent implements OnInit {
       barrio_cliente: this.formCliente.value.barrio_cliente,
       ciudad_cliente: this.formCliente.value.ciudad_cliente,
       estado_cliente: true,
->>>>>>> a25666376fa753da2312cdc7869290f3a831a454
     };
 
     const nuevoUsuario = {
