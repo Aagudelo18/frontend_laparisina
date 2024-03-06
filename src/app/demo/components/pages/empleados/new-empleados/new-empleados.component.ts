@@ -308,6 +308,34 @@ cuenta_bancaria_empleado: '',
     
 
     crearEmpleado() {
+      // Verificar si el formulario es válido
+      if (this.formEmpleados.invalid) {
+        // El formulario no es válido, pero solo mostramos el mensaje de error para la identificación
+        if (this.formEmpleados.controls['identificacion_empleado'].invalid) {
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al crear el empleado',
+            detail: 'El número de identificación ya esta registrado .',
+            life: 6000
+          });
+        }
+        return; // Detener la ejecución de la función si el formulario no es válido
+      }
+    
+      const numeroIdentificacion = this.formEmpleados.value.identificacion_empleado;
+    
+      // Verificar si el numero de identificacion ya existe en la lista de empleados
+      const identificacionExistente = this.ListEmpleados.find(empleado => empleado.identificacion_empleado === numeroIdentificacion);
+      if (identificacionExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el empleado',
+          detail: 'El número de identificación ya existe.',
+          life: 6000
+        });
+        return; // Detener la ejecución de la función si el número de identificación ya existe
+      }
       
         // Establecer directamente el rol de empleado
         this.empleado.rol_usuario = '654aefc54524da3db0bc3a18'; 
@@ -463,5 +491,8 @@ this.confirmacionUsuarioSubject.next(true); // Confirmar la creación del usuari
       // Realizar otras acciones según sea necesario
     }
     
+      // Verificar si el numero de celular ya existe en la lista de de clientes
+      
   }
+  
   
