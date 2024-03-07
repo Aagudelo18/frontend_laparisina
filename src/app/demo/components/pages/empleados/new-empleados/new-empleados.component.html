@@ -1,41 +1,41 @@
 <div class="card">
+  
   <p-toast></p-toast>
-  <h1>CREAR EMPLEADO</h1>
-  <hr>
-  <h4 class="subtitle">Información Personal</h4>
-  <div class="grid p-fluid mt-3">
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="identificacion_empleado" pInputText [(ngModel)]="empleado.identificacion_empleado"
-          name="identificacion_empleado" #identificacionEmpleado="ngModel" required pattern="[A-Za-z0-9]{6,}"
-          maxlength="10" (change)="getEmpleado(empleado.identificacion_empleado)" />
-        <label for="identificacion_empleado">Identificación*</label>
-      </span>
-      <div *ngIf="identificacionEmpleado.errors?.required && identificacionEmpleado.control.touched" style="color: red">
-        Campo requerido
-      </div>
-
-      <div *ngIf="identificacionEmpleado.errors?.pattern && identificacionEmpleado.control.touched" style="color: red">
-        Ingrese al menos 6 caracteres alfanuméricos
-      </div>
-      <div *ngIf="identificacionEmpleado.errors?.maxlength && identificacionEmpleado.control.touched"
-        style="color: red">
-        Máximo 10 caracteres permitidos
-      </div>
+<h1>CREAR EMPLEADO</h1>
+<hr>
+<h4 class="subtitle">Información Personal</h4>
+<div class="grid p-fluid mt-3">
+  <div class="field p-col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="identificacion_empleado" pInputText [(ngModel)]="empleado.identificacion_empleado"
+        name="identificacion_empleado" #identificacionEmpleado="ngModel" required pattern="[A-Za-z0-9]{6,}" maxlength="10"
+        (change)="getEmpleado(empleado.identificacion_empleado)" />
+      <label for="identificacion_empleado">Identificación*</label>
+    </span>
+    <div *ngIf="identificacionEmpleado.errors?.required && identificacionEmpleado.control.touched" style="color: red">
+      Campo requerido
     </div>
-
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <p-dropdown id="tipo_documento_empleado"
-          [options]="['Cédula de Ciudadanía', 'Cédula de Extranjería', 'Tarjeta de Identidad','Pasaporte']"
-          [(ngModel)]="empleado.tipo_documento_empleado" placeholder="Selecciona tipo de documento" required
-          name="tipo_documento_empleado" (click)="markAsTouched('tipo_documento_empleado')"></p-dropdown>
-        <label class="full-width-label" for="tipo_documento_empleado">Tipo de Documento*</label>
-      </span>
-      <div *ngIf="!empleado.tipo_documento_empleado && touchedFields['tipo_documento_empleado']" style="color: red">
-        Por favor, selecciona un tipo de documento.
-      </div>
+    
+    <div *ngIf="identificacionEmpleado.errors?.pattern && identificacionEmpleado.control.touched" style="color: red">
+      Ingrese al menos 6 caracteres alfanuméricos
     </div>
+    <div *ngIf="identificacionEmpleado.errors?.maxlength && identificacionEmpleado.control.touched" style="color: red">
+      Máximo 10 caracteres permitidos
+    </div>
+  </div>
+  
+  <div class="field p-col-12 md:col-3">
+    <span class="p-float-label">
+      <p-dropdown id="tipo_documento_empleado"
+        [options]="['Cédula de Ciudadanía', 'Cédula de Extranjería', 'Tarjeta de Identidad','Pasaporte']"
+        [(ngModel)]="empleado.tipo_documento_empleado" placeholder="Selecciona tipo de documento" required
+        name="tipo_documento_empleado" (click)="markAsTouched('tipo_documento_empleado')"></p-dropdown>
+      <label class="full-width-label" for="tipo_documento_empleado">Tipo de Documento*</label>
+    </span>
+    <div *ngIf="!empleado.tipo_documento_empleado && touchedFields['tipo_documento_empleado']" style="color: red">
+      Por favor, selecciona un tipo de documento.
+    </div>
+  </div>
 
     <div class="field p-col-12 md:col-3">
       <span class="p-float-label">
@@ -52,19 +52,19 @@
       </div>
     </div>
 
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="nombre_empleado" pInputText [(ngModel)]="empleado.nombre_empleado" name="nombre_empleado"
-          #nombreEmpleado="ngModel" required pattern="[A-Za-z ]*" (click)="nombreEmpleado.control.markAsTouched()" />
-        <label class="full-width-label" for="nombre_empleado">Nombre del empleado*</label>
-      </span>
-      <div *ngIf="nombreEmpleado.errors?.required && nombreEmpleado.control.touched" style="color: red">
-        Campo requerido
-      </div>
-      <div *ngIf="nombreEmpleado.errors?.pattern && nombreEmpleado.control.touched" style="color: red">
-        Ingrese solo letras
-      </div>
+<div class="field p-col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="nombre_empleado" pInputText [(ngModel)]="empleado.nombre_empleado" name="nombre_empleado"
+        #nombreEmpleado="ngModel" required pattern="[A-Za-z ]*" (click)="nombreEmpleado.control.markAsTouched()" />
+      <label class="full-width-label" for="nombre_empleado">Nombre del empleado*</label>
+    </span>
+    <div *ngIf="nombreEmpleado.errors?.required && nombreEmpleado.control.touched" style="color: red">
+      Campo requerido
     </div>
+    <div *ngIf="nombreEmpleado.errors?.pattern && nombreEmpleado.control.touched" style="color: red">
+      Ingrese solo letras
+    </div>
+  </div>
 
     <div class="field col-12 md:col-3">
       <span class="p-float-label">
@@ -95,75 +95,73 @@
       </div>
     </div>
 
-    <div class="field col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="lugar_nacimiento_empleado" pInputText [(ngModel)]="empleado.lugar_nacimiento_empleado"
-          name="lugar_nacimiento_empleado" required pattern="[A-Za-z ]*" #lugarNacimientoControl="ngModel"
-          (click)="lugarNacimientoControl.control.markAsTouched()" />
-        <label for="lugar_nacimiento_empleado" style="width: 100%;">Lugar de nacimiento*</label>
-      </span>
-      <div *ngIf="lugarNacimientoControl.errors?.required && lugarNacimientoControl.control.touched" style="color: red">
-        Campo requerido
-      </div>
-      <div *ngIf="lugarNacimientoControl.errors?.pattern && lugarNacimientoControl.control.touched" style="color: red">
-        Ingresa solo letras en el lugar de nacimiento
-      </div>
+  <div class="field col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="lugar_nacimiento_empleado" pInputText [(ngModel)]="empleado.lugar_nacimiento_empleado"
+        name="lugar_nacimiento_empleado" required pattern="[A-Za-z ]*" #lugarNacimientoControl="ngModel"
+        (click)="lugarNacimientoControl.control.markAsTouched()" />
+      <label for="lugar_nacimiento_empleado" style="width: 100%;">Lugar de nacimiento*</label>
+    </span>
+    <div *ngIf="lugarNacimientoControl.errors?.required && lugarNacimientoControl.control.touched" style="color: red">
+      Campo requerido
     </div>
+    <div *ngIf="lugarNacimientoControl.errors?.pattern && lugarNacimientoControl.control.touched" style="color: red">
+      Ingresa solo letras en el lugar de nacimiento
+    </div>
+  </div>
+  
+<div class="field p-col-12 md:col-3">
+    <span class="p-float-label">
+      <p-dropdown id="grupo_sanguineo_empleado"
+        [options]="['AB+','AB-','A+','A-','B+','B-','O+','O-']"
+        [(ngModel)]="empleado.grupo_sanguineo_empleado" placeholder="Selecciona tipo de documento" required
+        name="grupo_sanguineo_empleado" (click)="markAsTouched('grupo_sanguineo_empleado')"></p-dropdown>
+      <label class="full-width-label" for="grupo_sanguineo_empleado">Grupo sanguineo*</label>
+    </span>
+    <div *ngIf="!empleado.grupo_sanguineo_empleado && touchedFields['grupo_sanguineo_empleado']" style="color: red">
+      Por favor, selecciona un grupo sanguineo.
+    </div>
+  </div>
+  
+  <div class="field col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="direccion_empleado" pInputText [(ngModel)]="empleado.direccion_empleado"
+        name="direccion_empleado" required #direccionEmpleado="ngModel"
+        (click)="direccionEmpleado.control.markAsTouched()" />
+      <label for="direccion_empleado">Dirección*</label>
+    </span>
+    <div *ngIf="!empleado.direccion_empleado && direccionEmpleado.control.touched" style="color: red">
+      Campo requerido
+    </div>
+  </div>
 
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <p-dropdown id="grupo_sanguineo_empleado" [options]="['AB+','AB-','A+','A-','B+','B-','O+','O-']"
-          [(ngModel)]="empleado.grupo_sanguineo_empleado" placeholder="Selecciona tipo de documento" required
-          name="grupo_sanguineo_empleado" (click)="markAsTouched('grupo_sanguineo_empleado')"></p-dropdown>
-        <label class="full-width-label" for="grupo_sanguineo_empleado">Grupo sanguineo*</label>
-      </span>
-      <div *ngIf="!empleado.grupo_sanguineo_empleado && touchedFields['grupo_sanguineo_empleado']" style="color: red">
-        Por favor, selecciona un grupo sanguineo.
-      </div>
+  <div class="field col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="municipio_domicilio_empleado" pInputText
+        [(ngModel)]="empleado.municipio_domicilio_empleado" name="municipio_domicilio_empleado" required
+        pattern="[A-Za-z ]*" #municipioDomicilioEmpleado="ngModel" (click)="municipioDomicilioEmpleado.control.markAsTouched()" />
+      <label for="municipio_domicilio_empleado" style="width: 100%;">Municipio de domicilio*</label>
+    </span>
+    <div *ngIf="municipioDomicilioEmpleado.errors?.required && municipioDomicilioEmpleado.control.touched" style="color: red">
+      Campo requerido
     </div>
-
-    <div class="field col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="direccion_empleado" pInputText [(ngModel)]="empleado.direccion_empleado"
-          name="direccion_empleado" required #direccionEmpleado="ngModel"
-          (click)="direccionEmpleado.control.markAsTouched()" />
-        <label for="direccion_empleado">Dirección*</label>
-      </span>
-      <div *ngIf="!empleado.direccion_empleado && direccionEmpleado.control.touched" style="color: red">
-        Campo requerido
-      </div>
+    <div *ngIf="municipioDomicilioEmpleado.errors?.pattern && municipioDomicilioEmpleado.control.touched" style="color: red">
+      Ingresa solo letras en el municipio de domicilio
     </div>
-
-    <div class="field col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="municipio_domicilio_empleado" pInputText
-          [(ngModel)]="empleado.municipio_domicilio_empleado" name="municipio_domicilio_empleado" required
-          pattern="[A-Za-z ]*" #municipioDomicilioEmpleado="ngModel"
-          (click)="municipioDomicilioEmpleado.control.markAsTouched()" />
-        <label for="municipio_domicilio_empleado" style="width: 100%;">Municipio de domicilio*</label>
-      </span>
-      <div *ngIf="municipioDomicilioEmpleado.errors?.required && municipioDomicilioEmpleado.control.touched"
-        style="color: red">
-        Campo requerido
-      </div>
-      <div *ngIf="municipioDomicilioEmpleado.errors?.pattern && municipioDomicilioEmpleado.control.touched"
-        style="color: red">
-        Ingresa solo letras en el municipio de domicilio
-      </div>
+  </div>
+  
+  <div class="field col-12 md:col-3">
+    <span class="p-float-label">
+      <p-dropdown id="estado_civil_empleado" [options]="['Soltero', 'Casado', 'Divorciado', 'Viudo']"
+        [(ngModel)]="empleado.estado_civil_empleado" placeholder="Selecciona estado civil" required
+        name="estado_civil_empleado" #estadoCivilControl="ngModel"
+        (click)="estadoCivilControl.control.markAsTouched()"></p-dropdown>
+      <label for="estado_civil_empleado">Estado civil*</label>
+    </span>
+    <div *ngIf="!empleado.estado_civil_empleado && estadoCivilControl.control.touched" style="color: red">
+      Por favor, selecciona un estado civil.
     </div>
-
-    <div class="field col-12 md:col-3">
-      <span class="p-float-label">
-        <p-dropdown id="estado_civil_empleado" [options]="['Soltero', 'Casado', 'Divorciado', 'Viudo']"
-          [(ngModel)]="empleado.estado_civil_empleado" placeholder="Selecciona estado civil" required
-          name="estado_civil_empleado" #estadoCivilControl="ngModel"
-          (click)="estadoCivilControl.control.markAsTouched()"></p-dropdown>
-        <label for="estado_civil_empleado">Estado civil*</label>
-      </span>
-      <div *ngIf="!empleado.estado_civil_empleado && estadoCivilControl.control.touched" style="color: red">
-        Por favor, selecciona un estado civil.
-      </div>
-    </div>
+  </div>
 
     <div class="field col-12 md:col-3">
       <span class="p-float-label">
@@ -180,17 +178,16 @@
       </div>
     </div>
 
-    <div class="field col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="alergia_empleado" pInputText [(ngModel)]="empleado.alergia_empleado"
-          name="alergia_empleado" required #alergiaEmpleado="ngModel"
-          (click)="alergiaEmpleado.control.markAsTouched()" />
-        <label for="alergia_empleado">Alergias*</label>
-      </span>
-      <div *ngIf="!empleado.alergia_empleado && alergiaEmpleado.control.touched" style="color: red">
-        Campo requerido.
-      </div>
+  <div class="field col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="alergia_empleado" pInputText [(ngModel)]="empleado.alergia_empleado"
+        name="alergia_empleado" required #alergiaEmpleado="ngModel" (click)="alergiaEmpleado.control.markAsTouched()" />
+      <label for="alergia_empleado">Alergias*</label>
+    </span>
+    <div *ngIf="!empleado.alergia_empleado && alergiaEmpleado.control.touched" style="color: red">
+      Campo requerido.
     </div>
+  </div>
 
     <div class="field col-12 md:col-3">
       <span class="p-float-label">
@@ -263,16 +260,16 @@
       </div>
     </div>
 
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <input type="text" id="eps_empleado" pInputText [(ngModel)]="empleado.eps_empleado" name="eps_empleado" required
-          #epsEmpleado="ngModel" (click)="epsEmpleado.control.markAsTouched()" />
-        <label for="eps_empleado">EPS*</label>
-      </span>
-      <div *ngIf="!empleado.eps_empleado && epsEmpleado.control.touched" style="color: red">
-        La EPS es requerida.
-      </div>
+  <div class="field p-col-12 md:col-3">
+    <span class="p-float-label">
+      <input type="text" id="eps_empleado" pInputText [(ngModel)]="empleado.eps_empleado" name="eps_empleado" required
+        #epsEmpleado="ngModel" (click)="epsEmpleado.control.markAsTouched()" />
+      <label for="eps_empleado">EPS*</label>
+    </span>
+    <div *ngIf="!empleado.eps_empleado && epsEmpleado.control.touched" style="color: red">
+      La EPS es requerida.
     </div>
+  </div>
 
     <div class="field col-12 md:col-3">
       <span class="p-float-label">
@@ -317,53 +314,53 @@
     </div>
   </div>
 
-  <h4 class="subtitle mt-3">Información contractual</h4>
-  <div class="grid p-fluid mt-3">
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <p-dropdown id="tipo_contrato_empleado" [options]="['Termino fijo', 'Termino indefinido']"
-          [(ngModel)]="empleado.tipo_contrato_empleado" placeholder="Selecciona tipo de contrato" required
-          name="tipo_contrato_empleado" #tipoContratoControl="ngModel"
-          (click)="tipoContratoControl.control.markAsTouched()"></p-dropdown>
-        <label class="full-width-label" for="tipo_contrato_empleado">Tipo de Contrato*</label>
-      </span>
-      <div *ngIf="!empleado.tipo_contrato_empleado && tipoContratoControl.control.touched" style="color: red">
-        Por favor, selecciona un tipo de contrato.
-      </div>
+<h4 class="subtitle mt-3">Información contractual</h4>
+<div class="grid p-fluid mt-3">
+<div class="field p-col-12 md:col-3">
+  <span class="p-float-label">
+    <p-dropdown id="tipo_contrato_empleado" [options]="['Termino fijo', 'Termino indefinido']"
+        [(ngModel)]="empleado.tipo_contrato_empleado" placeholder="Selecciona tipo de contrato" required
+        name="tipo_contrato_empleado" #tipoContratoControl="ngModel"
+        (click)="tipoContratoControl.control.markAsTouched()"></p-dropdown>
+      <label class="full-width-label" for="tipo_contrato_empleado">Tipo de Contrato*</label>
+    </span>
+    <div *ngIf="!empleado.tipo_contrato_empleado && tipoContratoControl.control.touched" style="color: red">
+      Por favor, selecciona un tipo de contrato.
+    </div>
+  </div>
+
+
+<div class="field p-col-12 md:col-3">
+  <span class="p-float-label">
+    <p-calendar [(ngModel)]="empleado.fecha_inicio_empleado" id="fecha_inicio_empleado" dateFormat="yy-mm-dd"
+        showIcon="true" (onSelect)="validarFechaInicio()" #fechaInicio="ngModel"
+        name="fecha_inicio_empleado" required></p-calendar>
+      <label for="fecha_inicio_empleado" style="width: 100%;">Fecha inicio*</label>
+    </span>
+    <div *ngIf="fechaInicio.errors?.required && fechaInicio.touched" style="color: red">
+      Por favor, selecciona la fecha de inicio.
+    </div>
+    <div *ngIf="fechaInicioInvalida" style="color: red">
+      La fecha de inicio no puede ser mayor a la fecha actual.
     </div>
 
+  </div>
 
-    <div class="field p-col-12 md:col-3">
-      <span class="p-float-label">
-        <p-calendar [(ngModel)]="empleado.fecha_inicio_empleado" id="fecha_inicio_empleado" dateFormat="yy-mm-dd"
-          showIcon="true" (onSelect)="validarFechaInicio()" #fechaInicio="ngModel" name="fecha_inicio_empleado"
-          required></p-calendar>
-        <label for="fecha_inicio_empleado" style="width: 100%;">Fecha inicio*</label>
-      </span>
-      <div *ngIf="fechaInicio.errors?.required && fechaInicio.touched" style="color: red">
-        Por favor, selecciona la fecha de inicio.
-      </div>
-      <div *ngIf="fechaInicioInvalida" style="color: red">
-        La fecha de inicio no puede ser mayor a la fecha actual.
-      </div>
 
+<div class="field col-12 md:col-3">
+  <span class="p-float-label">
+    <p-calendar [(ngModel)]="empleado.fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado"
+        dateFormat="yy-mm-dd" showIcon="true" (onSelect)="validarFechas()" #fechaVencimiento="ngModel"
+        name="fecha_vencimiento_contrato_empleado" required></p-calendar>
+      <label for="fecha_vencimiento_contrato_empleado" style="width: 100%;">Fecha vencimiento*</label>
+    </span>
+    <div *ngIf="fechaVencimiento.errors?.required && fechaVencimiento.touched" style="color: red">
+      Por favor, selecciona la fecha de vencimiento.
     </div>
-
-
-    <div class="field col-12 md:col-3">
-      <span class="p-float-label">
-        <p-calendar [(ngModel)]="empleado.fecha_vencimiento_contrato_empleado" id="fecha_vencimiento_contrato_empleado"
-          dateFormat="yy-mm-dd" showIcon="true" (onSelect)="validarFechas()" #fechaVencimiento="ngModel"
-          name="fecha_vencimiento_contrato_empleado" required></p-calendar>
-        <label for="fecha_vencimiento_contrato_empleado" style="width: 100%;">Fecha vencimiento*</label>
-      </span>
-      <div *ngIf="fechaVencimiento.errors?.required && fechaVencimiento.touched" style="color: red">
-        Por favor, selecciona la fecha de vencimiento.
-      </div>
-      <div *ngIf="fechaVencimientoInvalida" style="color: red">
-        La fecha de vencimiento no puede ser menor a la fecha de inicio.
-      </div>
+    <div *ngIf="fechaVencimientoInvalida" style="color: red">
+      La fecha de vencimiento no puede ser menor a la fecha de inicio.
     </div>
+  </div>
 
 
     <div class="field p-col-12 md:col-3">
@@ -380,66 +377,65 @@
 
 
 
-    <div class="field col-12 md:col-3">
-
-      <div class="field col" *ngIf="empleado.area_empleado === 'Producción'">
-        <p-dropdown (onChange)="onCategoriaChange($event)" formControlName="area_empleado_produccion" [options]="areas"
+<div class="field col-12 md:col-3">
+  
+    <div class="field col" *ngIf="empleado.area_empleado === 'Producción'">
+      <p-dropdown (onChange)="onCategoriaChange($event)"
+          formControlName="area_empleado_produccion" [options]="areas"
           placeholder="Área Producción del empleado" [showClear]="true"></p-dropdown>
-
+      
+  </div>
+  <h4 class="subtitle mt-3">Contactos de Emergencia</h4>
+  <div *ngFor="let contacto of empleado.contacto_emergencia; let i = index" class="contacto-emergencia-row mb-4">
+    <div class="field col-12 md-3">
+      <div class="field">
+        <div class="p-field custom-input">
+          <input id="nombre_contacto_emergencia{{i}}" type="text" pInputText name="nombre_contacto_emergencia{{i}}"
+            [(ngModel)]="contacto.nombre_contacto_emergencia" required #nombreContacto="ngModel"
+            (click)="nombreContacto.control.markAsTouched()" [class.filled]="contacto.nombre_contacto_emergencia" />
+          <label for="nombre_contacto_emergencia{{i}}" class="custom-label custom-title"
+            [class.active]="contacto.nombre_contacto_emergencia">Nombre del contacto*</label>
+          <div *ngIf="!contacto.nombre_contacto_emergencia && nombreContacto.control.touched" style="color: red">
+            Campo requerido
+          </div>
+        </div>
       </div>
-      <h4 class="subtitle mt-3">Contactos de Emergencia</h4>
-      <div *ngFor="let contacto of empleado.contacto_emergencia; let i = index" class="contacto-emergencia-row mb-4">
-        <div class="field col-12 md-3">
-          <div class="field">
-            <div class="p-field custom-input">
-              <input id="nombre_contacto_emergencia{{i}}" type="text" pInputText name="nombre_contacto_emergencia{{i}}"
-                [(ngModel)]="contacto.nombre_contacto_emergencia" required #nombreContacto="ngModel"
-                (click)="nombreContacto.control.markAsTouched()" [class.filled]="contacto.nombre_contacto_emergencia" />
-              <label for="nombre_contacto_emergencia{{i}}" class="custom-label custom-title"
-                [class.active]="contacto.nombre_contacto_emergencia">Nombre del contacto*</label>
-              <div *ngIf="!contacto.nombre_contacto_emergencia && nombreContacto.control.touched" style="color: red">
-                Campo requerido
-              </div>
-            </div>
+    </div>
+  
+    <div class="field col-12 md-3">
+      <div class="field">
+        <div class="p-field custom-input">
+          <input id="parentesco_empleado{{i}}" type="text" pInputText name="parentesco_empleado{{i}}"
+            [(ngModel)]="contacto.parentesco_empleado" required #parentescoContacto="ngModel"
+            (click)="parentescoContacto.control.markAsTouched()" [class.filled]="contacto.parentesco_empleado" />
+          <label for="parentesco_empleado{{i}}" class="custom-label custom-title"
+            [class.active]="contacto.parentesco_empleado">Parentesco*</label>
+          <div *ngIf="!contacto.parentesco_empleado && parentescoContacto.control.touched" style="color: red">
+            Campo requerido
           </div>
         </div>
-
-        <div class="field col-12 md-3">
-          <div class="field">
-            <div class="p-field custom-input">
-              <input id="parentesco_empleado{{i}}" type="text" pInputText name="parentesco_empleado{{i}}"
-                [(ngModel)]="contacto.parentesco_empleado" required #parentescoContacto="ngModel"
-                (click)="parentescoContacto.control.markAsTouched()" [class.filled]="contacto.parentesco_empleado" />
-              <label for="parentesco_empleado{{i}}" class="custom-label custom-title"
-                [class.active]="contacto.parentesco_empleado">Parentesco*</label>
-              <div *ngIf="!contacto.parentesco_empleado && parentescoContacto.control.touched" style="color: red">
-                Campo requerido
-              </div>
-            </div>
+      </div>
+    </div>
+  
+    <div class="field col-12 md-3">
+      <div class="field">
+        <div class="p-field custom-input">
+          <input id="telefono_contacto_emergencia{{i}}" type="text" pInputText name="telefono_contacto_emergencia{{i}}"
+            [(ngModel)]="contacto.telefono_contacto_emergencia" required pattern="[0-9]{10}" #telefonoContacto="ngModel"
+            (click)="telefonoContacto.control.markAsTouched()" [class.filled]="contacto.telefono_contacto_emergencia" />
+          <label for="telefono_contacto_emergencia{{i}}" class="custom-label custom-title"
+            [class.active]="contacto.telefono_contacto_emergencia">Teléfono del contacto</label>
+          <div *ngIf="telefonoContacto.errors?.required && telefonoContacto.control.touched" style="color: red">
+            Campo requerido
           </div>
-        </div>
-
-        <div class="field col-12 md-3">
-          <div class="field">
-            <div class="p-field custom-input">
-              <input id="telefono_contacto_emergencia{{i}}" type="text" pInputText
-                name="telefono_contacto_emergencia{{i}}" [(ngModel)]="contacto.telefono_contacto_emergencia" required
-                pattern="[0-9]{10}" #telefonoContacto="ngModel" (click)="telefonoContacto.control.markAsTouched()"
-                [class.filled]="contacto.telefono_contacto_emergencia" />
-              <label for="telefono_contacto_emergencia{{i}}" class="custom-label custom-title"
-                [class.active]="contacto.telefono_contacto_emergencia">Teléfono del contacto</label>
-              <div *ngIf="telefonoContacto.errors?.required && telefonoContacto.control.touched" style="color: red">
-                Campo requerido
-              </div>
-              <div *ngIf="telefonoContacto.errors?.pattern && telefonoContacto.control.touched" style="color: red">
-                Ingrese solo 10 números
-              </div>
-            </div>
+          <div *ngIf="telefonoContacto.errors?.pattern && telefonoContacto.control.touched" style="color: red">
+            Ingrese solo 10 números
           </div>
         </div>
       </div>
     </div>
   </div>
+</div></div>
   <div class="button-container">
     <button pButton pRipple label="Crear Empleado" icon="pi pi-user-plus" class="p-button-success mr-2"
       (click)="crearEmpleado()"></button>
@@ -469,9 +465,9 @@
           (click)="confirmarCreacionUsuario()"></button>
       </div>
     </ng-template>
-  </p-dialog>
+</p-dialog>
 
-
+  
 
 
 

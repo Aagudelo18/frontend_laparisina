@@ -52,4 +52,5 @@ export interface DetalleEmpleado {
  pension_empleado: string;
  cuenta_bancaria_empleado: string;
  area_empleado: string;
+ area_empleado_produccion
 }
