@@ -1,46 +1,40 @@
 <p-toast></p-toast>
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+  style="background-image: url('assets/layout/images/Pancake-fondo.jpg'); background-size: cover; background-position: center;">
   <div class="flex flex-column align-items-center justify-content-center">
     <div
-      style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-      <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-        <div class="text-center mb-5">
-          <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="110" class="mb-3">
+      style="border-radius: 40px; padding: 0.3rem; background: linear-gradient(180deg, rgba(255, 218, 123, 0.965) 10%, rgba(249, 233, 192, 0.965) 30%);">
+      <div class="w-full surface-card py-4 px-3 sm:px-6" style="border-radius: 40px; max-width: 1450px;">
+        <div class="text-center mb-3">
+          <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="120" class="mb-3">
           <div class="text-900 text-3xl font-medium mb-3">Registrarse</div>
           <span class="text-600 font-medium">Registrese para continuar</span>
         </div>
 
         <form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
           <br>
-          <div class="formgrid grid">
-            <div class="field col">
-              <div style="display: flex; flex-direction: column;">
-                <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
-                  placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
-                <span
-                  *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
-                  style="color: red; display: block;">
-                  El tipo de cliente es requerido.
-                </span>
-                <span
-                  *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
-                  style="color: red; display: block;">
-                  El tipo de cliente solo debe contener mínimo 3 letras y tener máximo 20 caracteres.
-                </span>
-              </div>
+          <div class="grid formgrid">
+            <div class="field col-6">
+              <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
+                placeholder="Tipo cliente" name="tipo_cliente" style="width: 100%;"></p-dropdown>
+              <span
+                *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
+                style="color: red; display: block;">El tipo de cliente es requerido.</span>
+              <span
+                *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
+                style="color: red; display: block;">El tipo de cliente solo debe contener mínimo 3 letras y tener máximo
+                20 caracteres.</span>
             </div>
 
 
-            <div class="field col">
+            <div class="field col-6">
               <span class="p-float-label">
                 <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
                 <label for="nombre_contacto">Nombre de contacto <span style="color: red;">*</span></label>
               </span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
-                style="color: red;">
-                El nombre es requerido.
-              </span>
+                style="color: red;">El nombre es requerido.</span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('minlength') && formCliente.get('nombre_contacto')?.touched"
                 style="color: red; display: block;">El nombre debe tener al menos 3 caracteres.</span>
@@ -49,9 +43,7 @@
                 style="color: red; display: block;">El nombre no puede tener más de 50 caracteres.</span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
-                style="color: red; display: block;">
-                El nombre solo debe contener letras.
-              </span>
+                style="color: red; display: block;"> El nombre solo debe contener letras.</span>
             </div>
           </div>
           <br>
@@ -73,7 +65,8 @@
                 style="color: red; display: block;">El número de Identificación debe tener al menos 7 caracteres.</span>
               <span
                 *ngIf="formCliente.get('numero_documento_cliente')?.hasError('maxlength') && formCliente.get('numero_documento_cliente')?.touched"
-                style="color: red; display: block;">El número de Identificación no puede tener más de 10 caracteres.</span>
+                style="color: red; display: block;">El número de Identificación no puede tener más de 10
+                caracteres.</span>
               <span
                 *ngIf="formCliente.get('numero_documento_cliente')?.hasError('pattern') && formCliente.get('numero_documento_cliente')?.touched"
                 style="color: red; display: block;">
@@ -120,7 +113,8 @@
                 style="color: red; display: block;">El número de Identificación debe tener al menos 3 caracteres.</span>
               <span
                 *ngIf="formCliente.get('nombre_juridico')?.hasError('maxlength') && formCliente.get('nombre_juridico')?.touched"
-                style="color: red; display: block;">El número de Identificación no puede tener más de 100 caracteres.</span>
+                style="color: red; display: block;">El número de Identificación no puede tener más de 100
+                caracteres.</span>
               <span
                 *ngIf="formCliente.get('nombre_juridico')?.hasError('pattern') && formCliente.get('nombre_juridico')?.touched"
                 style="color: red; display: block;">
@@ -261,15 +255,14 @@
                 style="color: red; display: block;">Las contraseñas no coinciden.</span>
             </div>
           </div>
-
-          <button type="submit" pButton pRipple label="Crear cuenta" class="w-full p-3 text-xl"
-            ></button>
-          <br><br>
+          <br>
+          <button type="submit" pButton pRipple label="Crear cuenta" class="w-full p-2 text-xl"></button>
+          <br>
         </form>
         <hr>
         <div class="text-center mb-2">
-          <a class="p-3 text-xl cursor-pointer" (click)="irALogin()" styleClass="p-button-link" style="color: var(--primary-color)"
-            style="font-weight: bold;">
+          <a class="p-3 text-xl cursor-pointer" (click)="irALogin()" styleClass="p-button-link"
+            style="color: rgba(89, 85, 85, 0.965); font-weight: bold;">
             Atrás
           </a>
         </div>
