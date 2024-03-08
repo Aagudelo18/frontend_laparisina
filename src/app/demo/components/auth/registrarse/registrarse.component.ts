@@ -49,7 +49,7 @@ export class RegistrarseComponent implements OnInit {
   ) {
     this.formCliente = this.fb.group({
       tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-      nombre_contacto: ['', [Validators.minLength(3), Validators.maxLength(50), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]+$/),]],
+      nombre_contacto: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]+$/),]],
       nombre_juridico: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]+$/),]],
       numero_documento_cliente: ['', [Validators.minLength(7), Validators.maxLength(10), Validators.required, Validators.pattern(/^[0-9]+$/),]],
       nit_empresa_cliente: ['', [Validators.minLength(7), Validators.maxLength(12), Validators.required, Validators.pattern(/^[0-9]+$/),]],
@@ -256,12 +256,6 @@ export class RegistrarseComponent implements OnInit {
           if (respuesta) {
             this.usuarioService.createUsuario(nuevoUsuario).subscribe(
               () => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'El usuario fue creado con éxito',
-                  detail: 'Usuario creado',
-                  life: 3000
-                });
                 observer.next(true);  // Usuario creado exitosamente
                 observer.complete();
               },
@@ -270,7 +264,7 @@ export class RegistrarseComponent implements OnInit {
                   const errorMessage = error.error.errors[0].msg; // Acceder al mensaje de error específico
                   this.messageService.add({
                     severity: 'error',
-                    summary: 'Error al crear el usuario',
+                    summary: 'Error al crear el cliente',
                     detail: errorMessage,
                     life: 5000
                   });
@@ -281,7 +275,7 @@ export class RegistrarseComponent implements OnInit {
                   }
                   this.messageService.add({
                     severity: 'error',
-                    summary: 'Error al crear el usuario',
+                    summary: 'Error al crear el cliente',
                     detail: errorMessage,
                     life: 6000
                   });
