@@ -29,6 +29,7 @@ export class NewPedidosComponent implements OnInit {
 
     metodoPago = ['Transferencia', 'Efectivo'];
     estadoPago = ['Pagado', 'Pendiente'];
+    tipoEntrega = [ 'Domicilio', 'Recoger en tienda'];
     categorias = [];
     clientes = [];
     categoriaSeleccionada: string;
@@ -64,6 +65,7 @@ export class NewPedidosComponent implements OnInit {
             correo_domiciliario: ['', [Validators.required, Validators.email]],
             metodo_pago: ['', Validators.required],
             estado_pago: ['', Validators.required],
+            tipo_entrega: ['', Validators.required],
             valor_domicilio: [0, [Validators.required, Validators.min(0)]],
             subtotal_venta: [0, Validators.min(0)],
             precio_total_venta: [0, Validators.min(0)],
@@ -119,6 +121,7 @@ export class NewPedidosComponent implements OnInit {
             this.pedido.get('direccion_entrega').reset();
             this.pedido.get('ciudad_cliente').reset();
             this.pedido.get('barrio_cliente').reset();
+            this.pedido.get('tipo_cliente').reset();
 
             // Actualiza el valor de la variable 'clienteExistente'
             this.clienteExistente = false;
@@ -141,6 +144,7 @@ export class NewPedidosComponent implements OnInit {
                             this.pedido.get('barrio_cliente')?.setValue(data.barrio_cliente);
                             this.pedido.get('nombre_juridico')?.setValue(data.nombre_juridico);
                             this.pedido.get('nit_empresa_cliente')?.setValue(data.nit_empresa_cliente);
+                            this.pedido.get('tipo_entrega')?.setValue(data.tipo_entrega);
                         } else {
                             this.clienteExistente = false;
                             // El estado_cliente es False, puedes manejarlo según tus necesidades
@@ -238,7 +242,8 @@ export class NewPedidosComponent implements OnInit {
             'telefono_cliente',
             'direccion_entrega',
             'metodo_pago',
-            'estado_pago'
+            'estado_pago',
+            'tipo_cliente'
         ];
     
         for (const campo of camposRequeridos) {

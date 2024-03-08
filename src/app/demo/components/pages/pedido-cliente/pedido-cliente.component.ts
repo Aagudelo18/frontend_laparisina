@@ -22,6 +22,7 @@ export class PedidoClienteComponent implements OnInit {
     productosCarrito: any[] = [];
     cliente: any;
     productosSeleccionados: any[] = [];
+    tipoEntrega = ['Domicilio', 'Recoger en Tienda']
     metodoPago = ['Transferencia', 'Efectivo'];
     totalCarrito: number = 0;
     minDate: Date = new Date();
@@ -58,6 +59,7 @@ export class PedidoClienteComponent implements OnInit {
             direccion_entrega: ['', Validators.required], 
             fecha_entrega_pedido: ['', Validators.required],
             metodo_pago: ['', Validators.required],
+            tipo_entrega: ['', Validators.required],
             subtotal_venta: ['', Validators.required], 
             precio_total_venta: ['', Validators.required], 
             valor_domicilio: [0, [Validators.required, Validators.min(0)]],
@@ -111,6 +113,7 @@ export class PedidoClienteComponent implements OnInit {
                         telefono_cliente: data.telefono_cliente,
                         nit_empresa_cliente: data.nit_empresa_cliente,
                         nombre_juridico: data.nombre_juridico,
+                        tipo_entrega: data.tipo_entrega,
 
                         // Otros campos del formulario según los datos del cliente...
                     });
@@ -219,6 +222,10 @@ export class PedidoClienteComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El metodo de pago es requerida.' });
         return;
     }
+    if (this.pedido.get('tipo_entrega').invalid) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El metodo tipo de entrega es requerida.' });
+        return;
+    }
     
     
         // Obtener la fecha de entrega del formulario
@@ -250,10 +257,11 @@ export class PedidoClienteComponent implements OnInit {
             subtotal_venta: this.calcularSubtotal(),
             precio_total_venta: this.pedido.get('precio_total_venta').value,
             estado_pago: 'Pendiente',
+            tipo_entrega: this.pedido.get('tipo_entrega').value,
             valor_domicilio: 0,
-            nit_empresa_cliente: this.cliente.tipo_cliente == 'Persona jurírica' ?  this.cliente.nit_empresa_cliente : null,
-            nombre_juridico: this.cliente.tipo_cliente == 'Persona jurírica' ? this.cliente.nombre_juridico: null,
-            aumento_empresa: this.cliente.tipo_cliente == 'Persona jurírica' ? this.calcularSubtotal() * 0.08 : 0,
+            nit_empresa_cliente: this.cliente.tipo_cliente == 'Persona jurídica' ?  this.cliente.nit_empresa_cliente : null,
+            nombre_juridico: this.cliente.tipo_cliente == 'Persona jurídica' ? this.cliente.nombre_juridico: null,
+            aumento_empresa: this.cliente.tipo_cliente == 'Persona jurídica' ? this.calcularSubtotal() * 0.08 : 0,
             detalle_pedido: this.productosCarrito.map(producto => ({
                 nombre_producto: producto.nombre_producto,
                 cantidad_producto: producto.cantidad_producto,

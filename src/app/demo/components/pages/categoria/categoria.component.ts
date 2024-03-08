@@ -45,7 +45,6 @@ export class CategoriaComponent implements OnInit {
     detalleCategoriaDialog: boolean = false;
     estadoCategoriaDialog: boolean = false;
 
-    
 
     constructor(
       private fb:FormBuilder,

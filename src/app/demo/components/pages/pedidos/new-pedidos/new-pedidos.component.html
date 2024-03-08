@@ -398,9 +398,36 @@
                 <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
         </div>
-
+ <!-- Tipo de entrega -->
+ <div class="field col-12 md:col-3"
+ >
+    <span class="p-float-label">
+        <p-dropdown
+            inputId="dropdown"
+            id="tipo_entrega"
+            [autoDisplayFirst]="false"
+            [options]="tipoEntrega"
+            [formControl]="pedido.get('tipo_entrega')"
+        ></p-dropdown>
+        <label for="dropdown"
+            >Tipo de entrega <span style="color: red">*</span></label
+        >
+    </span>
+    <div
+        *ngIf="
+            pedido.get('tipo_entrega').invalid &&
+            pedido.get('tipo_entrega').touched
+        "
+        class="error-message"
+    >
+        <div *ngIf="pedido.get('tipo_entrega').hasError('required')">
+            El tipo deentrega es requerido.
+        </div>
+        <!-- Añade más mensajes de advertencia según sea necesario -->
+    </div>
+</div>
         <!-- Valor Domicilio -->
-        <div class="field col-12 md:col-3">
+        <div class="field col-12 md:col-3" *ngIf="pedido.get('tipo_entrega').value === 'Domicilio'">
             <span class="p-float-label">
                 <label for="valor_domicilio" class="input-label"
                     >Valor Domicilio</label

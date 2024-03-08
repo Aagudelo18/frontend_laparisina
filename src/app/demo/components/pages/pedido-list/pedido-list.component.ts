@@ -19,6 +19,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 })
 export class PedidoListComponent implements OnInit {
+
   clientes: Cliente[] = [];
   pedidosCliente: Cliente[] = [];
   formPedidos: FormGroup;
@@ -65,6 +66,7 @@ constructor(
       subtotal_venta: [''],
       metodo_pago: [''],
       estado_pago: [''],
+      tipo_entrega:[''],
       valor_domicilio: [''],
       nit_empresa_cliente: [''],
       nombre_juridico: [''],
@@ -190,6 +192,7 @@ getPedidoDetalleCliente(id: string) {
           subtotal_venta: data.subtotal_venta,
           metodo_pago: data.metodo_pago,
           estado_pago: data.estado_pago,
+          tipo_entrega: data.tipo_entrega,
           valor_domicilio: data.valor_domicilio,
           aumento_empresa: aumento || '',
           nit_empresa_cliente: data.nit_empresa_cliente || '',
@@ -201,6 +204,7 @@ getPedidoDetalleCliente(id: string) {
   });
 }
 
-
-
 }
+
+
+

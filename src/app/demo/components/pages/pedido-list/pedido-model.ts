@@ -13,6 +13,7 @@ export interface Cliente {
     precio_total_venta: number;
     subtotal_venta: number;
     metodo_pago: string;
+    tipo_entrega: string;
     valor_domicilio?: number;
     nit_empresa_cliente?: string;
     nombre_juridico?: string;

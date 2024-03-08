@@ -74,6 +74,11 @@
                                 field="estado_pago"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -105,8 +110,12 @@
                             {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.tipo_entrega }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
                             {{ pedido.precio_total_venta }}
                         </td>
+                       
                         <td>
                             <div class="flex">
                                 <button
@@ -140,6 +149,11 @@
                                     (click)="abrirModalAnular(pedido._id)"
                                     pTooltip="Anular"
                                 ></button>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                 class="p-button-rounded p-button-success" 
+                                 (click)="abrirModalEditarEstadoYPago(pedido._id)"
+                                pTooltip="Editar"></button>
+                            
                             </div>
                         </td>
                     </tr>
@@ -206,6 +220,11 @@
                                 field="precio_total_venta"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
+                            ></p-sortIcon>
+                        </th>
 
                         <th pSortableColumn="name">Aciones</th>
                     </tr>
@@ -232,6 +251,9 @@
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
+                        </td>
+                        <td style="width: 30%; min-width: 10rem">
+                            {{ pedido.tipo_entrega }}
                         </td>
                         <td>
                             <div class="flex">
@@ -317,6 +339,11 @@
                                 field="estado_pago"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -345,6 +372,9 @@
                         </td>
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pago }}
+                        </td>
+                        <td style="width: 30%; min-width: 10rem">
+                            {{ pedido.tipo_entrega }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -432,6 +462,11 @@
                                 field="estado_pago"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -464,6 +499,9 @@
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
+                        </td>
+                        <td style="width: 30%; min-width: 10rem">
+                            {{ pedido.tipo_entrega }}
                         </td>
                         <td>
                             <div class="flex">
@@ -770,27 +808,55 @@
             </div>
         </div>
 
-        <div class="formgrid grid mt-3" *ngIf= "formPedidos.get('estado_pedido').value == 'Enviado' || formPedidos.get('estado_pedido').value == 'Entregado'">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="domiciliario"
-                            id="domiciliario"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="domiciliario">domiciliario</label>
-                    </span>
+            
+
+                <div class="formgrid grid mt-3" *ngIf= "formPedidos.get('estado_pedido').value == 'Enviado' || formPedidos.get('estado_pedido').value == 'Entregado'">
+                    <div class="formgrid grid">
+
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <input
+                                    [readonly]="true"
+                                    style="
+                                        resize: none;
+                                        overflow: auto; 
+                                        width: 80%; 
+                                        pointer-events: none;
+                                        background-color: #f4f4f4;
+                                        caret-color: transparent;
+                                    "
+                                    formControlName="tipo_entrega"
+                                    id="tipo_entrega"
+                                    type="text"
+                                    pInputText
+                                />
+                                <label for="tipo_entrega">Tipo de Entrga</label>
+                            </span>
+                        </div>
+
+
+                        <div class="field col">
+                            <span class="p-float-label">
+                                <input
+                                    [readonly]="true"
+                                    style="
+                                        pointer-events: none;
+                                        background-color: #f4f4f4;
+                                        caret-color: transparent;
+                                    "
+                                    formControlName="domiciliario"
+                                    id="domiciliario"
+                                    type="text"
+                                    pInputText
+                                />
+                                <label for="domiciliario">domiciliario</label>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+           
+
+       
 
         <!-- 
 
@@ -1053,3 +1119,60 @@
         ></button>
     </ng-template>
 </p-dialog>
+
+
+<p-dialog [(visible)]="editarEstadoPagoDialog" [style]="{ width: '25%' }" header="Editar Estado y Método de Pago" [modal]="true"
+    class="p-fluid" (onHide)="cerrarModalEditarEstadoYPago()">
+    <form [formGroup]="formPedidos" (ngSubmit)="actualizarPedido()">
+        <div class="formgrid grid  mt-3">
+            <div class="field col-8">
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <p-dropdown formControlName="estado_pedido" id="estado_pedido" [options]="listaEstadosPedido" placeholder="Seleccionar Estado del Pedido"></p-dropdown>
+                        <label for="estado_pedido">Estado del Pedido</label>
+                    </span>
+                </div>
+            </div>
+            <div class="field col-8">
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <p-dropdown formControlName="estado_pago" id="estado_pago" [options]="listaEstadosPago" placeholder="Seleccionar Estado del Pago"></p-dropdown>
+                        <label for="estado_pago">Estado del Pago</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <button pButton pRipple label="Cancelar" class="p-button-text" (click)="cerrarModalEditarEstadoYPago()"></button>
+            <button type="submit" pButton pRipple label="Guardar" class="p-button-text" [disabled]="!formPedidos.valid"></button>
+        </div>
+    </form>
+</p-dialog>
+
+
+
+<p-dialog [(visible)]="confirmacionEditarEstadoPago" header="Confirmar Cambios de Estado">
+    <div class="flex align-items-center justify-content-center">
+        <span>¿Estás seguro de realizar los cambios de estado?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="Cancelar"
+            (click)="cancelarCambiosEstado()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Sí"
+            (click)="confirmarCambiosEstado()"
+        ></button>
+    </ng-template>
+</p-dialog>
+
+

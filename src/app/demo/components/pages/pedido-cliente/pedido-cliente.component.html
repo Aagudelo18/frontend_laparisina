@@ -37,14 +37,12 @@
             >
                 <span class="p-float-label">
                     <input
-                    disabled
-                        [readonly]="true"
                         type="text"
                         id="nit_empresa_cliente"
                         pInputText
                         [formControl]="pedido.get('nit_empresa_cliente')"
                     />
-                    <label for="inputtext">NIT Empresa</label>
+                    <label for="nit_empresa_cliente">NIT Empresa</label>
                 </span>
             </div>
              <!-- Nombre Jurídico (solo visible si el tipo de cliente es Empresa) -->
@@ -53,14 +51,12 @@
         *ngIf="pedido.get('tipo_cliente').value === 'Persona jurídica'">
         <span class="p-float-label">
             <input
-            disabled
-                [readonly]="true"
                 type="text"
                 id="nombre_juridico"
                 pInputText
                 [formControl]="pedido.get('nombre_juridico')"
             >
-            <label for="inputtext">Nombre Empresa</label>
+            <label for="nombre_juridico">Nombre Empresa</label>
         </span>
     </div>
   <!-- Quien recibe -->
@@ -189,11 +185,39 @@
                     [options]="metodoPago"
                     [formControl]="pedido.get('metodo_pago')" 
                 ></p-dropdown>
-                <label for="dropdown">Método de Pago <span style="color: red;">*</span></label>
+                <label for="metodo_pago">Método de Pago <span style="color: red;">*</span></label>
             </span>
             <div *ngIf="pedido.get('metodo_pago').invalid && pedido.get('metodo_pago').touched" class="error-message">
                 <div *ngIf="pedido.get('metodo_pago').hasError('required')">
                     El metodo de pago es requerido.
+                </div>
+                <!-- Añade más mensajes de advertencia según sea necesario -->
+            </div>
+        </div>
+
+         <!-- Tipo de entrega -->
+         <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-dropdown
+                    inputId="dropdown"
+                    id="tipo_entrega"
+                    [autoDisplayFirst]="false"
+                    [options]="tipoEntrega"
+                    [formControl]="pedido.get('tipo_entrega')"
+                ></p-dropdown>
+                <label for="tipo_entrega"
+                    >Tipo de entrega <span style="color: red">*</span></label
+                >
+            </span>
+            <div
+                *ngIf="
+                    pedido.get('tipo_entrega').invalid &&
+                    pedido.get('tipo_entrega').touched
+                "
+                class="error-message"
+            >
+                <div *ngIf="pedido.get('tipo_entrega').hasError('required')">
+                    El tipo deentrega es requerido.
                 </div>
                 <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
