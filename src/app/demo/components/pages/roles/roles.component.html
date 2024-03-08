@@ -58,7 +58,7 @@
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="noCambiarEstado()"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoRol(rol._id)"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="cambiarEstadoRol(rol._id, rol.nombre_rol)"></button>
     </ng-template>
   </p-dialog>
 
@@ -76,7 +76,7 @@
         </span>       
         <span *ngIf="formRoles.get('nombre_rol')?.hasError('pattern') && formRoles.get('nombre_rol')?.touched"
         style="color: red;">
-            El nombre solo debe contener letras y tener máximo 20 caracteres
+            El nombre solo debe contener letras, un minimo de 3 y un máximo 20 caracteres
         </span>  
          </div>
          <div>
@@ -91,8 +91,8 @@
         
         </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearRolDialog = false" ></button>
-          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+          <button pButton pRipple label="Cancelar"  class="p-button-text" (click)="crearRolDialog = false" ></button>
+          <button type="submit" pButton pRipple label="Guardar"  class="p-button-text" [disabled]="!alMenosUnPermisoSeleccionadoYNombreLleno()"></button>
         </div>
         
     </form>  
@@ -103,17 +103,17 @@
         <br>
         <div class="field">
          <span class="p-float-label">
-            <input formControlName="nombre_rol" id="nombre_rol" type="text" pInputText>
+            <input formControlName="nombre_rol" id="nombre_rol" type="text" pInputText [attr.readonly]="formRoles.value.nombre_rol === 'Super Admin' || formRoles.value.nombre_rol === 'Empleado' || formRoles.value.nombre_rol === 'Cliente' ? true : null">
             <label for="nombre_rol">Nombre rol<span style="color: red;">*</span></label>
         </span>
         <span *ngIf="formRoles.get('nombre_rol')?.hasError('required') && formRoles.get('nombre_rol')?.touched"
         style="color: red;">
             El nombre es requerido
-        </span>       
+        </span>
         <span *ngIf="formRoles.get('nombre_rol')?.hasError('pattern') && formRoles.get('nombre_rol')?.touched"
         style="color: red;">
-            El nombre solo debe contener letras y tener máximo 20 caracteres
-        </span> 
+            El nombre solo debe contener letras, un minimo de 3 y un máximo 20 caracteres
+        </span>  
          </div>
          <div>
             <label for=""> Permisos<span style="color: red;">*</span></label>
@@ -126,8 +126,8 @@
           </div>
         </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="editarRolDialog = false" ></button>
-          <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" [disabled]="!formRoles.valid"></button>
+          <button pButton pRipple label="Cancelar" class="p-button-text" (click)="editarRolDialog = false" ></button>
+          <button type="submit" pButton pRipple label="Guardar" class="p-button-text" [disabled]="!alMenosUnPermisoSeleccionadoYNombreLleno()"></button>
         </div>
     </form>  
   </p-dialog>

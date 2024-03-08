@@ -19,7 +19,7 @@ export class RolesComponent implements OnInit {
     { nombre_permiso: 'Dashboard' },
     { nombre_permiso: 'Roles' },
     { nombre_permiso: 'Usuarios' },
-    { nombre_permiso: 'Categoria' },
+    { nombre_permiso: 'Categorias' },
     { nombre_permiso: 'Productos' },
     { nombre_permiso: 'Empleados' },
     { nombre_permiso: 'Clientes' },
@@ -55,7 +55,7 @@ export class RolesComponent implements OnInit {
     private router:Router,
     private aRouter:ActivatedRoute){
       this.formRoles = this.fb.group({
-        nombre_rol: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+        nombre_rol: ['',[Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{3,20}$/),]],
         estado_rol: [true,Validators.required],
         permisos_rol: [],
       }, { validators: this.atLeastOneCheckboxSelectedValidator });
@@ -94,9 +94,37 @@ getRoles(id: string) {
     }
   });
 }
-
+alMenosUnPermisoSeleccionadoYNombreLleno(): boolean {
+  const nombreRolControl = this.formRoles.get('nombre_rol');
+  const alMenosUnPermisoSeleccionado = this.selectedRoles.some(rol => this.formRoles.get(rol.nombre_permiso)?.value);
+  return nombreRolControl?.valid && nombreRolControl?.value !== '' && alMenosUnPermisoSeleccionado;
+}
 // Función para crear un rol 
 crearRol() {
+  const nombreRol = this.formRoles.value.nombre_rol;
+
+  // Verificar si el nombre del rol ya existe en la lista de roles actual
+  const rolExistente = this.listRoles.find(rol => rol.nombre_rol === nombreRol);
+  if (rolExistente) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al crear el rol',
+      detail: 'El nombre del rol ya existe.',
+      life: 6000
+    });
+    return; // Detener la ejecución de la función si el rol ya existe
+  }
+
+  // Verificar si el nombre del rol ya existe en la lista de roles actual
+  if (nombreRol === '') {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al crear el rol',
+      detail: 'El nombre del rol es obligatorio.',
+      life: 6000
+    });
+    return; // Detener la ejecución de la función si el rol ya existe
+  }
   // Verifica si al menos un permiso está seleccionado
   const alMenosUnPermisoSeleccionado = this.selectedRoles.some(rol => this.formRoles.get(rol.nombre_permiso)?.value);
 
@@ -104,7 +132,7 @@ crearRol() {
     this.messageService.add({
       severity: 'error',
       summary: 'Error al crear el rol',
-      detail: 'Debes seleccionar al menos un permiso.',
+      detail: 'El rol debe tener al menos un permiso asociado.',
       life: 6000
     });
     return; // Detiene la ejecución de la función
@@ -123,7 +151,7 @@ const nuevoRol: Roles = {
   this.rolesService.postRoles(nuevoRol).subscribe(() => {
     this.messageService.add({
       severity: 'success',
-      summary: 'El Rol fue creado con éxito',
+      summary: '¡El Rol fue creado con éxito!',
       detail: 'Rol creado',
       life: 6000
     });
@@ -134,12 +162,27 @@ const nuevoRol: Roles = {
 
  // Función para actualizar un rol
  actualizarRol() {
+  const nuevoNombreRol = this.formRoles.value.nombre_rol;
+
+  // Verificar si el nuevo nombre ya existe en la lista de roles
+  const rolExistente = this.listRoles.find(rol => rol.nombre_rol === nuevoNombreRol);
+
+  if (rolExistente && rolExistente._id !== this.id) { // Evitar comparar el mismo rol consigo mismo
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al editar el rol',
+      detail: 'El nuevo nombre de rol ya está en uso.',
+      life: 6000
+    });
+    return; // Detener la ejecución de la función si el nuevo nombre ya existe
+  }
+
    // Verifica si el nombre del rol es 'Super Admin'
-   if (this.formRoles.value.nombre_rol === 'Super Admin') {
+   if (this.formRoles.value.nombre_rol === 'Super Admin' || this.formRoles.value.nombre_rol === 'Empleado' || this.formRoles.value.nombre_rol === 'Cliente') {
     this.messageService.add({
       severity: 'error',
       summary: 'Error al editar',
-      detail: 'El rol "Super Admin" no puede ser editado.',
+      detail: 'Los permisos de este rol no puede ser editado.',
       life: 6000
     });
     this.getListRoles();
@@ -196,8 +239,21 @@ const nuevoRol: Roles = {
     this.getListRoles();
   }
   
-  // Función para cambiar el estado de un rol
-  cambiarEstadoRol(id: string) {
+  cambiarEstadoRol(id: string, nombre_rol: string) {
+    // Verificar si el nombre del rol está en la lista de roles que no se pueden editar
+    if (nombre_rol === "Super Admin" || nombre_rol === "Empleado" || nombre_rol === "Cliente") {
+      // Mostrar mensaje utilizando messageService
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Este rol no se puede editar el estado.',
+        life: 3000
+      });
+      this.estadoRolDialog = false;
+      return; // Salir de la función sin continuar
+    }
+  
+    // Si el rol no está en la lista, continuar con la lógica para cambiar el estado
     this.rolesService.actualizarEstadoRol(id).subscribe({
       next: () => {
         this.messageService.add({
@@ -213,7 +269,7 @@ const nuevoRol: Roles = {
       }
     });
   }
-
+  
   openNewRolDialog() {
     this.id = '';                
     this.formRoles.reset()

@@ -3,10 +3,10 @@ import { PedidoListService } from './pedido-list.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
 import { Cliente } from './pedido-model';
 import { ConfirmationService} from 'primeng/api';
 import { ProductoCarrito } from '../product-list/product-list.model';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 
 
@@ -34,17 +34,21 @@ export class PedidoListComponent implements OnInit {
     cantidad?: number;
     cantidadSeleccionada: number = 1;
     totalCarrito: number = 0;
+
+   
     
   
   
 
 constructor(
+  public layoutService: LayoutService, 
   private pedidoListService: PedidoListService,
   private messageService: MessageService,
   private confirmationService: ConfirmationService,
   private router: Router, 
   private fb: FormBuilder,
   ) {
+   
     this.formPedidos = this.fb.group({
       documento_cliente: [''],
       tipo_cliente: [''],
@@ -69,6 +73,7 @@ constructor(
       domiciliario: [''],
   });
   }
+  
 
  
   ngOnInit() {

@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, FormControl,Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { ProductoCarrito } from '../product-list/product-list.model';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
@@ -28,8 +28,12 @@ export class PedidoClienteComponent implements OnInit {
     currentUser: any [];
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
     cambiarEstadoPDialogAnular: boolean;
+    tipoCliente: string;
+
+    private subscription: Subscription;
 
     constructor(
+        
         private pedidoClienteService: PedidoClienteService,
         private fb: FormBuilder,
         private pr: FormBuilder,
@@ -38,6 +42,11 @@ export class PedidoClienteComponent implements OnInit {
        
         private router: Router,
     ) {
+
+        this.subscription = this.LayoutService.DeleteProdutCarView.subscribe(event => {
+            this.eliminarProductoCarrito(event);
+          });
+
         this.pedido = this.fb.group({
             tipo_cliente: ['', Validators.required],
             documento_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,10}$/)]],
@@ -89,6 +98,7 @@ export class PedidoClienteComponent implements OnInit {
             .obtenerClientePorCorreo(correo_cliente)
             .subscribe(
                 (data: any) => {
+                    this.tipoCliente = data.tipo_cliente;
                     this.cliente = data;
                     this.pedido.patchValue({
                         tipo_cliente: data.tipo_cliente,

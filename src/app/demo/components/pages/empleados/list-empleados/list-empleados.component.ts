@@ -116,6 +116,7 @@ export class ListEmpleadosComponent implements OnInit {
       tipo_cuenta: ['', Validators.required],
      banco_cuenta: ['', Validators.required],
       area_empleado: ['', Validators.required],
+      area_empleado_produciion: ['', Validators.required],
       // estado_empleado: ['', Validators.required],
       detalle_empleado:this.fb.array([]),
       contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
@@ -128,6 +129,7 @@ export class ListEmpleadosComponent implements OnInit {
       this.empleadosService.getEmpleado().subscribe((data: Empleado[]) => {
         this.empleados = data;
       });
+      
     }
       // this.cargarEmpleados();
       // this.cargarEmpleadosPendientes();
@@ -205,6 +207,7 @@ export class ListEmpleadosComponent implements OnInit {
          tipo_cuenta: data.tipo_cuenta,
          banco_cuenta: data.banco_cuenta,
          area_empleado: data.area_empleado,
+         area_empleado_produccion: data.area_empleado_produccion,
          contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
          confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
       });
@@ -251,6 +254,7 @@ export class ListEmpleadosComponent implements OnInit {
           pension_empleado: detalle.pension_empleado,
           cuenta_bancaria_empleado: detalle.cuenta_bancaria_empleado,
           area_empleado: detalle.area_empleado ,
+          area_empleado_produccion: detalle.area_empleado_produccion ,
           // ... Otros campos del detalle que necesites
         };
       });
@@ -288,6 +292,7 @@ export class ListEmpleadosComponent implements OnInit {
       this.formEmpleados.get('tipo_cuenta').setValue(data.tipo_cuenta);
       this.formEmpleados.get('banco_cuenta').setValue(data.banco_cuenta);
       this.formEmpleados.get('area_empleado').setValue(data.area_empleado);
+      this.formEmpleados.get('area_empleado_produccion').setValue(data.area_empleado_produccion);
       // this.formEmpleados.get('detalle_empleado').patchValue(detallesFormateados);
         
     });
@@ -436,6 +441,7 @@ getEmpleado(numero_identificacion_empleado: string) {
      tipo_cuenta: data.tipo_cuenta,
      banco_cuenta: data.banco_cuenta,
      area_empleado: data.area_empleado,
+     area_empleado_produccion: data.area_empleado_produccion,
      contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
      confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
   });

@@ -49,7 +49,7 @@ export class RegistrarseComponent implements OnInit {
   ) {
     this.formCliente = this.fb.group({
       tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-      nombre_contacto: ['', [Validators.minLength(3), Validators.maxLength(50), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]+$/),]],
+      nombre_contacto: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]+$/),]],
       nombre_juridico: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]+$/),]],
       numero_documento_cliente: ['', [Validators.minLength(7), Validators.maxLength(10), Validators.required, Validators.pattern(/^[0-9]+$/),]],
       nit_empresa_cliente: ['', [Validators.minLength(7), Validators.maxLength(12), Validators.required, Validators.pattern(/^[0-9]+$/),]],
@@ -96,7 +96,9 @@ export class RegistrarseComponent implements OnInit {
     });
   }
 
-  // Función para crear una categoría
+  
+
+  // Función para crear un cliente
   crearCliente() {
     const nuevoCliente: Clientes = {
       tipo_cliente: this.formCliente.value.tipo_cliente,
@@ -119,6 +121,71 @@ export class RegistrarseComponent implements OnInit {
       contrasena_usuario: this.formCliente.value.contrasena_usuario,
       confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
     };
+    const numeroIdentificacion = this.formCliente.value.numero_documento_cliente;
+      const numeroCelular = this.formCliente.value.telefono_cliente;
+      const nombreJuridico = this.formCliente.value.nombre_juridico;
+      const nitEmpresa = this.formCliente.value.nit_empresa_cliente;
+      const correo = this.formCliente.value.correo_cliente;
+
+      // Verificar si el numero de identificacion ya existe en la lista de clientes
+      const identificacionExistente = this.listClientes.find(cliente => cliente.numero_documento_cliente  === numeroIdentificacion);
+      if (identificacionExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el cliente',
+          detail: 'El número de documento ya existe.',
+          life: 6000
+        });
+        return; // Detener la ejecución de la función si numero de identificacion ya existe
+      }
+      // Verificar si el numero de celular ya existe en la lista de de clientes
+      const celularExistente = this.listClientes.find(cliente => cliente.telefono_cliente  === numeroCelular);
+      if (celularExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el cliente',
+          detail: 'El número de celular ya existe.',
+          life: 6000
+        });
+        return; 
+      }
+      // Verificar si el nombre juridico ya existe en la lista de clientes
+      if (nombreJuridico && nombreJuridico.trim() !== '') {
+        const nombreJuridicoExistente = this.listClientes.find(cliente => cliente.nombre_juridico === nombreJuridico);
+        if (nombreJuridicoExistente) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al crear el cliente',
+            detail: 'El nombre jurídico ya existe.',
+            life: 6000
+          });
+          return; 
+        }
+      }
+      // Verificar si el nit empresarial ya existe en la lista de clientes
+      if (nitEmpresa && nitEmpresa.trim() !== '') {
+        const nitEmpresaExistente = this.listClientes.find(cliente => cliente.nit_empresa_cliente === nitEmpresa);
+        if (nitEmpresaExistente) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al crear el cliente',
+            detail: 'El nit de la empresa ya existe.',
+            life: 6000
+          });
+          return; 
+        }
+      }
+      // Verificar si el correo electrónico ya existe en la lista de de clientes
+      const correoExistente = this.listClientes.find(cliente => cliente.correo_cliente  === correo);
+      if (correoExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el cliente',
+          detail: 'El correo electrónico ya existe.',
+          life: 6000
+        });
+        return; 
+      }
 
     // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
     if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
@@ -189,12 +256,6 @@ export class RegistrarseComponent implements OnInit {
           if (respuesta) {
             this.usuarioService.createUsuario(nuevoUsuario).subscribe(
               () => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'El usuario fue creado con éxito',
-                  detail: 'Usuario creado',
-                  life: 3000
-                });
                 observer.next(true);  // Usuario creado exitosamente
                 observer.complete();
               },
@@ -203,7 +264,7 @@ export class RegistrarseComponent implements OnInit {
                   const errorMessage = error.error.errors[0].msg; // Acceder al mensaje de error específico
                   this.messageService.add({
                     severity: 'error',
-                    summary: 'Error al crear el usuario',
+                    summary: 'Error al crear el cliente',
                     detail: errorMessage,
                     life: 5000
                   });
@@ -214,7 +275,7 @@ export class RegistrarseComponent implements OnInit {
                   }
                   this.messageService.add({
                     severity: 'error',
-                    summary: 'Error al crear el usuario',
+                    summary: 'Error al crear el cliente',
                     detail: errorMessage,
                     life: 6000
                   });

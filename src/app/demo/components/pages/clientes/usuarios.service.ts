@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 }) export class UsuarioService {
-  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
+  private currentUser: any;
 
   constructor(private http: HttpClient) { }
 
@@ -86,5 +87,6 @@ import { Observable } from 'rxjs';
     const url = `${this.apiUrl}/usuarios/${uid}`;
     return this.http.delete(url);
   }
+
 
 }

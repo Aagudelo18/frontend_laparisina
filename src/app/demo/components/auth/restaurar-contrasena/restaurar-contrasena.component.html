@@ -1,43 +1,39 @@
 <p-toast></p-toast>
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+    style="background-image: url('assets/layout/images/Pancake-fondo.jpg'); background-size: cover; background-position: center;">
     <div class="flex flex-column align-items-center justify-content-center">
         <div
-            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                <div class="text-center mb-5">
-                    <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="160" class="mb-3">
-                    <div class="text-900 text-3xl font-medium mb-5">Digite su nueva contraseña</div>
+            style="border-radius: 40px; padding: 0.3rem; background: linear-gradient(180deg, rgba(255, 218, 123, 0.965) 10%, rgba(249, 233, 192, 0.965) 30%);">
+            <div class="w-full surface-card py-4 px-3 sm:px-6" style="border-radius: 40px; max-width: 400px;">
+                <div class="text-center mb-3">
+                    <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="120" class="mb-3">
+                    <div class="text-900 text-2xl font-medium mb-5">Digite su nueva contraseña</div>
                 </div>
 
                 <form [formGroup]="formularioContrasena" (ngSubmit)="restablecerContrasena()">
-                    <div class="field mt-4">
+                    <div class="field mt-3">
                         <div style="display: block;">
                             <span class="p-float-label" style="display: block;">
                                 <input type="password" pInputText id="newPassword" formControlName="newPassword"
-                                    pInputText class="w-full md:w-30rem mb-1" style="padding:1rem" />
+                                    class="w-full md:w-30rem mb-1" pInputText class="w-full md:w-64 mb-1" style="width: 100%;"/>
                                 <label for="newPassword">Contraseña</label>
                             </span>
                             <span
                                 *ngIf="formularioContrasena.get('newPassword')?.hasError('required') && formularioContrasena.get('newPassword')?.touched"
                                 style="color: red; display: block;">La contraseña es requerida.</span>
                             <span *ngIf="formularioContrasena.get('newPassword').hasError('minlength')"
-                                style="color: red; display: block;">La
-                                contraseña debe tener al menos 6 caracteres.</span>
+                                style="color: red; display: block;">La contraseña debe tener al menos 6
+                                caracteres.</span>
                             <span
                                 *ngIf="formularioContrasena.get('newPassword')?.hasError('pattern') && formularioContrasena.get('newPassword')?.touched"
                                 style="color: red; display: block;">La contraseña debe contener al menos una mayúscula,
-                                una
-                                minúscula y un
-                                número.</span>
+                                una minúscula y un número.</span>
                         </div>
-
                         <br>
-
                         <div style="display: block;">
                             <span class="p-float-label" style="display: block;">
                                 <input type="password" pInputText id="confirmar_contrasena"
-                                    formControlName="confirmar_contrasena" pInputText class="w-full md:w-30rem mb-1"
-                                    style="padding:1rem" />
+                                    formControlName="confirmar_contrasena" pInputText class="w-full md:w-64 mb-1" style="width: 100%;"/>
                                 <label for="confirmar_contrasena" style="position: absolute;">Confirmar
                                     Contraseña</label>
                             </span>
@@ -45,19 +41,17 @@
                                 *ngIf="formularioContrasena.get('confirmar_contrasena')?.hasError('required') && formularioContrasena.get('confirmar_contrasena')?.touched"
                                 style="color: red; display: block;">Confirmación de contraseña requerida.</span>
                             <span *ngIf="formularioContrasena.hasError('contrasenaNoCoincide')"
-                                style="color: red; display: block;">Las
-                                contraseñas no coinciden.</span>
+                                style="color: red; display: block;">Las contraseñas no coinciden.</span>
                             <span
                                 *ngIf="formularioContrasena.get('confirmar_contrasena')?.value !== formularioContrasena.get('newPassword')?.value && formularioContrasena.get('confirmar_contrasena')?.touched"
                                 style="color: red; display: block;">Las contraseñas no coinciden.</span>
                         </div>
                         <br>
                     </div>
-
-
-                    <button pButton pRipple label="Restaurar contraseña" class="w-full p-3 text-xl"
+                    <button pButton pRipple label="Restaurar contraseña" class="w-full p-2 text-lg"
                         [disabled]="!formularioContrasena.valid"></button>
                 </form>
+
 
             </div>
         </div>

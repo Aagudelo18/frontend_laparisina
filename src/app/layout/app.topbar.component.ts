@@ -4,13 +4,13 @@ import { LayoutService } from "./service/app.layout.service";
 import { LoginService } from 'src/app/demo/components/auth/login/login.services';
 import { Router } from '@angular/router'; //Se importa el Router
 import { DatosUsuario, Product, ProductoCarrito } from '../../app/demo/components/pages/product-list/product-list.model';
-import { map, Observable } from 'rxjs';
 import { RolesService } from '../../app/demo/components/pages/roles/roles.service';
 import { Roles } from '../../app/demo/components/pages/roles/roles.model';
+import { map, Observable, Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+  selector: 'app-topbar',
+  templateUrl: './app.topbar.component.html'
 })
 export class AppTopBarComponent {
   innerWidth: number = window.innerWidth;
@@ -20,15 +20,15 @@ export class AppTopBarComponent {
     this.innerWidth = window.innerWidth;
   }
 
-    items!: MenuItem[];
+  items!: MenuItem[];
 
-    confirmarCerrarSesionDialog = false;
+  confirmarCerrarSesionDialog = false;
 
-    @ViewChild('menubutton') menuButton!: ElementRef;
+  @ViewChild('menubutton') menuButton!: ElementRef;
 
-    @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
+  @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
 
-    @ViewChild('topbarmenu') menu!: ElementRef;
+  @ViewChild('topbarmenu') menu!: ElementRef;
 
     //---------------------------------------------------------------------------------------------------------------------------------
     //Variables para controlar el carrito
@@ -37,9 +37,9 @@ export class AppTopBarComponent {
     cantidadSeleccionada: number = 1;
     totalCarrito: number = 0;
     anchoOverlayCarrito: string = '60%';
-    // private subscription: Subscription;
-    // private subscription2: Subscription;
-    // private subscription3: Subscription;
+    private subscription: Subscription;
+    private subscription2: Subscription;
+    private subscription3: Subscription;
     //---------------------------------------------------------------------------------------------------------------------------------
     // Variables para capturar y tener control del usuario
     datosUsuario: DatosUsuario;
@@ -56,75 +56,82 @@ export class AppTopBarComponent {
         private rolesService: RolesService
 
         ){
-            // this.productosCarrito = layoutService.obtenerCarrito();
-            // this.calcularPrecioTotalCarrito();
-            // this.subscription = this.layoutService.ClearCar.subscribe(event => {
-            //   this.productosCarrito = [];
-            //   this.cantidad = 0;
-            // });
-
-            // this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
-            //   this.eliminarProductoCarrito(event);
-            // });
-            // this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
-            //   this.agregarProductoCarrito(event);
-            // });
+          // this.productosCarrito = layoutService.obtenerCarrito();
+          // this.calcularPrecioTotalCarrito();
+          // this.subscription = this.layoutService.ClearCar.subscribe(event => {
+          //   this.productosCarrito = [];
+          //   this.cantidad = 0;
+          // });
+      
+          // this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
+          //   this.eliminarProductoCarrito(event);
+          // });
+          // this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
+          //   this.agregarProductoCarrito(event);
+          // });
 
         }
 
+        
 
-    //función de inicialización del componente
-    ngOnInit():void {
-        //Obtener lista de productos actualizada
-         this.layoutService.products.subscribe(products => {
-          this.productosCarrito = products;
-         })
+  //función de inicialización del componente
+  ngOnInit(): void {
+    //Obtener lista de productos actualizada
+    this.layoutService.products.subscribe(products => {
+      this.productosCarrito = products;
+    })
 
-         //Obtener carrito del localstorage
-        this.layoutService.obtenerCarrito();
+    //Obtener carrito del localstorage
+    this.layoutService.obtenerCarrito();
 
-        //Obtener precioTotal
-        this.layoutService.products.pipe(map(products => {
-          return products.reduce((total, producto) => total + producto.precio_total_producto, 0)
-        })).subscribe(total => {
-          this.totalCarrito = total
-        });
+    //Obtener precioTotal
+    this.layoutService.products.pipe(map(products => {
+      return products.reduce((total, producto) => total + producto.precio_total_producto, 0)
+    })).subscribe(total => {
+      this.totalCarrito = total
+    });
 
-        // Obtener datos usuario
-        this.datosUsuario = this.layoutService.obtenerDatosUsuario();
-        this.correoUsuario = this.datosUsuario.correo_electronico;
-        this.idRol = this.datosUsuario.rol_usuario;
-        this.obtenerRol(this.idRol);
+    // Obtener datos usuario
+    this.datosUsuario = this.layoutService.obtenerDatosUsuario();
+    this.correoUsuario = this.datosUsuario.correo_electronico;
+    this.idRol = this.datosUsuario.rol_usuario;
+    this.obtenerRol(this.idRol);
 
-        this.obtenerDatosClientePorCorreo(this.correoUsuario).subscribe(
-          (dataCliente) => {
-            this.tipoCliente = dataCliente.tipo_cliente;
-          },
-          (error) => {
-            // Verificar si el error es un error 404
-            if (error.status === 404) {
-              // No hacer nada en caso de un error 404, simplemente ignorarlo
-            } else {
-              console.error('Error al obtener datos del cliente:', error);
-            }
-          }
-        );
-    }
-
-    reloadComponent() {
-        const currentRoute = this.router.url;
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate([currentRoute]);  
-        });
+    this.obtenerDatosClientePorCorreo(this.correoUsuario).subscribe(
+      (dataCliente) => {
+        this.tipoCliente = dataCliente.tipo_cliente;
+      },
+      (error) => {
+        // Verificar si el error es un error 404
+        if (error.status === 404) {
+          // No hacer nada en caso de un error 404, simplemente ignorarlo
+        } else {
+          console.error('Error al obtener datos del cliente:', error);
+        }
       }
+    );
+  }
 
-    logout(): void {
-        this.confirmarCerrarSesionDialog = true; // Redirige al usuario al componente de login
-    }
+  
 
-    noCerrarSesion() {
-        this.confirmarCerrarSesionDialog = false;
-    }
+reloadComponent() {
+  const currentRoute = this.router.url;
+  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigate([currentRoute]);
+  });
+}
+
+logout(): void {
+  this.confirmarCerrarSesionDialog = true; // Redirige al usuario al componente de login
+}
+
+noCerrarSesion() {
+  this.confirmarCerrarSesionDialog = false;
+}
+
+hasToken(): boolean {
+  return localStorage.getItem('token') !== null;
+}
 
     cerrarSesion() {
         this.confirmarCerrarSesionDialog = false;
@@ -147,7 +154,8 @@ export class AppTopBarComponent {
     //-------------------------------------------------------------------------------------------------------------------------------
 
     eliminarProductoCarrito(producto: ProductoCarrito){
-      this.layoutService.eliminarProductoCarrito(producto)
+      this.layoutService.eliminarProductoCarrito(producto);
+      this.layoutService.DeleteProdutCarView.emit(producto)
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------

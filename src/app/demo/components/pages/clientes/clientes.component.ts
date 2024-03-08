@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, AbstractControl, ValidationErrors} from '@angul
 import { Validators } from '@angular/forms';
 import { switchMap,catchError } from 'rxjs/operators';
 import { Subject,Observable, throwError   } from 'rxjs';
+import { TransportesService } from '../transportes/transportes.service';
  
 @Component({
     templateUrl: './clientes.component.html', 
@@ -47,14 +48,14 @@ export class clientesComponent implements OnInit {
         private aRouter:ActivatedRoute){
           this.formCliente = this.fb.group({
             tipo_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
-            nombre_contacto: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,50}$/),]],
-            nombre_juridico: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{1,100}$/),]],
+            nombre_contacto: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{3,50}$/),]],
+            nombre_juridico: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{3,100}$/),]],
             numero_documento_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
             nit_empresa_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,12}$/),]],
             telefono_cliente: ['',[Validators.required, Validators.pattern(/^[0-9]{7,10}$/),]],
             direccion_cliente: ['',[Validators.required, Validators.pattern(/^[A-Za-z0-9\s,.'#-]+$/),]],
-            barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{1,20}$/),]],
-            ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{1,20}$/),]],
+            barrio_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú0-9\s]{3,20}$/),]],
+            ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{3,20}$/),]],
             estado_cliente: ['', Validators.required],
             correo_cliente: ['', [Validators.required, Validators.email]],
             contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
@@ -136,7 +137,72 @@ export class clientesComponent implements OnInit {
       }
       // Función para crear un cliente
       crearCliente() {
-        const nuevoCliente: Clientes = {
+      const numeroIdentificacion = this.formCliente.value.numero_documento_cliente;
+      const numeroCelular = this.formCliente.value.telefono_cliente;
+      const nombreJuridico = this.formCliente.value.nombre_juridico;
+      const nitEmpresa = this.formCliente.value.nit_empresa_cliente;
+      const correo = this.formCliente.value.correo_cliente;
+
+      // Verificar si el numero de identificacion ya existe en la lista de clientes
+      const identificacionExistente = this.listClientes.find(cliente => cliente.numero_documento_cliente  === numeroIdentificacion);
+      if (identificacionExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el cliente',
+          detail: 'El número de documento ya existe.',
+          life: 6000
+        });
+        return; // Detener la ejecución de la función si numero de identificacion ya existe
+      }
+      // Verificar si el numero de celular ya existe en la lista de de clientes
+      const celularExistente = this.listClientes.find(cliente => cliente.telefono_cliente  === numeroCelular);
+      if (celularExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el cliente',
+          detail: 'El número de celular ya existe.',
+          life: 6000
+        });
+        return; 
+      }
+      // Verificar si el nombre juridico ya existe en la lista de clientes
+      if (nombreJuridico && nombreJuridico.trim() !== '') {
+        const nombreJuridicoExistente = this.listClientes.find(cliente => cliente.nombre_juridico === nombreJuridico);
+        if (nombreJuridicoExistente) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al crear el cliente',
+            detail: 'El nombre jurídico ya existe.',
+            life: 6000
+          });
+          return; 
+        }
+      }
+      // Verificar si el nit empresarial ya existe en la lista de clientes
+      if (nitEmpresa && nitEmpresa.trim() !== '') {
+        const nitEmpresaExistente = this.listClientes.find(cliente => cliente.nit_empresa_cliente === nitEmpresa);
+        if (nitEmpresaExistente) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al crear el cliente',
+            detail: 'El nit de la empresa ya existe.',
+            life: 6000
+          });
+          return; 
+        }
+      }
+      // Verificar si el correo electrónico ya existe en la lista de de clientes
+      const correoExistente = this.listClientes.find(cliente => cliente.correo_cliente  === correo);
+      if (correoExistente) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error al crear el cliente',
+          detail: 'El correo electrónico ya existe.',
+          life: 6000
+        });
+        return; 
+      }
+      const nuevoCliente: Clientes = {
             tipo_cliente: this.formCliente.value.tipo_cliente,
             nombre_contacto: this.formCliente.value.nombre_contacto,
             nombre_juridico: this.formCliente.value.nombre_juridico,
@@ -149,11 +215,13 @@ export class clientesComponent implements OnInit {
             ciudad_cliente: this.formCliente.value.ciudad_cliente,
             estado_cliente: true,
         };
+        
 
         const nuevoUsuario = {
           correo_electronico: this.formCliente.value.correo_cliente,
           contrasena_usuario: this.formCliente.value.contrasena_usuario,
           confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
+          rol_usuario:'654a96ebdbe2126f5a74161e',
       };
 
       // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario
@@ -210,6 +278,7 @@ confirmarCrearUsuario() {
     correo_electronico: this.formCliente.value.correo_cliente,
     contrasena_usuario: this.formCliente.value.contrasena_usuario,
     confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
+    rol_usuario:'654a96ebdbe2126f5a74161e',
   };
 
   if (nuevoUsuario.contrasena_usuario === nuevoUsuario.confirmar_contrasena) {
@@ -261,6 +330,21 @@ confirmarCreacionUsuario() {
   
       // Función para actualizar un cliente
       actualizarCliente() {
+        const nuevoDocumento = this.formCliente.value.numero_documento_cliente;
+
+        // Verificar si el nuevo nombre ya existe en la lista de roles
+        const documentoExistente = this.listClientes.find(cliente => cliente.numero_documento_cliente === nuevoDocumento);
+      
+        if (documentoExistente && documentoExistente._id !== this.id) { // Evitar comparar el mismo rol consigo mismo
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al editar el cliente',
+            detail: 'El numero de documento ya está en uso.',
+            life: 6000
+          });
+          return; // Detener la ejecución de la función si el nuevo nombre ya existe
+        }
+      
         const clienteActualizado: Clientes = {
             tipo_cliente: this.formCliente.value.tipo_cliente,
             nombre_contacto: this.formCliente.value.nombre_contacto,
@@ -309,6 +393,11 @@ confirmarCreacionUsuario() {
           this.messageService.add({
             severity: 'success',
             summary: 'El estado del cliente fue cambiado con éxito',
+            life: 3000
+          });
+          this.messageService.add({
+            severity: 'info',
+            summary: 'El estado del usuario fue cambiado con éxito',
             life: 3000
           });
           this.estadoClienteDialog = false;

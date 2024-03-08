@@ -30,6 +30,10 @@ export class LayoutService {
     public  ClearCar: EventEmitter<any> = new EventEmitter();
     public  DeleteProdutCar: EventEmitter<any> = new EventEmitter();
     public  AddProdutCart: EventEmitter<any> = new EventEmitter();
+    public  DeleteProdutCarView: EventEmitter<any> = new EventEmitter();
+
+    
+
     
 
     config: AppConfig = {
@@ -57,6 +61,8 @@ export class LayoutService {
     configUpdate$ = this.configUpdate.asObservable();
 
     overlayOpen$ = this.overlayOpen.asObservable();
+    // DeleteProdutCar: any;
+    // ClearCar: any;
 
     onMenuToggle() {
         if (this.isOverlay()) {

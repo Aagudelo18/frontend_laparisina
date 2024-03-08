@@ -54,13 +54,9 @@
                 <p-inputSwitch class="mr-2" [ngModel]="usuario.estado_usuario"
                     (onChange)="confirmarCambioEstado(usuario)" pTooltip="Cambiar estado"></p-inputSwitch>
             </td>
-            <td style="width:10%; min-width:5rem;">
-                <div class="flex">
-                    <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
-                        (click)="editProduct(product)"></button> -->
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
-                        (click)="editarUsuario(usuario)" pTooltip="Editar usuario"></button>
-                </div>
+            <td style="width:10%; min-width:8rem;">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                    (click)="editarUsuario(usuario)" pTooltip="Editar usuario"></button>
             </td>
         </tr>
     </ng-template>
