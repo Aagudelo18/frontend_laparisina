@@ -1,13 +1,16 @@
 <p-toast></p-toast>
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+    style="background-image: url('assets/layout/images/Pancake-fondo.jpg'); background-size: cover; background-position: center;">
     <div class="flex flex-column align-items-center justify-content-center">
         <div
-            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                <div class="text-center mb-5">
-                    <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="160" class="mb-3">
-                    <div class="text-900 text-3xl font-medium mb-5">Recuperar contraseña</div>
+            style="border-radius: 40px; padding: 0.3rem; background: linear-gradient(180deg, rgba(255, 218, 123, 0.965) 10%, rgba(249, 233, 192, 0.965) 30%);">
+            <div class="w-full surface-card py-4 px-3 sm:px-6" style="border-radius: 40px; max-width: 400px;">
+                <div class="text-center mb-3">
+                    <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="120" class="mb-3">
+                    <div class="text-900 text-xl font-medium mb-2">Recuperar contraseña</div>
                 </div>
+
+                <br>
 
                 <form [formGroup]="formularioCorreo" (ngSubmit)="enviarCorreo()">
                     <div class="field mt-4" style="margin-bottom: 15px;">
@@ -27,13 +30,13 @@
                         <br>
                     </div>
 
-                    <button pButton pRipple label="Enviar correo" class="w-full p-3 text-xl" type="submit"
+                    <button pButton pRipple label="Enviar correo" class="w-full p-2 text-lg" type="submit"
                         [disabled]="!formularioCorreo.valid"></button>
                 </form>
                 <hr>
                 <div class="text-center mb-2">
-                    <a (click)="enviarlogin()" class="p-3 text-xl cursor-pointer" style="color: var(--primary-color)"
-                        style="font-weight: bold;">
+                    <a (click)="enviarlogin()" class="p-3 text-xl cursor-pointer"
+                        style="color: rgba(89, 85, 85, 0.965); font-weight: bold;">
                         Atrás
                     </a>
                 </div>

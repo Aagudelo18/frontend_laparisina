@@ -116,7 +116,7 @@
   </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '850px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
+<p-dialog [(visible)]="crearClienteDialog" [style]="{ width: '1050px' }" header="Crear Cliente" [modal]="true" class="p-fluid">
   <form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
     <br>
     <div class="formgrid grid">
@@ -129,7 +129,7 @@
             </span>       
             <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
             style="color: red;">
-              El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
+              El tipo de cliente solo debe contener letras minimo 3 y  máximo 20 caracteres
             </span>
             </div>
           <div class="field col">
@@ -143,7 +143,7 @@
                 </span>       
                 <span *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
                 style="color: red;">
-                  El nombre solo debe contener letras y tener máximo 50 caracteres
+                  El nombre solo debe contener letras  minimo 3  y  máximo 50 caracteres
                 </span>
            </div>
           </div>
@@ -232,7 +232,7 @@
           </span>       
           <span *ngIf="formCliente.get('barrio_cliente')?.hasError('pattern') && formCliente.get('barrio_cliente')?.touched"
           style="color: red;">
-              El barrio solo puede tener letras y tener máximo 20 caracteres 
+              El barrio solo puede tener letras minimo 3 y máximo 20 caracteres 
           </span>
           </div>
         </div>
@@ -305,8 +305,8 @@
         </div>
         </div>
          <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="crearClienteDialog = false" ></button>
-        <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" ></button>
+        <button pButton pRipple label="Cancelar"  class="p-button-text" (click)="crearClienteDialog = false" ></button>
+        <button type="submit" pButton pRipple label="Guardar"  class="p-button-text" ></button>
       </div>
   </form>  
   </p-dialog>
@@ -327,7 +327,7 @@
 </p-dialog>
 
 
-<p-dialog [(visible)]="editarClienteaDialog" [style]="{ width: '850px' }" header="Editar Cliente" [modal]="true" class="p-fluid">
+<p-dialog [(visible)]="editarClienteaDialog" [style]="{ width: '1050px' }" header="Editar Cliente" [modal]="true" class="p-fluid">
 <form [formGroup]="formCliente" (ngSubmit)="actualizarCliente()">
   <br>
   <div class="formgrid grid">
@@ -340,7 +340,7 @@
             El tipo de cliente es requerido
           </span>       
           <span *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
-            El tipo de cliente solo debe contener letras y tener máximo 20 caracteres
+            El nombre solo debe contener letras  minimo 3  y  máximo 50 caracteres
           </span>
         </div>
         <div class="field col">
@@ -493,15 +493,15 @@
       </div>
     </div>
     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+      <button pButton pRipple label="Cancelar"  class="p-button-text"
         (click)="editarClienteaDialog = false"></button>
-      <button type="submit" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"></button>
+      <button type="submit" pButton pRipple label="Guardar"  class="p-button-text"></button>
     </div>
   </form>
 </p-dialog>
 
 
-<p-dialog [(visible)]="detalleClienteDialog" [style]="{ width: '850px' }" header="Detalle del Cliente" [modal]="true"
+<p-dialog [(visible)]="detalleClienteDialog" [style]="{ width: '1050px' }" header="Detalle del Cliente" [modal]="true"
   class="p-fluid">
   <form [formGroup]="formCliente">
     <div class="formgrid grid">

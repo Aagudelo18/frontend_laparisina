@@ -1,64 +1,60 @@
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
-    <div class="flex flex-column align-items-center justify-content-center">
-        <div
-            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                <div class="text-center mb-5">
-                    <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="160" class="mb-3">
-                    <div class="text-900 text-3xl font-medium mb-3">¡Bienvenido a la Parisina!</div>
-                    <span class="text-600 font-medium">Inicia sesión para continuar</span>
-                </div>
-
-                <form [formGroup]="loginFormulario" (ngSubmit)="login()">
-                    <div class="field mt-4">
-                        <div style="display: block;">
-                            <label for="correo_electronico"
-                                class="block text-900 text-xl font-medium mb-2">Email</label>
-                            <input id="correo_electronico" type="text" placeholder="Correo Electrónico"
-                                formControlName="correo_electronico" pInputText class="w-full md:w-30rem mb-1"
-                                style="padding:1rem">
-                            <span
-                                *ngIf="loginFormulario.get('correo_electronico').hasError('required') && loginFormulario.get('correo_electronico').touched"
-                                style="color: red; display: block;">Correo electrónico es requerido.</span>
-                            <span
-                                *ngIf="loginFormulario.get('correo_electronico').hasError('email') && loginFormulario.get('correo_electronico').touched"
-                                style="color: red; display: block;">Correo electrónico no válido.</span>
-                        </div>
-                        <br>
-                        <div style="display: block;">
-                            <label for="contrasena_usuario"
-                                class="block text-900 font-medium text-xl mb-2">Contraseña</label>
-                            <input id="contrasena_usuario" type="password" placeholder="Contraseña usuario"
-                                formControlName="contrasena_usuario" pInputText class="w-full md:w-30rem mb-1"
-                                style="padding:1rem">
-                            <span
-                                *ngIf="loginFormulario.get('contrasena_usuario').hasError('required') && loginFormulario.get('contrasena_usuario').touched"
-                                style="color: red; display: block;">Contraseña es requerida</span>
-                            <span *ngIf="loginFormulario.get('contrasena_usuario').hasError('minlength')"
-                                style="color: red; display: block;">La contraseña debe tener al menos 6
-                                caracteres.</span>
-                        </div>
-
-                        <!-- Mostrar el mensaje de error -->
-                        <span *ngIf="correoNoRegistradoError" style="color: red; display: block;">{{
-                            correoNoRegistradoError }}</span>
-                        <br>
-                        <div class="flex align-items-center justify-content-between mb-5 gap-5">
-                            <a (click)="recuperarContrasena()"
-                                class="font-medium no-underline ml-2 text-right cursor-pointer"
-                                style="color: var(--primary-color)">¿Olvidaste tu contraseña?</a>
-                        </div>
-                    </div>
-                </form>
-                <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl"
-                    [disabled]="!loginFormulario.valid"></button>
-                <hr>
-                <div style="width: 100%; text-align: center;">
-                    <a (click)="registro()" class="p-3 text-xl cursor-pointer" style="color: var(--primary-color)">
-                        ¿No tienes una cuenta? <span style="font-weight: bold;">Regístrate aquí</span>
-                    </a>
-                </div>
-            </div>
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+  style="background-image: url('assets/layout/images/Pancake-fondo.jpg'); background-size: cover; background-position: center;">
+  <div class="flex flex-column align-items-center justify-content-center">
+    <div
+      style="border-radius: 40px; padding: 0.3rem; background: linear-gradient(180deg, rgba(255, 218, 123, 0.965) 10%, rgba(249, 233, 192, 0.965) 30%);">
+      <div class="w-full surface-card py-4 px-3 sm:px-6" style="border-radius: 40px; max-width: 400px;">
+        <div class="text-center mb-3">
+          <img src="assets/layout/images/Logo-parisina-Login.png" alt="Image" height="120" class="mb-2">
+          <div class="text-900 text-xl font-medium mb-2">¡Bienvenido a La Parisina!</div>
+          <span class="text-600 font-medium">Inicia sesión para continuar</span>
         </div>
+
+        <form [formGroup]="loginFormulario" (ngSubmit)="login()">
+          <div class="field mt-3">
+            <div style="display: block;">
+              <label for="correo_electronico" class="block text-900 text-lg font-medium mb-1">Email</label>
+              <input id="correo_electronico" type="text" placeholder="Correo Electrónico"
+                formControlName="correo_electronico" pInputText class="w-full md:w-64 mb-1" style="width: 100%;">
+              <span
+                *ngIf="loginFormulario.get('correo_electronico').hasError('required') && loginFormulario.get('correo_electronico').touched"
+                style="color: red; display: block;">Correo electrónico es requerido.</span>
+              <span
+                *ngIf="loginFormulario.get('correo_electronico').hasError('email') && loginFormulario.get('correo_electronico').touched"
+                style="color: red; display: block;">Correo electrónico no válido.</span>
+            </div>
+            <br>
+            <div style="display: block;">
+              <label for="contrasena_usuario" class="block text-900 font-medium text-lg mb-1">Contraseña</label>
+              <input id="contrasena_usuario" type="password" placeholder="Contraseña usuario"
+                formControlName="contrasena_usuario" pInputText class="w-full md:w-64 mb-1" style="width: 100%;">
+              <span
+                *ngIf="loginFormulario.get('contrasena_usuario').hasError('required') && loginFormulario.get('contrasena_usuario').touched"
+                style="color: red; display: block;">Contraseña es requerida</span>
+              <span *ngIf="loginFormulario.get('contrasena_usuario').hasError('minlength')"
+                style="color: red; display: block;">La contraseña debe tener al menos 6
+                caracteres.</span>
+            </div>
+
+            <!-- Mostrar el mensaje de error -->
+            <span *ngIf="correoNoRegistradoError" style="color: red; display: block;">{{
+              correoNoRegistradoError }}</span>
+            <br>
+            <div class="flex align-items-center justify-content-between mb-3">
+              <a (click)="recuperarContrasena()" class="font-medium no-underline ml-2 text-right cursor-pointer"
+                style="color: rgba(66, 63, 63, 0.965)">¿Olvidaste tu contraseña?</a>
+            </div>
+          </div>
+        </form>
+        <button (click)="login()" pButton pRipple label="Iniciar sesión" class="w-full p-2 text-lg"
+          [disabled]="!loginFormulario.valid"></button>
+        <hr>
+        <div style="width: 100%; text-align: center;">
+          <a (click)="registro()" class="font-medium no-underline ml-2 cursor-pointer" style="color: rgba(89, 85, 85, 0.965)">
+            ¿No tienes una cuenta? <span style="font-weight: bold;">Regístrate aquí</span>
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
