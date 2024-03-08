@@ -12,6 +12,7 @@ import { CategoriaService } from '../categoria/categoria.service';
 
 @Component({
     templateUrl: './producto.component.html',
+    styleUrls: ['./producto.component.scss'],
     providers: [MessageService, CategoriaService]
 })
 
@@ -62,7 +63,9 @@ export class ProductoComponent implements OnInit {
     editarProductoDialog: boolean = false;
     detalleProductoDialog: boolean = false;
     estadoProductoDialog: boolean = false;
-    
+    anchoDialogCrearProducto: string = '70%';
+    anchoDialogEditarProducto: string = '70%';
+    anchoDialogDetalleProducto: string = '70%';
 
 
     constructor(
@@ -243,11 +246,6 @@ export class ProductoComponent implements OnInit {
               life: 3000
             });
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'El archivo seleccionado no es una imagen.',
-              life: 3000
-            });
             console.log("El archivo seleccionado no es una imagen.");
           }
         }
@@ -255,11 +253,6 @@ export class ProductoComponent implements OnInit {
         console.log('Array imagenes: ',this.files)
       } else {
         this.files = [];
-        this.messageService.add({
-          severity: 'error',
-          summary: 'El archivo seleccionado no es una imagen.',
-          life: 3000
-        });
         console.log("No se seleccionó ningún archivo de imagen.");
       }
     }
@@ -390,6 +383,11 @@ export class ProductoComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     //funciónes para abrir y cerrar un dialog para crear un nuevo producto
     nuevoProducto() {
+       // Verifica el ancho de la ventana del navegador
+       const anchoDialog = window.innerWidth < 960 ? '90%' : '70%';
+
+       // Establece el ancho del diálogo
+       this.anchoDialogCrearProducto = anchoDialog;
         this.id = '';                
         this.formProducto.reset()
         this.crearProductoDialog = true;
@@ -410,6 +408,11 @@ export class ProductoComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     //funciónes para abrir y cerrar un dialog para editar un producto
     editarProducto(id:string) {
+        // Verifica el ancho de la ventana del navegador
+        const anchoDialog = window.innerWidth < 960 ? '90%' : '70%';
+
+        // Establece el ancho del diálogo
+        this.anchoDialogEditarProducto = anchoDialog;
         this.id = id;
         this.editarProductoDialog = true;
         this.getProducto(id)
@@ -426,6 +429,11 @@ export class ProductoComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para abrir un dialog y ver detalles de un producto
     detalleProducto(id: string) {
+      // Verifica el ancho de la ventana del navegador
+      const anchoDialog = window.innerWidth < 960 ? '90%' : '70%';
+
+      // Establece el ancho del diálogo
+      this.anchoDialogDetalleProducto = anchoDialog;
       this.id = id;
       this.detalleProductoDialog = true;
       this.getProducto(id);

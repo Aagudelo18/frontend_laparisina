@@ -27,6 +27,7 @@ export class ProductComponent implements OnInit {
   formProduct: FormGroup;
   id: string = '';
   categoriaSeleccionada: string = 'Todas las categorías';
+  menuDelDia: Product[] = [];
 
   //---------------------------------------------------------------------------------------------------------------------------------
   //Variables para controlar el carrito
@@ -108,6 +109,7 @@ export class ProductComponent implements OnInit {
   //---------------------------------------------------------------------------------------------------------------------------------
   //Variables para controlar dialogs
   detalleProductoDialog: boolean = false;
+  detalleMenuDelDiaDialog: boolean = false;
   anchoDialogDetalleProducto: string = '60%';
 
 
@@ -155,6 +157,8 @@ export class ProductComponent implements OnInit {
         }
       }
     );
+
+    this.inicioMenuDelDia();
   }
 
   
@@ -237,6 +241,37 @@ export class ProductComponent implements OnInit {
     this.detalleProductoDialog = false;
     this.limiteProducto = false;
   }
+
+  //-------------------------------------------------------------------------------------------------------------------------------
+  //función para cerrar un dialog y limpiar el fileUpload de crear producto
+  inicioMenuDelDia() {
+    this.productService.getListProducts().subscribe((data) => {
+      this.menuDelDia = data.filter(producto => producto.nombre_producto === 'Croissant' && producto.estado_producto === true);
+      
+      this.producto = this.menuDelDia.length > 0 ? this.menuDelDia[0] : null;
+      if (this.producto) {
+        this.detalleMenuDelDia(this.producto);
+      }
+    });
+
+    
+  }
+
+  detalleMenuDelDia(product: Product) {
+    // Verifica el ancho de la ventana del navegador
+    const anchoDialog = window.innerWidth < 960 ? '90%' : '60%';
+
+    // Establece el ancho del diálogo
+    this.anchoDialogDetalleProducto = anchoDialog;
+
+    this.producto = product;
+    this.detalleMenuDelDiaDialog = true;
+    this.cantidadSeleccionada = 1;
+
+    const rutaImagenes = 'http://localhost:3000/uploads/';
+    this.imagenes = product.imagenes_producto.map(imagen => rutaImagenes + imagen);
+  }
+  
 
 
 

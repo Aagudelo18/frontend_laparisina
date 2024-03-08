@@ -1,16 +1,24 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { LoginService } from 'src/app/demo/components/auth/login/login.services';
 import { Router } from '@angular/router'; //Se importa el Router
 import { DatosUsuario, Product, ProductoCarrito } from '../../app/demo/components/pages/product-list/product-list.model';
 import { map, Observable } from 'rxjs';
+import { RolesService } from '../../app/demo/components/pages/roles/roles.service';
+import { Roles } from '../../app/demo/components/pages/roles/roles.model';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html'
 })
 export class AppTopBarComponent {
+  innerWidth: number = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: Event): void {
+    this.innerWidth = window.innerWidth;
+  }
 
     items!: MenuItem[];
 
@@ -28,6 +36,7 @@ export class AppTopBarComponent {
     cantidad?: number;
     cantidadSeleccionada: number = 1;
     totalCarrito: number = 0;
+    anchoOverlayCarrito: string = '60%';
     // private subscription: Subscription;
     // private subscription2: Subscription;
     // private subscription3: Subscription;
@@ -36,13 +45,15 @@ export class AppTopBarComponent {
     datosUsuario: DatosUsuario;
     correoUsuario: string;
     tipoCliente: string;
-
+    idRol: string;
+    rol: Roles = {}
+    token:any;
 
     constructor(
         public layoutService: LayoutService, 
         private loginService: LoginService, 
         private router: Router,
-       
+        private rolesService: RolesService
 
         ){
             // this.productosCarrito = layoutService.obtenerCarrito();
@@ -79,9 +90,11 @@ export class AppTopBarComponent {
           this.totalCarrito = total
         });
 
+        // Obtener datos usuario
         this.datosUsuario = this.layoutService.obtenerDatosUsuario();
-        console.log('rrr',this.datosUsuario.rol_usuario)
         this.correoUsuario = this.datosUsuario.correo_electronico;
+        this.idRol = this.datosUsuario.rol_usuario;
+        this.obtenerRol(this.idRol);
 
         this.obtenerDatosClientePorCorreo(this.correoUsuario).subscribe(
           (dataCliente) => {
@@ -143,26 +156,34 @@ export class AppTopBarComponent {
       return this.layoutService.obtenerDatosClientePorCorreo(correo);
     }
 
-      agregarProductoCarrito(nuevoProducto: any) {
-        
-        console.log(nuevoProducto)
-  
-        // Verificar si ya existe un producto con el mismo nombre_producto
-        const productoExistente = this.productosCarrito.find(p => p.nombre_producto === nuevoProducto.nombre_producto);
-  
-        if (!productoExistente) {
-          // Si no existe, agregar el nuevo producto al carrito
-          this.productosCarrito.push(nuevoProducto);
-  
-          this.totalCarrito += nuevoProducto.precio_total_producto;
-  
-        } else {
-          this.totalCarrito -= productoExistente.precio_total_producto;
-          productoExistente.precio_total_producto = nuevoProducto.precio_total_producto;
-          this.totalCarrito += productoExistente.precio_total_producto;
-         
-        }
-       
-      }
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función para obtener datos del rol
+    obtenerRol(id: string) {
+      this.rolesService.getRoles(id).subscribe((data: Roles) => {
+        this.rol = data
+      });
+      this.token = localStorage.getItem('token');
+
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    // Función para verificar usuario
+    verificarUsuario(): boolean {
+      return this.datosUsuario && (this.datosUsuario.rol_usuario === undefined || this.rol.nombre_rol === 'Cliente');
+    }
+    // Función para verificar usuario
+    verificarUsuario2(): boolean {
+      return this.token !== null && this.token !== undefined && this.token !== '';
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------
+    //función para controlar el tamaño de OverlayCarrito
+    anchoOverlay() {
+      // Verifica el ancho de la ventana del navegador
+      const anchoDialog = window.innerWidth < 960 ? '100%' : 'auto';
+
+      // Establece el ancho del diálogo
+      this.anchoOverlayCarrito = anchoDialog;
+    }
 
 }

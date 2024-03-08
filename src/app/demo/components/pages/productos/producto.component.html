@@ -101,7 +101,7 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="crearProductoDialog" [style]="{ width: '70%' }" header="Crear Producto" [modal]="true"
+        <p-dialog [(visible)]="crearProductoDialog" [style]="{ width: anchoDialogCrearProducto }" header="Crear Producto" [modal]="true"
             class="p-fluid" (onHide)="cerrarDialog()">
             <form [formGroup]="formProducto" (ngSubmit)="crearProducto()">
                 <div class="formgrid grid">
@@ -133,7 +133,7 @@
                                     4 dígitos.
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-8">
                                 <span class="p-float-label">
                                     <input formControlName="nombre_producto" id="nombre_producto" type="text"
                                         pInputText />
@@ -157,10 +157,13 @@
                         </div>
 
                         <div class="formgrid grid mt-4">
-                            <div class="field col">
-                                <p-dropdown (onChange)="onCategoriaChange($event)"
-                                    formControlName="nombre_categoria_producto" [options]="categorias"
-                                    placeholder="Categoría Producto *" [showClear]="true"></p-dropdown>
+                            <div class="field col-6">
+                                <span class="p-float-label">
+                                    <p-dropdown id="nombre_categoria_producto" (onChange)="onCategoriaChange($event)"
+                                      formControlName="nombre_categoria_producto" [options]="categorias"
+                                      placeholder="Categoría Producto" [showClear]="true"></p-dropdown>
+                                    <label for="nombre_categoria_producto">Categoría Producto <span style="color: red;">*</span></label>
+                                </span>
                                 <span *ngIf="
                                         formProducto
                                             .get('nombre_categoria_producto')
@@ -184,7 +187,7 @@
                                     dobles.
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <input formControlName="durabilidad_producto" id="durabilidad_producto" type="text"
                                         pInputText />
@@ -207,7 +210,7 @@
                         </div>
 
                         <div class="formgrid grid mt-4">
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <p-inputNumber inputId="integeronly" formControlName="precio_ico"></p-inputNumber>
                                     <label for="precio_ico">Precio ICO <span style="color: red;">*</span></label>
@@ -233,7 +236,7 @@
                                     El precio ICO solo permite números, mínimo 4 y máximo 6 dígitos.
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <p-inputNumber inputId="integeronly"
                                         formControlName="precio_por_mayor_ico"></p-inputNumber>
@@ -266,9 +269,9 @@
                         </div>
 
                         <div class="formgrid grid mt-5">
-                            <div class="field col">
+                            <div class="field col-12">
                                 <span class="p-float-label">
-                                    <textarea rows="12" cols="30" pInputTextarea formControlName="descripcion_producto"
+                                    <textarea rows="8" cols="30" pInputTextarea formControlName="descripcion_producto"
                                         id="descripcion_producto"></textarea>
                                     <label for="descripcion_producto">Descripción <span style="color: red;">*</span></label>
                                 </span>
@@ -295,11 +298,17 @@
                         </div>
                     </div>
 
-                    <div class="field col">
+                    <div class="field col-6">
                         <span *ngIf="!fileSelected"ng style="color: red;">La imagen es requerida * (Mínimo: 1 - Máximo: 3)</span>
                         <div class="card">
                             <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imágenes" name="image"
-                                chooseIcon="pi pi-images" [multiple]="true" accept="image/*" maxFileSize="1000000"
+                                chooseIcon="pi pi-images" [multiple]="true" 
+                                accept="image/*"
+                                [invalidFileTypeMessageSummary]="'Tipo de archivo no permitido.'"
+                                [invalidFileTypeMessageDetail]="'Solo se permiten archivos de imagen (por ejemplo, JPEG, PNG).'"
+                                maxFileSize="2000000"
+                                [invalidFileSizeMessageSummary]="'Tamaño de archivo no permitido.'"
+                                [invalidFileSizeMessageDetail]="'El archivo excede el tamaño máximo permitido (2 MB).'"
                                 (onSelect)="onFileChange($event)"></p-fileUpload>
 
                             <p-galleria [(value)]="imagenes" [showItemNavigators]="true" [showThumbnails]="false"
@@ -309,14 +318,7 @@
                                     'margin-top': '2em'
                                 }">
                                 <ng-template pTemplate="item" let-imagen>
-                                    <img [src]="imagen" style="
-                                            width: 100%;
-                                            height: 400px;
-                                            max-width: 600px;
-                                            object-fit: cover;
-                                            display: block;
-                                            margin: 0 auto;
-                                        " />
+                                    <img [src]="imagen" class="galleria-image"/>
                                 </ng-template>
                                 <ng-template pTemplate="thumbnail" let-imagen>
                                     <div class="grid grid-nogutter justify-content-center">
@@ -327,18 +329,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imágenes" name="image" chooseIcon="pi pi-images" 
-                [multiple]="true" accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
-
-                <div class="formgrid grid mt-4">
-                    <div class="field col-12 text-left d-flex flex-wrap justify-content-center">
-                      <ng-container *ngFor="let imagen of imagenes">
-                        <p-image class="m-2" [src]="imagen" alt="Imagen del producto" 
-                        width="100" (click)="abrirImagenDialog(imagen)"></p-image>
-                      </ng-container>
-                    </div>
-                </div> -->
 
                 <div style="
                         display: flex;
@@ -353,7 +343,7 @@
             </form>
         </p-dialog>
 
-        <p-dialog [(visible)]="editarProductoDialog" [style]="{ width: '70%' }" header="Editar Producto" [modal]="true"
+        <p-dialog [(visible)]="editarProductoDialog" [style]="{ width: anchoDialogEditarProducto }" header="Editar Producto" [modal]="true"
             class="p-fluid" (onHide)="cerrarDialog()">
             <form [formGroup]="formProducto" (ngSubmit)="actualizarProducto()">
                 <div class="formgrid grid">
@@ -363,7 +353,7 @@
                                 <span class="p-float-label">
                                     <input formControlName="codigo_producto" id="codigo_producto" type="text"
                                         pInputText />
-                                    <label for="codigo_producto">Código Producto</label>
+                                    <label for="codigo_producto">Código Producto <span style="color: red;">*</span></label>
                                 </span>
                                 <span *ngIf="
                                         formProducto
@@ -385,11 +375,11 @@
                                     4 dígitos.
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-8">
                                 <span class="p-float-label">
                                     <input formControlName="nombre_producto" id="nombre_producto" type="text"
                                         pInputText />
-                                    <label for="nombre_producto">Nombre Producto</label>
+                                    <label for="nombre_producto">Nombre Producto <span style="color: red;">*</span></label>
                                 </span>
                                 <span *ngIf="
                                         formProducto
@@ -414,10 +404,13 @@
                         </div>
 
                         <div class="formgrid grid mt-4">
-                            <div class="field col">
-                                <p-dropdown (onChange)="onCategoriaChange($event)"
-                                    formControlName="nombre_categoria_producto" [options]="categorias"
-                                    placeholder="Categoría Producto" [showClear]="true"></p-dropdown>
+                            <div class="field col-6">
+                                <span class="p-float-label">
+                                    <p-dropdown id="nombre_categoria_producto" (onChange)="onCategoriaChange($event)"
+                                      formControlName="nombre_categoria_producto" [options]="categorias"
+                                      placeholder="Categoría Producto" [showClear]="true"></p-dropdown>
+                                    <label for="nombre_categoria_producto">Categoría Producto <span style="color: red;">*</span></label>
+                                </span>
                                 <span *ngIf="
                                         formProducto
                                             .get('nombre_categoria_producto')
@@ -440,11 +433,11 @@
                                     tener máximo 20 caracteres.
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <input formControlName="durabilidad_producto" id="durabilidad_producto" type="text"
                                         pInputText />
-                                    <label for="durabilidad_producto">Durabilidad Producto</label>
+                                    <label for="durabilidad_producto">Durabilidad Producto <span style="color: red;">*</span></label>
                                 </span>
                                 <span *ngIf="
                                         formProducto
@@ -469,10 +462,10 @@
                         </div>
 
                         <div class="formgrid grid mt-4">
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <p-inputNumber inputId="integeronly" formControlName="precio_ico"></p-inputNumber>
-                                    <label for="precio_ico">Precio ICO</label>
+                                    <label for="precio_ico">Precio ICO <span style="color: red;">*</span></label>
                                 </span>
                                 <span>
                                     Mínimo: 1000 &nbsp; Máximo: 999.999
@@ -496,11 +489,11 @@
                                     números, mínimo 4 y máximo 6 dígitos.
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <p-inputNumber inputId="integeronly"
                                         formControlName="precio_por_mayor_ico"></p-inputNumber>
-                                    <label for="precio_por_mayor_ico">Precio por mayor sin ICO</label>
+                                    <label for="precio_por_mayor_ico">Precio por mayor sin ICO <span style="color: red;">*</span></label>
                                 </span>
                                 <span>
                                     Mínimo: 1000 &nbsp; Máximo: 999.999
@@ -529,11 +522,11 @@
                         </div>
 
                         <div class="formgrid grid mt-5">
-                            <div class="field col">
+                            <div class="field col-12">
                                 <span class="p-float-label">
-                                    <textarea rows="12" cols="30" pInputTextarea formControlName="descripcion_producto"
+                                    <textarea rows="8" cols="30" pInputTextarea formControlName="descripcion_producto"
                                         id="descripcion_producto"></textarea>
-                                    <label for="descripcion_producto">Descripción</label>
+                                    <label for="descripcion_producto">Descripción <span style="color: red;">*</span></label>
                                 </span>
                                 <span *ngIf="
                                         formProducto
@@ -558,12 +551,18 @@
                         </div>
                     </div>
 
-                    <div class="field col">
+                    <div class="field col-6">
                         <span *ngIf="!fileSelected"ng style="color: red;">La imagen es requerida * (Mínimo: 1 - Máximo: 3 )</span>
                         <div class="card">
                             <p-fileUpload #fileEditar mode="basic" chooseLabel="Cambiar imágenes"
-                                name="imagenes_producto" chooseIcon="pi pi-images" [multiple]="true" accept="image/*"
-                                maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+                                name="imagenes_producto" chooseIcon="pi pi-images" [multiple]="true" 
+                                accept="image/*"
+                                [invalidFileTypeMessageSummary]="'Tipo de archivo no permitido.'"
+                                [invalidFileTypeMessageDetail]="'Solo se permiten archivos de imagen (por ejemplo, JPEG, PNG).'"
+                                maxFileSize="2000000"
+                                [invalidFileSizeMessageSummary]="'Tamaño de archivo no permitido.'"
+                                [invalidFileSizeMessageDetail]="'El archivo excede el tamaño máximo permitido (2 MB).'"
+                                (onSelect)="onFileChange($event)"></p-fileUpload>
                             <p-galleria [(value)]="imagenes" [showItemNavigators]="true" [showThumbnails]="false"
                                 [showIndicators]="true" [showIndicatorsOnItem]="true"
                                 [responsiveOptions]="galleriaResponsiveOptions" [containerStyle]="{
@@ -571,14 +570,7 @@
                                     'margin-top': '2em'
                                 }">
                                 <ng-template pTemplate="item" let-imagen>
-                                    <img [src]="imagen" style="
-                                            width: 100%;
-                                            height: 400px;
-                                            max-width: 600px;
-                                            object-fit: cover;
-                                            display: block;
-                                            margin: 0 auto;
-                                        " />
+                                    <img [src]="imagen" class="galleria-image"/>
                                 </ng-template>
                                 <ng-template pTemplate="thumbnail" let-imagen>
                                     <div class="grid grid-nogutter justify-content-center">
@@ -603,7 +595,7 @@
             </form>
         </p-dialog>
 
-        <p-dialog [(visible)]="detalleProductoDialog" [style]="{ width: '70%' }" header="Detalles Producto"
+        <p-dialog [(visible)]="detalleProductoDialog" [style]="{ width: anchoDialogDetalleProducto }" header="Detalles Producto"
             [modal]="true" class="p-fluid" (onHide)="cerrarDetalleDialog()" [dismissableMask]="false">
             <form [formGroup]="formProducto">
                 <div class="formgrid grid mt-4">
@@ -633,7 +625,7 @@
                             </div>
                         </div>
                         <div class="formgrid grid mt-4">
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <input [readonly]="true" [ngStyle]="{
                                             'pointer-events': 'none',
@@ -644,7 +636,7 @@
                                     <label for="nombre_categoria_producto">Categoría</label>
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <input [readonly]="true" [ngStyle]="{
                                             'pointer-events': 'none',
@@ -657,7 +649,7 @@
                             </div>
                         </div>
                         <div class="formgrid grid mt-4">
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <p-inputNumber [readonly]="true" [ngStyle]="{
                                             'pointer-events': 'none',
@@ -667,7 +659,7 @@
                                     <label for="precio_ico">Precio ICO</label>
                                 </span>
                             </div>
-                            <div class="field col">
+                            <div class="field col-6">
                                 <span class="p-float-label">
                                     <p-inputNumber [readonly]="true" [ngStyle]="{
                                             'pointer-events': 'none',
@@ -680,7 +672,7 @@
                             </div>
                         </div>
                         <div class="formgrid grid mt-5">
-                            <div class="field col">
+                            <div class="field col-12">
                                 <span class="p-float-label">
                                     <textarea [readonly]="true" [ngStyle]="{
                                             'pointer-events': 'none',
@@ -694,21 +686,14 @@
                         </div>
                     </div>
 
-                    <div class="field col">
+                    <div class="field col-6">
                         <div class="card">
                             <p-galleria [(value)]="imagenes" [activeIndex]="activeIndex" [showItemNavigators]="true"
                                 [showThumbnails]="false" [showIndicators]="true" [showIndicatorsOnItem]="true"
                                 [responsiveOptions]="galleriaResponsiveOptions"
                                 [containerStyle]="{ 'max-width': '600px', 'margin-top': '2em' }">
                                 <ng-template pTemplate="item" let-imagen>
-                                    <img [src]="imagen" style="
-                                            width: 100%;
-                                            height: auto;
-                                            max-width: 800px;
-                                            object-fit: cover;
-                                            display: block;
-                                            margin: 0 auto;
-                                        " />
+                                    <img [src]="imagen" class="galleria-image"/>
                                 </ng-template>
                                 <ng-template pTemplate="thumbnail" let-imagen>
                                     <div class="grid grid-nogutter justify-content-center">

@@ -27,7 +27,7 @@ const routes: Routes = [
                                 ).then((m) => m.ClientesModule),
                         },
                         {
-                            path: '',
+                            path: 'dashboard',
                             loadChildren: () =>
                                 import(
                                     './demo/components/dashboard/dashboard.module'
@@ -97,7 +97,7 @@ const routes: Routes = [
                                 ).then((m) => m.ListEmpleadosModule),
                         },
                         {
-                            path: 'vistaCliente',
+                            path: 'catalogo-cliente',
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/product-list/product-list.module'

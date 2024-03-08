@@ -10,6 +10,8 @@ export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
 
+    token: any;
+
     constructor(public layoutService: LayoutService) { }
 
     
@@ -21,12 +23,14 @@ export class AppMenuComponent implements OnInit {
 
     createMenu(){
         let rol: any = localStorage.getItem('rol');
+        
+
         if (rol == 'Super Admin'){
             this.model = [
                 {
                     label: 'Menú',
                     items: [
-                        { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+                        { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
                         //{ label: 'Perfil', icon: 'pi pi-money-bill', routerLink: ['/pages/perfil'] },
                     ]
                 },
@@ -101,7 +105,8 @@ export class AppMenuComponent implements OnInit {
             ];
             return;
         }
-        if (rol == 'Cliente'){
+        if (rol == 'Cliente' || rol == undefined){
+            let token: any = localStorage.getItem('token');
             this.model = [
                 {
                     label: 'Menú',
@@ -115,9 +120,9 @@ export class AppMenuComponent implements OnInit {
                     label: 'Pedidos',
                     items: [
                         
-                        { label: 'Mis Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pedidoListar'] },
-                        { label: 'Catalogo', icon: 'pi pi-fw pi-money-bill', routerLink: ['/vistaCliente'] },
-                    ]
+                        token !== null ? { label: 'Mis Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pedidoListar'] } : null,
+                        { label: 'Catálogo', icon: 'pi pi-fw pi-money-bill', routerLink: ['/catalogo-cliente'] },
+                    ].filter(item => item !== null)
                 }
             ];
             return;
