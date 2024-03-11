@@ -40,7 +40,9 @@ obtenerClientePorCorreo(correo_cliente: string): Observable<any> {
   }
 
  
-
+  obtenerTransporteActivos(): Observable<void>{
+    return this.http.get<void>(`${this.apiUrl}/transporteActivo`)
+  }
 
 
 

@@ -22,7 +22,7 @@
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
                             <ng-template pTemplate="left">
-                                <button pButton type="button" [routerLink]="['/pedidoCliente']" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
+                                <button pButton type="button" (click)="hacerPedido()" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
                             </ng-template>
                     
                             <ng-template pTemplate="right">

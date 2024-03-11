@@ -30,7 +30,7 @@ export class PedidoClienteComponent implements OnInit {
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
     cambiarEstadoPDialogAnular: boolean;
     tipoCliente: string;
-
+    ciudades : any = [];
     private subscription: Subscription;
 
     constructor(
@@ -80,12 +80,10 @@ export class PedidoClienteComponent implements OnInit {
 
     ngOnInit() {
         this.pedido.get('fecha_entrega_pedido')?.setValue(new Date());
+        this.obtenerTransportesActivos();
         let currentUser = JSON.parse(localStorage.getItem('currentUser'))
         this.obtenerDatosCliente(currentUser.correo_electronico);
         this.obtenerProductosCarritoLocalStorage();
-       this.calcularPrecioTotalVentaPersonaJuridica();
-       this.calcularPrecioTotalVentaPersonaNatural();
-       
     }
 
     private esperarRespuesta(): Promise<boolean> {
@@ -101,6 +99,7 @@ export class PedidoClienteComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     this.tipoCliente = data.tipo_cliente;
+
                     this.cliente = data;
                     this.pedido.patchValue({
                         tipo_cliente: data.tipo_cliente,
@@ -117,13 +116,10 @@ export class PedidoClienteComponent implements OnInit {
 
                         // Otros campos del formulario según los datos del cliente...
                     });
+                    this.seleccionCiudad();
+
                     localStorage.setItem('documento_cliente', data.numero_documento_cliente);
-                    // Luego, realizar la validación del tipo de cliente y calcular el precio total de venta
-                    if (data.tipo_cliente === 'Persona jurídica') {
-                        this.calcularPrecioTotalVentaPersonaJuridica();
-                    } else {
-                        this.calcularPrecioTotalVentaPersonaNatural();
-                    }
+                    this.calculoPrecioTotal();
                 },
                 (error) => {
                     console.error(error);
@@ -258,7 +254,7 @@ export class PedidoClienteComponent implements OnInit {
             precio_total_venta: this.pedido.get('precio_total_venta').value,
             estado_pago: 'Pendiente',
             tipo_entrega: this.pedido.get('tipo_entrega').value,
-            valor_domicilio: 0,
+            valor_domicilio: this.pedido.get('valor_domicilio').value,
             nit_empresa_cliente: this.cliente.tipo_cliente == 'Persona jurídica' ?  this.cliente.nit_empresa_cliente : null,
             nombre_juridico: this.cliente.tipo_cliente == 'Persona jurídica' ? this.cliente.nombre_juridico: null,
             aumento_empresa: this.cliente.tipo_cliente == 'Persona jurídica' ? this.calcularSubtotal() * 0.08 : 0,
@@ -343,11 +339,36 @@ eliminarProductoCarrito(producto: ProductoCarrito) {
   }
     
   
+    obtenerTransportesActivos(){
+        this.pedidoClienteService.obtenerTransporteActivos().subscribe(
+            (data) => {
+                console.log(data)
+                this.ciudades=data;
+            });
+    }
     
-    
-    
-    
+    seleccionCiudad(){
+      
+        if(this.pedido.get('tipo_entrega').value == 'Domicilio'){
+            let ciudad = this.ciudades.find(ciudad => ciudad.ciudad_cliente == this.pedido.get('ciudad_cliente').value);
+            this.pedido.get('valor_domicilio')?.setValue(ciudad.precio_transporte);
+        }else {
+            this.pedido.get('valor_domicilio')?.setValue(0); 
+        }
+       
+       this.calculoPrecioTotal();
 }
 
-  
-
+calculoPrecioTotal(){
+    if(this.cliente.tipo_cliente = 'Persona jurídica'){
+        this.calcularPrecioTotalVentaPersonaJuridica();
+        return;
+    }
+    
+    if(this.cliente.tipo_cliente = 'Persona natural'){
+        this.calcularPrecioTotalVentaPersonaNatural();
+        return;
+    }
+}
+ 
+}

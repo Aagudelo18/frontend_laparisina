@@ -21,8 +21,8 @@ export class ListPedidosComponent implements OnInit {
     formEditarEstadoPago: FormGroup;
     pedidoSeleccionado: Pedido;
  
-    listaEstadosPedido=['Entregado']
-    listaEstadosPago=['Pagado']
+    listaEstadosPedido=['Terminado','Entregado']
+    listaEstadosPago=['Pagado','Pendiente']
    
     pedidos: Pedido[] = [];
     selectedPedidos: Pedido[] = [];
@@ -49,6 +49,7 @@ export class ListPedidosComponent implements OnInit {
     domiciliarioSeleccionado: any = '0'; // Puedes ajustar este tipo según tus necesidades
     domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
     confirmarAsignacionDialog: boolean = false;
+    pedidoPagado: boolean;
 
     constructor(
         private pedidosService: PedidosService,
@@ -87,6 +88,7 @@ export class ListPedidosComponent implements OnInit {
     ngOnInit() {
         this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {
             this.pedidos = data;
+            console.log(this.pedidos);
         });
         this.cargarDomiciliarios();
         this.cargarPedidosPendientes();
@@ -210,6 +212,17 @@ export class ListPedidosComponent implements OnInit {
             this.formPedidos.get('tipo_cliente').value === 'Persona jurídica'
         );
     }
+
+    pendiente(id_pedido: string) {
+        console.log("El id:", id_pedido);
+        const pedido = this.pedidos.find(pedido => pedido._id === id_pedido); // Buscar el pedido por su _id
+        if (pedido.estado_pago === 'Pagado') {
+            this.pedidoPagado = true;
+        } else {
+            this.pedidoPagado = false;
+        }
+    }
+    
 
     private esperarRespuesta(): Promise<boolean> {
         return new Promise<boolean>((resolver) => {
@@ -536,6 +549,7 @@ export class ListPedidosComponent implements OnInit {
 
     abrirModalEditarEstadoYPago(id: string) {
         this.obtenerPedido(id);
+        this.pendiente(id);
     }
 
     async obtenerPedido(id: string) {
@@ -576,8 +590,9 @@ async actualizarPedido() {
             // Actualizamos el pedido
             await this.pedidosService.updatePedido(this.pedidoSeleccionado._id, pedidoActualizado).toPromise();
 
-            // Mostramos el modal de confirmación
-            this.confirmarEdicionPedido();
+           
+            this.cargarPedidosTerminados()
+        
         } else {
             console.error('El pedido seleccionado no está definido.');
         }
@@ -595,6 +610,7 @@ async actualizarPedido() {
 // Método para cerrar el modal de edición
 cerrarModalEditarEstadoYPago() {
     this.editarEstadoPagoDialog = false;
+  
 }
 
 // Método para mostrar el modal de confirmación
@@ -615,7 +631,7 @@ confirmarCambiosEstado() {
         summary: 'Estado y Método de Pago Actualizados',
         life: 5000,
     });
-    this.confirmacionEditarEstadoPago = false;
+    
 }
 
 // Método para manejar el botón "No" del modal de confirmación

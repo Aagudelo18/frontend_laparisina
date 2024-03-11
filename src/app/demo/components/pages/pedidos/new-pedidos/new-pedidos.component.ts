@@ -38,6 +38,7 @@ export class NewPedidosComponent implements OnInit {
     productosCategoria: any[] = [];
     productsFormArray: FormArray;
     cantidad_producto: number;
+    valor_domicilio: 0;
     clienteExistente: boolean = false;
     minDate: Date = new Date();
 
@@ -386,6 +387,8 @@ export class NewPedidosComponent implements OnInit {
         this.calcularPrecioTotalVenta(); // Calcula los totales después de la actualización
     }
 
+   
+
     // Método para calcular el subtotal de todos los productos
     calcularSubtotal() {
         let subTotal = 0;
@@ -422,7 +425,19 @@ export class NewPedidosComponent implements OnInit {
 
     eliminarCerosIzquierda(event: any) {
         let valor = event.target.value;
+        
+        // Si el valor es '0', no permitir eliminarlo
+        if (valor === '0') {
+            return;
+        }
+    
         valor = valor.replace(/^0+(?=[1-9])/, ''); // Eliminar ceros a la izquierda
+    
+        // Si después de eliminar los ceros a la izquierda el valor es vacío, establecerlo nuevamente como '0'
+        if (valor === '') {
+            valor = '0';
+        }
+    
         event.target.value = valor; // Establecer el nuevo valor en el input
         valor = parseFloat(valor); // Convertir el valor a un número
         this.pedido.get('valor_domicilio').setValue(valor); // Establecer el valor en el formulario
@@ -441,6 +456,21 @@ export class NewPedidosComponent implements OnInit {
         this.categoriaSeleccionada = null; 
         this.cantidad_producto = null;
     }
+
+    seleccionTipoEntrega() {
+        const tipoEntrega = this.pedido.get('tipo_entrega').value;
     
+        if (tipoEntrega === 'Recoger en tienda') {
+            // Si el tipo de entrega cambia a 'Recoger en tienda', establecer el valor del domicilio en cero
+            this.pedido.get('valor_domicilio').setValue(0);
+        }
+    
+        // Recalcular el precio total después de modificar el valor del domicilio
+        this.calcularPrecioTotalVenta();
+    }
+    
+    
+    
+
     
 }

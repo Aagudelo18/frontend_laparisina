@@ -5,6 +5,7 @@ import { LoginService } from 'src/app/demo/components/auth/login/login.services'
 import { Router } from '@angular/router'; //Se importa el Router
 import { DatosUsuario, Product, ProductoCarrito } from '../../app/demo/components/pages/product-list/product-list.model';
 import { map, Observable, Subscription } from 'rxjs';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-topbar',
@@ -42,6 +43,7 @@ export class AppTopBarComponent {
     public layoutService: LayoutService,
     private loginService: LoginService,
     private router: Router,
+   
 
 
   ) {
@@ -178,5 +180,17 @@ export class AppTopBarComponent {
     }
 
   }
+
+  @ViewChild('op2') overlayPanel: OverlayPanel;
+
+  hacerPedido() {
+    // Lógica para hacer el pedido
+
+    // Redirigir a la ruta '/pedidoCliente'
+    this.router.navigate(['/pedidoCliente']).then(() => {
+        // Cerrar el modal después de redirigir
+        this.overlayPanel.hide(); // Oculta el overlayPanel
+    });
+}
 
 }
