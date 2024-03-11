@@ -20,6 +20,13 @@ const routes: Routes = [
                     component: AppLayoutComponent,
                     children: [
                         {
+                            path: '',
+                            loadChildren: () =>
+                                import(
+                                    './demo/components/pages/inicio/inicio.module'
+                                ).then((m) => m.InicioModule),
+                        },
+                        {
                             path: 'clientes',
                             loadChildren: () =>
                                 import(

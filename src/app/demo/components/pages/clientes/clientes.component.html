@@ -121,8 +121,11 @@
     <br>
     <div class="formgrid grid">
           <div class="field col">
+            <span class="p-float-label">
            <p-dropdown formControlName= "tipo_cliente"  [options]="['Persona jurídica','Persona natural']"
             placeholder="Tipo cliente"  name="tipo_cliente" ></p-dropdown>
+            <label for="tipo_cliente">Tipo cliente <span style="color: red;">*</span></label>
+          </span>
             <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
             style="color: red;">
               El tipo de cliente es requerida 
@@ -210,7 +213,7 @@
         </div>
         <div class="formgrid grid mt-4">
           <div class="field col ">
-            <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
+            <p-dropdown formControlName= "ciudad_cliente" [options]= "transportes"
             placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
           <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
           style="color: red;">
@@ -426,9 +429,9 @@
       <div class="formgrid grid mt-4">
         <div class="field col ">
           <span class="p-float-label">
-            <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
+            <p-dropdown formControlName= "ciudad_cliente" [options]="transportes"
            placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
-            <label for="ciudad_cliente">Ciudad<span style="color: red;">*</span></label>
+            <label  for="ciudad_cliente">Ciudad<span style="color: red;">*</span></label>
           </span>
         <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
         style="color: red;">
