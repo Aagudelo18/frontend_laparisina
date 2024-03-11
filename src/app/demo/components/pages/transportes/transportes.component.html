@@ -115,7 +115,7 @@
       </div>
          <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
         <button pButton pRipple label="Cancelar"  class="p-button-text" (click)="crearTransportesDialog = false" ></button>
-        <button type="submit" pButton pRipple label="Guardar"  class="p-button-text" ></button>
+        <button type="submit" pButton pRipple label="Guardar" [disabled]="!formTransportes.valid"  class="p-button-text" ></button>
       </div>
   </form>  
   </p-dialog>

@@ -102,7 +102,13 @@
                     </div>
 
                     <p-fileUpload #fileCrear mode="basic" chooseLabel="Subir imágen" name="image" chooseIcon="pi pi-image"
-                    accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+                    accept="image/*"
+                    [invalidFileTypeMessageSummary]="'Tipo de archivo no permitido.'"
+                    [invalidFileTypeMessageDetail]="'Solo se permiten archivos de imagen (por ejemplo, JPEG, PNG).'"
+                    maxFileSize="1000000"
+                    [invalidFileSizeMessageSummary]="'Tamaño de archivo no permitido.'"
+                    [invalidFileSizeMessageDetail]="'El archivo excede el tamaño máximo permitido (2 MB).'"
+                    (onSelect)="onFileChange($event)"></p-fileUpload>
                     
 
                     <div *ngIf="imagen_categoria" class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
@@ -156,7 +162,13 @@
                 </div>
                 
                 <p-fileUpload #fileEditar mode="basic" chooseLabel="Editar imagen" name="image" chooseIcon="pi pi-image"
-                accept="image/*" maxFileSize="1000000" (onSelect)="onFileChange($event)"></p-fileUpload>
+                accept="image/*"
+                [invalidFileTypeMessageSummary]="'Tipo de archivo no permitido.'"
+                [invalidFileTypeMessageDetail]="'Solo se permiten archivos de imagen (por ejemplo, JPEG, PNG).'"
+                maxFileSize="2000000"
+                [invalidFileSizeMessageSummary]="'Tamaño de archivo no permitido.'"
+                [invalidFileSizeMessageDetail]="'El archivo excede el tamaño máximo permitido (2 MB).'"
+                (onSelect)="onFileChange($event)"></p-fileUpload>
 
                 <div class="formgrid grid mt-4" style="display: flex; justify-content: center; align-items: center;">
                     <div class="field col-12" style="text-align: center;">
@@ -223,7 +235,7 @@
 
 
     <p-dialog header="Imagen categoría" [(visible)]="imagenDialog" [modal]="true" [responsive]="true"
-        [style]="{ 'max-width': '50%', 'width': 'auto', 'overflow': 'hidden' }" [dismissableMask]="true">
+        [style]="{ 'width': anchoDialogImagenCategoria, 'overflow': 'hidden' }" [dismissableMask]="true">
             <img [src]="imagen_categoria" alt="Imagen del producto" style="width: 100%">
     </p-dialog>
     </div>

@@ -22,7 +22,8 @@ export class clientesComponent implements OnInit {
     detalleClienteDialog: boolean =false;
     estadoClienteDialog: boolean = false;
     selectedClientes: any[] = [];
-   
+    transportes:string [] = [];
+
       private confirmacionUsuarioSubject = new Subject<boolean>();
       mostrarConfirmacionUsuario = false; 
       listClientes: Clientes[] = []
@@ -42,6 +43,7 @@ export class clientesComponent implements OnInit {
   
       constructor(private fb:FormBuilder,
         private clienteService: ClienteService,
+        private transportesService: TransportesService,
         private usuarioService :UsuarioService,
         private messageService: MessageService,
         private router:Router,
@@ -102,7 +104,8 @@ export class clientesComponent implements OnInit {
   
       ngOnInit():void {        
           this.getListClientes();
-          console.log('clientes:', this.clientes);                  
+          console.log('clientes:', this.clientes);   
+          this.getListTransportes();               
       }
   
       getListClientes(){     
@@ -135,6 +138,20 @@ export class clientesComponent implements OnInit {
           })
         })
       }
+      //Función para listar todos los transportes
+      getListTransportes(){     
+        this.transportesService.getListTransportes().subscribe((data) =>{      
+          this.transportes = data.
+          filter(transporte => transporte.estado_transporte === true)
+          .map(transporte => transporte.ciudad_cliente);
+        })        
+      }
+      
+      onTransporteChange(event) {
+        console.log('Transporte seleccionada:', event.value);
+        // Realizar otras acciones según sea necesario
+      }
+
       // Función para crear un cliente
       crearCliente() {
       const numeroIdentificacion = this.formCliente.value.numero_documento_cliente;

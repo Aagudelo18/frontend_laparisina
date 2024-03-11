@@ -1,24 +1,67 @@
 <div class="layout-topbar">
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+    <button *ngIf="!verificarUsuario()" #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
         <i class="pi pi-bars"></i>
     </button>
 
-    <a class="layout-topbar-logo" routerLink="">
-        <img src="assets/layout/images/Logo-parisina-Login-menú.png" alt="logo">
-        <span></span>
+    <button *ngIf="verificarUsuario() && innerWidth < 991" class="p-link layout-topbar-button" (click)="op3.toggle($event)">
+        <i class="pi pi-bars"></i>
+    </button>
+        <p-overlayPanel #op3 [showCloseIcon]="false" [style]="{width: 'auto'}" styleClass="overlay-left-cliente">
+            <ng-template pTemplate>
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>     
+                    </div>
+                </div>
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/catalogo-cliente']">Catálogo</span>     
+                    </div>
+                </div>
+                <div *ngIf="verificarUsuario() && verificarUsuario2()" class="formgrid grid">
+                    <div class="field col">
+                        <span class="enlaceMenu mr-8 ml-8">Mis Pedidos</span>     
+                    </div>
+                </div>
+                <div *ngIf="verificarUsuario() && verificarUsuario2()" class="formgrid grid">
+                    <div class="field col">
+                        <span class="enlaceMenu mr-8 ml-8">Perfil</span>     
+                    </div>
+                </div>
+            </ng-template>
+        </p-overlayPanel>
+
+    <a class="" routerLink="/catalogo-cliente">
+        <img routerLink="/catalogo-cliente" src="assets/layout/images/Logo-parisina-Login-menú.png" alt="logo"
+        style="width: 140px; height: auto;">
     </a>
+
+    
+    <div *ngIf="verificarUsuario() && innerWidth >= 991">
+        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>
+        <span class="enlaceMenu mr-8" [routerLink]="['/catalogo-cliente']">Catálogo</span>
+        <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Pedidos</span>
+        <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Perfil</span>
+    </div>
+    
+    <button *ngIf="verificarUsuario() && innerWidth < 991" type="button" icon="pi pi-shopping-cart" 
+        pButton label="{{productosCarrito.length}}" 
+        (click)="op2.toggle($event); anchoOverlay()" class="p-button-text p-button-lg ml-4"
+        class="p-link layout-topbar-menu-button layout-topbar-button"><i class="pi pi-shopping-cart">{{productosCarrito.length}}</i></button>
 
     <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
         (click)="layoutService.showProfileSidebar()">
         <i class="pi pi-ellipsis-v"></i>
     </button>
 
+    
+
     <div #topbarmenu class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
 
-        <button *ngIf="datosUsuario && (datosUsuario.rol_usuario === undefined || datosUsuario.rol_usuario === '654a96ebdbe2126f5a74161e')" 
-        type="button" icon="pi pi-shopping-cart" pButton label="{{productosCarrito.length}}" (click)="op2.toggle($event)" class="p-button-text p-button-lg ml-4"></button>
-                <p-overlayPanel #op2 [showCloseIcon]="false" [style]="{width: '60%'}">
+        <button *ngIf="verificarUsuario() && innerWidth >= 991" type="button" icon="pi pi-shopping-cart" pButton label="{{productosCarrito.length}}" 
+        (click)="op2.toggle($event); anchoOverlay()" class="enlaceMenu p-button-text p-button-lg ml-4"></button>
+                <p-overlayPanel #op2 [showCloseIcon]="false" [style]="{width: anchoOverlayCarrito}">
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
                             <ng-template pTemplate="left">
