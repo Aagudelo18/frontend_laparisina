@@ -13,37 +13,46 @@
 
         <form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
           <br>
-          <div class="grid formgrid">
-            <div class="field col-6">
-              <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
-                placeholder="Tipo cliente" name="tipo_cliente" style="width: 100%;"></p-dropdown>
-              <span
-                *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
-                style="color: red; display: block;">El tipo de cliente es requerido.</span>
-              <span
-                *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
-                style="color: red; display: block;">El tipo de cliente solo debe contener mínimo 3 letras y tener máximo
-                20 caracteres.</span>
+          <div class="formgrid grid">
+            <div class="field col">
+              <div style="display: flex; flex-direction: column;">
+                <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
+                  placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
+                <span
+                  *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
+                  style="color: red; display: block;">
+                  El tipo de cliente es requerido.
+                </span>
+                <span
+                  *ngIf="formCliente.get('tipo_cliente')?.hasError('pattern') && formCliente.get('tipo_cliente')?.touched"
+                  style="color: red; display: block;">
+                  El tipo de cliente solo debe contener mínimo 3 letras y tener máximo 20 caracteres.
+                </span>
+              </div>
             </div>
 
 
-            <div class="field col-6">
+            <div class="field col">
               <span class="p-float-label">
                 <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
                 <label for="nombre_contacto">Nombre de contacto <span style="color: red;">*</span></label>
               </span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('required') && formCliente.get('nombre_contacto')?.touched"
-                style="color: red;">El nombre es requerido.</span>
+                style="color: red;">
+                El nombre es requerido.
+              </span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('minlength') && formCliente.get('nombre_contacto')?.touched"
                 style="color: red; display: block;">El nombre debe tener al menos 3 caracteres.</span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('maxlength') && formCliente.get('nombre_contacto')?.touched"
-                style="color: red; display: block;">El nombre no puede tener más de 50 caracteres.</span>
+                style="color: red; display: block;">El nombre no puede tener más de 100 caracteres.</span>
               <span
                 *ngIf="formCliente.get('nombre_contacto')?.hasError('pattern') && formCliente.get('nombre_contacto')?.touched"
-                style="color: red; display: block;"> El nombre solo debe contener letras.</span>
+                style="color: red; display: block;">
+                El nombre solo debe contener letras.
+              </span>
             </div>
           </div>
           <br>

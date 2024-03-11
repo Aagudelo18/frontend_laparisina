@@ -1,0 +1,30 @@
+@media screen and (max-width: 960px) {
+    .field {
+      width: 100%;
+      margin-bottom: 2em;
+    }
+  
+    .field.col {
+      display: block;
+    }
+
+    .galleria-image {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+      }
+  }
+
+  @media screen and (min-width: 961px) {
+    .galleria-image {
+      height: 400px;
+      width: 100%;
+      margin: 0 auto;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+

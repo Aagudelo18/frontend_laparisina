@@ -10,19 +10,63 @@ import { OrdenDeProduccion } from './ordenP.model';
     constructor(private http: HttpClient) {}
 
     getListOrdenesDeProduccion(): Observable<OrdenDeProduccion[]>{
-      return this.http.get<OrdenDeProduccion[]>(`${this.apiUrl}/consultar-produccion`)    
+      // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+      return this.http.get<OrdenDeProduccion[]>(`${this.apiUrl}/consultar-produccion`, { headers })    
     }
 
     getOrdenDeProduccion(id:string): Observable<OrdenDeProduccion>{
-      return this.http.get<OrdenDeProduccion>(`${this.apiUrl}/consultar-produccion/${id}`)
+      // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+      return this.http.get<OrdenDeProduccion>(`${this.apiUrl}/consultar-produccion/${id}`, { headers })
     }
 
     gerararOrdenesDeProduccion(idsPedidos: string[]):Observable<any>{
-      return this.http.post(`${this.apiUrl}/crear-produccion`,{ idsPedidos })
+      // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+      return this.http.post(`${this.apiUrl}/crear-produccion`,{ idsPedidos }, { headers })
     }
 
     actualizarEstadoOrdenDeProduccion(id:string, estadoOrden: string):Observable<void>{
-      return this.http.put<void>(`${this.apiUrl}/actualizar-produccion/${id}`,{ estado_orden: estadoOrden })
+      // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    };
+
+      return this.http.put<void>(`${this.apiUrl}/actualizar-produccion/${id}`,{ estado_orden: estadoOrden }, { headers })
     }
 
     public getPedidos(): Observable<any>{

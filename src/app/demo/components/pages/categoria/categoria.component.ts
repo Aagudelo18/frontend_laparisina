@@ -44,6 +44,7 @@ export class CategoriaComponent implements OnInit {
     editarCategoriaDialog: boolean = false;
     detalleCategoriaDialog: boolean = false;
     estadoCategoriaDialog: boolean = false;
+    anchoDialogImagenCategoria: string = '50%';
 
     
 
@@ -176,11 +177,6 @@ export class CategoriaComponent implements OnInit {
       } else {
         this.file = null;
         this.fileSelected = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'El archivo seleccionado no es una imagen.',
-          life: 3000
-        });
         console.log("No se seleccionó ningún archivo de imagen o se seleccionó más de uno.");
       }
     }
@@ -343,6 +339,12 @@ export class CategoriaComponent implements OnInit {
     //-------------------------------------------------------------------------------------------------------------------------------
     //función para abrir un dialog y imagen mas grande
     abrirImagenDialog(imagen_categoria: string) {
+
+      // Verifica el ancho de la ventana del navegador
+      const anchoDialog = window.innerWidth < 960 ? '90%' : '50%';
+
+      // Establece el ancho del diálogo
+      this.anchoDialogImagenCategoria = anchoDialog;
       this.imagen_categoria = imagen_categoria;
       this.imagenDialog = true;
     }    

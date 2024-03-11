@@ -17,3 +17,18 @@ $gutter: 1rem; //for primeflex grid system
 .p-inputnumber .pi {
     font-size: 10px; /* ajusta el tamaño a tu gusto */
   }
+
+  .enlaceMenu {
+    color:darkgoldenrod !important;
+    cursor: pointer;
+    transition: color 0.3s ease !important;
+  }
+
+  .enlaceMenu:hover {
+    color: rgb(122, 120, 120) !important;
+  }
+
+  .overlay-left-cliente {
+    padding: 0 !important;
+    left: -70px !important;
+  }
