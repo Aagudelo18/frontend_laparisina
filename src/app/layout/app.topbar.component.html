@@ -10,7 +10,7 @@
             <ng-template pTemplate>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <span class="enlaceMenu mr-8 ml-8">Inicio</span>     
+                        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>     
                     </div>
                 </div>
                 <div class="formgrid grid">
@@ -38,7 +38,7 @@
 
     
     <div *ngIf="verificarUsuario() && innerWidth >= 991">
-        <span class="enlaceMenu mr-8 ml-8">Inicio</span>
+        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>
         <span class="enlaceMenu mr-8" [routerLink]="['/catalogo-cliente']">Catálogo</span>
         <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Pedidos</span>
         <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Perfil</span>

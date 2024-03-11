@@ -14,6 +14,7 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/auth.guard'; // Im
         },
         
         { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule), canActivate: [AuthGuard] },
+        { path: 'clientes', loadChildren: () => import('./inicio/inicio.module').then(m => m.InicioModule), canActivate: [AuthGuard] },
         { path: 'transportes', loadChildren: () => import('./transportes/transportes.module').then(m => m.TransportesModule), canActivate: [AuthGuard] },
         { path: 'categorias', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule), canActivate: [AuthGuard] },
         { path: 'vistaC', loadChildren: () => import('./product-list/product-list.module').then(m => m.ProductModule), canActivate: [AuthGuard] },
