@@ -364,43 +364,45 @@
         <br />
         <div class="formgrid grid justify-end">
             <div class="field col-6 md-3">
-                <span class="p-float-label">
-                    <p-inputNumber
-                        inputId="subtotal_venta"
-                        [formControl]="pedido.get('subtotal_venta')"
-                        readonly="true"
-                    ></p-inputNumber>
-                    <label for="subtotal_venta" class="custom-label"
-                    >Subtotal Venta</label
-                >
-                </span>
+                <div class="input-label-container">
+                    <label for="subtotal_venta" class="custom-label">Subtotal Venta</label>
+                    <span class="p-float-label">
+                        <p-inputNumber
+                            inputId="subtotal_venta"
+                            [formControl]="pedido.get('subtotal_venta')"
+                            readonly="true"
+                        ></p-inputNumber>
+                    </span>
+                </div>
             </div>
-
+        
             <div class="field col-6 md-3">
-                <span class="p-float-label">
-                    <p-inputNumber
-                        inputId="precio_total_venta"
-                        [formControl]="pedido.get('precio_total_venta')"
-                        readonly="true"
-                    ></p-inputNumber>
-                    <label for="precio_total_venta" class="custom-label"
-                    >Precio Total Venta</label
-                >
-                </span>
+                <div class="input-label-container">
+                    <label for="precio_total_venta" class="custom-label">Precio Total Venta</label>
+                    <span class="p-float-label">
+                        <p-inputNumber
+                            inputId="precio_total_venta"
+                            [formControl]="pedido.get('precio_total_venta')"
+                            readonly="true"
+                        ></p-inputNumber>
+                    </span>
+                </div>
             </div>
+        
             <div class="field col-6 md-3">
-                <span class="p-float-label">
-                    <p-inputNumber
-                        inputId="valor_domicilio"
-                        [formControl]="pedido.get('valor_domicilio')"
-                        readonly="true"
-                    ></p-inputNumber>
-                    <label for="valor_domicilio" class="custom-label"
-                    >Valor Domicilio</label
-                >
-                </span>
+                <div class="input-label-container">
+                    <label for="valor_domicilio" class="custom-label">Valor Domicilio</label>
+                    <span class="p-float-label">
+                        <p-inputNumber
+                            inputId="valor_domicilio"
+                            [formControl]="pedido.get('valor_domicilio')"
+                            readonly="true"
+                        ></p-inputNumber>
+                    </span>
+                </div>
             </div>
         </div>
+        
         <div class="my-2">
             <button
                 pButton

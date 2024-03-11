@@ -87,7 +87,16 @@ constructor(
 
 
 
-  
+esPersonaNatural() {
+  return this.formPedidos.get('tipo_cliente').value === 'Persona natural';
+}
+
+esEmpresa() {
+  return (
+      this.formPedidos.get('tipo_cliente').value === 'Persona jurídica'
+  );
+}
+
 
 
   cargarPedidosCliente() {
