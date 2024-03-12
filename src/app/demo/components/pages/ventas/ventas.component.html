@@ -55,7 +55,8 @@
 			<th pSortableColumn="nombre_contacto">Nombre Cliente <p-sortIcon field="nombre_contacto"></p-sortIcon></th>
 			<th pSortableColumn="tipo_cliente">Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon></th>
 			<th pSortableColumn="name">Dirección</th>
-			<th pSortableColumn="fecha_entrega_pedido">Fecha Entrega<p-sortIcon field="fecha_entrega_pedido"></p-sortIcon></th>
+			<th pSortableColumn="fecha_entrega_pedido">Fecha Entrega<p-sortIcon field="fecha_entrega_pedido"></p-sortIcon>
+			</th>
 			<th pSortableColumn="estado_pedido">Estado<p-sortIcon field="estado_pedido"></p-sortIcon></th>
 			<th pSortableColumn="precio_total_venta">Valor Total<p-sortIcon field="precio_total_venta"></p-sortIcon>
 			</th>
@@ -85,9 +86,8 @@
 			</td>
 			<td>
 				<div class="flex">
-					<button type="button" pButton pRipple icon="pi pi-eye"
-						class="p-button-rounded p-button-primary mr-2" (click)="verDetalleVenta(venta._id)"
-						pTooltip="Ver detalle" tooltipPosition="left"></button>
+					<button type="button" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
+						(click)="verDetalleVenta(venta._id)" pTooltip="Ver detalle" tooltipPosition="left"></button>
 				</div>
 			</td>
 		</tr>
