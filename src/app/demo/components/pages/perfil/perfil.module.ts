@@ -17,6 +17,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
     imports: [
@@ -38,6 +39,9 @@ import { ReactiveFormsModule } from '@angular/forms';
         DialogModule,
         ReactiveFormsModule
     ],
-    declarations: [PerfilComponent]
+    declarations: [PerfilComponent],
+    providers: [
+        DialogService, // Agrega DialogService a la lista de proveedores
+      ],
 })
 export class PerfilModule { }
