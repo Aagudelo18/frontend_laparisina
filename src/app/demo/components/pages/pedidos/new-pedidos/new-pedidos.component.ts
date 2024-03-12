@@ -23,7 +23,7 @@ import { timer } from 'rxjs';
 export class NewPedidosComponent implements OnInit {
     precio_total_venta: number;
     subtotal_venta: number;
-    aumento_empresa: number;
+    aumento_empresa: number = 0;
     pedido: FormGroup;
     formulario: FormGroup;
 
