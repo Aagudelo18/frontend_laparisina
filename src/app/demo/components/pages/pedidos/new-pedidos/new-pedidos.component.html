@@ -218,7 +218,7 @@
         </div>
 
         <!-- Dirección Entrega -->
-        <div class="field col-12 md:col-3">
+        <div class="field col-12 md:col-3" >
             <span class="p-float-label">
                 <input
                     [readonly]="!clienteExistente"
@@ -249,16 +249,19 @@
         <!-- Ciudad Cliente -->
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
-                <input
-                    [readonly]="!clienteExistente"
-                    type="text"
-                    id="ciudad_cliente"
-                    pInputText
+                <select
+                    class="p-element p-inputtext ng-star-inserted"
                     [formControl]="pedido.get('ciudad_cliente')"
-                    maxlength="15"
-                    (blur)="quitarEspaciosBlancos('ciudad_cliente')"
-                />
-                <label for="ciudad_cliente"
+                    (change)="seleccionCiudad()"
+                >
+                    <option
+                        *ngFor="let ciudad of ciudades"
+                        [value]="ciudad.ciudad_cliente"
+                    >
+                        {{ ciudad.ciudad_cliente }}
+                    </option>
+                </select>
+                <label for="ciudad_cliente"  style="margin-top: -40px"
                     >Ciudad <span style="color: red">*</span></label
                 >
             </span>
@@ -404,13 +407,15 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <p-dropdown
+                    [readonly]="!clienteExistente"
                     inputId="dropdown"
                     id="tipo_entrega"
                     [autoDisplayFirst]="false"
                     [options]="tipoEntrega"
                     [formControl]="pedido.get('tipo_entrega')"
-                    (onChange)="seleccionTipoEntrega()"
+                    (onChange)="seleccionCiudad()"
                 ></p-dropdown>
+                
                 <label for="dropdown"
                     >Tipo de entrega <span style="color: red">*</span></label
                 >
@@ -428,43 +433,21 @@
                 <!-- Añade más mensajes de advertencia según sea necesario -->
             </div>
         </div>
+
+
         <!-- Valor Domicilio -->
-        <div
-            class="field col-12 md:col-3"
-            *ngIf="pedido.get('tipo_entrega').value === 'Domicilio'"
-        >
+        <div class="field col-12 md:col-3" *ngIf="this.pedido.get('tipo_entrega').value === 'Domicilio'">
             <span class="p-float-label">
-                <input
-                    class="form-control valor-domicilio-input"
-                    type="number"
-                    pInputText
-                    [readonly]="!clienteExistente"
-                    inputId="valor_domicilio"
-                    [formControl]="pedido.get('valor_domicilio')"
-                    (input)="eliminarCerosIzquierda($event)"
-                    (paste)="eliminarCerosIzquierda($event)"
-                    min="1"
-                />
-                <label for="valor_domicilio">Valor Domicilio</label>
+                <p-inputNumber
+                            inputId="valor_domicilio"
+                            [formControl]="pedido.get('valor_domicilio')"
+                            readonly="true"
+                        ></p-inputNumber>
+                <label
+                    >Valor Domicilio </label
+                >
             </span>
-            <div
-                *ngIf="
-                    pedido.get('valor_domicilio')?.hasError('required') &&
-                    pedido.get('valor_domicilio')?.touched
-                "
-                style="color: red"
-            >
-                El valor del domicilio es requerido
-            </div>
-            <div
-                *ngIf="
-                    pedido.get('valor_domicilio')?.hasError('min') &&
-                    pedido.get('valor_domicilio')?.touched
-                "
-                style="color: red"
-            >
-                El valor del domicilio es menor al mínimo permitido
-            </div>
+          
         </div>
     </div>
 
@@ -623,7 +606,7 @@
     </div>
     <br /><br />
     <div class="formgrid grid justify-end">
-        <div class="field col-6 md-3">
+        <div class="field col-3 md-3">
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="subtotal_venta"
@@ -635,8 +618,19 @@
                 >
             </span>
         </div>
-
-        <div class="field col-6 md-3">
+        <!-- <div class="field col-3 md-3">
+            <span class="p-float-label">
+                <p-inputNumber
+                    inputId="aumento_empresa"
+                    [formControl]="pedido.get('aumento_empresa')"
+                    readonly="true"
+                    [suffix]="aumento_empresa"
+                ></p-inputNumber> 
+                <label for="aumento_empresa" class="custom-label">Aumento Empresa</label>
+            </span>
+        </div> -->
+        
+        <div class="field col-3 md-3">
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="precio_total_venta"
