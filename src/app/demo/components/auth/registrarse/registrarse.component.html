@@ -234,6 +234,8 @@
                 <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
                 <label for="contrasena_usuario">Contraseña <span style="color: red;">*</span></label>
               </span>
+              <i class="pi" (click)="togglePasswordVisibility('confirmar_contrasena')" [ngClass]="{'pi-eye': !showPassword, 'pi-eye-slash': showPassword}"></i>
+              <br>
               <span
                 *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
                 style="color: red; display: block;">La
@@ -253,6 +255,8 @@
                 <input type="password" pInputText id="confirmar_contrasena" formControlName="confirmar_contrasena" />
                 <label for="confirmar_contrasena">Confirmar Contraseña <span style="color: red;">*</span></label>
               </span>
+              <i class="pi" (click)="togglePasswordVisibility2('confirmar_contrasena')" [ngClass]="{'pi-eye': !showPassword2, 'pi-eye-slash': showPassword2}"></i>
+              <br>
               <span
                 *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
                 style="color: red; display: block;">Confirmación de contraseña requerida.</span>
