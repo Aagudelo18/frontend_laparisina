@@ -41,6 +41,7 @@ export class NewPedidosComponent implements OnInit {
     valor_domicilio: 0;
     clienteExistente: boolean = false;
     minDate: Date = new Date();
+    ciudades : any = [];
 
     constructor(
         private newpedidosService: NewPedidosService,
@@ -80,6 +81,7 @@ export class NewPedidosComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.obtenerTransportesActivos();
         this.getCategorias();
         this.getProductos();
         this.productsFormArray = this.fb.array([]);
@@ -416,12 +418,14 @@ export class NewPedidosComponent implements OnInit {
             this.pedido
                 .get('precio_total_venta')
                 ?.setValue(subTotal + this.aumento_empresa + valor_domicilio);
+                console.log(this.aumento_empresa)
         } else {
             this.pedido
                 .get('precio_total_venta')
                 ?.setValue(subTotal + valor_domicilio);
         }
     }
+
 
     eliminarCerosIzquierda(event: any) {
         let valor = event.target.value;
@@ -470,7 +474,27 @@ export class NewPedidosComponent implements OnInit {
     }
     
     
+      
+    obtenerTransportesActivos(){
+        this.newpedidosService.obtenerTransporteActivos().subscribe(
+            (data) => {
+                console.log(data)
+                this.ciudades=data;
+            });
+    }
     
+    seleccionCiudad(){
+      
+        if(this.pedido.get('tipo_entrega').value == 'Domicilio'){
+            let ciudad = this.ciudades.find(ciudad => ciudad.ciudad_cliente == this.pedido.get('ciudad_cliente').value);
+            console.log('domicilio', ciudad.precio_transporte)
+            this.pedido.get('valor_domicilio')?.setValue(ciudad.precio_transporte);
+        }else {
+            this.pedido.get('valor_domicilio')?.setValue(0); 
+        }
+       
+       this.calcularPrecioTotalVenta();
+}
 
     
 }
