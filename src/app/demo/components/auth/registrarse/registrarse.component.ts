@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClienteService } from './clientes.service';
 import { UsuarioService } from './usuarios.service';
+import { TransportesService } from '../../pages/transportes/transportes.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { RegistrarseService } from './registrarse.services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +29,7 @@ export class RegistrarseComponent implements OnInit {
   id: string = '';
   roles: any[] = []; // Se declara una lista para roles
   rolCliente: any[] = [];
+  transportes:string [] = [];
 
   estado: SelectItem[] = [
     { label: 'Activo', value: true },
@@ -43,6 +45,7 @@ export class RegistrarseComponent implements OnInit {
     private fb: FormBuilder,
     private clienteService: ClienteService,
     private usuarioService: UsuarioService,
+    private transportesService: TransportesService,
     private messageService: MessageService,
     private router: Router,
     private aRouter: ActivatedRoute
@@ -81,6 +84,7 @@ export class RegistrarseComponent implements OnInit {
   ngOnInit(): void {
     this.getListClientes();
     this.getRolCliente();
+    this.getListTransportes();
   }
 
   getListClientes() {
@@ -96,7 +100,14 @@ export class RegistrarseComponent implements OnInit {
     });
   }
 
-  
+  //Función para listar todos los transportes
+  getListTransportes(){     
+    this.transportesService.getListTransportes().subscribe((data) =>{      
+      this.transportes = data.
+      filter(transporte => transporte.estado_transporte === true)
+      .map(transporte => transporte.ciudad_cliente);
+    })        
+  }  
 
   // Función para crear un cliente
   crearCliente() {

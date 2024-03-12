@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PedidosService } from './pedidos.service';
 import { Router } from '@angular/router';
 import { Pedido } from './pedidos.model';
@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 
+
 @Component({
     selector: 'app-list-pedidos',
     templateUrl: './list-pedidos.component.html',
@@ -14,6 +15,15 @@ import { ConfirmationService } from 'primeng/api';
     providers: [MessageService, ConfirmationService],
 })
 export class ListPedidosComponent implements OnInit {
+
+    confirmacionEditarEstadoPago: boolean = false;
+    editarEstadoPagoDialog: boolean = false;
+    formEditarEstadoPago: FormGroup;
+    pedidoSeleccionado: Pedido;
+ 
+    listaEstadosPedido=['Terminado','Entregado']
+    listaEstadosPago=['Pagado','Pendiente']
+   
     pedidos: Pedido[] = [];
     selectedPedidos: Pedido[] = [];
     detallePedidoDialog: boolean = false;
@@ -31,7 +41,7 @@ export class ListPedidosComponent implements OnInit {
     pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
     cambiarEstadoPDialog: boolean;
     estado_pedido: string;
-    esatdo_pago: string;
+    estado_pago: string;
     realizarCambioEstado: boolean;
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
     cambiarEstadoPDialogAnular: boolean;
@@ -39,6 +49,7 @@ export class ListPedidosComponent implements OnInit {
     domiciliarioSeleccionado: any = '0'; // Puedes ajustar este tipo según tus necesidades
     domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
     confirmarAsignacionDialog: boolean = false;
+    pedidoPagado: boolean;
 
     constructor(
         private pedidosService: PedidosService,
@@ -64,6 +75,7 @@ export class ListPedidosComponent implements OnInit {
             metodo_pago: [''],
             estado_pago: [''],
             valor_domicilio: [''],
+            tipo_entrega: [''],
             nit_empresa_cliente: [''],
             nombre_juridico: [''],
             aumento_empresa: [''],
@@ -76,6 +88,7 @@ export class ListPedidosComponent implements OnInit {
     ngOnInit() {
         this.pedidosService.getPedidos().subscribe((data: Pedido[]) => {
             this.pedidos = data;
+            console.log(this.pedidos);
         });
         this.cargarDomiciliarios();
         this.cargarPedidosPendientes();
@@ -165,6 +178,7 @@ export class ListPedidosComponent implements OnInit {
                 subtotal_venta: data.subtotal_venta,
                 metodo_pago: data.metodo_pago,
                 estado_pago: data.estado_pago,
+                tipo_entrega: data.tipo_entrega,
                 valor_domicilio: data.valor_domicilio,
                 aumento_empresa: aumento || '',
                 nit_empresa_cliente: data.nit_empresa_cliente || '',
@@ -198,6 +212,17 @@ export class ListPedidosComponent implements OnInit {
             this.formPedidos.get('tipo_cliente').value === 'Persona jurídica'
         );
     }
+
+    pendiente(id_pedido: string) {
+        console.log("El id:", id_pedido);
+        const pedido = this.pedidos.find(pedido => pedido._id === id_pedido); // Buscar el pedido por su _id
+        if (pedido.estado_pago === 'Pagado') {
+            this.pedidoPagado = true;
+        } else {
+            this.pedidoPagado = false;
+        }
+    }
+    
 
     private esperarRespuesta(): Promise<boolean> {
         return new Promise<boolean>((resolver) => {
@@ -271,6 +296,7 @@ export class ListPedidosComponent implements OnInit {
                         'Error desconocido al crear el Pedido:',
                         error
                     );
+
                 }
             }
         );
@@ -391,6 +417,8 @@ export class ListPedidosComponent implements OnInit {
         this.idPedidoSeleccionado = id; // Guarda el ID del pedido seleccionado
         this.asignarDomiciliarioDialog = true;
         this.cargarDomiciliarios();
+
+        
         // Espera hasta que se resuelva la promesa
         const respuesta = await this.esperarRespuesta();
 
@@ -413,20 +441,10 @@ export class ListPedidosComponent implements OnInit {
             });
             return;
         }
-
-        // Resuelve la promesa con "true"
-        this.resolverPromesa(true);
-        console.log(
-            'Domiciliario seleccionado:',
-            this.domiciliarioSeleccionado
-        );
-        // Asigna el pedido al domiciliario
-        this.asignarPedidoADomiciliario(
-            this.idPedidoSeleccionado,
-            this.domiciliarioSeleccionado
-        );
+    
+        // Abre el modal de confirmación sobre el modal de seleccionar domiciliario
+        this.confirmarAsignacionDialog = true;
     }
-
     // Actualiza el método para manejar el botón "No"
     onNoButtonClickDomicilio() {
         this.resolverPromesa(false); // Resuelve la promesa con "false"
@@ -439,6 +457,7 @@ export class ListPedidosComponent implements OnInit {
             console.log('Domiciliarios cargados:', this.domiciliarios);
         });
     }
+
     asignarPedidoADomiciliario(idPedido: string, idDomiciliario: string) {
         console.log(
             'ID del pedido y del domiciliario:',
@@ -488,28 +507,29 @@ export class ListPedidosComponent implements OnInit {
 
     confirmarAsignacion(confirmacion: boolean) {
         if (confirmacion) {
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Pedido asignado con éxito',
-                life: 5000,
-            });
-            console.log('id del domiciliario', this.domiciliarioSeleccionado);
+            // Resuelve la promesa con "true"
+            this.resolverPromesa(true);
+            console.log('Domiciliario seleccionado:', this.domiciliarioSeleccionado);
+    
+            // Asigna el pedido al domiciliario
+            this.asignarPedidoADomiciliario(
+                this.idPedidoSeleccionado,
+                this.domiciliarioSeleccionado
+            );
         } else {
-            console.error('Error desconocido al asignar el Pedido.');
+            // Lógica si la respuesta es "No"
+            // Vuelve a abrir el modal de asignación de domiciliario para seleccionar otro domiciliario
+            
+            this.asignarDomiciliarioDialog = true;
         }
-
-        // Cierra el segundo modal
+    
+        // Cierra el modal de confirmación
         this.confirmarAsignacionDialog = false;
+        
 
-        // Cierra el primer modal de asignación de domiciliario
-        this.asignarDomiciliarioDialog = false;
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para filtar la tabla en el buscador
-    // onGlobalFilter(table: Table, event: Event) {
-    //     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    // }
+
 
     // Función para filtrar la tabla en el buscador
     onGlobalFilter(table: Table, event: Event, filterType: string) {
@@ -526,5 +546,100 @@ export class ListPedidosComponent implements OnInit {
                 break;
         }
     }
+
+    abrirModalEditarEstadoYPago(id: string) {
+        this.obtenerPedido(id);
+        this.pendiente(id);
+    }
+
+    async obtenerPedido(id: string) {
+        try {
+            const pedido = await this.pedidosService.getPedidoDetalle(id).toPromise();
+            if (pedido) {
+                this.pedidoSeleccionado = pedido;
+                this.actualizarFormularioConPedido();
+                
+                this.editarEstadoPagoDialog = true;
+            } else {
+                console.error('El pedido no se encontró.');
+            }
+        } catch (error) {
+            console.error('Error al obtener los detalles del pedido:', error);
+        }
+    }
+
+    actualizarFormularioConPedido() {
+        this.formPedidos.patchValue({
+            estado_pedido: this.pedidoSeleccionado.estado_pedido,
+            estado_pago: this.pedidoSeleccionado.estado_pago,
+        });
+    }
+// Método para actualizar el pedido
+async actualizarPedido() {
+    try {
+        if (this.pedidoSeleccionado) {
+            const estadoPedido = this.formPedidos.get('estado_pedido').value;
+            const estadoPago = this.formPedidos.get('estado_pago').value;
+
+            const pedidoActualizado: Pedido = {
+                ...this.pedidoSeleccionado,
+                estado_pedido: estadoPedido,
+                estado_pago: estadoPago,
+            };
+
+            // Actualizamos el pedido
+            await this.pedidosService.updatePedido(this.pedidoSeleccionado._id, pedidoActualizado).toPromise();
+
+           
+            this.cargarPedidosTerminados()
+        
+        } else {
+            console.error('El pedido seleccionado no está definido.');
+        }
+    } catch (error) {
+        this.messageService.add({
+            severity: 'error',
+            summary: 'Error al Actualizar Estado y Método de Pago',
+            detail: 'Ocurrió un error al actualizar el estado y el método de pago. Por favor, inténtalo de nuevo.',
+            life: 5000,
+        });
+        console.error('Error al guardar los cambios:', error);
+    }
+}
+
+// Método para cerrar el modal de edición
+cerrarModalEditarEstadoYPago() {
+    this.editarEstadoPagoDialog = false;
+  
+}
+
+// Método para mostrar el modal de confirmación
+confirmarEdicionPedido() {
+    // Si confirma la edición, muestra el modal de confirmación
+    this.confirmacionEditarEstadoPago = true;
+}
+
+// Método para manejar el botón "Sí" del modal de confirmación
+confirmarCambiosEstado() {
+    // Aquí puedes agregar lógica adicional si es necesario antes de actualizar el pedido
+    this.actualizarPedido(); // Llama a la función para actualizar el pedido
+    this.confirmacionEditarEstadoPago = false; // Cierra el modal de confirmación
+    this.editarEstadoPagoDialog = false; // Cierra el modal de edición
+    // Mostramos el mensaje de éxito
+    this.messageService.add({
+        severity: 'success',
+        summary: 'Estado y Método de Pago Actualizados',
+        life: 5000,
+    });
     
 }
+
+// Método para manejar el botón "No" del modal de confirmación
+cancelarCambiosEstado() {
+    this.confirmacionEditarEstadoPago = false; // Cierra el modal de confirmación sin realizar cambios
+}
+
+}
+    
+    
+

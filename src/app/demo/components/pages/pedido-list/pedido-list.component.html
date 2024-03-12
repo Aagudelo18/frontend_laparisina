@@ -1,9 +1,8 @@
 <div class="card px-6 py-6">
     <p-toast></p-toast>
 
-    <!-- Modal para anular un pedido --------------------------------->
-    <p-tabView>
-        <!-- Listado de pedidos Tomados---------------------------------------------->
+      <!-- Listado de pedidos Tomados---------------------------------------------->
+    <p-tabView>  
         <p-tabPanel header="Mis Pedidos Realizados">
             <p-table
                 #dtPendientes
@@ -62,19 +61,19 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-pedido>
                     <tr>
-                        <td style="width: 15%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 18rem">
                             {{ pedido.nombre_contacto }}
                         </td>
-                        <td style="width: 15%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 15rem">
                             {{ pedido.direccion_entrega }}
                         </td>
-                        <td style="width: 15%; min-width: 10rem">
+                        <td style="width: 15%; min-width: 15rem">
                             {{ pedido.fecha_entrega_pedido | slice : 0 : 10 }}
                         </td>
-                        <td style="width: 15%; min-width: 5rem">
+                        <td style="width: 15%; min-width: 8rem">
                             {{ pedido.estado_pedido }}
                         </td>
-                        <td style="width: 15%; min-width: 5rem">
+                        <td style="width: 15%; min-width: 8rem">
                             {{ pedido.precio_total_venta }}
                         </td>
                         <td>
@@ -141,197 +140,325 @@
     <!-- Modal para ver el detalle del pedido -->
     <p-dialog
     [(visible)]="detallePedidoDialog"
-    [style]="{ width: '900px' }"
-    header="Detalles de mi Pedido"
+    [style]="{ width: '70%' }"
+    header="Detalles Pedido"
     [modal]="true"
     class="p-fluid"
 >
     <br />
     <form [formGroup]="formPedidos">
-        
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                             resize: none;
-                             overflow: auto; 
-                             width: 100%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="tipo_cliente"
-                            id="tipo_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="tipo_cliente">tipo cliente</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="nombre_contacto"
-                            id="nombre_contacto"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="nombre_contacto">Nombre</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="quien_recibe"
-                            id="quien_recibe"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="quien_recibe">Nombre Quien Recibe</label>
-                    </span>
-                </div>
+        <div class="formgrid grid">
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            overflow: auto;
+                            width: 100%;
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="tipo_cliente"
+                        id="tipo_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="tipo_cliente">tipo cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="nombre_contacto"
+                        id="nombre_contacto"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="nombre_contacto">Nombre</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput" *ngIf="esPersonaNatural()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="quien_recibe"
+                        id="quien_recibe"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="quien_recibe">Nombre Quien Recibe</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput" *ngIf="esEmpresa()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="nombre_juridico"
+                        id="nombre_juridico"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="nombre_juridico">Nombre Empresa</label>
+                </span>
+            </div>
+
+            <div class="field col-2 textInput" *ngIf="esEmpresa()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="nit_empresa_cliente"
+                        id="nit_empresa_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="nit_empresa_cliente">NIT Empresa</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="telefono_cliente"
+                        id="telefono_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="telefono_cliente">telefono cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        style="resize: none"
+                        [readonly]="true"
+                        style="
+                            resize: none;
+                            overflow: auto;
+                            width: 100%;
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="direccion_entrega"
+                        id="direccion_entrega"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="direccion_entrega">Direccion Entrega</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="ciudad_cliente"
+                        id="ciudad_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="ciudad_cliente">Ciudad Cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="barrio_cliente"
+                        id="barrio_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="barrio_cliente">Barrio Cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="fecha_entrega_pedido"
+                        id="fecha_entrega_pedido"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="fecha_entrega_pedido">Fecha Entrega</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="fecha_pedido_tomado"
+                        id="fecha_pedido_tomado"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="fecha_pedido_tomado">Fecha Tomado</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="estado_pedido"
+                        id="estado_pedido"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="estado_pedido"> Estado </label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="metodo_pago"
+                        id="metodo_pago"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="metodo_pago">Método de Pago</label>
+                </span>
+            </div>
+
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="estado_pago"
+                        id="estado_pago"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="estado_pago">Estado de Pago</label>
+                </span>
+            </div>
+
+            <div
+                class="field col-2 textInput"
+                *ngIf="
+                    formPedidos.get('estado_pedido').value == 'Enviado' ||
+                    formPedidos.get('estado_pedido').value == 'Entregado'
+                "
+            >
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="tipo_entrega"
+                        id="tipo_entrega"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="tipo_entrega">Tipo de Entrega</label>
+                </span>
+            </div>
+            <div
+                class="field col-2 textInput"
+                *ngIf="
+                    formPedidos.get('estado_pedido').value == 'Enviado' ||
+                    formPedidos.get('estado_pedido').value == 'Entregado'
+                "
+            >
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="domiciliario"
+                        id="domiciliario"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="domiciliario">domiciliario</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="tipo_entrega"
+                        id="tipo_entrega"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="tipo_entrega">Tipo de Entrgea</label>
+                </span>
             </div>
         </div>
-
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            style="resize: none"
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 100%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="direccion_entrega"
-                            id="direccion_entrega"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="direccion_entrega">Direccion Entrega</label>
-                    </span>
-                </div>
-             
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="barrio_cliente"
-                            id="barrio_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="barrio_cliente">Barrio Cliente</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="fecha_entrega_pedido"
-                            id="fecha_entrega_pedido"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="fecha_entrega_pedido">Fecha Entrega</label>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="fecha_pedido_tomado"
-                            id="fecha_pedido_tomado"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="fecha_pedido_tomado">Fecha Tomado</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 70%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="estado_pedido"
-                            id="estado_pedido"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="estado_pedido"> Estado </label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 80%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="metodo_pago"
-                            id="metodo_pago"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="metodo_pago">Método de Pago</label>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-    
 
         <!-- 
 
@@ -345,7 +472,6 @@
                         <th>Precio Unitario</th>
                         <th>Estado</th>
                         <th>Precio Total</th>
-                    
                     </tr>
                 </thead>
                 <tbody>
@@ -366,7 +492,6 @@
                         </td>
                         <td>{{ detalle.estado_producto }}</td>
                         <td>{{ detalle.precio_total_producto }}</td>
-                        
                     </tr>
                 </tbody>
             </table>
@@ -390,6 +515,23 @@
                         pInputText
                     />
                     <label for="subtotal_venta">Subtotal Venta</label>
+                </span>
+            </div>
+            <div class="field col" *ngIf="esEmpresa()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="aumento_empresa"
+                        id="aumento_empresa"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="aumento_empresa">Aumento Empresa</label>
                 </span>
             </div>
             <div class="field col">
@@ -427,8 +569,12 @@
                 </span>
             </div>
         </div>
-        <div style="display: flex; justify-content: flex-end; margin-top: 20px">
-        </div>
+        <div
+            style="display: flex; justify-content: flex-end; margin-top: 20px"
+        ></div>
     </form>
 </p-dialog>
+
+
+
 </div>

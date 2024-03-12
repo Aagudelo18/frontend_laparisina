@@ -10,7 +10,7 @@
             <ng-template pTemplate>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <span class="enlaceMenu mr-8 ml-8">Inicio</span>     
+                        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>     
                     </div>
                 </div>
                 <div class="formgrid grid">
@@ -38,7 +38,7 @@
 
     
     <div *ngIf="verificarUsuario() && innerWidth >= 991">
-        <span class="enlaceMenu mr-8 ml-8">Inicio</span>
+        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>
         <span class="enlaceMenu mr-8" [routerLink]="['/catalogo-cliente']">Catálogo</span>
         <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Pedidos</span>
         <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Perfil</span>
@@ -65,7 +65,7 @@
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
                             <ng-template pTemplate="left">
-                                <button pButton type="button" [routerLink]="['/pedidoCliente']" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
+                                <button pButton type="button" (click)="hacerPedido()" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
                             </ng-template>
                     
                             <ng-template pTemplate="right">
@@ -117,7 +117,7 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="confirmarCerrarSesionDialog" header="Confirmar para cerrar la sesión" [modal]="true"
+<p-dialog [(visible)]="confirmarCerrarSesionDialog" header="Confirmar para cerrar la sesión" [draggable]="false" [modal]="true"
     [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>

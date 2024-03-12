@@ -40,6 +40,7 @@ export class PedidosService {
     return this.http.get<Pedido[]>(this.apiUrl + `pedidos/${id}` );
   }
 
+
   updatePedido(id: string, pedido: Pedido): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}pedidos/${id}`, pedido);
   }
@@ -65,7 +66,7 @@ export class PedidosService {
   }
 
   getDomiciliariosXId(id: string): Observable<any> {
-    console.log(`${this.apiUrl}/domiciliarios/${id}`);
+    console.log(`${this.apiUrl}domiciliarios/${id}`);
 
     return this.http.get<any[]>(`${this.apiUrl}empleados/${id}`);
   }
@@ -77,7 +78,8 @@ export class PedidosService {
   
   }
 
- 
+
+  
 
 }
   

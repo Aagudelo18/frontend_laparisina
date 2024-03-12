@@ -13,6 +13,7 @@ export interface Pedido {
     iva_pedido: number;
     metodo_pago: string;
     estado_pago: string;
+    tipo_entrega: string;
     detalle_pedido: DetallePedido[];
   }
   

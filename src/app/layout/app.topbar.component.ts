@@ -7,6 +7,7 @@ import { DatosUsuario, Product, ProductoCarrito } from '../../app/demo/component
 import { RolesService } from '../../app/demo/components/pages/roles/roles.service';
 import { Roles } from '../../app/demo/components/pages/roles/roles.model';
 import { map, Observable, Subscription } from 'rxjs';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-topbar',
@@ -193,5 +194,17 @@ hasToken(): boolean {
       // Establece el ancho del diálogo
       this.anchoOverlayCarrito = anchoDialog;
     }
+
+  @ViewChild('op2') overlayPanel: OverlayPanel;
+
+  hacerPedido() {
+    // Lógica para hacer el pedido
+
+    // Redirigir a la ruta '/pedidoCliente'
+    this.router.navigate(['/pedidoCliente']).then(() => {
+        // Cerrar el modal después de redirigir
+        this.overlayPanel.hide(); // Oculta el overlayPanel
+    });
+}
 
 }

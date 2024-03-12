@@ -27,6 +27,8 @@ export class PedidoListService {
     return this.http.get<Cliente[]>(this.apiUrl + `/pedidos/${id}` );
   }
 
+ 
+
   
 
 

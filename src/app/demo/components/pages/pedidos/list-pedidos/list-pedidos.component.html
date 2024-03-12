@@ -31,21 +31,29 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-            <ng-template pTemplate="caption">
-                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                    <h4 class="m-0">Listado de Pendientes</h4>
-                    <span class="block mt-2 md:mt-0 p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input
-                            pInputText
-                            type="text"
-                            (input)="onGlobalFilter(dtPendientes, $event, 'Pendientes')"
-                            placeholder="Buscar..."
-                            class="w-full sm:w-auto"
-                        />
-                    </span>
-                </div>
-            </ng-template>
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h4 class="m-0">Listado de Pendientes</h4>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                    onGlobalFilter(
+                                        dtPendientes,
+                                        $event,
+                                        'Pendientes'
+                                    )
+                                "
+                                placeholder="Buscar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -74,6 +82,11 @@
                                 field="estado_pago"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
+                            ></p-sortIcon>
+                        </th>
                         <th pSortableColumn="precio_total_venta">
                             Valor Total<p-sortIcon
                                 field="precio_total_venta"
@@ -105,8 +118,12 @@
                             {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.tipo_entrega }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
                             {{ pedido.precio_total_venta }}
                         </td>
+
                         <td>
                             <div class="flex">
                                 <button
@@ -116,7 +133,7 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
-                                    pTooltip="Ver"
+                                    pTooltip="Ver Detalle"
                                 ></button>
                                 <button
                                     pButton
@@ -129,10 +146,14 @@
                                             pedido.estado_pedido
                                         )
                                     "
-                                    pTooltip="Cambiar Estado"
+                                    [pTooltip]="
+                                        pedido.estado_pedido === 'Pendiente'
+                                            ? 'Cambiar a estado tomado'
+                                            : 'Enviar a orden de producción'
+                                    "
                                 ></button>
                                 <button
-                                *ngIf="esPedidoPendiente(pedido)"
+                                    *ngIf="esPedidoPendiente(pedido)"
                                     pButton
                                     pRipple
                                     icon="pi pi-times"
@@ -161,22 +182,29 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-            <ng-template pTemplate="caption">
-                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                    <h4 class="m-0">Listado de Terminados</h4>
-                    <span class="block mt-2 md:mt-0 p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input
-                            pInputText
-                            type="text"
-                            (input)="onGlobalFilter(dtTerminados, $event, 'Terminados')"
-                            placeholder="Buscar..."
-                            class="w-full sm:w-auto"
-                        />
-                    </span>
-                </div>
-            </ng-template>
-            
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h4 class="m-0">Listado de Terminados</h4>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                    onGlobalFilter(
+                                        dtTerminados,
+                                        $event,
+                                        'Terminados'
+                                    )
+                                "
+                                placeholder="Buscar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -206,6 +234,11 @@
                                 field="precio_total_venta"
                             ></p-sortIcon>
                         </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
+                            ></p-sortIcon>
+                        </th>
 
                         <th pSortableColumn="name">Aciones</th>
                     </tr>
@@ -233,6 +266,9 @@
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
                         </td>
+                        <td style="width: 30%; min-width: 10rem">
+                            {{ pedido.tipo_entrega }}
+                        </td>
                         <td>
                             <div class="flex">
                                 <button
@@ -242,9 +278,10 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
-                                    pTooltip="Ver"
+                                    pTooltip="Ver Detalle"
                                 ></button>
                                 <button
+                                    *ngIf="pedido.tipo_entrega === 'Domicilio'"
                                     pButton
                                     pRipple
                                     icon="pi pi-truck"
@@ -256,6 +293,16 @@
                                         )
                                     "
                                     pTooltip="Asignar Domiciliario"
+                                ></button>
+                                <button
+                                    pButton
+                                    pRipple
+                                    icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success"
+                                    (click)="
+                                        abrirModalEditarEstadoYPago(pedido._id)
+                                    "
+                                    pTooltip="Editar"
                                 ></button>
                             </div>
                         </td>
@@ -278,21 +325,29 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-            <ng-template pTemplate="caption">
-                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                    <h4 class="m-0">Listado de Enviados</h4>
-                    <span class="block mt-2 md:mt-0 p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input
-                            pInputText
-                            type="text"
-                            (input)="onGlobalFilter(dtEnviados, $event, 'Enviados')"
-                            placeholder="Buscar..."
-                            class="w-full sm:w-auto"
-                        />
-                    </span>
-                </div>
-            </ng-template>
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h4 class="m-0">Listado de Enviados</h4>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                    onGlobalFilter(
+                                        dtEnviados,
+                                        $event,
+                                        'Enviados'
+                                    )
+                                "
+                                placeholder="Buscar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -315,6 +370,11 @@
                         <th pSortableColumn="estado_pago">
                             Estado Pago<p-sortIcon
                                 field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
                             ></p-sortIcon>
                         </th>
                         <th pSortableColumn="precio_total_venta">
@@ -347,8 +407,12 @@
                             {{ pedido.estado_pago }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
+                            {{ pedido.tipo_entrega }}
+                        </td>
+                        <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
                         </td>
+
                         <td>
                             <div class="flex">
                                 <button
@@ -358,20 +422,8 @@
                                     icon="pi pi-eye"
                                     class="p-button-rounded p-button-primary mr-2"
                                     (click)="verDetallePedido(pedido._id)"
-                                    pTooltip="Ver"
+                                    pTooltip="Ver Detalle"
                                 ></button>
-                                <!-- <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-chevron-right"
-                                    class="p-button-rounded p-button-warning mr-2"
-                                    (click)="
-                                        abrirModal(
-                                            pedido._id,
-                                            pedido.estado_pedido
-                                        )
-                                    "
-                                ></button> -->
                             </div>
                         </td>
                     </tr>
@@ -393,21 +445,29 @@
                 selectionMode="multiple"
                 dataKey="_id"
             >
-            <ng-template pTemplate="caption">
-                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                    <h4 class="m-0">Listado de Anulados</h4>
-                    <span class="block mt-2 md:mt-0 p-input-icon-left">
-                        <i class="pi pi-search"></i>
-                        <input
-                            pInputText
-                            type="text"
-                            (input)="onGlobalFilter(dtAnulados, $event, 'Anulados')"
-                            placeholder="Buscar..."
-                            class="w-full sm:w-auto"
-                        />
-                    </span>
-                </div>
-            </ng-template>
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h4 class="m-0">Listado de Anulados</h4>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="
+                                    onGlobalFilter(
+                                        dtAnulados,
+                                        $event,
+                                        'Anulados'
+                                    )
+                                "
+                                placeholder="Buscar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -430,6 +490,11 @@
                         <th pSortableColumn="estado_pago">
                             Estado Pago<p-sortIcon
                                 field="estado_pago"
+                            ></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon
+                                field="tipo_entrega"
                             ></p-sortIcon>
                         </th>
                         <th pSortableColumn="precio_total_venta">
@@ -461,6 +526,9 @@
                         </td>
                         <td style="width: 20%; min-width: 10rem">
                             {{ pedido.estado_pago }}
+                        </td>
+                        <td style="width: 30%; min-width: 10rem">
+                            {{ pedido.tipo_entrega }}
                         </td>
                         <td style="width: 30%; min-width: 10rem">
                             {{ pedido.precio_total_venta }}
@@ -484,311 +552,310 @@
     </p-tabView>
 </div>
 
-
 <!--Modal de ver detalle-->
 
 <p-dialog
     [(visible)]="detallePedidoDialog"
-    [style]="{ width: '900px' }"
+    [style]="{ width: '90%' }"
     header="Detalles Pedido"
     [modal]="true"
     class="p-fluid"
 >
     <br />
     <form [formGroup]="formPedidos">
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                             resize: none;
-                             overflow: auto; 
-                             width: 100%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="tipo_cliente"
-                            id="tipo_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="tipo_cliente">tipo cliente</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="nombre_contacto"
-                            id="nombre_contacto"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="nombre_contacto">Nombre</label>
-                    </span>
-                </div>
-                <div class="field col" *ngIf="esPersonaNatural()">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="quien_recibe"
-                            id="quien_recibe"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="quien_recibe">Nombre Quien Recibe</label>
-                    </span>
-                </div>
-                <div class="field col" *ngIf="esEmpresa()">
-                    <span class="p-float-label">
-                        <input
-                            style="resize: none"
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="nombre_juridico"
-                            id="nombre_juridico"
-                            type="text"
-                            pInputText
-                        >
-                        <label for="nombre_juridico">Nombre Empresa</label>
-                    </span>
-                </div>
-                <div class="field col" *ngIf="esEmpresa()">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="nit_empresa_cliente"
-                            id="nit_empresa_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="nit_empresa_cliente">NIT Empresa</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="telefono_cliente"
-                            id="telefono_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="telefono_cliente">telefono cliente</label>
-                    </span>
-                </div>
+        <div class="formgrid grid">
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            overflow: auto;
+                            width: 100%;
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="tipo_cliente"
+                        id="tipo_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="tipo_cliente">tipo cliente</label>
+                </span>
             </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            style="resize: none"
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 100%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="direccion_entrega"
-                            id="direccion_entrega"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="direccion_entrega">Direccion Entrega</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 80%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="ciudad_cliente"
-                            id="ciudad_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="ciudad_cliente">Ciudad Cliente</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="barrio_cliente"
-                            id="barrio_cliente"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="barrio_cliente">Barrio Cliente</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="fecha_entrega_pedido"
-                            id="fecha_entrega_pedido"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="fecha_entrega_pedido">Fecha Entrega</label>
-                    </span>
-                </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="nombre_contacto"
+                        id="nombre_contacto"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="nombre_contacto">Nombre</label>
+                </span>
             </div>
-        </div>
-
-        <div class="formgrid grid mt-3">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="fecha_pedido_tomado"
-                            id="fecha_pedido_tomado"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="fecha_pedido_tomado">Fecha Tomado</label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 70%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="estado_pedido"
-                            id="estado_pedido"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="estado_pedido"> Estado </label>
-                    </span>
-                </div>
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 80%; 
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="metodo_pago"
-                            id="metodo_pago"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="metodo_pago">Método de Pago</label>
-                    </span>
-                </div>
-
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                resize: none;
-                                overflow: auto; 
-                                width: 80%;
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="estado_pago"
-                            id="estado_pago"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="estado_pago">Estado de Pago</label>
-                    </span>
-                </div>
+            <div class="field col-2 textInput" *ngIf="esPersonaNatural()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="quien_recibe"
+                        id="quien_recibe"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="quien_recibe">Nombre Quien Recibe</label>
+                </span>
             </div>
-        </div>
+            <div class="field col-2 textInput" *ngIf="esEmpresa()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="nombre_juridico"
+                        id="nombre_juridico"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="nombre_juridico">Nombre Empresa</label>
+                </span>
+            </div>
 
-        <div class="formgrid grid mt-3" *ngIf= "formPedidos.get('estado_pedido').value == 'Enviado' || formPedidos.get('estado_pedido').value == 'Entregado'">
-            <div class="formgrid grid">
-                <div class="field col">
-                    <span class="p-float-label">
-                        <input
-                            [readonly]="true"
-                            style="
-                                pointer-events: none;
-                                background-color: #f4f4f4;
-                                caret-color: transparent;
-                            "
-                            formControlName="domiciliario"
-                            id="domiciliario"
-                            type="text"
-                            pInputText
-                        />
-                        <label for="domiciliario">domiciliario</label>
-                    </span>
-                </div>
+            <div class="field col-2 textInput" *ngIf="esEmpresa()">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="nit_empresa_cliente"
+                        id="nit_empresa_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="nit_empresa_cliente">NIT Empresa</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="telefono_cliente"
+                        id="telefono_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="telefono_cliente">telefono cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        style="resize: none"
+                        [readonly]="true"
+                        style="
+                            resize: none;
+                            overflow: auto;
+                            width: 100%;
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="direccion_entrega"
+                        id="direccion_entrega"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="direccion_entrega">Direccion Entrega</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="ciudad_cliente"
+                        id="ciudad_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="ciudad_cliente">Ciudad Cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="barrio_cliente"
+                        id="barrio_cliente"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="barrio_cliente">Barrio Cliente</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="fecha_entrega_pedido"
+                        id="fecha_entrega_pedido"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="fecha_entrega_pedido">Fecha Entrega</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="fecha_pedido_tomado"
+                        id="fecha_pedido_tomado"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="fecha_pedido_tomado">Fecha Tomado</label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="estado_pedido"
+                        id="estado_pedido"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="estado_pedido"> Estado </label>
+                </span>
+            </div>
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="metodo_pago"
+                        id="metodo_pago"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="metodo_pago">Método de Pago</label>
+                </span>
+            </div>
+
+            <div class="field col-2 textInput">
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="estado_pago"
+                        id="estado_pago"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="estado_pago">Estado de Pago</label>
+                </span>
+            </div>
+
+            <div
+                class="field col-2 textInput"
+                *ngIf="
+                    formPedidos.get('estado_pedido').value == 'Enviado' ||
+                    formPedidos.get('estado_pedido').value == 'Entregado'
+                "
+            >
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="tipo_entrega"
+                        id="tipo_entrega"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="tipo_entrega">Tipo de Entrega</label>
+                </span>
+            </div>
+            <div
+                class="field col-2 textInput"
+                *ngIf="
+                    formPedidos.get('estado_pedido').value == 'Enviado' ||
+                    formPedidos.get('estado_pedido').value == 'Entregado'
+                "
+            >
+                <span class="p-float-label">
+                    <input
+                        [readonly]="true"
+                        style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        "
+                        formControlName="domiciliario"
+                        id="domiciliario"
+                        type="text"
+                        pInputText
+                    />
+                    <label for="domiciliario">domiciliario</label>
+                </span>
             </div>
         </div>
 
@@ -901,8 +968,9 @@
                 </span>
             </div>
         </div>
-        <div style="display: flex; justify-content: flex-end; margin-top: 20px">
-        </div>
+        <div
+            style="display: flex; justify-content: flex-end; margin-top: 20px"
+        ></div>
     </form>
 </p-dialog>
 
@@ -918,7 +986,7 @@
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
         <span
-            >¿Está seguro de que desea enviar el pedido a
+            >¿Está seguro de pasar el pedido a
             {{
                 estado_pedido == "Pendiente"
                     ? "Tomado"
@@ -996,15 +1064,16 @@
     </div>
     <div class="field col-12 md:col-3">
         <span class="p-float-label">
-            <select [(ngModel)]="domiciliarioSeleccionado" (ngModelChange)="prueba()">
-                <option value="0">
-                    seleccione un Domiciliario
-                </option>
+            <select
+                [(ngModel)]="domiciliarioSeleccionado"
+                (ngModelChange)="prueba()"
+            >
+                <option value="0">seleccione un Domiciliario</option>
                 <option
                     *ngFor="let domiciliario of domiciliarios"
                     [value]="domiciliario?._id"
                 >
-                    {{ domiciliario?.nombre_empleado }} 
+                    {{ domiciliario?.nombre_empleado }}
                 </option>
             </select>
         </span>
@@ -1050,6 +1119,93 @@
             class="p-button-text"
             label="Sí"
             (click)="confirmarAsignacion(true)"
+        ></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog
+    [(visible)]="editarEstadoPagoDialog"
+    [style]="{ width: '25%' }"
+    header="Editar Estado y Método de Pago"
+    [modal]="true"
+    class="p-fluid"
+    (onHide)="cerrarModalEditarEstadoYPago()"
+>
+    <form [formGroup]="formPedidos" (ngSubmit)="confirmarEdicionPedido()">
+        <div class="formgrid grid mt-3">
+            <div class="field col-8">
+                <div class="p-field mt-4">
+                    <span class="p-float-label">
+                        <p-dropdown
+                            formControlName="estado_pedido"
+                            id="estado_pedido"
+                            [options]="listaEstadosPedido"
+                            placeholder="Seleccionar Estado del Pedido"
+                        >
+                        </p-dropdown>
+                        <label for="estado_pedido">Estado del Pedido</label>
+                    </span>
+                </div>
+            </div>
+            <div class="field col-8">
+                <div class="p-field mt-4">
+                    <span class="p-float-label">
+                        <p-dropdown
+                            [disabled]="pedidoPagado"
+                            formControlName="estado_pago"
+                            id="estado_pago"
+                            [options]="listaEstadosPago"
+                            placeholder="Seleccionar Estado del Pago"
+                        >
+                        </p-dropdown>
+                        <label for="estado_pago">Estado del Pago</label>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 20px">
+            <button
+                pButton
+                pRipple
+                label="Cancelar"
+                class="p-button-text"
+                (click)="editarEstadoPagoDialog = false"
+            ></button>
+            <button
+                type="submit"
+                pButton
+                pRipple
+                label="Guardar"
+                class="p-button-text"
+                [disabled]="!formPedidos.valid"
+            ></button>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog
+    [(visible)]="confirmacionEditarEstadoPago"
+    header="Confirmar Cambios de Estado"
+>
+    <div class="flex align-items-center justify-content-center">
+        <span>¿Estás seguro de realizar los cambios de estado?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="Cancelar"
+            (click)="cancelarCambiosEstado()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Sí"
+            (click)="confirmarCambiosEstado()"
         ></button>
     </ng-template>
 </p-dialog>

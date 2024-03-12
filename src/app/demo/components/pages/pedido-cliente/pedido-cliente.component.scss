@@ -16,8 +16,19 @@ th, td {
     color: red;
 }
 
+
 .custom-label {
-    font-size: 15px;
-    color: #333;
+    font-size: 18px; /* Tamaño de fuente más grande */
+    font-weight: bold; /* Texto en negrita */
+    color: #333; /* Color del texto */
+  }
+  
+  .input-label-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 10px;
+    align-items: center;
 }
 
+
+  
