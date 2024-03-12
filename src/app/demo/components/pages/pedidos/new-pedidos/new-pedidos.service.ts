@@ -26,5 +26,10 @@ export class NewPedidosService {
   public getCliente(numero_documento_cliente: string): Observable<any>{
       return this.http.get(this.apiUrl + `clientes/consultar/${numero_documento_cliente}`)
      }
+
+     obtenerTransporteActivos(): Observable<void>{
+      return this.http.get<void>(`${this.apiUrl}/transporteActivo`)
+    }
+  
   
 }
