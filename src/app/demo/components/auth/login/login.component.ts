@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
                     localStorage.removeItem('currentUser');
                     localStorage.removeItem('expirationTime');
                     this.loginService.setisAuthenticatedSubject(false);
-                  }, 60 * 60 * 1000 * 8); // 1 hora en milisegundos
+                  }, 60 * 60 * 1000 * 8); // 8 horas en milisegundos
                   resolve('');
                 } 
             })

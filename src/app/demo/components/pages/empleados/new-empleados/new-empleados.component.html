@@ -328,31 +328,16 @@
 
   <div class="field p-col-12 md:col-3">
     <span class="p-float-label">
-      <input type="text"
-             id="eps_empleado"
-             pInputText
-             [(ngModel)]="empleado.eps_empleado"
-             name="eps_empleado"
-             required
-             pattern="[A-Za-zÑñáéíóúÁÉÍÓÚüÜ\s]*"
-             minlength="2"
-             maxlength="30"
-             #epsEmpleado="ngModel"
-             (click)="epsEmpleado.control.markAsTouched()" />
+      <p-dropdown id="eps_empleado" [options]="epsOptions"
+        [(ngModel)]="empleado.eps_empleado" placeholder="Seleccionar EPS" required
+        name="eps_empleado" #epsControl="ngModel"
+        (click)="epsControl.control.markAsTouched()"></p-dropdown>
       <label for="eps_empleado">EPS*</label>
     </span>
-    <div *ngIf="epsEmpleado.errors?.required && epsEmpleado.control.touched" style="color: red">
+    <div *ngIf="epsControl.errors?.required && epsControl.control.touched" style="color: red">
       La EPS es requerida.
     </div>
-    <div *ngIf="epsEmpleado.errors?.pattern && epsEmpleado.control.touched" style="color: red">
-      Ingresa una EPS válida sin números.
-    </div>
-    <div *ngIf="epsEmpleado.errors?.minlength && epsEmpleado.control.touched" style="color: red">
-      La longitud debe ser al menos 2 caracteres.
-    </div>
-    <div *ngIf="epsEmpleado.errors?.maxlength && epsEmpleado.control.touched" style="color: red">
-      La longitud debe ser máximo 50 caracteres.
-    </div>
+    
   </div>
   
   
@@ -499,29 +484,20 @@
   
     <!-- Parentesco del contacto -->
     <div class="field col-12 md-3">
-      <div class="field">
-        <div class="p-field custom-input">
-          <input id="parentesco_empleado{{i}}" type="text" pInputText name="parentesco_empleado{{i}}"
-            [(ngModel)]="contacto.parentesco_empleado" required pattern="[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+" minlength="3" maxlength="50"
-            #parentescoContacto="ngModel" (click)="parentescoContacto.control.markAsTouched()"
-            [class.filled]="contacto.parentesco_empleado" />
-          <label for="parentesco_empleado{{i}}" class="custom-label custom-title"
-            [class.active]="contacto.parentesco_empleado">Parentesco*</label>
-          <div *ngIf="!contacto.parentesco_empleado && parentescoContacto.control.touched" style="color: red">
-            Campo requerido
-          </div>
-          <div *ngIf="parentescoContacto.errors?.pattern && parentescoContacto.control.touched" style="color: red">
-            Ingresa solo letras en el parentesco
-          </div>
-          <div *ngIf="parentescoContacto.errors?.minlength && parentescoContacto.control.touched" style="color: red">
-            El parentesco debe tener al menos 3 caracteres
-          </div>
-          <div *ngIf="parentescoContacto.errors?.maxlength && parentescoContacto.control.touched" style="color: red">
-            El parentesco debe tener máximo 50 caracteres
-          </div>
-        </div>
+      <div class="p-float-label">
+        <p-dropdown id="parentesco_empleado" [options]="['Padre', 'Madre','Hermano', 'Hermana','Abuelo','Abuela','Hijo', 'Hija', 'Primo','Prima','Tío','Tía', ]"
+          [(ngModel)]="contacto.parentesco_empleado" placeholder="Selecciona el parentesco" required
+          name="parentesco_empleado" #parentescoContacto="ngModel"
+          (change)="parentescoContacto.control.markAsTouched()">
+        </p-dropdown>
+        <label for="parentesco_empleado" [class.active]="contacto.parentesco_empleado">Parentesco*</label>
+      </div>
+      <div *ngIf="!contacto.parentesco_empleado && parentescoContacto.control.touched" style="color: red">
+        Por favor, selecciona un parentesco.
       </div>
     </div>
+    
+    
   
     <!-- Teléfono del contacto -->
     <div class="field col-12 md-3">

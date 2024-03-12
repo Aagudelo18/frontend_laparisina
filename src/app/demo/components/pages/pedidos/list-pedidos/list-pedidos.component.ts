@@ -16,6 +16,8 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class ListPedidosComponent implements OnInit {
 
+
+
     confirmacionEditarEstadoPago: boolean = false;
     editarEstadoPagoDialog: boolean = false;
     formEditarEstadoPago: FormGroup;
@@ -50,6 +52,8 @@ export class ListPedidosComponent implements OnInit {
     domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
     confirmarAsignacionDialog: boolean = false;
     pedidoPagado: boolean;
+ 
+
 
     constructor(
         private pedidosService: PedidosService,
