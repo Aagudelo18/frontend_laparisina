@@ -14,6 +14,7 @@ export interface Pedido {
     subtotal_venta: number;
     iva_pedido: number;
     metodo_pago: string;
+    tipo_entrega: string;
     valor_domicilio?: number;
     nit_empresa_cliente?: string;
     nombre_juridico?: string;

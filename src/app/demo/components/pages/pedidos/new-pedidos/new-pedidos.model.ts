@@ -11,8 +11,10 @@ export interface Pedido {
     subtotal_venta: number;
     precio_total_venta: number;
     iva_pedido: number;
+    aumento_empresa: number;
     metodo_pago: string;
     estado_pago: string;
+    tipo_entrega: string;
     detalle_pedido: DetallePedido[];
   }
   

@@ -29,6 +29,8 @@ export class UsuariosComponent implements OnInit {
   formularioEditarUsuario: FormGroup;
   submitted: boolean = false;
   isRequired: boolean = true;
+  showPassword: boolean = false;
+  showPassword2: boolean = false;
 
 
   constructor(
@@ -39,7 +41,7 @@ export class UsuariosComponent implements OnInit {
     this.formularioUsuario = fb.group({
       nombre_usuario: ['', [Validators.minLength(2), Validators.maxLength(25), Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s\D]{1,25}$/), this.noCaracteresEspeciales()]],
       correo_electronico: ['', [Validators.required, Validators.email]],
-      contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,15}$/),]],
+      contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,15}$/),]],
       confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
       rol_usuario: ['', [Validators.required]],// Establece el valor predeterminado a "Activo"
     });
@@ -105,6 +107,27 @@ export class UsuariosComponent implements OnInit {
     };
   }
 
+  togglePasswordVisibility(controlName: string): void {
+    const control = this.formularioUsuario.get(controlName);
+    if (control) {
+      const inputField = document.getElementById(controlName) as HTMLInputElement;
+      if (inputField) {
+        inputField.type = this.showPassword ? 'password' : 'text';
+        this.showPassword = !this.showPassword;
+      }
+    }
+  }
+
+  togglePasswordVisibility2(controlName: string): void {
+    const control = this.formularioUsuario.get(controlName);
+    if (control) {
+      const inputField = document.getElementById(controlName) as HTMLInputElement;
+      if (inputField) {
+        inputField.type = this.showPassword2 ? 'password' : 'text';
+        this.showPassword2 = !this.showPassword2;
+      }
+    }
+  }
 
   //Abre o muestra el dialog o el modal del Editar Usuario
   openEditarUsuarioDialog() {

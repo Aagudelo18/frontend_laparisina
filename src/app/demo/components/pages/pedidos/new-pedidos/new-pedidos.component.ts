@@ -23,12 +23,13 @@ import { timer } from 'rxjs';
 export class NewPedidosComponent implements OnInit {
     precio_total_venta: number;
     subtotal_venta: number;
-    aumento_empresa: number;
+    aumento_empresa: number = 0;
     pedido: FormGroup;
     formulario: FormGroup;
 
     metodoPago = ['Transferencia', 'Efectivo'];
     estadoPago = ['Pagado', 'Pendiente'];
+    tipoEntrega = [ 'Domicilio', 'Recoger en tienda'];
     categorias = [];
     clientes = [];
     categoriaSeleccionada: string;
@@ -37,8 +38,10 @@ export class NewPedidosComponent implements OnInit {
     productosCategoria: any[] = [];
     productsFormArray: FormArray;
     cantidad_producto: number;
+    valor_domicilio: 0;
     clienteExistente: boolean = false;
     minDate: Date = new Date();
+    ciudades : any = [];
 
     constructor(
         private newpedidosService: NewPedidosService,
@@ -64,6 +67,7 @@ export class NewPedidosComponent implements OnInit {
             correo_domiciliario: ['', [Validators.required, Validators.email]],
             metodo_pago: ['', Validators.required],
             estado_pago: ['', Validators.required],
+            tipo_entrega: ['', Validators.required],
             valor_domicilio: [0, [Validators.required, Validators.min(0)]],
             subtotal_venta: [0, Validators.min(0)],
             precio_total_venta: [0, Validators.min(0)],
@@ -77,6 +81,7 @@ export class NewPedidosComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.obtenerTransportesActivos();
         this.getCategorias();
         this.getProductos();
         this.productsFormArray = this.fb.array([]);
@@ -119,6 +124,7 @@ export class NewPedidosComponent implements OnInit {
             this.pedido.get('direccion_entrega').reset();
             this.pedido.get('ciudad_cliente').reset();
             this.pedido.get('barrio_cliente').reset();
+            this.pedido.get('tipo_cliente').reset();
 
             // Actualiza el valor de la variable 'clienteExistente'
             this.clienteExistente = false;
@@ -141,6 +147,7 @@ export class NewPedidosComponent implements OnInit {
                             this.pedido.get('barrio_cliente')?.setValue(data.barrio_cliente);
                             this.pedido.get('nombre_juridico')?.setValue(data.nombre_juridico);
                             this.pedido.get('nit_empresa_cliente')?.setValue(data.nit_empresa_cliente);
+                            this.pedido.get('tipo_entrega')?.setValue(data.tipo_entrega);
                         } else {
                             this.clienteExistente = false;
                             // El estado_cliente es False, puedes manejarlo según tus necesidades
@@ -238,7 +245,8 @@ export class NewPedidosComponent implements OnInit {
             'telefono_cliente',
             'direccion_entrega',
             'metodo_pago',
-            'estado_pago'
+            'estado_pago',
+            'tipo_cliente'
         ];
     
         for (const campo of camposRequeridos) {
@@ -381,6 +389,8 @@ export class NewPedidosComponent implements OnInit {
         this.calcularPrecioTotalVenta(); // Calcula los totales después de la actualización
     }
 
+   
+
     // Método para calcular el subtotal de todos los productos
     calcularSubtotal() {
         let subTotal = 0;
@@ -408,6 +418,7 @@ export class NewPedidosComponent implements OnInit {
             this.pedido
                 .get('precio_total_venta')
                 ?.setValue(subTotal + this.aumento_empresa + valor_domicilio);
+                console.log(this.aumento_empresa)
         } else {
             this.pedido
                 .get('precio_total_venta')
@@ -415,9 +426,22 @@ export class NewPedidosComponent implements OnInit {
         }
     }
 
+
     eliminarCerosIzquierda(event: any) {
         let valor = event.target.value;
+        
+        // Si el valor es '0', no permitir eliminarlo
+        if (valor === '0') {
+            return;
+        }
+    
         valor = valor.replace(/^0+(?=[1-9])/, ''); // Eliminar ceros a la izquierda
+    
+        // Si después de eliminar los ceros a la izquierda el valor es vacío, establecerlo nuevamente como '0'
+        if (valor === '') {
+            valor = '0';
+        }
+    
         event.target.value = valor; // Establecer el nuevo valor en el input
         valor = parseFloat(valor); // Convertir el valor a un número
         this.pedido.get('valor_domicilio').setValue(valor); // Establecer el valor en el formulario
@@ -436,6 +460,41 @@ export class NewPedidosComponent implements OnInit {
         this.categoriaSeleccionada = null; 
         this.cantidad_producto = null;
     }
+
+    seleccionTipoEntrega() {
+        const tipoEntrega = this.pedido.get('tipo_entrega').value;
     
+        if (tipoEntrega === 'Recoger en tienda') {
+            // Si el tipo de entrega cambia a 'Recoger en tienda', establecer el valor del domicilio en cero
+            this.pedido.get('valor_domicilio').setValue(0);
+        }
+    
+        // Recalcular el precio total después de modificar el valor del domicilio
+        this.calcularPrecioTotalVenta();
+    }
+    
+    
+      
+    obtenerTransportesActivos(){
+        this.newpedidosService.obtenerTransporteActivos().subscribe(
+            (data) => {
+                console.log(data)
+                this.ciudades=data;
+            });
+    }
+    
+    seleccionCiudad(){
+      
+        if(this.pedido.get('tipo_entrega').value == 'Domicilio'){
+            let ciudad = this.ciudades.find(ciudad => ciudad.ciudad_cliente == this.pedido.get('ciudad_cliente').value);
+            console.log('domicilio', ciudad.precio_transporte)
+            this.pedido.get('valor_domicilio')?.setValue(ciudad.precio_transporte);
+        }else {
+            this.pedido.get('valor_domicilio')?.setValue(0); 
+        }
+       
+       this.calcularPrecioTotalVenta();
+}
+
     
 }

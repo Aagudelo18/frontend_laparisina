@@ -260,6 +260,11 @@ const nuevoRol: Roles = {
           severity: 'success',
           summary: 'El estado del rol fue cambiado con éxito',
           life: 3000
+        }); 
+        this.messageService.add({
+          severity: 'info',
+          summary: 'El estado de los usuarios asociados a este rol fueron cambiado con éxito',
+          life: 3000
         });
         this.estadoRolDialog = false;
       },

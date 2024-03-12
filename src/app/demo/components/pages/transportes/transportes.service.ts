@@ -31,7 +31,7 @@ export class TransportesService {
 
   actualizarEstadoTransportes(id:string): Observable<void>{
     return this.http.put<void>(`${this.apiUrl2}/transporte_estado/${id}`,{})
-    }
-  
+  }
+ 
   
 }

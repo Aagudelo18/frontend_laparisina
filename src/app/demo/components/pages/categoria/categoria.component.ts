@@ -46,7 +46,6 @@ export class CategoriaComponent implements OnInit {
     estadoCategoriaDialog: boolean = false;
     anchoDialogImagenCategoria: string = '50%';
 
-    
 
     constructor(
       private fb:FormBuilder,

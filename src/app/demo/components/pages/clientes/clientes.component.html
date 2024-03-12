@@ -121,8 +121,11 @@
     <br>
     <div class="formgrid grid">
           <div class="field col">
+            <span class="p-float-label">
            <p-dropdown formControlName= "tipo_cliente"  [options]="['Persona jurídica','Persona natural']"
             placeholder="Tipo cliente"  name="tipo_cliente" ></p-dropdown>
+            <label for="tipo_cliente">Tipo cliente <span style="color: red;">*</span></label>
+          </span>
             <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched"
             style="color: red;">
               El tipo de cliente es requerida 
@@ -210,8 +213,11 @@
         </div>
         <div class="formgrid grid mt-4">
           <div class="field col ">
-            <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-            placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
+            <span class="p-float-label">
+            <p-dropdown formControlName= "ciudad_cliente" [options]= "transportes"
+            placeholder="Municipio"  name="ciudad_cliente" ></p-dropdown>
+            <label for="tipo_cliente">Municipio<span style="color: red;">*</span></label>
+          </span>
           <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
           style="color: red;">
               La Ciudad es requerida
@@ -426,9 +432,9 @@
       <div class="formgrid grid mt-4">
         <div class="field col ">
           <span class="p-float-label">
-            <p-dropdown formControlName= "ciudad_cliente" [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-           placeholder="Selecciona ciudad"  name="ciudad_cliente" ></p-dropdown>
-            <label for="ciudad_cliente">Ciudad<span style="color: red;">*</span></label>
+            <p-dropdown formControlName= "ciudad_cliente" [options]="transportes"
+           placeholder="Selecciona Municipio"  name="ciudad_cliente" ></p-dropdown>
+            <label  for="ciudad_cliente">Municipio<span style="color: red;">*</span></label>
           </span>
         <span *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
         style="color: red;">
@@ -548,7 +554,7 @@
     </div>
     <div class="formgrid grid">
       <div class="field col">
-        <label for="ciudad_cliente" style="margin-bottom: 5px;">Ciudad:</label>
+        <label for="ciudad_cliente" style="margin-bottom: 5px;">Municipio:</label>
         <input type="text" formControlName="ciudad_cliente" pInputText id="ciudad_cliente" required autofocus
           name="ciudad_cliente" [readonly]="true"
           style="pointer-events: none; background-color: #f4f4f4; caret-color: transparent;" />

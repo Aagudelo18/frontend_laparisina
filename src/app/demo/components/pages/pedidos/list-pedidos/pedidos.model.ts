@@ -9,11 +9,13 @@ export interface Pedido {
   ciudad_cliente: string;
   barrio_cliente: string;
   fecha_entrega_pedido: string;
+  fecha_pedido_tomado:string;
   estado_pedido: string;
   precio_total_venta: number;
   subtotal_venta: number;
-  iva_pedido: number;
   metodo_pago: string;
+  estado_pago: string;
+  tipo_entrega: string;
   valor_domicilio?: number;
   nit_empresa_cliente?: string;
   nombre_juridico?: string;

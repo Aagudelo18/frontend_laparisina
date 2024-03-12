@@ -80,10 +80,27 @@ input{
 }
 
 .custom-label {
-  font-size: 20px; /* Tamaño de fuente más grande */
+  font-size: 13px; /* Tamaño de fuente más grande */
   font-weight: bold; /* Texto en negrita */
   color: #333; /* Color del texto */
 }
+
+// .valor-domicilio-container {
+//   display: flex;
+//   align-items: center;
+// }
+
+// .valor-domicilio-container .input-label {
+//   flex: 0 0 auto; /* Para que el label no crezca */
+//   margin-right: 10px; /* Ajusta el espacio entre el label y el input según sea necesario */
+// }
+
+// .valor-domicilio-container .form-control {
+//   flex: 1; /* Para que el input ocupe el espacio restante */
+// }
+
+
+
 
 
 

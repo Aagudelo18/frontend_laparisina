@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { ListEmpleadosComponent } from './demo/components/pages/empleados/list-empleados/list-empleados.component';
+import { AuthGuard } from './demo/components/auth/guard/auth.guard';
 
 const routes: Routes = [
     // Otras rutas...
@@ -19,6 +20,13 @@ const routes: Routes = [
                     path: '',
                     component: AppLayoutComponent,
                     children: [
+                        {
+                            path: '',
+                            loadChildren: () =>
+                                import(
+                                    './demo/components/pages/inicio/inicio.module'
+                                ).then((m) => m.InicioModule),
+                        },
                         {
                             path: 'clientes',
                             loadChildren: () =>
@@ -108,7 +116,7 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedido-cliente/pedido-cliente.module'
-                                ).then((m) => m.PedidoClienteModule),
+                                ).then((m) => m.PedidoClienteModule), canActivate: [AuthGuard]
                         },
                         {
                             path: 'pedidoListar',

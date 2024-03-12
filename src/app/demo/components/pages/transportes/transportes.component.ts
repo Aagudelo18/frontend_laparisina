@@ -39,7 +39,7 @@ export class TransportesComponent implements OnInit {
         this.formTransportes = this.fb.group({
           ciudad_cliente: ['', [Validators.required, Validators.pattern(/^[A-Za-zÑñÁáÉéÍíÓóÚú\s]{3,30}$/),]],
           precio_transporte: ['', [Validators.required, Validators.pattern('^[0-9]{4,5}$')]],
-          estado_transporte: ['', Validators.required],
+          estado_transporte: ['',],
         })
         this.aRouter.params.subscribe(params => {
           this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
@@ -74,7 +74,7 @@ export class TransportesComponent implements OnInit {
       const ciudad = this.formTransportes.value.ciudad_cliente;
 
       const ciudadExistente = this.listTransportes.find(transporte => transporte.ciudad_cliente  === ciudad);
-      if (!ciudadExistente) {
+      if (ciudadExistente) {
         this.messageService.add({
           severity: 'error',
           summary: 'Error al crear nuevo transporte',

@@ -15,4 +15,27 @@
     background-color: #f2f2f2;
 }
 
+.input-field {
+    width: 100%;
+    max-width: 100%;
+    pointer-events: none;
+    background-color: #f4f4f4;
+    caret-color: transparent;
+}
 
+.textInput {
+    margin-top: 1.5%;
+}
+
+.placeholder-message {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Evita que el span interfiera con la interacción del usuario */
+}
+
+.p-dropdown:focus + .placeholder-message,
+.p-dropdown:not(.ng-empty) + .placeholder-message {
+    display: none; /* Oculta el mensaje cuando el dropdown está enfocado o no está vacío */
+}

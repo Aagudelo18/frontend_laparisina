@@ -10,7 +10,7 @@
             <ng-template pTemplate>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <span class="enlaceMenu mr-8 ml-8">Inicio</span>     
+                        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>     
                     </div>
                 </div>
                 <div class="formgrid grid">
@@ -23,25 +23,25 @@
                         <span class="enlaceMenu mr-8 ml-8">Mis Pedidos</span>     
                     </div>
                 </div>
-                <div *ngIf="verificarUsuario() && verificarUsuario2()" class="formgrid grid">
+                <div *ngIf="verificarUsuario() && verificarUsuario2()" [routerLink]="['/pedidoListar']" class="formgrid grid">
                     <div class="field col">
-                        <span class="enlaceMenu mr-8 ml-8">Perfil</span>     
+                        <span class="enlaceMenu mr-8 ml-8"  [routerLink]="['/pages/perfil']">Perfil</span>     
                     </div>
                 </div>
             </ng-template>
         </p-overlayPanel>
 
-    <a class="" routerLink="/catalogo-cliente">
-        <img routerLink="/catalogo-cliente" src="assets/layout/images/Logo-parisina-Login-menú.png" alt="logo"
+    <a class="" routerLink="/">
+        <img routerLink="/" src="assets/layout/images/Logo-parisina-Login-menú.png" alt="logo"
         style="width: 140px; height: auto;">
     </a>
 
     
     <div *ngIf="verificarUsuario() && innerWidth >= 991">
-        <span class="enlaceMenu mr-8 ml-8">Inicio</span>
+        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/']">Inicio</span>
         <span class="enlaceMenu mr-8" [routerLink]="['/catalogo-cliente']">Catálogo</span>
-        <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Pedidos</span>
-        <span *ngIf="verificarUsuario() && verificarUsuario2()" class="enlaceMenu mr-8">Perfil</span>
+        <span *ngIf="verificarUsuario() && verificarUsuario2()" [routerLink]="['/pedidoListar']" class="enlaceMenu mr-8">Pedidos</span>
+        <span *ngIf="verificarUsuario() && verificarUsuario2()" [routerLink]="['/pages/perfil']" class="enlaceMenu mr-8">Perfil</span>
     </div>
     
     <button *ngIf="verificarUsuario() && innerWidth < 991" type="button" icon="pi pi-shopping-cart" 
@@ -65,7 +65,7 @@
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
                             <ng-template pTemplate="left">
-                                <button pButton type="button" [routerLink]="['/pedidoCliente']" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
+                                <button pButton type="button" (click)="hacerPedido()" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
                             </ng-template>
                     
                             <ng-template pTemplate="right">
@@ -106,7 +106,7 @@
                     </ng-template>
                 </p-overlayPanel>
 
-        <button class="p-link layout-topbar-button" (click)="perfil()" pTooltip="Ver mi perfil" tooltipPosition="left">
+        <button *ngIf="!verificarUsuario()" class="p-link layout-topbar-button" (click)="perfil()" pTooltip="Ver mi perfil" tooltipPosition="left">
             <i class="pi pi-user"></i>
             <span>Mi perfil</span>
         </button>
@@ -114,10 +114,14 @@
             <i class="pi pi-sign-out"></i>
             <span>Cerrar sesión</span>
         </button>
+        <button *ngIf="!hasToken()" class="p-link layout-topbar-button" routerLink="/auth/login" pTooltip="Iniciar Sesión" tooltipPosition="left">
+            <i class="pi pi-sign-in"></i>
+            <span>Iniciar sesión</span>
+        </button>
     </div>
 </div>
 
-<p-dialog [(visible)]="confirmarCerrarSesionDialog" header="Confirmar para cerrar la sesión" [modal]="true"
+<p-dialog [(visible)]="confirmarCerrarSesionDialog" header="Confirmar para cerrar la sesión" [draggable]="false" [modal]="true"
     [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
