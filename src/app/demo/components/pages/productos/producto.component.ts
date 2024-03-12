@@ -158,7 +158,7 @@ export class ProductoComponent implements OnInit {
 
         formData.append('codigo_producto', this.formProducto.get('codigo_producto').value);
         formData.append('nombre_producto', nombreProducto);
-        formData.append('nombre_categoria_producto', descripcionProducto);
+        formData.append('nombre_categoria_producto', this.formProducto.get('nombre_categoria_producto').value);
         formData.append('descripcion_producto', this.formProducto.get('descripcion_producto').value);
         formData.append('precio_ico', this.formProducto.get('precio_ico').value);
         formData.append('precio_por_mayor_ico', this.formProducto.get('precio_por_mayor_ico').value);
