@@ -102,7 +102,7 @@
                     style="color: red;">El nombre debe tener al menos 2 caracteres.</span>
                 <span
                     *ngIf="formularioUsuario.get('nombre_usuario')?.hasError('maxlength') && formularioUsuario.get('nombre_usuario')?.touched"
-                    style="color: red;">El nombre no puede tener más de 20 caracteres.</span>
+                    style="color: red;">El nombre no puede tener más de 25 caracteres.</span>
                 <span
                     *ngIf="formularioUsuario.get('nombre_usuario')?.hasError('caracteresEspeciales') && formularioUsuario.get('nombre_usuario')?.touched"
                     style="color: red;">El nombre no puede contener caracteres especiales.</span>
@@ -124,42 +124,29 @@
             </div>
 
             <div class="field mt-4" style="margin-bottom: 15px;">
-                <span class="p-float-label">
+                <span class="p-float-label" style="position: relative;">
                     <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
-                    <label for="contrasena_usuario">Contraseña<span *ngIf="isRequired"
-                            style="color: red;">*</span></label>
+                    <label for="contrasena_usuario">Contraseña<span *ngIf="isRequired" style="color: red;">*</span></label>
+                    <!-- Botón para mostrar/ocultar contraseña -->
+                    <i class="pi" (click)="togglePasswordVisibility('contrasena_usuario')" [ngClass]="{'pi-eye': !showPassword, 'pi-eye-slash': showPassword}" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                 </span>
-                <span
-                    *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('required') && formularioUsuario.get('contrasena_usuario')?.touched"
-                    style="color: red;">La
-                    contraseña
-                    es requerida.</span>
-                <span *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')" style="color: red;">La
-                    contraseña debe
-                    tener al menos 6 caracteres.</span>
-                <span
-                    *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('pattern') && formularioUsuario.get('contrasena_usuario')?.touched"
-                    style="color: red;">
-                    La contraseña debe contar con una mayúscula, una minúscula y un número.
-                </span>
+                <span *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('required') && formularioUsuario.get('contrasena_usuario')?.touched" style="color: red;">La contraseña es requerida.</span>
+                <span *ngIf="formularioUsuario.get('contrasena_usuario').hasError('minlength')" style="color: red;">La contraseña debe tener al menos 6 caracteres.</span>
+                <span *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('pattern') && formularioUsuario.get('contrasena_usuario')?.touched" style="color: red;">La contraseña debe contar con una mayúscula, una minúscula y un número.</span>
+                <span *ngIf="formularioUsuario.get('contrasena_usuario')?.hasError('maxlength') && formularioUsuario.get('contrasena_usuario')?.touched" style="color: red;">La contraseña no puede tener más de 15 caracteres.</span>
             </div>
 
-            <div class="field mt-4">
+            <div class="field mt-4" style="position: relative;">
                 <span class="p-float-label">
-                    <input type="password" pInputText id="confirmar_contrasena"
-                        formControlName="confirmar_contrasena" />
-                    <label for="confirmar_contrasena">Confirmar Contraseña<span *ngIf="isRequired"
-                            style="color: red;">*</span></label>
+                    <input type="password" pInputText id="confirmar_contrasena" formControlName="confirmar_contrasena" />
+                    <label for="confirmar_contrasena">Confirmar Contraseña<span *ngIf="isRequired" style="color: red;">*</span></label>
                 </span>
-                <span
-                    *ngIf="formularioUsuario.get('confirmar_contrasena')?.hasError('required') && formularioUsuario.get('confirmar_contrasena')?.touched"
-                    style="color: red;">Confirmación de contraseña requerida.</span>
-                <span *ngIf="formularioUsuario.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no
-                    coinciden.</span>
-                <span
-                    *ngIf="formularioUsuario.get('confirmar_contrasena')?.value !== formularioUsuario.get('contrasena_usuario')?.value && formularioUsuario.get('confirmar_contrasena')?.touched"
-                    style="color: red;">Las contraseñas no coinciden.</span>
+                <i class="pi" (click)="togglePasswordVisibility2('confirmar_contrasena')" [ngClass]="{'pi-eye': !showPassword2, 'pi-eye-slash': showPassword2}" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                <span *ngIf="formularioUsuario.get('confirmar_contrasena')?.hasError('required') && formularioUsuario.get('confirmar_contrasena')?.touched" style="color: red;">Confirmación de contraseña requerida.</span>
+                <span *ngIf="formularioUsuario.hasError('contrasenaNoCoincide')" style="color: red;">Las contraseñas no coinciden.</span>
+                <span *ngIf="formularioUsuario.get('confirmar_contrasena')?.value !== formularioUsuario.get('contrasena_usuario')?.value && formularioUsuario.get('confirmar_contrasena')?.touched" style="color: red;">Las contraseñas no coinciden.</span>
             </div>
+            
 
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                 <button pButton pRipple label="Cancelar" class="p-button-text" (click)="usuarioDialog = false"></button>
