@@ -34,6 +34,43 @@ export class NewEmpleadosComponent implements OnInit {
   confirmacionUsuarioSubject = new Subject<boolean>();
   identificacionEmpleado: string = '';
   empleadoExistente: boolean = false;
+
+  epsOptions = [
+    'COOSALUD EPS-S',
+    'NUEVA EPS',
+    'MUTUAL SER',
+    'ALIANSALUD EPS',
+    'SALUD TOTAL EPS S.A.',
+    'EPS SANITAS',
+    'EPS SURA',
+    'FAMISANAR',
+    'SERVICIO OCCIDENTAL DE SALUD EPS SOS',
+    'SALUD MIA',
+    'COMFENALCO VALLE',
+    'COMPENSAR EPS',
+    'EPM - EMPRESAS PUBLICAS DE MEDELLIN',
+    'FONDO DE PASIVO SOCIAL DE FERROCARRILES NACIONALES DE COLOMBIA',
+    'CAJACOPI ATLANTICO',
+    'CAPRESOCA',
+    'COMFACHOCO',
+    'COMFAORIENTE',
+    'EPS FAMILIAR DE COLOMBIA',
+    'ASMET SALUD',
+    'EMSSANAR E.S.S.',
+    'CAPITAL SALUD EPS-S',
+    'SAVIA SALUD EPS',
+    'DUSAKAWI EPS',
+    'ASOCIACION INDIGENA DEL CAUCA EPSI',
+    'ANAS WAYUU EPSI',
+    'MALLAMAS EPSI',
+    'PIJAOS SALUD EPSI',
+    'SALUD BÓLIVAR EPS SAS',
+    'NO APLICA'
+  ];
+
+  // En tu componente TypeScript
+posiblesParentescos: string[] = ['Padre', 'Madre', 'Hijo', 'Hija', 'Abuelo', 'Abuela', 'Otro'];
+
   
   empleado: any = {
     
