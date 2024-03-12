@@ -50,6 +50,7 @@ export class VentasComponent implements OnInit {
       precio_total_venta: [''],
       subtotal_venta: [''],
       metodo_pago: [''],
+      estado_pago: [''],
       valor_domicilio: [''],
       nit_empresa_cliente: [''],
       nombre_juridico: [''],
@@ -104,6 +105,7 @@ export class VentasComponent implements OnInit {
 
   getVentaDetalle(id: string) {
     this.ventasService.getVentaDetalle(id).subscribe((data) => {
+      let aumento = data.subtotal_venta * 0.08;
       this.formVentas.setValue({
         documento_cliente: data.documento_cliente,
         tipo_cliente: data.tipo_cliente,
@@ -119,8 +121,9 @@ export class VentasComponent implements OnInit {
         precio_total_venta: data.precio_total_venta,
         subtotal_venta: data.subtotal_venta,
         metodo_pago: data.metodo_pago,
+        estado_pago: data.estado_pago,
         valor_domicilio: data.valor_domicilio,
-        aumento_empresa: data.aumento_empresa || '',
+        aumento_empresa: aumento || '',
         nit_empresa_cliente: data.nit_empresa_cliente || '',
         nombre_juridico: data.nombre_juridico || '',
         detalle_pedido: data.detalle_pedido || []
@@ -129,11 +132,13 @@ export class VentasComponent implements OnInit {
   }
 
   esPersonaNatural() {
-    return this.formVentas.get('tipo_cliente').value === 'Persona natura';
+    return this.formVentas.get('tipo_cliente').value === 'Persona natural';
   }
 
   esEmpresa() {
-    return this.formVentas.get('tipo_cliente').value === 'Empresa';
+    return (
+      this.formVentas.get('tipo_cliente').value === 'Persona jurídica'
+    );
   }
 
   cargarPedidos() {
