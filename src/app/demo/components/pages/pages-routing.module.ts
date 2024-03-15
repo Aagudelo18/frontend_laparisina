@@ -5,14 +5,12 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/auth.guard'; // Im
 @NgModule({
     imports: [RouterModule.forChild([
         { path: 'crud', loadChildren: () => import('./crud/crud.module').then(m => m.CrudModule) },
-        { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard] },
-        { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule), canActivate: [AuthGuard] },
+        { path: 'roles', loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard], data: { moduleName: 'Roles' } },
+        { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule), canActivate: [AuthGuard], data: { moduleName: 'Orden de produccion' } },
         {
-            path: 'usuarios',
-            loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
-            canActivate: [AuthGuard] // Aplica el guard a la ruta que necesita protección
+            path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule), canActivate: [AuthGuard], data: { moduleName: 'Usuarios' } // Aquí especificamos el nombre del módulo
         },
-        
+
         { path: 'clientes', loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule), canActivate: [AuthGuard] },
         { path: 'clientes', loadChildren: () => import('./inicio/inicio.module').then(m => m.InicioModule), canActivate: [AuthGuard] },
         { path: 'transportes', loadChildren: () => import('./transportes/transportes.module').then(m => m.TransportesModule), canActivate: [AuthGuard] },
@@ -22,19 +20,18 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/auth.guard'; // Im
         { path: 'pedidos', loadChildren: () => import('./pedidos/list-pedidos/list-pedidos.module').then(m => m.ListPedidosModule), canActivate: [AuthGuard] },
         { path: 'pedido-cliente', loadChildren: () => import('./pedido-cliente/pedido-cliente.module').then(m => m.PedidoClienteModule), canActivate: [AuthGuard] },
         { path: 'pedido-list', loadChildren: () => import('./pedido-list/pedido-list.module').then(m => m.PedidoListModule), canActivate: [AuthGuard] },
-        { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard] },
+        { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard], data: { moduleName: 'Ventas' } },
         { path: 'perfil', loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule), canActivate: [AuthGuard] },
         { path: 'new-pedidos', loadChildren: () => import('./pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule), canActivate: [AuthGuard] },
-        { path: 'empleados', loadChildren: () => import('./empleados/list-empleados/list-empleados.module').then(m => m.ListEmpleadosModule)},
-        { path: 'new-empleados', loadChildren: () => import('./empleados/new-empleados/new-empleados.module').then(m => m.NewEmpleadosModule)},
+        { path: 'empleados', loadChildren: () => import('./empleados/list-empleados/list-empleados.module').then(m => m.ListEmpleadosModule), canActivate: [AuthGuard], data: { moduleName: 'Empleados' } },
+        { path: 'new-empleados', loadChildren: () => import('./empleados/new-empleados/new-empleados.module').then(m => m.NewEmpleadosModule), canActivate: [AuthGuard], data: { moduleName: 'Empleados' } },
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule), canActivate: [AuthGuard] },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule), canActivate: [AuthGuard] },
         //{ path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard] },
         { path: 'empty', loadChildren: () => import('./empty/emptydemo.module').then(m => m.EmptyDemoModule) },
         { path: 'timeline', loadChildren: () => import('./timeline/timelinedemo.module').then(m => m.TimelineDemoModule) },
-        { path: 'ordenP', loadChildren: () => import('./ordenP/ordenP.module').then(m => m.OrdenDeProduccionModule)},
 
-      
+
 
         { path: '**', redirectTo: '/notfound' }
 

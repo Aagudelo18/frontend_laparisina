@@ -37,7 +37,7 @@ import { Categoria } from './categoria.model';
       // Crear el encabezado con el token y el rol
       const headers = {
         'token': token || '',
-        'rol': rol || ''
+        'rol': rol || '',
       };
       return this.http.post<Object>(`${this.apiUrl}/categorias`,data, {headers})
     }
