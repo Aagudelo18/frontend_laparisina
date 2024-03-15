@@ -18,15 +18,42 @@ import { Producto } from './producto.model';
     }
 
     crearProducto(data : FormData): Observable<Object>{
-      return this.http.post<Object>(`${this.apiUrl}/productos`,data)
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'token': token || '',
+        'rol': rol || ''
+      };
+      return this.http.post<Object>(`${this.apiUrl}/productos`,data, {headers})
     }
 
     actualizarProducto(id:string, data : FormData): Observable<Object>{
-      return this.http.put<Object>(`${this.apiUrl}/productos/${id}`,data)
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'token': token || '',
+        'rol': rol || ''
+      };
+      return this.http.put<Object>(`${this.apiUrl}/productos/${id}`,data, {headers})
     }
   
     actualizarEstadoProducto(id:string): Observable<void>{
-      return this.http.put<void>(`${this.apiUrl}/producto-estado/${id}`,{})
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'token': token || '',
+        'rol': rol || ''
+      };
+      return this.http.put<void>(`${this.apiUrl}/producto-estado/${id}`,{}, {headers})
     }
     
   }

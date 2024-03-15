@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { Categoria } from './categoria.model';
 
 @Injectable()
@@ -36,11 +36,10 @@ import { Categoria } from './categoria.model';
 
       // Crear el encabezado con el token y el rol
       const headers = {
-        'Content-Type': 'application/json',
         'token': token || '',
         'rol': rol || ''
       };
-      return this.http.post<Object>(`${this.apiUrl}/categorias`,data, { headers })
+      return this.http.post<Object>(`${this.apiUrl}/categorias`,data, {headers})
     }
 
     actualizarCategoria(id:string, data : FormData): Observable<Object>{
@@ -50,12 +49,38 @@ import { Categoria } from './categoria.model';
 
       // Crear el encabezado con el token y el rol
       const headers = {
-        'Content-Type': 'application/json',
         'token': token || '',
         'rol': rol || ''
       };
-      return this.http.put<Object>(`${this.apiUrl}/categorias/${id}`,data, { headers})
+
+      
+      return this.http.put<Object>(`${this.apiUrl}/categorias/${id}`,data, {headers})
     }
+
+    // actualizarCategoria(id: string, data: FormData): Observable<Object> {
+    //   // Obtener el token y el rol del local storage
+    //   const token = localStorage.getItem('token');
+    //   const rol = localStorage.getItem('rol');
+  
+    //   // Crear el encabezado con el token y el rol
+    //   const headers = new HttpHeaders({
+    //     'token': token || '',
+    //     'rol': rol || ''
+    //   });
+  
+    //   // Configurar el tipo de contenido para FormData
+    //   headers.set('Content-Type', 'multipart/form-data');
+  
+    //   return this.http.put<Object>(`${this.apiUrl}/categorias/${id}`, data, { headers }).pipe(
+    //     catchError((error: any) => {
+    //       console.error('Error al actualizar la categoría:', error);
+    //       throw error;
+    //     })
+    //   );
+    // }
+  
+  
+
   
     actualizarEstadoCategoria(id:string): Observable<void>{
       // Obtener el token y el rol del local storage

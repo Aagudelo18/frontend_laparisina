@@ -12,6 +12,7 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { PagesModule } from './demo/components/pages/pages.module';
+import { ButtonModule } from 'primeng/button';
 
 
 
@@ -26,6 +27,7 @@ import { PagesModule } from './demo/components/pages/pages.module';
     imports: [
         AppRoutingModule,
         AppLayoutModule,
+        ButtonModule
 
     ],
     providers: [

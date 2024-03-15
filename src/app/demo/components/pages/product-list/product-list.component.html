@@ -251,20 +251,23 @@
                             <span class="font-semibold text-xl">Precio: <span style="font-weight: normal;">
                                 {{tipoCliente === 'Persona jurídica' ? (producto.precio_por_mayor_ico | number) : (producto.precio_ico | number)}}</span></span>
                         </div>
-                        <div class="flex align-items-center">
-                            <div class="field col mb-0">
+                        <div class="flex align-items-center justify-content-between mb-2">
+                            <div class="formgrid grid col">
                                 <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
-                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [min]="1" [max]="100" [ngStyle]="{ 'height.px': 34 }"
+                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [min]="1" [ngStyle]="{ 'height.px': 34 }"
                                  (ngModelChange)="verificarLimite($event)"></p-inputNumber>
-                                 <!-- <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100"
-                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [ngStyle]="{ 'height.px': 34 }"> </p-inputNumber> -->
                             </div>
                             
                         </div>
                         <!-- <div *ngIf="limiteProducto" class="mensaje-error mt-0 mb-2">
                             Compra máxima 100 unidades.
                         </div> -->
-                        <span class="mt-0 mb-2" *ngIf="limiteProducto" style="color: red;"> Compra máxima 100 unidades.</span>
+                        <span class="mt-0 mb-2" *ngIf="limiteProducto" style="color: red;">
+                            Para compras al por mayor comunícate con nosotros.
+                            <a href="https://api.whatsapp.com/send?phone=573193192433&text=Hola,%20deseo%20mas%20informacion" target="_blank">
+                                <i style="color: green; font-size: 20px;" class="pi pi-whatsapp pi-10x"></i>
+                            </a>
+                        </span>
                         
                         <div class="flex align-items-center justify-content-between">
                             <div class="formgrid grid">

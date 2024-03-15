@@ -110,7 +110,7 @@ export class ProductComponent implements OnInit {
   //Variables para controlar dialogs
   detalleProductoDialog: boolean = false;
   detalleMenuDelDiaDialog: boolean = false;
-  anchoDialogDetalleProducto: string = '80%';
+  anchoDialogDetalleProducto: string = '60%';
 
 
 
@@ -259,7 +259,7 @@ export class ProductComponent implements OnInit {
 
   detalleMenuDelDia(product: Product) {
     // Verifica el ancho de la ventana del navegador
-    const anchoDialog = window.innerWidth < 960 ? '90%' : '80%';
+    const anchoDialog = window.innerWidth < 960 ? '90%' : '70%';
 
     // Establece el ancho del diálogo
     this.anchoDialogDetalleProducto = anchoDialog;
@@ -350,7 +350,7 @@ export class ProductComponent implements OnInit {
   // }
 
   verificarLimite(nuevoValor: number): void {
-    this.limiteProducto = nuevoValor >= 100;
+    this.limiteProducto = nuevoValor >= 50;
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------
