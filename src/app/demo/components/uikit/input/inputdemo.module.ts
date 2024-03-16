@@ -25,8 +25,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SliderModule } from 'primeng/slider';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputGroupModule } from 'primeng/inputgroup';
+
 @NgModule({
 	imports: [
 		CommonModule,
@@ -53,9 +52,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 		ListboxModule,
 		SelectButtonModule,
 		CheckboxModule,
-		ButtonModule,
-		InputGroupModule,
-		InputGroupAddonModule
+		ButtonModule
 	],
 	declarations: [InputDemoComponent]
 })
