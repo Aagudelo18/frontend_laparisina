@@ -6,7 +6,7 @@
         <div class="field col-12 md:col-3">
             <span class="p-float-label">
                 <input
-                    disabled
+                    readonly="true"
                     type="text"
                     id="nombre_contacto"
                     pInputText
@@ -22,7 +22,7 @@
         >
             <span class="p-float-label">
                 <input
-                    disabled
+                    readonly="true"
                     type="number"
                     id="documento_cliente"
                     pInputText
@@ -38,6 +38,7 @@
         >
             <span class="p-float-label">
                 <input
+                readonly="true"
                     type="text"
                     id="nit_empresa_cliente"
                     pInputText
@@ -53,6 +54,7 @@
         >
             <span class="p-float-label">
                 <input
+                readonly="true"
                     type="text"
                     id="nombre_juridico"
                     pInputText
@@ -400,7 +402,19 @@
                         ></p-inputNumber>
                     </span>
                 </div>
-            </div>
+            </div>     
+            <div class="field col-6 md-3" *ngIf="pedido.get('tipo_cliente').value == 'Persona jurídica'">
+                <div class="input-label-container">
+                    <label for="aumento_empresa" class="custom-label">Aumento Empresa </label>
+                    <span class="p-float-label">
+                        <p-inputNumber
+                        inputId="aumento_empresa"
+                        [formControl]="pedido.get('aumento_empresa')"
+                        readonly="true"
+                    ></p-inputNumber> 
+                    </span>
+                </div>
+            </div>  
         </div>
         
         <div class="my-2">
