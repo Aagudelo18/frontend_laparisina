@@ -246,7 +246,7 @@ export class ProductComponent implements OnInit {
   //función para cerrar un dialog y limpiar el fileUpload de crear producto
   inicioMenuDelDia() {
     this.productService.getListProducts().subscribe((data) => {
-      this.menuDelDia = data.filter(producto => producto.nombre_producto === 'Croissant' && producto.estado_producto === true);
+      this.menuDelDia = data.filter(producto => producto.nombre_producto === 'Menú del día' && producto.estado_producto === true);
       
       this.producto = this.menuDelDia.length > 0 ? this.menuDelDia[0] : null;
       if (this.producto) {
@@ -259,7 +259,7 @@ export class ProductComponent implements OnInit {
 
   detalleMenuDelDia(product: Product) {
     // Verifica el ancho de la ventana del navegador
-    const anchoDialog = window.innerWidth < 960 ? '90%' : '60%';
+    const anchoDialog = window.innerWidth < 960 ? '90%' : '70%';
 
     // Establece el ancho del diálogo
     this.anchoDialogDetalleProducto = anchoDialog;
@@ -350,7 +350,7 @@ export class ProductComponent implements OnInit {
   // }
 
   verificarLimite(nuevoValor: number): void {
-    this.limiteProducto = nuevoValor >= 100;
+    this.limiteProducto = nuevoValor >= 50;
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------

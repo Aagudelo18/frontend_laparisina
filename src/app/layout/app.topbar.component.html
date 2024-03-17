@@ -65,7 +65,8 @@
                     <ng-template pTemplate>
                         <p-toolbar styleClass="mb-4">
                             <ng-template pTemplate="left">
-                                <button pButton type="button" (click)="hacerPedido()" label="Hacer pedido" class="p-button-text p-button-lg ml-4"></button>
+                                <button pButton type="button" (click)="hacerPedido()" label="Hacer pedido" 
+                                class="p-button-outlined ml-4 p-button-rounded p-button-raised p-button-help"></button>
                             </ng-template>
                     
                             <ng-template pTemplate="right">
@@ -97,8 +98,10 @@
                                         pButton
                                         pRipple
                                         icon="pi pi-times"
-                                        class="p-button-rounded p-button-danger mr-2"
+                                        class="p-button-rounded p-button-danger p-button-sm mr-2"
                                         (click)="eliminarProductoCarrito(product)"
+                                        pTooltip="Vaciar producto del carrito"
+                                        tooltipPosition="bottom"
                                     ></button></td>
                                 </tr>
                             </ng-template>

@@ -25,7 +25,7 @@ export class AppMenuComponent implements OnInit {
         let rol: any = localStorage.getItem('rol');
         
 
-        if (rol == 'Super Admin'){
+        if (rol === 'Super Admin' || rol === 'Administrador'){
             this.model = [
                 {
                     label: 'Menú',

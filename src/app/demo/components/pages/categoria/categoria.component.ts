@@ -163,7 +163,6 @@ export class CategoriaComponent implements OnInit {
             summary: 'Imagen cargada exitosamente',
             life: 3000
           });
-          console.log('Verificar: ', this.file);
         } else {
           this.fileSelected = false;
           this.messageService.add({
