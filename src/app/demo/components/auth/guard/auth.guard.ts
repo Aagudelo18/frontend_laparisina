@@ -3,19 +3,18 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { AuthService } from './auth.guard.service';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
-import { MessageService } from 'primeng/api';
 import { Roles } from '../../pages/roles/roles.model';
 import { Usuario } from '../../pages/usuarios/usuarios.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   currentUser: any;
   usuarioEncontrado: Usuario;
   usuarios: Usuario[] = [];
 
-  constructor(private router: Router, private authService: AuthService, private messageService: MessageService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     const token = localStorage.getItem('token');
@@ -42,6 +41,7 @@ export class AuthGuard implements CanActivate {
             console.log(`El usuario tiene los permisos necesarios para acceder al módulo ${moduleName}. Permitiendo acceso.`);
             return of(true);
           } else {
+            alert(`El usuario no tiene los permisos necesarios para acceder al módulo ${moduleName}. Denegando acceso.`)
             console.log(`El usuario no tiene los permisos necesarios para acceder al módulo ${moduleName}. Denegando acceso.`);
             this.router.navigate(['/error']);
             return of(false);
