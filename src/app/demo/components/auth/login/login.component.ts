@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+
     }
     //Metodo promesa Esperar a terminar
     async getRol(userRole: any, token: any): Promise<string> {
@@ -105,6 +106,8 @@ export class LoginComponent implements OnInit {
                 }
             );
         }
+
+        this.actualizarCarritoSegunTipoCliente();
     }
 
     registro() {
@@ -113,5 +116,9 @@ export class LoginComponent implements OnInit {
 
     recuperarContrasena() {
         this.router.navigate(['/auth/recuperar-contrasena']); // Navegar a la vista de recuperar contraseña al hacer clic en el enlace
+    }
+
+    actualizarCarritoSegunTipoCliente() {
+        this.layoutService.actualizarCarritoAlIniciarSesion();
     }
 }

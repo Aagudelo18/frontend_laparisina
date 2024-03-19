@@ -150,6 +150,7 @@ export class LayoutService {
         if (carritoGuardado.length > 0) {
           this.productosCarrito = carritoGuardado;
         }
+        
     
         // Actualizar el BehaviorSubject con el carrito inicial
         this._products.next(this.productosCarrito);
@@ -192,7 +193,7 @@ export class LayoutService {
 
         console.log('El producto ya está en el carrito');
         }
-        // window.location.reload();
+        window.location.reload();
         this._products.next(this.productosCarrito)
     }
 
@@ -228,6 +229,25 @@ export class LayoutService {
     obtenerCarrito(): any[] {
         const carrito = localStorage.getItem(this.claveCarritoProductos);
         return carrito ? JSON.parse(carrito) : [];
+    }
+
+    actualizarCarritoAlIniciarSesion() {
+        if (this.tipoCliente === 'Persona jurídica') {
+            // Modificar el carrito según las especificaciones
+            this.productosCarrito.forEach(producto => {
+                producto.precio_total_producto = producto.cantidad_producto * producto.precio_por_mayor_ico;
+            });
+
+            this.guardarCarrito(this.productosCarrito)
+        }
+    }
+
+    actualizarCarritoAlCerrarSesion() {
+        this.productosCarrito.forEach(producto => {
+            producto.precio_total_producto = producto.cantidad_producto * producto.precio_ico;
+        });
+
+        this.guardarCarrito(this.productosCarrito)
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------
