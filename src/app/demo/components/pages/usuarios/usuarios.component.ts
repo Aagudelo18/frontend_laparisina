@@ -300,7 +300,6 @@ export class UsuariosComponent implements OnInit {
             detail: 'Usuario Editado',
             life: 3000
           });
-          console.log('Los datos se han actualizado correctamente.', respuesta);
           this.getListUsuarios();
           this.getListRoles();
           this.editarUsuarioDialog = false;

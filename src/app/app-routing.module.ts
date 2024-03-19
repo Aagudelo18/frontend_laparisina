@@ -39,7 +39,7 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/dashboard/dashboard.module'
-                                ).then((m) => m.DashboardModule),
+                                ).then((m) => m.DashboardModule), canActivate: [AuthGuard], data: { moduleName: 'Dashboard'}
                         },
                         {
                             path: 'uikit',
@@ -74,7 +74,7 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/empleados/new-empleados/new-empleados.module'
-                                ).then((m) => m.NewEmpleadosModule),
+                                ).then((m) => m.NewEmpleadosModule), canActivate: [AuthGuard], data: { moduleName: 'Empleados' }
                         },
                         {
                             path: 'list-empleados',

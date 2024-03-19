@@ -39,7 +39,7 @@
                             Nombre Cliente
                             <p-sortIcon field="nombre_contacto"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="name">Dirección</th>
+                        <th pSortableColumn="direccion_cliente">Dirección</th>
                         <th pSortableColumn="fecha_entrega_pedido">
                             Fecha Entrega<p-sortIcon
                                 field="fecha_entrega_pedido"
@@ -88,14 +88,6 @@
                                     pTooltip="Ver"
                                 ></button
                                 >
-                                <button *ngIf="pedido.estado_pedido === 'Pendiente'"
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-times"
-                                    class="p-button-rounded p-button-danger "
-                                    (click)="abrirModalAnular(pedido._id)"
-                                    pTooltip="Anular"
-                                ></button>
                             </div>
                         </td>
                     </tr>
@@ -105,37 +97,6 @@
        
     </p-tabView>
 
-    <!-- Modal para confirmar cambiar el estado del pedido a anulado -->
-    <p-dialog
-    [(visible)]="cambiarEstadoPDialogAnular"
-    header="Cambiar Estado del Pedido"
-    [modal]="true"
-    [style]="{ width: '450px' }"
-    (onHide)="cambiarEstadoPDialogAnular = false"
->
-    <div class="flex align-items-center justify-content-center">
-        <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
-        <span>¿Está seguro de que desea anular el pedido?</span>
-    </div>
-    <ng-template pTemplate="footer">
-        <button
-            pButton
-            pRipple
-            icon="pi pi-times"
-            class="p-button-text"
-            label="No"
-            (click)="onNoButtonClickAnular()"
-        ></button>
-        <button
-            pButton
-            pRipple
-            icon="pi pi-check"
-            class="p-button-text"
-            label="Si"
-            (click)="onYesButtonClickAnular()"
-        ></button>
-    </ng-template>
-    </p-dialog>
 
     <!-- Modal para ver el detalle del pedido -->
     <p-dialog
@@ -150,20 +111,13 @@
         <div class="formgrid grid">
             <div class="field col-2 textInput">
                 <span class="p-float-label">
-                    <input
-                        [readonly]="true"
-                        style="
+                    <input [readonly]="true" style="
                             overflow: auto;
                             width: 100%;
                             pointer-events: none;
                             background-color: #f4f4f4;
                             caret-color: transparent;
-                        "
-                        formControlName="tipo_cliente"
-                        id="tipo_cliente"
-                        type="text"
-                        pInputText
-                    />
+                        " formControlName="tipo_cliente" id="tipo_cliente" type="text" pInputText />
                     <label for="tipo_cliente">tipo cliente</label>
                 </span>
             </div>
@@ -181,10 +135,10 @@
                         type="text"
                         pInputText
                     />
-                    <label for="nombre_contacto">Nombre</label>
+                    <label for="nombre_contacto">Nombre Cliente</label>
                 </span>
             </div>
-            <div class="field col-2 textInput" *ngIf="esPersonaNatural()">
+            <div class="field col-2 textInput"*ngIf="tipoCliente === 'Persona natural'">
                 <span class="p-float-label">
                     <input
                         [readonly]="true"
@@ -201,7 +155,7 @@
                     <label for="quien_recibe">Nombre Quien Recibe</label>
                 </span>
             </div>
-            <div class="field col-2 textInput" *ngIf="esEmpresa()">
+            <div class="field col-2 textInput"  *ngIf="tipoCliente === 'Persona jurídica'">
                 <span class="p-float-label">
                     <input
                         [readonly]="true"
@@ -219,7 +173,7 @@
                 </span>
             </div>
 
-            <div class="field col-2 textInput" *ngIf="esEmpresa()">
+            <div class="field col-2 textInput"   *ngIf="tipoCliente === 'Persona jurídica'">
                 <span class="p-float-label">
                     <input
                         [readonly]="true"
@@ -395,13 +349,7 @@
                 </span>
             </div>
 
-            <div
-                class="field col-2 textInput"
-                *ngIf="
-                    formPedidos.get('estado_pedido').value == 'Enviado' ||
-                    formPedidos.get('estado_pedido').value == 'Entregado'
-                "
-            >
+            <div class="field col-2 textInput">
                 <span class="p-float-label">
                     <input
                         [readonly]="true"
@@ -418,46 +366,25 @@
                     <label for="tipo_entrega">Tipo de Entrega</label>
                 </span>
             </div>
-            <div
-                class="field col-2 textInput"
-                *ngIf="
-                    formPedidos.get('estado_pedido').value == 'Enviado' ||
-                    formPedidos.get('estado_pedido').value == 'Entregado'
-                "
-            >
-                <span class="p-float-label">
-                    <input
-                        [readonly]="true"
-                        style="
-                            pointer-events: none;
-                            background-color: #f4f4f4;
-                            caret-color: transparent;
-                        "
-                        formControlName="domiciliario"
-                        id="domiciliario"
-                        type="text"
-                        pInputText
-                    />
-                    <label for="domiciliario">domiciliario</label>
-                </span>
-            </div>
-            <div class="field col-2 textInput">
-                <span class="p-float-label">
-                    <input
-                        [readonly]="true"
-                        style="
-                            pointer-events: none;
-                            background-color: #f4f4f4;
-                            caret-color: transparent;
-                        "
-                        formControlName="tipo_entrega"
-                        id="tipo_entrega"
-                        type="text"
-                        pInputText
-                    />
-                    <label for="tipo_entrega">Tipo de Entrgea</label>
-                </span>
-            </div>
+          
+            <!-- <div 
+            class="field col-2 textInput" *ngIf="
+
+            formPedidos.get('estado_pedido').value == 'Enviado' ||
+            formPedidos.get('estado_pedido').value == 'Entregado'
+        ">
+        <span class="p-float-label">
+            <input [readonly]="true" style="
+                    pointer-events: none;
+                    background-color: #f4f4f4;
+                    caret-color: transparent;
+                " formControlName="domiciliario" 
+                id="domiciliario" 
+                type="text" 
+                pInputText />
+            <label for="domiciliario">domiciliario</label>
+        </span>
+    </div> -->
         </div>
 
         <!-- 
@@ -517,7 +444,7 @@
                     <label for="subtotal_venta">Subtotal Venta</label>
                 </span>
             </div>
-            <div class="field col" *ngIf="esEmpresa()">
+            <div class="field col"  *ngIf="this.formPedidos.get('tipo_cliente').value === 'Persona jurídica'">
                 <span class="p-float-label">
                     <input
                         [readonly]="true"

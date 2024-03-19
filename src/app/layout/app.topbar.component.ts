@@ -64,16 +64,24 @@ export class AppTopBarComponent {
           //   this.cantidad = 0;
           // });
       
-          // this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
-          //   this.eliminarProductoCarrito(event);
-          // });
+          this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
+            this.eliminarProductoCarrito(event);
+          });
           // this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
           //   this.agregarProductoCarrito(event);
           // });
 
         }
+         //-------------------------------------------------------------------------------------------------------------------------------
+  //función calcular precio total del carrito
+  // calcularPrecioTotalCarrito(): void {
+  //   this.totalCarrito = this.productosCarrito.reduce((total, producto) => {
+  //     return total + (producto.precio_total_producto || 0);  // Asegúrate de manejar el caso de que precio_total_producto sea undefined
+  //   }, 0);
+  // }
 
-        
+
+ 
 
   //función de inicialización del componente
   ngOnInit(): void {
@@ -144,6 +152,7 @@ hasToken(): boolean {
         localStorage.removeItem('expirationTime');
 
         this.layoutService.actualizarCarritoAlCerrarSesion();
+        localStorage.removeItem('documento_cliente');
     }
 
     perfil() {

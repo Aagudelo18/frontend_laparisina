@@ -276,9 +276,17 @@ export class ListPedidosComponent implements OnInit {
         // Pasa el pedido al método updatePedido()
         this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
             (response) => {
+                let successMessage = '';
+                if (estado_pedido === 'Pendiente') {
+                    successMessage = 'Cambio de estado a "Tomado" con éxito';
+                } else if (estado_pedido == 'Tomado') {
+                    successMessage = 'El pedido se envió a Orden de Producción con éxito';
+                }
+    
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Cambio de estado con Éxito',
+                    detail: successMessage,
                     life: 5000,
                 });
                 // Actualizar la lista de pedidos
