@@ -22,3 +22,25 @@
 .clear {
     clear: both;
 }
+.custom-toggle .p-button {
+    background-color: #f4f4f4;
+    border: none;
+    height: 30px;
+    width: 60px;
+}
+
+.custom-toggle .p-button .p-button-label {
+    font-size: 12px;
+}
+
+.custom-toggle .p-button .p-button-text {
+    color: #495057;
+}
+
+.custom-toggle .p-button.p-togglebutton-checked {
+    background-color: #007bff;
+}
+
+.custom-toggle .p-button.p-togglebutton-checked .p-button-text {
+    color: #fff;
+}

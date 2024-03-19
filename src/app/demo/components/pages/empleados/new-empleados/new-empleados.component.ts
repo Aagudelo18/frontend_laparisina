@@ -68,8 +68,6 @@ export class NewEmpleadosComponent implements OnInit {
     'NO APLICA'
   ];
 
-  // En tu componente TypeScript
-posiblesParentescos: string[] = ['Padre', 'Madre', 'Hijo', 'Hija', 'Abuelo', 'Abuela', 'Otro'];
 
   
   empleado: any = {
@@ -90,6 +88,7 @@ estado_civil_empleado: '',
 celular_empleado: '',
 correo_electronico: '',
 alergia_empleado: '',
+estado_empleado: true,
 grupo_sanguineo_empleado: '',
 contacto_emergencia: [
   {
@@ -148,6 +147,7 @@ cuenta_bancaria_empleado: '',
       contacto_emergencia: this.formBuilder.array([]), // Puedes inicializarlo como un arreglo vacío o agregar lógica específica aquí
       eps_empleado:['', Validators.required],
       pension_empleado: ['', Validators.required],
+      estado_empleado: ['', Validators.required],
       cuenta_bancaria_empleado: [
         '',
         [
@@ -249,130 +249,50 @@ cuenta_bancaria_empleado: '',
       };
     
     
-    // getEmpleado(numero_identificacion_empleado: string) {
-    //   // Verificar si el documento está vacío
-    //   if (!numero_identificacion_empleado) {
-    //     // Limpiar los valores de los campos relacionados con el empleado
-    //     this.formEmpleados.reset();
-    //     // Puedes agregar otros campos que necesites reiniciar aquí
     
-    //     // Actualiza el valor de la variable 'empleadoExistente'
-    //     this.empleadoExistente = false;
-    //   } else {
-    //     this.newempleadosService.obtenerEmpleadoPorIdentificacion(numero_identificacion_empleado).subscribe(
-    //       (data: any) => {
-            
-    //         // Verificar si el empleado existe
-    //         if (data) {
-    //           this.empleadoExistente = true;
-    //           // Actualizar las propiedades del formulario 'formEmpleados' con la información del empleado
-    //           this.formEmpleados.patchValue({
-    //             codigo_rotulacion_empleado: data.codigo_rotulacion_empleado,
-    //      nombre_empleado: data.nombre_empleado,
-    //      tipo_contrato_empleado:data.tipo_contrato_empleado ,
-    //      fecha_inicio_empleado: data.fecha_inicio_empleado,
-    //      fecha_vencimiento_contrato_empleado: data.fecha_vencimiento_contrato_empleado,
-    //      tipo_documento_empleado: data.tipo_documento_empleado,
-    //      identificacion_empleado: data.identificacion_empleado,
-    //      fecha_nacimiento_empleado: data.fecha_nacimiento_empleado,
-    //     edad_empleado: data.edad_empleado,
-    //      lugar_nacimiento_empleado: data.lugar_nacimiento_empleado,
-    //      direccion_empleado:data.direccion_empleado,
-    //      municipio_domicilio_empleado:data.municipio_domicilio_empleado ,
-    //      estado_civil_empleado: data.estado_civil_empleado,
-    //      celular_empleado: data.celular_empleado,
-    //      correo_electronico: data.correo_electronico,
-    //      alergia_empleado: data.alergia_empleado,
-    //      grupo_sanguineo_empleado: data.grupo_sanguineo_empleado,
-    //      eps_empleado: data.eps_empleado,
-    //      pension_empleado: data.pension_empleado,
-    //      cuenta_bancaria_empleado:data.cuenta_bancaria_empleado,
-    //      tipo_cuenta: data.tipo_cuenta,
-    //      banco_cuenta: data.banco_cuenta,
-    //      area_empleado: data.area_empleado,
-    //      contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
-    //      confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
-    //   });
-    //   const contactoEmergenciaArray = this.formEmpleados.get('contacto_emergencia') as FormArray;
-    //   contactoEmergenciaArray.clear();  // Limpia los controles actuales
-    //   data.contacto_emergencia.forEach((contacto: any) => {
-    //     contactoEmergenciaArray.push(this.fb.group({
-    //       nombre_contacto_emergencia: [contacto.nombre_contacto_emergencia || ''],
-    //       parentesco_empleado: [contacto.parentesco_empleado || ''],
-    //       telefono_contacto_emergencia: [contacto.telefono_contacto_emergencia || '']
-    //     }));
-    //   });
-    //   this.cdr.detectChanges();
-    
-    //           console.log(data);
-    //         } else {
-    //           // El empleado no existe, puedes manejarlo según tus necesidades
-    //           this.empleadoExistente = false;
-    //           this.messageService.add({
-    //             severity: 'error',
-    //             summary: 'El empleado no está registrado',
-    //             life: 3000,
-    //           });
-    //         }
-    //       },
-    //       (error) => {
-    //         console.error(error);
-    
-    //         // Manejar el error de la solicitud HTTP
-    //         if (error.status === 404) {
-    //           // El empleado no se encontró en el servidor
-    //           this.empleadoExistente = false;
-    //           this.messageService.add({
-    //             severity: 'error',
-    //             summary: 'Empleado no encontrado',
-    //             detail: 'El empleado no está registrado',
-    //             life: 3000,
-    //           });
-    //         } else {
-    //           // Otro manejo de errores según tus necesidades
-    //           this.messageService.add({
-    //             severity: 'error',
-    //             summary: 'Error en la solicitud',
-    //             detail: 'Ocurrió un error al obtener los detalles del empleado',
-    //             life: 3000,
-    //           });
-    //         }
-    //       }
-    //     );
-    //   }
-    // }
     
     
 
     crearEmpleado() {
-      // Verificar si el formulario es válido
-      if (this.formEmpleados.invalid) {
-        // El formulario no es válido, pero solo mostramos el mensaje de error para la identificación
-        if (this.formEmpleados.controls['identificacion_empleado'].invalid) {
+      // // Verificar si el formulario es válido
+      // if (this.formEmpleados.invalid) {
+      //   // El formulario no es válido, pero solo mostramos el mensaje de error para la identificación
+      //   if (this.formEmpleados.controls['identificacion_empleado'].invalid) {
 
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error al crear el empleado',
-            detail: 'El número de identificación ya esta registrado .',
-            life: 6000
-          });
-        }
-        return; // Detener la ejecución de la función si el formulario no es válido
-      }
+      //     this.messageService.add({
+      //       severity: 'error',
+      //       summary: 'Error al crear el empleado',
+      //       detail: 'El número de identidad ya esta registrado.',
+      //       life: 6000
+      //     });
+      //   }
+      //   return; // Detener la ejecución de la función si el formulario no es válido
+      // }
     
-      const numeroIdentificacion = this.formEmpleados.value.identificacion_empleado;
-    
-      // Verificar si el numero de identificacion ya existe en la lista de empleados
-      const identificacionExistente = this.ListEmpleados.find(empleado => empleado.identificacion_empleado === numeroIdentificacion);
-      if (identificacionExistente) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error al crear el empleado',
-          detail: 'El número de identificación ya existe.',
-          life: 6000
-        });
-        return; // Detener la ejecución de la función si el número de identificación ya existe
-      }
+      // const numeroIdentificacion = this.formEmpleados.value.identificacion_empleado;
+      // const numeroCelular = this.formEmpleados.value.celular_empleado;
+      // // Verificar si el numero de identificacion ya existe en la lista de empleados
+      // const identificacionExistente = this.ListEmpleados.find(empleado => empleado.identificacion_empleado === numeroIdentificacion);
+      // if (identificacionExistente) {
+      //   this.messageService.add({
+      //     severity: 'error',
+      //     summary: 'Error al crear el empleado',
+      //     detail: 'El número de identificación ya existe.',
+      //     life: 6000
+      //   });
+      //   return; // Detener la ejecución de la función si el número de identificación ya existe
+      // }
+      // //verificar si el numero de celular ya existe en la lista empleados
+      // const celularExistente = this.ListEmpleados.find(empleado => empleado.celular_empleado === numeroCelular);
+      // if (celularExistente) {
+      //   this.messageService.add({
+      //     severity: 'error',
+      //     summary: 'Error al crear el empleado',
+      //     detail: 'El número de celular ya existe.',
+      //     life: 6000
+      //   });
+      //   return; // Detener la ejecución de la función si el número de identificación ya existe
+      // }
       
         // Establecer directamente el rol de empleado
         this.empleado.rol_usuario = '654aefc54524da3db0bc3a18'; 
@@ -390,7 +310,7 @@ this.confirmarCrearUsuario().subscribe(
  (usuarioConfirmado) => {
    if (usuarioConfirmado) {
      // El usuario fue confirmado, ahora puedes crear el cliente
-    this.newempleadosService.createEmpleado({ ...this.empleado, estado: 'Activo',  }).subscribe(
+    this.newempleadosService.createEmpleado({ ...this.empleado,  }).subscribe(
        (empleadoResponse) => {
         console.log('Respuesta del backend al crear empleado:', empleadoResponse);
         const empleadoId = empleadoResponse.id;

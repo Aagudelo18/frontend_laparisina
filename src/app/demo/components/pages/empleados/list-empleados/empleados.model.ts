@@ -29,7 +29,7 @@ grupo_sanguineo_empleado: string;
   banco_cuenta: string;
  area_empleado: string;
  area_empleado_produccion: string;
-//  estado_empleado: string;
+estado_empleado?: boolean;
 
 }
 

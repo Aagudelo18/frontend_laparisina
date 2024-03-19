@@ -18,7 +18,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ListEmpleadosComponent } from './list-empleados.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
-
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   
@@ -41,6 +42,8 @@ import { TabViewModule } from 'primeng/tabview';
     DialogModule,
     ReactiveFormsModule,
     TabViewModule,
+    ToggleButtonModule,
+    InputSwitchModule
   ],
   declarations: [ListEmpleadosComponent]
 })

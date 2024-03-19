@@ -36,13 +36,9 @@ export class EmpleadosService {
     const url = `${this.apiUrl}/buscarPorCedula/${cedula}`; // Ajusta la URL según tu implementación del servicio
     return this.http.get<Empleado>(url);
   }
-  // getEmpleadosPendientes(): Observable<Empleado[]> {
-  //   return this.http.get<Empleado[]>(`${this.apiUrl}empleados/pendientes`);
-  // }
-
-  // getEmpleadosTerminados(): Observable<Empleado[]> {
-  //   return this.http.get<Empleado[]>(`${this.apiUrl}empleados/terminados`);
-  // }
+  actualizarEstadoEmpleado(id:string): Observable<void>{
+    return this.http.put<void>(`${this.apiUrl}/empleados_estado/${id}`,{})
+    }
   
   getEmpleados(id:string): Observable<Empleado>{
     return this.http.get<Empleado>(`${this.apiUrl}empleados/${id}`)

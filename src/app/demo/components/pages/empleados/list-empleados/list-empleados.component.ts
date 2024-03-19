@@ -5,11 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Empleado } from './empleados.model';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
+import { MessageService, SelectItem } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import {   FormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
-
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -32,6 +32,8 @@ export class ListEmpleadosComponent implements OnInit {
   roleDialog: boolean = false; // Esto controla la visibilidad del p-dialog
   estadoSiguiente: string;
   formEditarEmpleado: FormGroup;
+  estadoEmpleadoDialog: boolean = false;
+  estadoEmpleado: FormControl = new FormControl(false);
   //vistas de listar pedidos array
  
   pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
@@ -46,8 +48,14 @@ export class ListEmpleadosComponent implements OnInit {
   fechaVencimientoInvalida: boolean = false;
   touchedCelular = false;
   empleadoExistente: boolean = false;
+ 
 
+  estado:SelectItem[] = [
+    { label: 'Activo', value: true },
+    { label: 'Inactivo', value: false }
+  ];
 
+  selectedEstado: SelectItem = {value: ''};
 
   constructor(
     private empleadosService: EmpleadosService,
@@ -117,7 +125,7 @@ export class ListEmpleadosComponent implements OnInit {
      banco_cuenta: ['', Validators.required],
       area_empleado: ['', Validators.required],
       area_empleado_produciion: ['', Validators.required],
-      // estado_empleado: ['', Validators.required],
+      estado_empleado: ['', Validators.required],
       detalle_empleado:this.fb.array([]),
       contrasena_usuario: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/),]],
       confirmar_contrasena: ['', [Validators.required, this.validarContrasenaConfirmada.bind(this)]],
@@ -129,6 +137,7 @@ export class ListEmpleadosComponent implements OnInit {
       this.empleadosService.getEmpleado().subscribe((data: Empleado[]) => {
         this.empleados = data;
       });
+      
       
     }
       // this.cargarEmpleados();
@@ -142,30 +151,7 @@ export class ListEmpleadosComponent implements OnInit {
       
     }
 
-    //Cargar los pedidos-----------------------------------------------------------------------------
-    // cargarEmpleados() {
-    //   if (this.pestanaSeleccionada === 0) {
-    //     this.empleadosService.getEmpleadosPendientes().subscribe((data: Empleado[]) => {
-    //       this.empleadosPendientes = data;
-    //     });
-    //   } else if (this.pestanaSeleccionada === 1) {
-    //     this.empleadosService.getEmpleadosTerminados().subscribe((data: Empleado[]) => {
-    //       this.empleadosTerminados = data;
-    //     });
-    //   }
-    // }
-  
-    // cargarEmpleadosPendientes() {
-    //   this.empleadosService.getEmpleadosPendientes().subscribe((data: Empleado[]) => {
-    //     this.empleadosPendientes = data;
-    //   });
-    // }
-  
-    // cargarEmpleadosTerminados() {
-    //   this.empleadosService.getEmpleadosTerminados().subscribe((data: Empleado[]) => {
-    //     this.empleadosTerminados = data;
-    //   });
-    // }
+   
   openNewEmpleados() {
     this.router.navigate(['/new-empleados']);
   }
@@ -208,6 +194,7 @@ export class ListEmpleadosComponent implements OnInit {
          banco_cuenta: data.banco_cuenta,
          area_empleado: data.area_empleado,
          area_empleado_produccion: data.area_empleado_produccion,
+         estado_empleado: data.estado_empleado,
          contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
          confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
       });
@@ -293,6 +280,7 @@ export class ListEmpleadosComponent implements OnInit {
       this.formEmpleados.get('banco_cuenta').setValue(data.banco_cuenta);
       this.formEmpleados.get('area_empleado').setValue(data.area_empleado);
       this.formEmpleados.get('area_empleado_produccion').setValue(data.area_empleado_produccion);
+      this.formEmpleados.get('estado_empleado').setValue(data.estado_empleado);
       // this.formEmpleados.get('detalle_empleado').patchValue(detallesFormateados);
         
     });
@@ -337,6 +325,7 @@ actualizarEmpleado() {
     banco_cuenta: this.formEmpleados.value.banco_cuenta,
     area_empleado: this.formEmpleados.value.area_empleado,
     area_empleado_produccion: this.formEmpleados.value.area_empleado_produccion,
+    estado_empleado:true,
 
     
   
@@ -380,6 +369,41 @@ isValidCorreo(): boolean {
   const correoRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return correoRegex.test(this.empleado.correo_electronico);
 }
+
+      // Función para confirmar cambiar el estado de un cliente
+      confirmarCambioEstado(empleados: Empleado) {
+        this.estadoEmpleadoDialog = true;
+        this.empleado = empleados
+      }
+      
+       //Función para no cambiar el estado de un cliente
+       noCambiarEstado() {
+        this.estadoEmpleadoDialog = false;
+        this.getListEmpleados();
+      }
+      // Función para cambiar el estado de un cliente
+      cambiarEstadoEmpleado(id: string) {
+        this.empleadosService.actualizarEstadoEmpleado(id).subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'El estado del empleado fue cambiado con éxito',
+              life: 3000
+            });
+            this.messageService.add({
+              severity: 'info',
+              summary: 'El estado del usuario fue cambiado con éxito',
+              life: 3000
+            });
+            this.estadoEmpleadoDialog = false;
+            // Actualizar la lista de categorías u otra lógica según sea necesario
+          },
+          error: (error) => {
+            console.error('Error cambiando el estado del empleado:', error);
+            // Manejar errores según sea necesario
+          }
+        });
+      }
 
 
 openEditarEmpleadoDialog(id:string) {
@@ -444,6 +468,7 @@ getEmpleado(numero_identificacion_empleado: string) {
      area_empleado_produccion: data.area_empleado_produccion,
      contrasena_usuario: this.formEmpleados.value.contrasena_usuario,
      confirmar_contrasena: this.formEmpleados.value.confirmar_contrasena,
+     estado_empleado:true,
   });
   const contactoEmergenciaArray = this.formEmpleados.get('contacto_emergencia') as FormArray;
   contactoEmergenciaArray.clear();  // Limpia los controles actuales
