@@ -618,17 +618,17 @@
                 >
             </span>
         </div>
-        <!-- <div class="field col-3 md-3">
+        <div class="field col-3 md-3" *ngIf="pedido.get('tipo_cliente').value == 'Persona jurídica'">
             <span class="p-float-label">
                 <p-inputNumber
                     inputId="aumento_empresa"
                     [formControl]="pedido.get('aumento_empresa')"
                     readonly="true"
-                    [suffix]="aumento_empresa"
-                ></p-inputNumber> 
+                    [(ngModel)]="aumento_empresa"
+                >{{ pedido.get('aumento_empresa').value }}</p-inputNumber> 
                 <label for="aumento_empresa" class="custom-label">Aumento Empresa</label>
             </span>
-        </div> -->
+        </div>
         
         <div class="field col-3 md-3">
             <span class="p-float-label">
@@ -636,12 +636,11 @@
                     inputId="precio_total_venta"
                     [formControl]="pedido.get('precio_total_venta')"
                     readonly="true"
-                ></p-inputNumber>
-                <label for="precio_total_venta" class="custom-label"
-                    >Precio Total Venta</label
-                >
+                >{{ pedido.get('precio_total_venta').value }}</p-inputNumber>
+                <label for="precio_total_venta" class="custom-label">Precio Total Venta</label>
             </span>
         </div>
+        
     </div>
 
     <div class="my-2">

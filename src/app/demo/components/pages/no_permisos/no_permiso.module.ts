@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PerfilRoutingModule } from './perfil-routing.module';
-import { PerfilComponent } from './perfil.component';
+import { OrdenDeProduccionRoutingModule } from './ordenP-routing.module';
+import { OrdenDeProduccionComponent } from './ordenP.component';
 import { TableModule } from 'primeng/table';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
@@ -16,13 +16,19 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
+import { OrdenDeProduccionService } from './ordenP.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DialogService } from 'primeng/dynamicdialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { TooltipModule } from 'primeng/tooltip';
+import { DataViewModule } from 'primeng/dataview';
+import { MenubarModule } from 'primeng/menubar';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     imports: [
         CommonModule,
-        PerfilRoutingModule,
+        OrdenDeProduccionRoutingModule,
         TableModule,
         FileUploadModule,
         FormsModule,
@@ -37,11 +43,17 @@ import { DialogService } from 'primeng/dynamicdialog';
         RadioButtonModule,
         InputNumberModule,
         DialogModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        InputSwitchModule,
+        AutoCompleteModule,
+        TooltipModule,
+        DataViewModule,
+        MenubarModule,
+        OverlayPanelModule
     ],
-    declarations: [PerfilComponent],
+    declarations: [OrdenDeProduccionComponent],
     providers: [
-        DialogService, // Agrega DialogService a la lista de proveedores
-      ],
+        OrdenDeProduccionService // Agrega tu servicio como un proveedor aquí
+      ]
 })
-export class PerfilModule { }
+export class OrdenDeProduccionModule { }

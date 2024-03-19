@@ -16,7 +16,7 @@ import { Product, DatosUsuario } from './product-list.model';
     constructor(private http: HttpClient) {}
 
     getListProducts(): Observable<Product[]>{
-      return this.http.get<Product[]>(`${this.apiUrl}/productos`)    
+      return this.http.get<Product[]>(`${this.apiUrl}/productos-cliente`)    
     }
 
     getProduct(id:string): Observable<Product>{
@@ -24,7 +24,7 @@ import { Product, DatosUsuario } from './product-list.model';
     }
     
     getProductosPorCategoria(categoria: string): Observable<Product[]>{
-      return this.http.get<Product[]>(`${this.apiUrl}/productos-categoria/${categoria}`)
+      return this.http.get<Product[]>(`${this.apiUrl}/productos-categoria-cliente/${categoria}`)
     }
     
 

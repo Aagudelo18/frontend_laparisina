@@ -12,9 +12,37 @@ export class AuthService {
     constructor(private http: HttpClient) { }
     private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
-    getRol(userRole: any, token: any): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/roles/${userRole}`);
+    //Método para obtener la lista de roles desde la API
+    getRoles() {
+        // Obtener el token y el rol del local storage
+        const token = localStorage.getItem('token');
+        const rol = localStorage.getItem('rol');
+
+        // Crear el encabezado con el token y el rol
+        const headers = {
+            'Content-Type': 'application/json',
+            'token': token || '',
+            'rol': rol || ''
+        };
+
+        return this.http.get<any[]>(`${this.apiUrl}/roles`, { headers });
     }
+
+    //Traer todos los usuarios
+    getUsuarios() {
+        // Obtener el token y el rol del local storage
+        const token = localStorage.getItem('token');
+        const rol = localStorage.getItem('rol');
+
+        // Crear el encabezado con el token y el rol
+        const headers = {
+            'Content-Type': 'application/json',
+            'token': token || '',
+            'rol': rol || ''
+        };
+
+        return this.http.get<any[]>(`${this.apiUrl}/usuarios`, { headers });
+    }   
 
     isAuthenticated(): Observable<boolean> {
         return this.isAuthenticatedSubject.asObservable();
@@ -24,11 +52,9 @@ export class AuthService {
         this.isAuthenticatedSubject.next(value);
     }
 
-    // Método para obtener información de roles y permisos del usuario
-    getUserPermissions(userRole: any): Observable<string[]> {
-        return this.getRol(userRole, 'token').pipe(
-            map(response => response.permisos_rol.map(permiso => permiso.nombre_permiso))
-        );
-    }
-    
+
+
+
+
+
 }
