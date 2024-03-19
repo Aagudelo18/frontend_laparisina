@@ -106,7 +106,7 @@
         <div class="formgrid grid">
               <div class="field col">
                 <span class="p-float-label">
-                  <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
+                  <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']" placeholder="Tipo cliente" name="tipo_cliente" [readonly]="true"></p-dropdown>
                   <label for="tipo_cliente">Tipo cliente <span style="color: red;">*</span></label>
                 </span>
                 <span *ngIf="formCliente.get('tipo_cliente')?.hasError('required') && formCliente.get('tipo_cliente')?.touched" style="color: red;">
