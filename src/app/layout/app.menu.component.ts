@@ -25,7 +25,7 @@ export class AppMenuComponent implements OnInit {
         let rol: any = localStorage.getItem('rol');
         
 
-        if (rol === 'Super Admin' || rol === 'Administrador'){
+        if (rol != 'Cliente'){
             this.model = [
                 {
                     label: 'Menú',
@@ -104,28 +104,6 @@ export class AppMenuComponent implements OnInit {
                 //         },
                 //     ]
                 // },
-            ];
-            return;
-        }
-        if (rol == 'Cliente' || rol == undefined){
-            let token: any = localStorage.getItem('token');
-            this.model = [
-                {
-                    label: 'Menú',
-                    items: [
-                        { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-                        //{ label: 'Perfil', icon: 'pi pi-money-bill', routerLink: ['/pages/perfil'] },
-                    ]
-                },
-          
-                {
-                    label: 'Pedidos',
-                    items: [
-                        
-                        token !== null ? { label: 'Mis Pedidos', icon: 'pi pi-fw pi-shopping-cart', routerLink: ['/pedidoListar'] } : null,
-                        { label: 'Catálogo', icon: 'pi pi-fw pi-money-bill', routerLink: ['/catalogo-cliente'] },
-                    ].filter(item => item !== null)
-                }
             ];
             return;
         }

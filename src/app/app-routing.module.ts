@@ -49,27 +49,6 @@ const routes: Routes = [
                                 ).then((m) => m.UIkitModule),
                         },
                         {
-                            path: 'utilities',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/utilities/utilities.module'
-                                ).then((m) => m.UtilitiesModule),
-                        },
-                        {
-                            path: 'documentation',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/documentation/documentation.module'
-                                ).then((m) => m.DocumentationModule),
-                        },
-                        {
-                            path: 'blocks',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/primeblocks/primeblocks.module'
-                                ).then((m) => m.PrimeBlocksModule),
-                        },
-                        {
                             path: 'pages',
                             loadChildren: () =>
                                 import(
@@ -133,13 +112,6 @@ const routes: Routes = [
                     loadChildren: () =>
                         import('./demo/components/auth/auth.module').then(
                             (m) => m.AuthModule
-                        ),
-                },
-                {
-                    path: 'landing',
-                    loadChildren: () =>
-                        import('./demo/components/landing/landing.module').then(
-                            (m) => m.LandingModule
                         ),
                 },
                 { path: 'notfound', component: NotfoundComponent },

@@ -150,6 +150,8 @@ hasToken(): boolean {
         localStorage.removeItem('rol');
         localStorage.removeItem('currentUser');
         localStorage.removeItem('expirationTime');
+
+        this.layoutService.actualizarCarritoAlCerrarSesion();
         localStorage.removeItem('documento_cliente');
     }
 
