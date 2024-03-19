@@ -1,6 +1,9 @@
 <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
   style="background-image: url('assets/layout/images/Pancake-fondo.jpg'); background-size: cover; background-position: center;">
   <div class="flex flex-column align-items-center justify-content-center">
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 100; background: linear-gradient(180deg, rgba(255, 218, 123, 0.965)); padding: 10px; border-radius: 50%;">
+      <i class="pi pi-arrow-circle-left" (click)="catalogo()" style="font-size: 3rem; cursor: pointer; color: white;" pTooltip="Ir al catálogo"></i>
+  </div>
     <div
       style="border-radius: 40px; padding: 0.3rem; background: linear-gradient(180deg, rgba(255, 218, 123, 0.965) 10%, rgba(249, 233, 192, 0.965) 30%);">
       <div class="w-full surface-card py-4 px-3 sm:px-6" style="border-radius: 40px; max-width: 400px;">
@@ -26,7 +29,8 @@
             <br>
             <div style="display: block;">
               <label for="contrasena_usuario" class="block text-900 font-medium text-lg mb-1">Contraseña</label>
-              <input id="contrasena_usuario" type="password" placeholder="Contraseña usuario"
+              <i class="pi" (click)="togglePasswordVisibility('contrasena_usuario')" [ngClass]="{'pi-eye': !showPassword, 'pi-eye-slash': showPassword}" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+              <input id="contrasena_usuario" type="password" placeholder="Contraseña usuario" 
                 formControlName="contrasena_usuario" pInputText class="w-full md:w-64 mb-1" style="width: 100%;">
               <span
                 *ngIf="loginFormulario.get('contrasena_usuario').hasError('required') && loginFormulario.get('contrasena_usuario').touched"

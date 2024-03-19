@@ -17,7 +17,7 @@ export class AppTopBarComponent {
   innerWidth: number = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
-    onResize(event: Event): void {
+  onResize(event: Event): void {
     this.innerWidth = window.innerWidth;
   }
 
@@ -31,48 +31,48 @@ export class AppTopBarComponent {
 
   @ViewChild('topbarmenu') menu!: ElementRef;
 
-    //---------------------------------------------------------------------------------------------------------------------------------
-    //Variables para controlar el carrito
-    productosCarrito: ProductoCarrito[] = [];
-    cantidad?: number;
-    cantidadSeleccionada: number = 1;
-    totalCarrito: number = 0;
-    anchoOverlayCarrito: string = '60%';
-    private subscription: Subscription;
-    private subscription2: Subscription;
-    private subscription3: Subscription;
-    //---------------------------------------------------------------------------------------------------------------------------------
-    // Variables para capturar y tener control del usuario
-    datosUsuario: DatosUsuario;
-    correoUsuario: string;
-    tipoCliente: string;
-    idRol: string;
-    rol: Roles = {}
-    token:any;
+  //---------------------------------------------------------------------------------------------------------------------------------
+  //Variables para controlar el carrito
+  productosCarrito: ProductoCarrito[] = [];
+  cantidad?: number;
+  cantidadSeleccionada: number = 1;
+  totalCarrito: number = 0;
+  anchoOverlayCarrito: string = '60%';
+  private subscription: Subscription;
+  private subscription2: Subscription;
+  private subscription3: Subscription;
+  //---------------------------------------------------------------------------------------------------------------------------------
+  // Variables para capturar y tener control del usuario
+  datosUsuario: DatosUsuario;
+  correoUsuario: string;
+  tipoCliente: string;
+  idRol: string;
+  rol: Roles = {}
+  token: any;
 
-    constructor(
-        public layoutService: LayoutService, 
-        private loginService: LoginService, 
-        private router: Router,
-        private rolesService: RolesService
+  constructor(
+    public layoutService: LayoutService,
+    private loginService: LoginService,
+    private router: Router,
+    private rolesService: RolesService
 
-        ){
-          // this.productosCarrito = layoutService.obtenerCarrito();
-          // this.calcularPrecioTotalCarrito();
-          // this.subscription = this.layoutService.ClearCar.subscribe(event => {
-          //   this.productosCarrito = [];
-          //   this.cantidad = 0;
-          // });
-      
-          this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
-            this.eliminarProductoCarrito(event);
-          });
-          // this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
-          //   this.agregarProductoCarrito(event);
-          // });
+  ) {
+    // this.productosCarrito = layoutService.obtenerCarrito();
+    // this.calcularPrecioTotalCarrito();
+    // this.subscription = this.layoutService.ClearCar.subscribe(event => {
+    //   this.productosCarrito = [];
+    //   this.cantidad = 0;
+    // });
 
-        }
-         //-------------------------------------------------------------------------------------------------------------------------------
+    this.subscription2 = this.layoutService.DeleteProdutCar.subscribe(event => {
+      this.eliminarProductoCarrito(event);
+    });
+    // this.subscription3 = this.layoutService.AddProdutCart.subscribe(event => {
+    //   this.agregarProductoCarrito(event);
+    // });
+
+  }
+  //-------------------------------------------------------------------------------------------------------------------------------
   //función calcular precio total del carrito
   // calcularPrecioTotalCarrito(): void {
   //   this.totalCarrito = this.productosCarrito.reduce((total, producto) => {
@@ -81,7 +81,7 @@ export class AppTopBarComponent {
   // }
 
 
- 
+
 
   //función de inicialización del componente
   ngOnInit(): void {
@@ -121,90 +121,90 @@ export class AppTopBarComponent {
     );
   }
 
-  
 
-reloadComponent() {
-  const currentRoute = this.router.url;
-  this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    this.router.navigate([currentRoute]);
-  });
-}
 
-logout(): void {
-  this.confirmarCerrarSesionDialog = true; // Redirige al usuario al componente de login
-}
+  reloadComponent() {
+    const currentRoute = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentRoute]);
+    });
+  }
 
-noCerrarSesion() {
-  this.confirmarCerrarSesionDialog = false;
-}
+  logout(): void {
+    this.confirmarCerrarSesionDialog = true; // Redirige al usuario al componente de login
+  }
 
-hasToken(): boolean {
-  return localStorage.getItem('token') !== null;
-}
+  noCerrarSesion() {
+    this.confirmarCerrarSesionDialog = false;
+  }
 
-    cerrarSesion() {
-        this.confirmarCerrarSesionDialog = false;
-        this.loginService.logout(); // Llamar al servicio para cerrar sesión o ejecutar las acciones correspondientes para cerrar la sesión del usuario
-        this.router.navigate(['/auth/login']); // Redirigir al usuario a la página de inicio de sesión después de cerrar sesión
-        localStorage.removeItem('token');
-        localStorage.removeItem('rol');
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('expirationTime');
+  hasToken(): boolean {
+    return localStorage.getItem('token') !== null;
+  }
 
-        this.layoutService.actualizarCarritoAlCerrarSesion();
-        localStorage.removeItem('documento_cliente');
-    }
+  async cerrarSesion() {
+    this.confirmarCerrarSesionDialog = false;
+    this.loginService.logout(); // Llamar al servicio para cerrar sesión o ejecutar las acciones correspondientes para cerrar la sesión del usuario
+    localStorage.removeItem('token');
+    localStorage.removeItem('rol');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('expirationTime');
+    this.layoutService.actualizarCarritoAlCerrarSesion();
+    localStorage.removeItem('documento_cliente');
+    await this.router.navigate(['/']); // Navegar al usuario a la página de inicio de sesión después de cerrar sesión
+    window.location.reload(); // Recargar la página después de que la navegación haya terminado
+  }
 
-    perfil() {
-        this.router.navigate(['/pages/perfil']); // Esta ruta debe coincidir con tu ruta '/perfil' definida en las rutas de tu aplicación
-    }
+  perfil() {
+    this.router.navigate(['/pages/perfil']); // Esta ruta debe coincidir con tu ruta '/perfil' definida en las rutas de tu aplicación
+  }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------------------------------------------------------
 
-    //FUNCIONES CARRITO Y USUARIO
+  //FUNCIONES CARRITO Y USUARIO
 
-    //-------------------------------------------------------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------------------------------------------------------
 
-    eliminarProductoCarrito(producto: ProductoCarrito){
-      this.layoutService.eliminarProductoCarrito(producto);
-      this.layoutService.DeleteProdutCarView.emit(producto)
-    }
+  eliminarProductoCarrito(producto: ProductoCarrito) {
+    this.layoutService.eliminarProductoCarrito(producto);
+    this.layoutService.DeleteProdutCarView.emit(producto)
+  }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para obtener datos cliente
-    obtenerDatosClientePorCorreo(correo: string): Observable<any> {
-      return this.layoutService.obtenerDatosClientePorCorreo(correo);
-    }
+  //-------------------------------------------------------------------------------------------------------------------------------
+  //función para obtener datos cliente
+  obtenerDatosClientePorCorreo(correo: string): Observable<any> {
+    return this.layoutService.obtenerDatosClientePorCorreo(correo);
+  }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para obtener datos del rol
-    obtenerRol(id: string) {
-      this.rolesService.getRoles(id).subscribe((data: Roles) => {
-        this.rol = data
-      });
-      this.token = localStorage.getItem('token');
+  //-------------------------------------------------------------------------------------------------------------------------------
+  //función para obtener datos del rol
+  obtenerRol(id: string) {
+    this.rolesService.getRoles(id).subscribe((data: Roles) => {
+      this.rol = data
+    });
+    this.token = localStorage.getItem('token');
 
-    }
+  }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    // Función para verificar usuario
-    verificarUsuario(): boolean {
-      return this.datosUsuario && (this.datosUsuario.rol_usuario === undefined || this.rol.nombre_rol === 'Cliente');
-    }
-    // Función para verificar usuario
-    verificarUsuario2(): boolean {
-      return this.token !== null && this.token !== undefined && this.token !== '';
-    }
+  //-------------------------------------------------------------------------------------------------------------------------------
+  // Función para verificar usuario
+  verificarUsuario(): boolean {
+    return this.datosUsuario && (this.datosUsuario.rol_usuario === undefined || this.rol.nombre_rol === 'Cliente');
+  }
+  // Función para verificar usuario
+  verificarUsuario2(): boolean {
+    return this.token !== null && this.token !== undefined && this.token !== '';
+  }
 
-    //-------------------------------------------------------------------------------------------------------------------------------
-    //función para controlar el tamaño de OverlayCarrito
-    anchoOverlay() {
-      // Verifica el ancho de la ventana del navegador
-      const anchoDialog = window.innerWidth < 960 ? '100%' : 'auto';
+  //-------------------------------------------------------------------------------------------------------------------------------
+  //función para controlar el tamaño de OverlayCarrito
+  anchoOverlay() {
+    // Verifica el ancho de la ventana del navegador
+    const anchoDialog = window.innerWidth < 960 ? '100%' : 'auto';
 
-      // Establece el ancho del diálogo
-      this.anchoOverlayCarrito = anchoDialog;
-    }
+    // Establece el ancho del diálogo
+    this.anchoOverlayCarrito = anchoDialog;
+  }
 
   @ViewChild('op2') overlayPanel: OverlayPanel;
 
@@ -213,9 +213,9 @@ hasToken(): boolean {
 
     // Redirigir a la ruta '/pedidoCliente'
     this.router.navigate(['/pedidoCliente']).then(() => {
-        // Cerrar el modal después de redirigir
-        this.overlayPanel.hide(); // Oculta el overlayPanel
+      // Cerrar el modal después de redirigir
+      this.overlayPanel.hide(); // Oculta el overlayPanel
     });
-}
+  }
 
 }

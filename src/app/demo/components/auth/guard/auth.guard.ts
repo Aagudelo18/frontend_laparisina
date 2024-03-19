@@ -7,7 +7,7 @@ import { Roles } from '../../pages/roles/roles.model';
 import { Usuario } from '../../pages/usuarios/usuarios.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   currentUser: any;
@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate {
     if (token) {
       return this.authService.getRoles().pipe(
         switchMap((roles: Roles[]) => {
-          console.log('Roles:', roles);
           // Obtener el rol del usuario actual
           const userRole = this.getCurrentUserRole(roles);
           if (!userRole) {
@@ -38,12 +37,9 @@ export class AuthGuard implements CanActivate {
           }
 
           if (this.hasRequiredPermission(userRole, moduleName)) {
-            console.log(`El usuario tiene los permisos necesarios para acceder al módulo ${moduleName}. Permitiendo acceso.`);
             return of(true);
           } else {
             alert(`El usuario no tiene los permisos necesarios para acceder al módulo ${moduleName}. Denegando acceso.`)
-            console.log(`El usuario no tiene los permisos necesarios para acceder al módulo ${moduleName}. Denegando acceso.`);
-            this.router.navigate(['/error']);
             return of(false);
           }
         }),
@@ -101,9 +97,19 @@ export class AuthGuard implements CanActivate {
     return this.hasPermission(role, 'Categorias');
   }
 
+  hasCategoriasClientePermission(role: Roles): boolean {
+    // Implementa la lógica para verificar si el rol tiene el permiso "Categorias"
+    return this.hasPermission(role, 'Categorias Cliente');
+  }
+
   hasProductosPermission(role: Roles): boolean {
     // Implementa la lógica para verificar si el rol tiene el permiso "Productos"
     return this.hasPermission(role, 'Productos');
+  }
+
+  hasProductosClientePermission(role: Roles): boolean {
+    // Implementa la lógica para verificar si el rol tiene el permiso "Productos"
+    return this.hasPermission(role, 'Productos Cliente');
   }
 
   hasEmpleadosPermission(role: Roles): boolean {
@@ -121,6 +127,11 @@ export class AuthGuard implements CanActivate {
     return this.hasPermission(role, 'Pedidos');
   }
 
+  hasPedidosEmpleadosPermission(role: Roles): boolean {
+    // Implementa la lógica para verificar si el rol tiene el permiso "Orden de producción"
+    return this.hasPermission(role, 'Pedidos Empleado');
+  }
+
   hasVentasPermission(role: Roles): boolean {
     // Implementa la lógica para verificar si el rol tiene el permiso "Ventas"
     return this.hasPermission(role, 'Ventas');
@@ -130,6 +141,13 @@ export class AuthGuard implements CanActivate {
     // Implementa la lógica para verificar si el rol tiene el permiso "Orden de producción"
     return this.hasPermission(role, 'Orden de produccion');
   }
+
+  hasOrdenProduccionEmpleadoPermission(role: Roles): boolean {
+    // Implementa la lógica para verificar si el rol tiene el permiso "Orden de producción"
+    return this.hasPermission(role, 'Orden de produccion Empleado');
+  }
+
+//Categorias Cliente, 
 
   hasPermission(role: Roles, permissionName: string): boolean {
     // Implementa la lógica para verificar si el rol tiene el permiso necesario
