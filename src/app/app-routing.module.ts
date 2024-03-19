@@ -28,13 +28,6 @@ const routes: Routes = [
                                 ).then((m) => m.InicioModule),
                         },
                         {
-                            path: 'clientes',
-                            loadChildren: () =>
-                                import(
-                                    './demo/components/pages/clientes/clientes.module'
-                                ).then((m) => m.ClientesModule),
-                        },
-                        {
                             path: 'dashboard',
                             loadChildren: () =>
                                 import(
@@ -60,14 +53,14 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedidos/new-pedidos/new-pedidos.module'
-                                ).then((m) => m.NewPedidosModule),
+                                ).then((m) => m.NewPedidosModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos' }
                         },
                         {
                             path: 'list-pedidos',
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedidos/list-pedidos/list-pedidos.module'
-                                ).then((m) => m.ListPedidosModule),
+                                ).then((m) => m.ListPedidosModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos' }
                         },
                         {
                             path: 'new-empleados',
@@ -81,7 +74,7 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/empleados/list-empleados/list-empleados.module'
-                                ).then((m) => m.ListEmpleadosModule),
+                                ).then((m) => m.ListEmpleadosModule), canActivate: [AuthGuard], data: { moduleName: 'Empleados' }
                         },
                         {
                             path: 'catalogo-cliente',
@@ -95,14 +88,14 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedido-cliente/pedido-cliente.module'
-                                ).then((m) => m.PedidoClienteModule), canActivate: [AuthGuard]
+                                ).then((m) => m.PedidoClienteModule), canActivate: [AuthGuard], data: { moduleName: 'Clientes' }
                         },
                         {
                             path: 'pedidoListar',
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedido-list/pedido-list.module'
-                                ).then((m) => m.PedidoListModule),
+                                ).then((m) => m.PedidoListModule), canActivate: [AuthGuard], data: { moduleName: 'Clientes' }
                         },
                     ],
                 },      
