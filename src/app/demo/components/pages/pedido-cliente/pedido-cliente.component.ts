@@ -19,6 +19,7 @@ export class PedidoClienteComponent implements OnInit {
     clienteExistente: boolean = false;
     pedido: FormGroup;
     producto: FormGroup;
+    aumento_empresa: number = 0;
     productosCarrito: any[] = [];
     cliente: any;
     productosSeleccionados: any[] = [];
@@ -28,9 +29,9 @@ export class PedidoClienteComponent implements OnInit {
     minDate: Date = new Date();
     currentUser: any [];
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
-    cambiarEstadoPDialogAnular: boolean;
     tipoCliente: string;
     ciudades : any = [];
+    quienRecibe: string;
     private subscription: Subscription;
 
     constructor(
@@ -40,6 +41,7 @@ export class PedidoClienteComponent implements OnInit {
         private pr: FormBuilder,
         private messageService: MessageService,
         private LayoutService: LayoutService,
+        
        
         private router: Router,
     ) {
@@ -65,6 +67,7 @@ export class PedidoClienteComponent implements OnInit {
             valor_domicilio: [0, [Validators.required, Validators.min(0)]],
             nit_empresa_cliente: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
             nombre_juridico: ['', Validators.required],
+            aumento_empresa: [0, Validators.min(0)],
             detalle_pedido: [[]],
         });
 
@@ -105,7 +108,7 @@ export class PedidoClienteComponent implements OnInit {
                         tipo_cliente: data.tipo_cliente,
                         nombre_contacto: data.nombre_contacto,
                         documento_cliente: data.numero_documento_cliente,
-                        quien_recibe: data.nombre_contacto,
+                        quien_recibe: data.quien_recibe,
                         ciudad_cliente: data.ciudad_cliente,
                         barrio_cliente: data.barrio_cliente,
                         direccion_entrega: data.direccion_cliente,
@@ -113,6 +116,7 @@ export class PedidoClienteComponent implements OnInit {
                         nit_empresa_cliente: data.nit_empresa_cliente,
                         nombre_juridico: data.nombre_juridico,
                         tipo_entrega: data.tipo_entrega,
+                        estado_pago: data.estado_pago,
 
                         // Otros campos del formulario según los datos del cliente...
                     });
@@ -141,26 +145,24 @@ export class PedidoClienteComponent implements OnInit {
         }
     }
 
-    // Metodo para calcular el precio total Persona Juridíca ---------------------------------------------------------------->
-    calcularPrecioTotalVentaPersonaJuridica(): number {
-        const subTotal = this.calcularSubtotal();
-        const aumento_empresa = subTotal * 0.08;
-        const valor_domicilio = this.pedido.get('valor_domicilio').value || 0;
-        const precioTotalVenta = subTotal + aumento_empresa + valor_domicilio;
-        this.pedido.get('subtotal_venta')?.setValue(subTotal);
-        this.pedido.get('precio_total_venta')?.setValue(precioTotalVenta);
-        return precioTotalVenta;
-    }
 
-    // Metodo para calcular el precio total Persona Natural ---------------------------------------------------------------->
-    calcularPrecioTotalVentaPersonaNatural():  number {
-        const subTotal = this.calcularSubtotal();
-        const valor_domicilio = this.pedido.get('valor_domicilio').value || 0;
-        const precioTotalVenta = subTotal + valor_domicilio;
-        this.pedido.get('subtotal_venta')?.setValue(subTotal);
-        this.pedido.get('precio_total_venta')?.setValue(precioTotalVenta);
-        return precioTotalVenta;
-    }
+calcularPrecioTotalVentaPersonaJuridica() {
+    const subTotal = this.calcularSubtotal();
+    const valor_domicilio = this.pedido.get('valor_domicilio').value || 0;
+    const precioTotalVenta = subTotal + this.aumento_empresa + valor_domicilio;
+    this.pedido.get('subtotal_venta').setValue(subTotal);
+    this.pedido.get('precio_total_venta').setValue(precioTotalVenta);
+}
+
+calcularPrecioTotalVentaPersonaNatural() {
+    const subTotal = this.calcularSubtotal();
+    const valor_domicilio = this.pedido.get('valor_domicilio').value || 0;
+    const precioTotalVenta = subTotal + valor_domicilio;
+    this.pedido.get('subtotal_venta').setValue(subTotal);
+    this.pedido.get('precio_total_venta').setValue(precioTotalVenta);
+}
+
+ 
 
     // Metodo para calcular el subtotal del pedido ---------------------------------------------------->
     calcularSubtotal() {
@@ -189,11 +191,14 @@ export class PedidoClienteComponent implements OnInit {
             });
             return;
         }
-          // Agregar mensajes de validación para otros campos aquí...
-    if (this.pedido.get('quien_recibe').invalid) {
+       
+                 // Agregar mensajes de validación para otros campos aquí...
+    // Validación específica para tipo de cliente "Persona natural"
+    if (this.cliente.tipo_cliente === 'Persona natural' && this.pedido.get('quien_recibe').invalid) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El nombre de quien recibe es requerido.' });
         return;
     }
+    
     if (this.pedido.get('ciudad_cliente').invalid) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La ciudad es requerida.' });
         return;
@@ -237,14 +242,17 @@ export class PedidoClienteComponent implements OnInit {
             });
             return;
         }
+
     
+ 
+
+      
         // Construir el objeto del pedido
         const pedidoCliente = {
             nombre_contacto: this.pedido.get('nombre_contacto').value,
             documento_cliente: this.pedido.get('documento_cliente').value,
             telefono_cliente: this.pedido.get('telefono_cliente').value,
             tipo_cliente: this.cliente.tipo_cliente,
-            quien_recibe: this.pedido.get('quien_recibe').value,
             ciudad_cliente: this.pedido.get('ciudad_cliente').value,
             barrio_cliente: this.pedido.get('barrio_cliente').value,
             direccion_entrega: this.pedido.get('direccion_entrega').value,
@@ -255,9 +263,10 @@ export class PedidoClienteComponent implements OnInit {
             estado_pago: 'Pendiente',
             tipo_entrega: this.pedido.get('tipo_entrega').value,
             valor_domicilio: this.pedido.get('valor_domicilio').value,
+            aumento_empresa: this.calcularSubtotal() * 0.08,
+            quien_recibe: this.cliente.tipo_cliente == 'Persona natural' ?  this.pedido.get('quien_recibe').value: null,
             nit_empresa_cliente: this.cliente.tipo_cliente == 'Persona jurídica' ?  this.cliente.nit_empresa_cliente : null,
             nombre_juridico: this.cliente.tipo_cliente == 'Persona jurídica' ? this.cliente.nombre_juridico: null,
-            aumento_empresa: this.cliente.tipo_cliente == 'Persona jurídica' ? this.calcularSubtotal() * 0.08 : 0,
             detalle_pedido: this.productosCarrito.map(producto => ({
                 nombre_producto: producto.nombre_producto,
                 cantidad_producto: producto.cantidad_producto,
@@ -266,6 +275,8 @@ export class PedidoClienteComponent implements OnInit {
                 precio_total_producto: producto.precio_total_producto
             }))
         };
+
+      
     
         // Llamar al servicio para crear el pedido
         this.pedidoClienteService.createPedido(pedidoCliente).subscribe(
@@ -324,6 +335,8 @@ eliminarProductoCarrito(producto: ProductoCarrito) {
         // Guarda los cambios en el carrito (si es necesario)
         this.guardarCarritoEnLocalStorage();
         this.LayoutService.DeleteProdutCar.emit(producto)
+          // Actualizar los valores de subtotal, aumento empresa y precio total
+        this.calculoPrecioTotal();
     }
   }
   
@@ -359,16 +372,19 @@ eliminarProductoCarrito(producto: ProductoCarrito) {
        this.calculoPrecioTotal();
 }
 
-calculoPrecioTotal(){
-    if(this.cliente.tipo_cliente = 'Persona jurídica'){
+
+calculoPrecioTotal() {
+    if (this.cliente.tipo_cliente === 'Persona jurídica') {
+        this.aumento_empresa = this.calcularSubtotal() * 0.08;
+        this.pedido.get('aumento_empresa').setValue(this.aumento_empresa);
         this.calcularPrecioTotalVentaPersonaJuridica();
-        return;
-    }
-    
-    if(this.cliente.tipo_cliente = 'Persona natural'){
+    } else if (this.cliente.tipo_cliente === 'Persona natural') {
         this.calcularPrecioTotalVentaPersonaNatural();
-        return;
     }
 }
+
+
+
+
  
 }

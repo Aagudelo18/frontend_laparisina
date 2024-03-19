@@ -14,7 +14,7 @@
         <form [formGroup]="formCliente" (ngSubmit)="crearCliente()">
           <br>
           <div class="formgrid grid">
-            <div class="field col">
+            <div class="field col form-field">
               <div style="display: flex; flex-direction: column;">
                 <p-dropdown formControlName="tipo_cliente" [options]="['Persona jurídica','Persona natural']"
                   placeholder="Tipo cliente" name="tipo_cliente"></p-dropdown>
@@ -32,7 +32,7 @@
             </div>
 
 
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input formControlName="nombre_contacto" id="nombre_contacto" type="text" pInputText>
                 <label for="nombre_contacto">Nombre de contacto <span style="color: red;">*</span></label>
@@ -58,7 +58,7 @@
           <br>
 
           <div class="formgrid grid">
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input formControlName="numero_documento_cliente" id="numero_documento_cliente" type="text" pInputText>
                 <label for="numero_documento_cliente">Número de Identificación <span
@@ -82,7 +82,7 @@
                 El número de Identificación solo puede tener números.
               </span>
             </div>
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input formControlName="telefono_cliente" id="telefono_cliente" type="text" pInputText>
                 <label for="telefono_cliente">Número de celular <span style="color: red;">*</span></label>
@@ -155,10 +155,11 @@
           </div>
 
           <div class="formgrid grid mt-4">
-            <div class="field col">
+            <div class="field col form-field">
               <div style="display: flex; flex-direction: column;">
-                <p-dropdown formControlName="ciudad_cliente" [options]="transportes" placeholder="Selecciona ciudad"
-                  name="ciudad_cliente"></p-dropdown>
+                <p-dropdown formControlName="ciudad_cliente"
+                  [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
+                  placeholder="Selecciona ciudad" name="ciudad_cliente"></p-dropdown>
                 <span
                   *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
                   style="color: red; display: block;">
@@ -171,7 +172,7 @@
                 </span>
               </div>
             </div>
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input formControlName="barrio_cliente" id="barrio_cliente" type="text" pInputText>
                 <label for="barrio_cliente">Barrio <span style="color: red;">*</span></label>
@@ -197,7 +198,7 @@
           <br>
 
           <div class="formgrid grid">
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input formControlName="direccion_cliente" id="direccion_cliente" type="text" pInputText>
                 <label for="direccion_cliente">Dirección <span style="color: red;">*</span></label>
@@ -229,13 +230,11 @@
           </div>
 
           <div class="formgrid grid mt-4">
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input type="password" pInputText id="contrasena_usuario" formControlName="contrasena_usuario" />
                 <label for="contrasena_usuario">Contraseña <span style="color: red;">*</span></label>
               </span>
-              <i class="pi" (click)="togglePasswordVisibility('confirmar_contrasena')" [ngClass]="{'pi-eye': !showPassword, 'pi-eye-slash': showPassword}"></i>
-              <br>
               <span
                 *ngIf="formCliente.get('contrasena_usuario')?.hasError('required') && formCliente.get('contrasena_usuario')?.touched"
                 style="color: red; display: block;">La
@@ -250,13 +249,11 @@
                 La contraseña debe contar con una mayúscula, una minúscula y un número.
               </span>
             </div>
-            <div class="field col">
+            <div class="field col form-field">
               <span class="p-float-label">
                 <input type="password" pInputText id="confirmar_contrasena" formControlName="confirmar_contrasena" />
                 <label for="confirmar_contrasena">Confirmar Contraseña <span style="color: red;">*</span></label>
               </span>
-              <i class="pi" (click)="togglePasswordVisibility2('confirmar_contrasena')" [ngClass]="{'pi-eye': !showPassword2, 'pi-eye-slash': showPassword2}"></i>
-              <br>
               <span
                 *ngIf="formCliente.get('confirmar_contrasena')?.hasError('required') && formCliente.get('confirmar_contrasena')?.touched"
                 style="color: red; display: block;">Confirmación de contraseña requerida.</span>

@@ -19,20 +19,23 @@ export class PedidoListService {
     return this.http.get<Cliente[]>(`${this.apiUrl}/pedidosCliente/${id}`);
   }
 
-  updatePedido(id: string, pedido: Cliente): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/pedidos/${id}`, pedido);
+  getDomiciliarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/domiciliarios`);
+  }
+  
+  getDomiciliariosXId(id: string): Observable<any> {
+    console.log(`${this.apiUrl}domiciliarios/${id}`);
+
+    return this.http.get<any[]>(`${this.apiUrl}/empleados/${id}`);
   }
 
   getPedidoDetalle(id: string): Observable<any> {
     return this.http.get<Cliente[]>(this.apiUrl + `/pedidos/${id}` );
   }
 
- 
-
-  
-
-
-
+  obtenerClientePorCorreo(correo_cliente: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/cliente/${correo_cliente}`);
+  }
 
 
 

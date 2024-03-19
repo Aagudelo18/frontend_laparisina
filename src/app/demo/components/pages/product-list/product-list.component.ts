@@ -176,7 +176,7 @@ export class ProductComponent implements OnInit {
   //---------------------------------------------------------------------------------------------------------------------------------
   //Función para listar todos los productos
   getListCategorias() {
-    this.categoriaService.getListCategorias().subscribe((data) => {
+    this.categoriaService.getListCategorias_Cliente().subscribe((data) => {
       this.listCategorias = data
         .filter(categoria => categoria.estado_categoria_producto === true)
         .map(categoria => ({
@@ -188,7 +188,7 @@ export class ProductComponent implements OnInit {
 
 
   getNombresCategorias() {
-    this.categoriaService.getListCategorias().subscribe((data) => {
+    this.categoriaService.getListCategorias_Cliente().subscribe((data) => {
       const categoriasOriginales = data.
         filter(categoria => categoria.estado_categoria_producto === true)
         .map(categoria => categoria.nombre_categoria_producto);

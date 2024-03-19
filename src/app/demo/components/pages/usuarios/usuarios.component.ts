@@ -4,7 +4,6 @@ import { UsuarioService } from './usuarios.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Usuario } from './usuarios.model';
@@ -68,13 +67,15 @@ export class UsuariosComponent implements OnInit {
     this.getListRolesForCreation();
   }
 
-  // Método para traer todos los usuarios.
+  // Método para traer todos los usuarios administrativos y no traer al usuario Loggeado.
   getListUsuarios() {
+    // Obtener el usuario actualmente loggeado del localStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.usuarioService.getUsuarios().subscribe((data: any) => {
       if (data && data.usuarios) {
         // Filtrar los usuarios para excluir aquellos con roles "Cliente" y "Empleado"
         this.usuarios = data.usuarios.filter(usuario => {
-          return usuario.rol_usuario && usuario.rol_usuario.nombre_rol !== 'Cliente' && usuario.rol_usuario.nombre_rol !== 'Empleado';
+          return usuario.uid !== currentUser.uid && usuario.rol_usuario && usuario.rol_usuario.nombre_rol !== 'Cliente' && usuario.rol_usuario.nombre_rol !== 'Empleado';
         });
       }
     });
@@ -139,21 +140,6 @@ export class UsuariosComponent implements OnInit {
     { label: 'Activo', value: true },
     { label: 'Inactivo', value: false },
   ];
-
-  // sortColumn(columnName: string) {
-  //   // Aquí puedes implementar la lógica de ordenamiento
-  //   this.usuarios.sort((a, b) => {
-  //     // Ordenamiento ascendente por correo electrónico
-  //     if (columnName === 'correo_electronico') {
-  //       return a.correo_electronico.localeCompare(b.correo_electronico);
-  //     }
-  //     //Organizar los usuarios por medio del estado
-  //     if (columnName === 'estado_usuario') {
-  //       const stateA = a.estado_usuario ? 'Activo' : 'Inactivo';
-  //       const stateB = b.estado_usuario ? 'Activo' : 'Inactivo';
-  //       return stateA.localeCompare(stateB);
-  //     }
-  //   });
 
   //Verifica o se asegura de que el campo de confirmar contraseña coincida con la contraseña.
   validarContrasenaConfirmada(control: AbstractControl): ValidationErrors | null {
@@ -224,12 +210,11 @@ export class UsuariosComponent implements OnInit {
           severity: 'error',
           summary: 'Error',
           detail: 'Las contraseñas no coinciden al confirmar',
-          life: 3000
+          life: 3000,
         });
       }
     }
   }
-
 
   //Método par apoder filtrar, o el campo de buscador.
   onGlobalFilter(table: Table, event: Event) {
@@ -300,7 +285,6 @@ export class UsuariosComponent implements OnInit {
             detail: 'Usuario Editado',
             life: 3000
           });
-          console.log('Los datos se han actualizado correctamente.', respuesta);
           this.getListUsuarios();
           this.getListRoles();
           this.editarUsuarioDialog = false;
@@ -348,7 +332,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  //Función para no cambiar el estado de una categoría
+  //Función para no cambiar el estado de un usuario
   noCambiarEstado() {
     this.estadoUsuarioDialog = false;
     this.getListUsuarios();

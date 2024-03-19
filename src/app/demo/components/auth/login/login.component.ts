@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
     contrasena_usuario: string = '';
     correoNoRegistradoError: string | null = null; // Inicializa la variable como null
     isAuthenticated: boolean = false;
+    showPassword: boolean = false;
+
 
     constructor(
         public layoutService: LayoutService,
@@ -43,32 +45,35 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+
     }
     //Metodo promesa Esperar a terminar
     async getRol(userRole: any, token: any): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            this.loginService.getRol(userRole, token).subscribe((response: any)=>{
+            this.loginService.getRol(userRole, token).subscribe((response: any) => {
                 const roleName = response?.nombre_rol; // Obtener el nombre del rol
                 if (roleName) {
-                  const expirationTime = new Date().getTime() + 60 * 60 * 1000; // Tiempo de expiración: una hora en milisegundos
-                  localStorage.setItem('token', token);
-                  localStorage.setItem('rol', roleName); // Almacena el nombre del rol
-                  localStorage.setItem('expirationTime', expirationTime.toString());         
-                  this.loginService.setisAuthenticatedSubject(true);         
-                  // Eliminar el token después de una hora
-                  setTimeout(() => {
-                    console.log('eliminado');
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('rol');
-                    localStorage.removeItem('currentUser');
-                    localStorage.removeItem('expirationTime');
-                    this.loginService.setisAuthenticatedSubject(false);
-                  }, 60 * 60 * 1000 * 8); // 8 horas en milisegundos
-                  resolve('');
-                } 
+                    const expirationTime = new Date().getTime() + 60 * 60 * 1000; // Tiempo de expiración: una hora en milisegundos
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('rol', roleName); // Almacena el nombre del rol
+                    localStorage.setItem('expirationTime', expirationTime.toString());
+                    this.loginService.setisAuthenticatedSubject(true);
+                    // Eliminar el token después de una hora
+                    setTimeout(() => {
+                        console.log('eliminado');
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('rol');
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('expirationTime');
+                        this.loginService.setisAuthenticatedSubject(false);
+                        alert('Su tiempo de sesión se ha agotado, por favor inicie sesión.')
+                    }, 60 * 60 * 1000 * 8); // 8 horas en milisegundos
+
+                    resolve('');
+                }
             })
         });
-      }
+    }
 
     async login() {
         if (this.loginFormulario.valid) {
@@ -78,8 +83,8 @@ export class LoginComponent implements OnInit {
                     if (response && response.usuario) {
                         const token = response?.token;
                         const userRole = response?.usuario?.rol_usuario; // Obtener el rol del usuario
-                        if (token && userRole) {                       
-                        await this.getRol(userRole, token);               
+                        if (token && userRole) {
+                            await this.getRol(userRole, token);
                         }
                         //Guardar el usuario en local storage
                         localStorage.setItem('currentUser', JSON.stringify(response.usuario)); // Almacena los datos del usuario
@@ -105,6 +110,19 @@ export class LoginComponent implements OnInit {
                 }
             );
         }
+
+        this.actualizarCarritoSegunTipoCliente();
+    }
+
+    togglePasswordVisibility(controlName: string): void {
+        const control = this.loginFormulario.get(controlName);
+        if (control) {
+            const inputField = document.getElementById(controlName) as HTMLInputElement;
+            if (inputField) {
+                inputField.type = this.showPassword ? 'password' : 'text';
+                this.showPassword = !this.showPassword;
+            }
+        }
     }
 
     registro() {
@@ -113,5 +131,13 @@ export class LoginComponent implements OnInit {
 
     recuperarContrasena() {
         this.router.navigate(['/auth/recuperar-contrasena']); // Navegar a la vista de recuperar contraseña al hacer clic en el enlace
+    }
+
+    catalogo() {
+        this.router.navigate(['/']); // Navegar a la vista de registro al hacer clic en el botón
+    }
+
+    actualizarCarritoSegunTipoCliente() {
+        this.layoutService.actualizarCarritoAlIniciarSesion();
     }
 }
