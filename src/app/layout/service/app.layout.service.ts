@@ -244,6 +244,8 @@ export class LayoutService {
                     });
         
                     this.guardarCarrito(this.productosCarrito)
+
+                    window.location.reload();
                 }
             },
             (error) => {
