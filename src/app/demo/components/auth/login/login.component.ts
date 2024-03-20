@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit {
     isAuthenticated: boolean = false;
     showPassword: boolean = false;
 
+    correoCliente: string = '';
+
 
     constructor(
         public layoutService: LayoutService,
@@ -97,6 +99,11 @@ export class LoginComponent implements OnInit {
                         localStorage.removeItem('token');
                         console.error('Inicio de sesión fallido.');
                     }
+
+                    this.correoCliente = response.usuario.correo_electronico
+                    
+                    this.actualizarCarritoSegunTipoCliente(this.correoCliente);
+                    
                 },
                 (error) => {
                     console.error('Error en la solicitud de inicio de sesión:', error);
@@ -110,8 +117,9 @@ export class LoginComponent implements OnInit {
                 }
             );
         }
-
-        this.actualizarCarritoSegunTipoCliente();
+        // this.layoutService.obtenerYActualizarDatosUsuario()
+        
+        
     }
 
     togglePasswordVisibility(controlName: string): void {
@@ -137,7 +145,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']); // Navegar a la vista de registro al hacer clic en el botón
     }
 
-    actualizarCarritoSegunTipoCliente() {
-        this.layoutService.actualizarCarritoAlIniciarSesion();
+    actualizarCarritoSegunTipoCliente(correoCliente: string) {
+        this.layoutService.actualizarCarritoAlIniciarSesion(correoCliente);
     }
 }

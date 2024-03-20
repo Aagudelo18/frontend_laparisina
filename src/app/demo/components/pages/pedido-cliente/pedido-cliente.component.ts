@@ -181,6 +181,18 @@ calcularPrecioTotalVentaPersonaNatural() {
       }
 
       crearPedidoCliente() {
+
+        
+    // Validar el total del carrito
+    if (this.calcularSubtotal() < 35000) {
+        this.messageService.add({
+            severity: 'warn',
+            summary: 'El pedido mínimo es de $35.000',
+            life: 5000
+        });
+        return;
+    }
+
         // Verificar si hay productos en el carrito
         if (this.productosCarrito.length === 0) {
             this.messageService.add({
@@ -191,6 +203,7 @@ calcularPrecioTotalVentaPersonaNatural() {
             });
             return;
         }
+
        
                  // Agregar mensajes de validación para otros campos aquí...
     // Validación específica para tipo de cliente "Persona natural"

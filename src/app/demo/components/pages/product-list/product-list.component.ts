@@ -110,7 +110,7 @@ export class ProductComponent implements OnInit {
   //Variables para controlar dialogs
   detalleProductoDialog: boolean = false;
   detalleMenuDelDiaDialog: boolean = false;
-  anchoDialogDetalleProducto: string = '60%';
+  anchoDialogDetalleProducto: string = '65%';
 
 
 
@@ -222,7 +222,7 @@ export class ProductComponent implements OnInit {
   //función para abrir un dialog y ver detalles de un producto
   detalleProducto(product: Product) {
     // Verifica el ancho de la ventana del navegador
-    const anchoDialog = window.innerWidth < 960 ? '90%' : '60%';
+    const anchoDialog = window.innerWidth < 1200 ? '90%' : '65%';
 
     // Establece el ancho del diálogo
     this.anchoDialogDetalleProducto = anchoDialog;
@@ -259,7 +259,7 @@ export class ProductComponent implements OnInit {
 
   detalleMenuDelDia(product: Product) {
     // Verifica el ancho de la ventana del navegador
-    const anchoDialog = window.innerWidth < 960 ? '90%' : '70%';
+    const anchoDialog = window.innerWidth < 960 ? '90%' : '65%';
 
     // Establece el ancho del diálogo
     this.anchoDialogDetalleProducto = anchoDialog;
@@ -371,7 +371,7 @@ export class ProductComponent implements OnInit {
   //función para configurar donde se define resolución lg
   configuracionResolucionLg(): boolean {
     // Define la resolución a partir de la cual aplicar la clase 'lg'
-    const resolucionLg = 1376;
+    const resolucionLg = 1200;
 
     // Verifica si 'window' está definido y la resolución actual
     return window && window.innerWidth >= resolucionLg;

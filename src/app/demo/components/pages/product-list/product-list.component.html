@@ -148,7 +148,7 @@
 	</div>
 
 
-    <p-dialog  [(visible)]="detalleProductoDialog" [style]="{ 'width': anchoDialogDetalleProducto }" header="Detalles Producto" 
+    <p-dialog  [(visible)]="detalleProductoDialog" [style]="{ 'width': anchoDialogDetalleProducto }" header="{{producto.nombre_producto}}" 
         [modal]="true" class="p-fluid" (onHide)="cerrarDetalleDialog()" [dismissableMask]="true">            
         <ng-template pTemplate="listItem">
             <div class="col-12">
@@ -166,7 +166,7 @@
                                 </ng-template>
                             </p-galleria>
                     </div>
-                    <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                    <div class="flex-1 flex flex-column text-center md:text-left" style="padding: 30px;">
                         <div class="font-semibold text-xl mb-2">Nombre: <span style="font-weight: normal;">{{producto.nombre_producto}}</span></div>
                         <div class="font-semibold text-xl mb-2">Descripción: <span style="font-weight: normal;">{{producto.descripcion_producto}}</span></div>
                         <div class="flex align-items-center mt-2">
@@ -182,28 +182,22 @@
                             <span class="font-semibold text-xl">Precio: <span style="font-weight: normal;">
                                 {{tipoCliente === 'Persona jurídica' ? (producto.precio_por_mayor_ico | number) : (producto.precio_ico | number)}}</span></span>
                         </div>
-                        <div class="flex align-items-center">
-                            <div class="field col mb-0">
+                        <div class="flex align-items-center justify-content-between mb-2">
+                            <div class="formgrid grid col">
                                 <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
-                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [min]="1" [max]="100" [ngStyle]="{ 'height.px': 34 }"
+                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [min]="1" [ngStyle]="{ 'height.px': 34, 'width.px': 155 }"
                                  (ngModelChange)="verificarLimite($event)"></p-inputNumber>
-                                 <!-- <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100"
-                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [ngStyle]="{ 'height.px': 34 }"> </p-inputNumber> -->
                             </div>
-                            
                         </div>
-                        <!-- <div *ngIf="limiteProducto" class="mensaje-error mt-0 mb-2">
-                            Compra máxima 100 unidades.
-                        </div> -->
-                        <span class="mt-0 mb-2" *ngIf="limiteProducto" style="color: red;"> Compra máxima 100 unidades.</span>
+                        <span class="mt-0 mb-2" *ngIf="limiteProducto" style="color: red;">
+                            Para compras al por mayor comunícate con nosotros.
+                            <a href="https://api.whatsapp.com/send?phone=573193192433&text=Hola,%20deseo%20mas%20informacion" target="_blank">
+                                <i style="color: green; font-size: 20px;" class="pi pi-whatsapp pi-10x"></i>
+                            </a>
+                        </span>
                         
                         <div class="flex align-items-center justify-content-between">
                             <div class="formgrid grid">
-                                <!-- <div class="field col">
-                                    <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
-                                    decrementButtonClass="p-button-sm" incrementButtonClass="p-button-sm" incrementButtonIcon="pi pi-plus" 
-                                    decrementButtonIcon="pi pi-minus" [min]="1" [max]="100" [ngStyle]="{ 'height.px': 34 }"></p-inputNumber>
-                                </div> -->
                                 <div class="field col">
                                     <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" styleClass="mb-2 p-button-sm"
                                     (click)="agregarProductoCarrito(producto, cantidadSeleccionada)"></p-button>  
@@ -223,19 +217,8 @@
                 <div class="flex flex-column" [ngClass]="{'lg:flex-row': configuracionResolucionLg()}">
                     <div class="card">
                         <img [src]="imagenes[0]" style="width: 100%; height: auto; max-width: 600px; object-fit: cover; display: block; margin: 0 auto;" />
-                        <!-- <p-galleria [(value)]="imagenes" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showIndicatorsOnItem]="true" 
-                                        [responsiveOptions]="galleriaResponsiveOptions" [containerStyle]="{ 'max-width': '600px', 'margin-top': '2em' }">
-                                <ng-template pTemplate="item" let-imagen>
-                                    <img [src]="imagen" style="width: 100%; height: auto; max-width: 600px; object-fit: cover; display: block; margin: 0 auto;" />
-                                </ng-template>
-                                <ng-template pTemplate="thumbnail" let-imagen>
-                                    <div class="grid grid-nogutter justify-content-center">
-                                        <img [src]="imagen" style="display: block;" />
-                                    </div>
-                                </ng-template>
-                            </p-galleria> -->
                     </div>
-                    <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                    <div class="flex-1 flex flex-column text-center md:text-left" style="padding: 30px;">
                         <div class="font-semibold text-xl mb-2">Nombre: <span style="font-weight: normal;">{{producto.nombre_producto}}</span></div>
                         <div class="font-semibold text-xl mb-2">Descripción: <span style="font-weight: normal;">{{producto.descripcion_producto}}</span></div>
                         <div class="flex align-items-center mt-2">
@@ -254,14 +237,10 @@
                         <div class="flex align-items-center justify-content-between mb-2">
                             <div class="formgrid grid col">
                                 <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
-                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [min]="1" [ngStyle]="{ 'height.px': 34 }"
+                                 incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [min]="1" [ngStyle]="{ 'height.px': 34, 'width.px': 155 }"
                                  (ngModelChange)="verificarLimite($event)"></p-inputNumber>
                             </div>
-                            
                         </div>
-                        <!-- <div *ngIf="limiteProducto" class="mensaje-error mt-0 mb-2">
-                            Compra máxima 100 unidades.
-                        </div> -->
                         <span class="mt-0 mb-2" *ngIf="limiteProducto" style="color: red;">
                             Para compras al por mayor comunícate con nosotros.
                             <a href="https://api.whatsapp.com/send?phone=573193192433&text=Hola,%20deseo%20mas%20informacion" target="_blank">
@@ -271,11 +250,6 @@
                         
                         <div class="flex align-items-center justify-content-between">
                             <div class="formgrid grid">
-                                <!-- <div class="field col">
-                                    <p-inputNumber [(ngModel)]="cantidadSeleccionada" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal"
-                                    decrementButtonClass="p-button-sm" incrementButtonClass="p-button-sm" incrementButtonIcon="pi pi-plus" 
-                                    decrementButtonIcon="pi pi-minus" [min]="1" [max]="100" [ngStyle]="{ 'height.px': 34 }"></p-inputNumber>
-                                </div> -->
                                 <div class="field col">
                                     <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" styleClass="mb-2 p-button-sm"
                                     (click)="agregarProductoCarrito(producto, cantidadSeleccionada)"></p-button>  
