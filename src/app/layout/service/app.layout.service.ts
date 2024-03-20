@@ -231,15 +231,29 @@ export class LayoutService {
         return carrito ? JSON.parse(carrito) : [];
     }
 
-    actualizarCarritoAlIniciarSesion() {
-        if (this.tipoCliente === 'Persona jurídica') {
-            // Modificar el carrito según las especificaciones
-            this.productosCarrito.forEach(producto => {
-                producto.precio_total_producto = producto.cantidad_producto * producto.precio_por_mayor_ico;
-            });
-
-            this.guardarCarrito(this.productosCarrito)
-        }
+    actualizarCarritoAlIniciarSesion(correo:string) {
+        let tipoCliente: string;
+        this.obtenerDatosClientePorCorreo(correo).subscribe(
+            (dataCliente) => {
+              tipoCliente = dataCliente.tipo_cliente;
+              console.log('tipooooo',tipoCliente)
+              if (tipoCliente === 'Persona jurídica') {
+                    // Modificar el carrito según las especificaciones
+                    this.productosCarrito.forEach(producto => {
+                        producto.precio_total_producto = producto.cantidad_producto * producto.precio_por_mayor_ico;
+                    });
+        
+                    this.guardarCarrito(this.productosCarrito)
+                }
+            },
+            (error) => {
+              if (error.status === 404) {
+                // No hacer nada en caso de un error 404
+              } else {
+                console.error('Error al obtener datos del cliente:', error);
+              }
+            }
+          );
     }
 
     actualizarCarritoAlCerrarSesion() {

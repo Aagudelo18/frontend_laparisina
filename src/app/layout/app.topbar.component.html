@@ -20,10 +20,10 @@
                 </div>
                 <div *ngIf="verificarUsuario() && verificarUsuario2()" class="formgrid grid">
                     <div class="field col">
-                        <span class="enlaceMenu mr-8 ml-8">Mis Pedidos</span>     
+                        <span class="enlaceMenu mr-8 ml-8" [routerLink]="['/pedidoListar']">Mis Pedidos</span>     
                     </div>
                 </div>
-                <div *ngIf="verificarUsuario() && verificarUsuario2()" [routerLink]="['/pedidoListar']" class="formgrid grid">
+                <div *ngIf="verificarUsuario() && verificarUsuario2()" class="formgrid grid">
                     <div class="field col">
                         <span class="enlaceMenu mr-8 ml-8"  [routerLink]="['/pages/perfil']">Perfil</span>     
                     </div>
