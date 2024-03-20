@@ -193,7 +193,7 @@ export class LayoutService {
 
         console.log('El producto ya está en el carrito');
         }
-        window.location.reload();
+        // window.location.reload();
         this._products.next(this.productosCarrito)
     }
 

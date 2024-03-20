@@ -27,6 +27,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -63,7 +64,8 @@ import { TableModule } from 'primeng/table';
         AutoCompleteModule,
         ReactiveFormsModule,
         ToolbarModule,
-        TableModule
+        TableModule,
+        ToastModule
     ],
     exports: [AppLayoutComponent]
 })
