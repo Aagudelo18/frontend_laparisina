@@ -298,6 +298,99 @@
                 </ng-template>
             </p-table>
         </p-tabPanel>
+         <!-- Listado de pedidos Entregados sin Pagar---------------------------------------------->
+         <p-tabPanel header="Listado de Pedidos Pendites por Pagar">
+            <p-table #dtEntregados [value]="pedidosEntregados" [rows]="10" [globalFilterFields]="['nombre_contacto']"
+                [paginator]="true" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                [(selection)]="selectedPedidos" selectionMode="multiple" dataKey="_id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h4 class="m-0">Listado de Entregados sin Pagar</h4>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="
+                                    onGlobalFilter(
+                                        dtEntregados,
+                                        $event,
+                                        'Entregado'
+                                    )
+                                " placeholder="Buscar..." class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="nombre_contacto">
+                            Nombre Cliente
+                            <p-sortIcon field="nombre_contacto"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tipo_cliente">
+                            Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name">Dirección</th>
+                        <th pSortableColumn="fecha_entrega_pedido">
+                            Fecha Entrega<p-sortIcon field="fecha_entrega_pedido"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="estado_pedido">
+                            Estado<p-sortIcon field="estado_pedido"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="estado_pago">
+                            Estado Pago<p-sortIcon field="estado_pago"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tipo_entrega">
+                            Tipo Entrega<p-sortIcon field="tipo_entrega"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="precio_total_venta">
+                            Valor Total<p-sortIcon field="precio_total_venta"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="name">Aciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pedido>
+                    <tr>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.nombre_contacto }}
+                        </td>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.tipo_cliente }}
+                        </td>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.direccion_entrega }}
+                        </td>
+                        <td style="width: 15%; min-width: 10rem">
+                            {{ pedido.fecha_entrega_pedido | slice : 0 : 10 }}
+                        </td>
+
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.estado_pedido }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.estado_pago }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.tipo_entrega }}
+                        </td>
+                        <td style="width: 15%; min-width: 5rem">
+                            {{ pedido.precio_total_venta }}
+                        </td>
+
+                        <td>
+                            <div class="flex">
+                                <button type="button" pButton pRipple icon="pi pi-eye"
+                                    class="p-button-rounded p-button-primary mr-2"
+                                    (click)="verDetallePedido(pedido._id)" pTooltip="Ver Detalle"></button>
+                                <button *ngIf="esPedidoEstadoPago(pedido)" pButton pRipple icon="pi pi-chevron-right"
+                                    class="p-button-rounded p-button-warning mr-2" (click)="cambiarEstadoPago(pedido._id)"
+                                    pTooltip="Cambiar Estado a Pagado"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
         <!-- Listado de pedidos anulados---------------------------------------------->
         <p-tabPanel header="Lista de Pedidos Anulados">
             <p-table #dtAnulados [value]="pedidosAnulados" [rows]="10" [globalFilterFields]="['nombre_contacto']"
@@ -385,8 +478,12 @@
                 </ng-template>
             </p-table>
         </p-tabPanel>
+        
     </p-tabView>
 </div>
+
+
+<!-- Diálogo de confirmación estado Pago-->
 
 <!--Modal de ver detalle-->
 
@@ -695,6 +792,20 @@
     </ng-template>
 </p-dialog>
 
+<p-dialog [(visible)]="cambiarEstadoPDialogEstadoPago" header="Cambiar el Estado de Pago " [modal]="true"
+    [style]="{ width: '450px' }" (onHide)="cambiarEstadoPDialogEstadoPago = false">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-spin pi-hourglass mr-3" style="font-size: 1.2rem"></i>
+        <span>¿Está seguro que desea cambiar el Estado de Pago del pedido?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="onNoButtonClickEstadoPago()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="onYesButtonClickEstadoPago()"></button>
+    </ng-template>
+</p-dialog>
+
 
 <p-dialog
     [(visible)]="asignarDomiciliarioDialog"
@@ -757,7 +868,7 @@
                 <div class="p-field mt-4">
                     <span class="p-float-label">
                         <p-dropdown formControlName="estado_pedido" id="estado_pedido" [options]="listaEstadosPedido"
-                            placeholder="Seleccionar Estado del Pedido">
+                            placeholder="Seleccionar Estado del Pedido" >
                         </p-dropdown>
                         <label for="estado_pedido">Estado del Pedido</label>
                     </span>
@@ -767,7 +878,7 @@
                 <div class="p-field mt-4">
                     <span class="p-float-label">
                         <p-dropdown [disabled]="pedidoPagado" formControlName="estado_pago" id="estado_pago"
-                            [options]="listaEstadosPago" placeholder="Seleccionar Estado del Pago">
+                            [options]="listaEstadosPago" placeholder="Seleccionar Estado del Pago" >
                         </p-dropdown>
                         <label for="estado_pago">Estado del Pago</label>
                     </span>
@@ -778,10 +889,12 @@
             <button pButton pRipple label="Cancelar" class="p-button-text"
                 (click)="editarEstadoPagoDialog = false"></button>
             <button type="submit" pButton pRipple label="Guardar" class="p-button-text"
-                [disabled]="!formPedidos.valid"></button>
+              ></button>
         </div>
+        
     </form>
 </p-dialog>
+
 
 <p-dialog [(visible)]="confirmacionEditarEstadoPago" header="Confirmar Cambios de Estado">
     <div class="flex align-items-center justify-content-center">

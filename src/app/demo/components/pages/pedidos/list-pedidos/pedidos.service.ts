@@ -60,6 +60,10 @@ export class PedidosService {
   getPedidosEnviados(): Observable<Pedido[]> {
     return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`);
   }
+  getPedidosEntregadosConPagoPendiente(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEntregado`);
+  }
+
 
   getDomiciliarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/domiciliarios`);
