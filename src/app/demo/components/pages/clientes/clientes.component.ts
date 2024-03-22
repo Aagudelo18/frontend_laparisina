@@ -348,6 +348,9 @@ confirmarCreacionUsuario() {
       // Función para actualizar un cliente
       actualizarCliente() {
         const nuevoDocumento = this.formCliente.value.numero_documento_cliente;
+        const nuevoCelular = this.formCliente.value.telefono_cliente;
+        const nuevoNombreJuridico = this.formCliente.value.nombre_juridico;
+        const nuevonit = this.formCliente.value.nit_empresa_cliente;
 
         // Verificar si el nuevo nombre ya existe en la lista de roles
         const documentoExistente = this.listClientes.find(cliente => cliente.numero_documento_cliente === nuevoDocumento);
@@ -357,6 +360,42 @@ confirmarCreacionUsuario() {
             severity: 'error',
             summary: 'Error al editar el cliente',
             detail: 'El numero de documento ya está en uso.',
+            life: 6000
+          });
+          return; // Detener la ejecución de la función si el nuevo nombre ya existe
+        }
+      
+        const nitExistente = this.listClientes.find(cliente => cliente.nit_empresa_cliente === nuevonit);
+      
+        if (nitExistente && nitExistente._id !== this.id) { // Evitar comparar el mismo rol consigo mismo
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al editar el cliente',
+            detail: 'El nit ya está en uso.',
+            life: 6000
+          });
+          return; // Detener la ejecución de la función si el nuevo nombre ya existe
+        }
+
+        const nombreJuridicoExistente = this.listClientes.find(cliente => cliente.nombre_juridico === nuevoNombreJuridico);
+      
+        if (nombreJuridicoExistente && nombreJuridicoExistente._id !== this.id) { // Evitar comparar el mismo rol consigo mismo
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al editar el cliente',
+            detail: 'El nombre juridíco ya está en uso.',
+            life: 6000
+          });
+          return; // Detener la ejecución de la función si el nuevo nombre ya existe
+        }
+
+        const celularExistente = this.listClientes.find(cliente => cliente.telefono_cliente === nuevoCelular);
+      
+        if (celularExistente && celularExistente._id !== this.id) { // Evitar comparar el mismo rol consigo mismo
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al editar el cliente',
+            detail: 'El numero de celular ya está en uso.',
             life: 6000
           });
           return; // Detener la ejecución de la función si el nuevo nombre ya existe
