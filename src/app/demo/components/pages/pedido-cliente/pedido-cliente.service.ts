@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
     private carritoProductos = 'carritoProductosParisina';
 
-    private apiUrl = 'http://localhost:3000/api'; // URL de API
+    private apiUrl = 'https://api-parisina-2tpy.onrender.com/api'; // URL de API
 
   constructor(private http: HttpClient) { }
 

@@ -181,7 +181,7 @@ export class ProductComponent implements OnInit {
         .filter(categoria => categoria.estado_categoria_producto === true)
         .map(categoria => ({
           ...categoria,
-          imagen_categoria_producto: `http://localhost:3000/uploads/${categoria.imagen_categoria_producto}`
+          imagen_categoria_producto: `https://api-parisina-2tpy.onrender.com/uploads/${categoria.imagen_categoria_producto}`
         }));
     });
   }
@@ -231,7 +231,7 @@ export class ProductComponent implements OnInit {
     this.detalleProductoDialog = true;
     this.cantidadSeleccionada = 1;
 
-    const rutaImagenes = 'http://localhost:3000/uploads/';
+    const rutaImagenes = 'https://api-parisina-2tpy.onrender.com/uploads/';
     this.imagenes = product.imagenes_producto.map(imagen => rutaImagenes + imagen);
   }
 
@@ -268,7 +268,7 @@ export class ProductComponent implements OnInit {
     this.detalleMenuDelDiaDialog = true;
     this.cantidadSeleccionada = 1;
 
-    const rutaImagenes = 'http://localhost:3000/uploads/';
+    const rutaImagenes = 'https://api-parisina-2tpy.onrender.com/uploads/';
     this.imagenes = product.imagenes_producto.map(imagen => rutaImagenes + imagen);
   }
   

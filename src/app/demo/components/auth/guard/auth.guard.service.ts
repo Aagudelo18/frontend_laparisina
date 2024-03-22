@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = 'http://localhost:3000/api';
+    private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
 
     constructor(private http: HttpClient) { }
     private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
