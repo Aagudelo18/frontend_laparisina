@@ -17,7 +17,7 @@ import { ConfirmationService } from 'primeng/api';
 export class ListPedidosComponent implements OnInit {
 
 
-    bloquearGuardar: boolean = false;
+    bloquearGuardar: boolean = true;
     confirmacionEditarEstadoPago: boolean = false;
     editarEstadoPagoDialog: boolean = false;
     formEditarEstadoPago: FormGroup;
@@ -672,6 +672,7 @@ export class ListPedidosComponent implements OnInit {
             estado_pago: this.pedidoSeleccionado.estado_pago,
         });
     }
+
 // Método para actualizar el pedido
 async actualizarPedido() {
     try {
@@ -685,26 +686,31 @@ async actualizarPedido() {
                 estado_pago: estadoPago,
             };
 
-             // Verificar si se han realizado cambios
-            //  const cambiosRealizados = 
-            //  estadoPedido !== this.pedidoSeleccionado.estado_pedido ||
-            //  estadoPago !== this.pedidoSeleccionado.estado_pago;
+            // Verificar si se han realizado cambios
+            const cambiosEstadoPedido = estadoPedido !== this.pedidoSeleccionado.estado_pedido;
+            const cambiosEstadoPago = estadoPago !== this.pedidoSeleccionado.estado_pago;
 
-            //  if (!cambiosRealizados) {
-            //     // Si no se han realizado cambios, bloquear el botón de guardar y salir
-            //     this.bloquearGuardar = true;
-            //     return;
-            // }
+            if (!cambiosEstadoPedido && !cambiosEstadoPago) {
+                // Si no se han realizado cambios, mostrar mensaje de error y salir
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Sin Cambios',
+                    detail: 'No se han realizado cambios.',
+                    life: 5000,
+                });
+                return;
+            }
+
             // Actualizamos el pedido
             await this.pedidosService.updatePedido(this.pedidoSeleccionado._id, pedidoActualizado).toPromise();
 
-            let successMessage = '';
             // Determinar el mensaje de éxito según los cambios realizados
-            if (estadoPedido && estadoPago) {
+            let successMessage = '';
+            if (cambiosEstadoPedido && cambiosEstadoPago) {
                 successMessage = 'Estado y Método de Pago Actualizados Exitosamente';
-            } else if (estadoPedido) {
+            } else if (cambiosEstadoPedido) {
                 successMessage = 'Estado del Pedido Actualizado Exitosamente';
-            } else if (estadoPago) {
+            } else if (cambiosEstadoPago) {
                 successMessage = 'Estado de Pago Actualizado Exitosamente';
             }
 
@@ -716,9 +722,9 @@ async actualizarPedido() {
                     detail: successMessage,
                     life: 5000,
                 });
+                this.bloquearGuardar = true;
+                this.cargarPedidosTerminados();
             }
-        
-
         } else {
             console.error('El pedido seleccionado no está definido.');
         }
@@ -730,19 +736,18 @@ async actualizarPedido() {
             life: 5000,
         });
         console.error('Error al guardar los cambios:', error);
-    }
+    } 
 }
-
 
 
 // Método para cerrar el modal de edición
 cerrarModalEditarEstadoYPago() {
     this.editarEstadoPagoDialog = false;
-  
 }
 
 // Método para mostrar el modal de confirmación
 confirmarEdicionPedido() {
+   
     // Si confirma la edición, muestra el modal de confirmación
     this.confirmacionEditarEstadoPago = true;
 }
@@ -753,25 +758,21 @@ confirmarCambiosEstado() {
     this.actualizarPedido(); // Llama a la función para actualizar el pedido
     this.confirmacionEditarEstadoPago = false; // Cierra el modal de confirmación
     this.editarEstadoPagoDialog = false; // Cierra el modal de edición
-    // Mostramos el mensaje de éxito
-
-    
+    // Mostramos el mensaje de éxitof
 }
+
 
 // Método para manejar el botón "No" del modal de confirmación
 cancelarCambiosEstado() {
     this.confirmacionEditarEstadoPago = false; // Cierra el modal de confirmación sin realizar cambios
 }
 
-// bloquearEditarEstado() {
-//     // Verifica si hay cambios en los estados
-//     const cambiosEstado = this.formPedidos.get('estado_pedido').dirty || this.formPedidos.get('estado_pago').dirty;
+bloquearEditarEstado() {
+    const estadoPedidoDirty = this.pedidoSeleccionado.estado_pedido !== this.formPedidos.get('estado_pedido').value;
+    const estadoPagoDirty = this.pedidoSeleccionado.estado_pago !== this.formPedidos.get('estado_pago').value;
+    this.bloquearGuardar = !(estadoPedidoDirty || estadoPagoDirty);
     
-//     // Desbloquea el botón de guardar si hay cambios
-//     this.bloquearGuardar = !cambiosEstado;
-// }
-
-
+}
 
 }
     

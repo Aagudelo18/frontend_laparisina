@@ -267,23 +267,7 @@ export class NewPedidosComponent implements OnInit {
             .value.toISOString()
             .substring(0, 10);
 
-         // Determinar el rol del usuario actual desde el localStorage
-            // let rolUsuario = localStorage.getItem('rol');
-            //     // Asignar el estado del pedido basado en el rol del usuario
-            // let estadoPedido;
-            // if (rolUsuario === 'Super Admin') {
-            //     estadoPedido = 'Tomado';
-            // }  else {
-            //     estadoPedido = 'Pendiente'
-            //     // Si el rol no coincide con ninguno de los roles esperados, mostrar un error y salir
-            //     this.messageService.add({
-            //         severity: 'error',
-            //         summary: 'Error',
-            //         detail: 'No se pudo determinar el rol del usuario.',
-            //     });
-            //     return;
-            // }
-
+   
 
         
         this.pedido.get('fecha_entrega_pedido').setValue(fechaEntrega);
@@ -369,7 +353,7 @@ export class NewPedidosComponent implements OnInit {
                 this.cantidad_producto *
                 this.productoSeleccionado['precio_por_mayor_ico'];
         }
-        console.log(this.cantidad_producto);
+        
         const productGroup = this.createProductGroup();
         productGroup.patchValue({
             nombre_producto: this.productoSeleccionado['nombre_producto'],
