@@ -110,7 +110,7 @@ export class ProductComponent implements OnInit {
   //Variables para controlar dialogs
   detalleProductoDialog: boolean = false;
   detalleMenuDelDiaDialog: boolean = false;
-  anchoDialogDetalleProducto: string = '65%';
+  anchoDialogDetalleProducto: string = '80%';
 
 
 
@@ -181,7 +181,7 @@ export class ProductComponent implements OnInit {
         .filter(categoria => categoria.estado_categoria_producto === true)
         .map(categoria => ({
           ...categoria,
-          imagen_categoria_producto: `http://localhost:3000/uploads/${categoria.imagen_categoria_producto}`
+          imagen_categoria_producto: `https://api-parisina-2tpy.onrender.com/uploads/${categoria.imagen_categoria_producto}`
         }));
     });
   }
@@ -222,7 +222,7 @@ export class ProductComponent implements OnInit {
   //función para abrir un dialog y ver detalles de un producto
   detalleProducto(product: Product) {
     // Verifica el ancho de la ventana del navegador
-    const anchoDialog = window.innerWidth < 1200 ? '90%' : '65%';
+    const anchoDialog = window.innerWidth < 1200 ? '90%' : '80%';
 
     // Establece el ancho del diálogo
     this.anchoDialogDetalleProducto = anchoDialog;
@@ -231,7 +231,7 @@ export class ProductComponent implements OnInit {
     this.detalleProductoDialog = true;
     this.cantidadSeleccionada = 1;
 
-    const rutaImagenes = 'http://localhost:3000/uploads/';
+    const rutaImagenes = 'https://api-parisina-2tpy.onrender.com/uploads/';
     this.imagenes = product.imagenes_producto.map(imagen => rutaImagenes + imagen);
   }
 
@@ -259,7 +259,7 @@ export class ProductComponent implements OnInit {
 
   detalleMenuDelDia(product: Product) {
     // Verifica el ancho de la ventana del navegador
-    const anchoDialog = window.innerWidth < 960 ? '90%' : '65%';
+    const anchoDialog = window.innerWidth < 960 ? '90%' : '80%';
 
     // Establece el ancho del diálogo
     this.anchoDialogDetalleProducto = anchoDialog;
@@ -268,7 +268,7 @@ export class ProductComponent implements OnInit {
     this.detalleMenuDelDiaDialog = true;
     this.cantidadSeleccionada = 1;
 
-    const rutaImagenes = 'http://localhost:3000/uploads/';
+    const rutaImagenes = 'https://api-parisina-2tpy.onrender.com/uploads/';
     this.imagenes = product.imagenes_producto.map(imagen => rutaImagenes + imagen);
   }
   

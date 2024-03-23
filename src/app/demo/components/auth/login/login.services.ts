@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 }) export class LoginService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 

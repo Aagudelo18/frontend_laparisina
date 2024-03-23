@@ -11,7 +11,7 @@ import { Product, DatosUsuario } from './product-list.model';
     private carritoProductos = 'carritoProductosParisina';
     private claveDatosUsuario = 'currentUser'
 
-    private apiUrl = 'http://localhost:3000/api'; // URL de API
+    private apiUrl = 'https://api-parisina-2tpy.onrender.com/api'; // URL de API
   
     constructor(private http: HttpClient) {}
 
