@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class VentasService {
 
-  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
+  private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) { }
 
@@ -47,5 +47,14 @@ export class VentasService {
   descargarVentasExcel(): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/ventas_excel`, { responseType: 'blob' });
   }
+  
+  getDomiciliarios(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/domiciliarios`);
+  }
+
+  getDomiciliariosXId(id: string): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}/empleados/${id}`);
+  }
+  
 
 }

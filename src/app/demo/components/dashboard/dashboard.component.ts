@@ -198,8 +198,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (ganancia === undefined) {
             return '0'; // O cualquier valor por defecto que desees mostrar si la ganancia es undefined
         } else {
-            return ganancia.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
-        }
+            return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(ganancia);        }
     }
 
     async obtenerProductosMasVendidosSemana(): Promise<void> {
