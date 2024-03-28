@@ -139,7 +139,7 @@ export class ProductoComponent implements OnInit {
           durabilidad_producto: data.durabilidad_producto,
           imagenes_producto: data.imagenes_producto,
         })
-        const rutaImagenes = 'http://localhost:3000/uploads/';
+        const rutaImagenes = 'https://api-parisina-2tpy.onrender.com/uploads/';
         this.imagenes = data.imagenes_producto.map(imagen => rutaImagenes + imagen);
 
       })
