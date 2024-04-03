@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pedido } from './ventas.model';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 
 
@@ -45,9 +45,29 @@ export class VentasService {
   }
 
   descargarVentasExcel(): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/ventas_excel`, { responseType: 'blob' });
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'token': token || '',
+      'rol': rol || ''
+    });
+
+    // Opciones para la solicitud HTTP
+    const options = {
+      headers: headers, // Incluir el encabezado en las opciones
+      responseType: 'blob' as 'json' // Especificar el tipo de respuesta como blob
+    };
+
+    // Realizar la solicitud HTTP GET con las opciones
+    return this.http.get(`${this.apiUrl}/ventas_excel`, options).pipe(
+      map(response => response as Blob) // Convertir la respuesta a Blob
+    );
   }
-  
+
   getDomiciliarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/domiciliarios`);
   }
@@ -55,6 +75,6 @@ export class VentasService {
   getDomiciliariosXId(id: string): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}/empleados/${id}`);
   }
-  
+
 
 }
