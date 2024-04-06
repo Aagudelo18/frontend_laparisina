@@ -21,7 +21,7 @@ import { AuthGuard } from 'src/app/demo/components/auth/guard/auth.guard'; // Im
         { path: 'pedido-cliente', loadChildren: () => import('./pedido-cliente/pedido-cliente.module').then(m => m.PedidoClienteModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos' } },
         { path: 'pedido-list', loadChildren: () => import('./pedido-list/pedido-list.module').then(m => m.PedidoListModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos' } },
         { path: 'ventas', loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule), canActivate: [AuthGuard], data: { moduleName: 'Ventas' } },
-        { path: 'perfil', loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule), canActivate: [AuthGuard], data: { moduleName: 'Clientes' }  },
+        { path: 'perfil', loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos Cliente' }  },
         { path: 'new-pedidos', loadChildren: () => import('./pedidos/new-pedidos/new-pedidos.module').then(m => m.NewPedidosModule), canActivate: [AuthGuard] },
         { path: 'empleados', loadChildren: () => import('./empleados/list-empleados/list-empleados.module').then(m => m.ListEmpleadosModule), canActivate: [AuthGuard], data: { moduleName: 'Empleados' } },
         { path: 'new-empleados', loadChildren: () => import('./empleados/new-empleados/new-empleados.module').then(m => m.NewEmpleadosModule), canActivate: [AuthGuard], data: { moduleName: 'Empleados' } },

@@ -180,11 +180,27 @@ calcularPrecioTotalVentaPersonaNatural() {
         }, 0);
       }
 
+    verificarMenuDelDia(productos) {
+        return productos.some(producto => producto.nombre_producto === 'Menú del día');
+    }
+
       crearPedidoCliente() {
+        const tipoEntrega = this.pedido.get('tipo_entrega').value
+        const hayMenuDelDia = this.verificarMenuDelDia(this.productosCarrito);
+
 
         
     // Validar el total del carrito
-    if (this.calcularSubtotal() < 35000) {
+    // if (this.calcularSubtotal() < 35000) {
+    //     this.messageService.add({
+    //         severity: 'warn',
+    //         summary: 'El pedido mínimo es de $35.000',
+    //         life: 5000
+    //     });
+    //     return;
+    // }
+
+    if (!hayMenuDelDia && tipoEntrega == 'Domicilio' && this.calcularSubtotal() < 35000) {
         this.messageService.add({
             severity: 'warn',
             summary: 'El pedido mínimo es de $35.000',
@@ -302,6 +318,7 @@ calcularPrecioTotalVentaPersonaNatural() {
                 }
                 );
                this.limpiarCarrito();
+               this.LayoutService.limpiarCarrritoLocal()
     
                 // Navegar a la página de listado de pedidos después de un pequeño retraso
                 timer(1000).subscribe(() => {

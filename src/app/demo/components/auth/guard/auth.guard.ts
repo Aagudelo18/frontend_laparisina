@@ -132,6 +132,11 @@ export class AuthGuard implements CanActivate {
     return this.hasPermission(role, 'Pedidos Empleado');
   }
 
+  hasPedidosClientesPermission(role: Roles): boolean {
+    // Implementa la lógica para verificar si el rol tiene el permiso "Orden de producción"
+    return this.hasPermission(role, 'Pedidos Cliente');
+  }
+
   hasVentasPermission(role: Roles): boolean {
     // Implementa la lógica para verificar si el rol tiene el permiso "Ventas"
     return this.hasPermission(role, 'Ventas');

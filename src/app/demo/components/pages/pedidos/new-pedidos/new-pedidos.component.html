@@ -517,6 +517,7 @@
                     inputId="cantidad_producto"
                     [(ngModel)]="cantidad_producto"
                     [ngModelOptions]="{ standalone: true }"
+                    [min]="1"
                 >
                 </p-inputNumber>
                 <label htmlFor="number-input">Cantidad</label>

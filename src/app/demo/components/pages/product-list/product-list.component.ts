@@ -325,6 +325,16 @@ export class ProductComponent implements OnInit {
   // }
   agregarProductoCarrito(nuevoProducto: ProductoCarrito, cantidadProducto: number){
     this.layoutService.agregarProductoCarrito(nuevoProducto, cantidadProducto);
+
+    setTimeout(() => {
+      if (this.detalleProductoDialog){
+          this.detalleProductoDialog = false;
+      }
+      if (this.detalleMenuDelDiaDialog){
+          this.detalleMenuDelDiaDialog = false;
+      }
+    }, 900);
+
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------

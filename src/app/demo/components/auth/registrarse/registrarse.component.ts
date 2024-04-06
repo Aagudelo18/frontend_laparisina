@@ -84,13 +84,13 @@ export class RegistrarseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getListClientes();
+    this.getListClientes_Registrar();
     this.getRolCliente();
     this.getListTransportes();
   }
 
-  getListClientes() {
-    this.clienteService.getListClientes().subscribe((data) => {
+  getListClientes_Registrar() {
+    this.clienteService.getListClientes_Registrar().subscribe((data) => {
       this.listClientes = data;
     })
   }
@@ -236,7 +236,7 @@ export class RegistrarseComponent implements OnInit {
                   detail: 'Cliente creado',
                   life: 5000,
                 });
-                this.getListClientes();
+                this.getListClientes_Registrar();
                 this.crearClienteDialog = false;
                 // Navegar al login después de 6 segundos
                 setTimeout(() => {

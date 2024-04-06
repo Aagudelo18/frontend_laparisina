@@ -13,7 +13,16 @@ export class ClienteService {
   constructor(private http: HttpClient) {}
   
   getListClientes(): Observable<Clientes[]>{
-    return this.http.get<Clientes[]>(this.apiUrl)       
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Clientes[]>(this.apiUrl, {headers})       
   }
 
   getClientes(id:string): Observable<Clientes>{
@@ -21,18 +30,54 @@ export class ClienteService {
   }
 
   postClientes(Clientes : Clientes):Observable<void>{
-    return this.http.post<void>(this.apiUrl,Clientes)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.post<void>(this.apiUrl,Clientes, {headers})
   }
 
   putClientes(id:string, Clientes:Clientes):Observable<void>{
-    return this.http.put<void>(`${this.apiUrl}/${id}`,Clientes)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl}/${id}`,Clientes, {headers})
   }
 
   actualizarEstadoCliente(id:string): Observable<void>{
-    return this.http.put<void>(`${this.apiUrl2}/clientes_estado/${id}`,{})
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl2}/clientes_estado/${id}`,{}, {headers})
     }
 
 descargarClientesExcel(): Observable<Blob> {
-  return this.http.get(`${this.apiUrl2}/clientes_excel`, { responseType: 'blob' });
+  // Obtener el token y el rol del local storage
+  const token = localStorage.getItem('token');
+  const rol = localStorage.getItem('rol');
+
+  // Crear el encabezado con el token y el rol
+  const headers = {
+    'token': token || '',
+    'rol': rol || ''
+  };
+  return this.http.get(`${this.apiUrl2}/clientes_excel`, { responseType: 'blob', headers: headers });
 }
 }

@@ -210,21 +210,11 @@ export class AppTopBarComponent {
   @ViewChild('op2') overlayPanel: OverlayPanel;
 
   hacerPedido() {
-    // Lógica para hacer el pedido
-    console.log(this.totalCarrito)
-    if (this.totalCarrito >= 35000) {
-      // Redirigir a la ruta '/pedidoCliente'
-      this.router.navigate(['/pedidoCliente']).then(() => {
-        // Cerrar el modal después de redirigir
-        this.overlayPanel.hide(); // Oculta el overlayPanel
-      });
-    } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'El pedido mínimo es de $35.000',
-        life: 5000
-      });
-    }
+    // Redirigir a la ruta '/pedidoCliente'
+    this.router.navigate(['/pedidoCliente']).then(() => {
+      // Cerrar el modal después de redirigir
+      this.overlayPanel.hide(); // Oculta el overlayPanel
+    });
     
   }
 

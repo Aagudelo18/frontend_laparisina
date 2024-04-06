@@ -16,6 +16,10 @@ export class ClienteService {
     return this.http.get<Clientes[]>(this.apiUrl)       
   }
 
+  getListClientes_Registrar(): Observable<Clientes[]>{
+    return this.http.get<Clientes[]>(`${this.apiUrl2}/clientes-registrar`)       
+  }
+
   getClientes(id:string): Observable<Clientes>{
     return this.http.get<Clientes>(`${this.apiUrl}/${id}`)
   }

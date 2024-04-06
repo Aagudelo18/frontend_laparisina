@@ -16,7 +16,16 @@ export class PedidoListService {
 
 //Metodo para listar todos los pedidos del cliente
   getTodosPedido(id: string): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(`${this.apiUrl}/pedidosCliente/${id}`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Cliente[]>(`${this.apiUrl}/pedidosCliente/${id}`, {headers});
   }
 
   getDomiciliarios(): Observable<any[]> {
@@ -30,7 +39,16 @@ export class PedidoListService {
   }
 
   getPedidoDetalle(id: string): Observable<any> {
-    return this.http.get<Cliente[]>(this.apiUrl + `/pedidos/${id}` );
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Cliente[]>(this.apiUrl + `/pedidos-cliente/${id}`, {headers} );
   }
 
   obtenerClientePorCorreo(correo_cliente: string): Observable<any> {

@@ -13,7 +13,16 @@ export class RolesService {
   constructor(private http: HttpClient) { }
 
   getListRoles(): Observable<Roles[]>{
-    return this.http.get<Roles[]>(this.apiUrl)       
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Roles[]>(this.apiUrl, {headers})       
   }
 
   getRoles(id:string): Observable<Roles>{
@@ -21,15 +30,42 @@ export class RolesService {
   }
 
   postRoles(Roles : Roles):Observable<void>{
-    return this.http.post<void>(this.apiUrl,Roles)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.post<void>(this.apiUrl,Roles, {headers})
   }
 
   putRoles(id:string, Roles:Roles):Observable<void>{
-    return this.http.put<void>(`${this.apiUrl}/${id}`,Roles)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl}/${id}`,Roles, {headers})
   }
 
   actualizarEstadoRol(id:string): Observable<void>{
-    return this.http.put<void>(`${this.apiUrl2}/roles_estado/${id}`,{})
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl2}/roles_estado/${id}`,{}, {headers})
     }
   
   

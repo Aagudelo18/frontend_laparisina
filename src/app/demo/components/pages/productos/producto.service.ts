@@ -10,7 +10,16 @@ import { Producto } from './producto.model';
     constructor(private http: HttpClient) {}
 
     getListProductos(): Observable<Producto[]>{
-      return this.http.get<Producto[]>(`${this.apiUrl}/productos`)    
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'token': token || '',
+        'rol': rol || '',
+      };
+      return this.http.get<Producto[]>(`${this.apiUrl}/productos`, {headers})    
     }
 
     getProducto(id:string): Observable<Producto>{
@@ -53,7 +62,7 @@ import { Producto } from './producto.model';
         'token': token || '',
         'rol': rol || ''
       };
-      return this.http.put<void>(`${this.apiUrl}/producto-estado/${id}`,{}, {headers})
+      return this.http.put<void>(`${this.apiUrl}/producto-estado/${id}`,{},{headers})
     }
     
   }

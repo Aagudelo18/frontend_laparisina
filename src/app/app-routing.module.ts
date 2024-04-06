@@ -88,14 +88,14 @@ const routes: Routes = [
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedido-cliente/pedido-cliente.module'
-                                ).then((m) => m.PedidoClienteModule), canActivate: [AuthGuard], data: { moduleName: 'Clientes' }
+                                ).then((m) => m.PedidoClienteModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos Cliente' }
                         },
                         {
                             path: 'pedidoListar',
                             loadChildren: () =>
                                 import(
                                     './demo/components/pages/pedido-list/pedido-list.module'
-                                ).then((m) => m.PedidoListModule), canActivate: [AuthGuard], data: { moduleName: 'Clientes' }
+                                ).then((m) => m.PedidoListModule), canActivate: [AuthGuard], data: { moduleName: 'Pedidos Cliente' }
                         },
                     ],
                 },      

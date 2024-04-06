@@ -17,11 +17,29 @@ export class EmpleadosService {
   constructor(private http: HttpClient) { }
 
   autualizarEmpleado(id:string, empleado:Empleado):Observable<void>{
-    return this.http.put<void>(`${this.apiUrl}empleados/${id}`, empleado);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl}empleados/${id}`, empleado, {headers});
   }
 
   getEmpleado() {
-    return this.http.get<Empleado[]>(this.apiUrl + 'empleados');
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Empleado[]>(this.apiUrl + 'empleados', {headers});
   }
 
   getEmpleadoDetalle(id: string): Observable<any> {
@@ -29,7 +47,16 @@ export class EmpleadosService {
   }
 
   updateEmpleado(id: string, empleado: Empleado): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}empleados/${id}`, empleado);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl}empleados/${id}`, empleado, {headers});
 
   }
   getEmpleadoPorCedula(cedula: string): Observable<Empleado> {
@@ -37,7 +64,16 @@ export class EmpleadosService {
     return this.http.get<Empleado>(url);
   }
   actualizarEstadoEmpleado(id:string): Observable<void>{
-    return this.http.put<void>(`${this.apiUrl}/empleados_estado/${id}`,{})
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl}/empleados_estado/${id}`,{}, {headers})
     }
   
   getEmpleados(id:string): Observable<Empleado>{

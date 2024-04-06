@@ -10,7 +10,16 @@ import { Categoria } from './categoria.model';
     constructor(private http: HttpClient) {}
 
     getListCategorias(): Observable<Categoria[]>{
-      return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`)    
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'token': token || '',
+        'rol': rol || '',
+      };
+      return this.http.get<Categoria[]>(`${this.apiUrl}/categorias`, {headers})    
     }
 
     // CLIENTE
@@ -23,7 +32,16 @@ import { Categoria } from './categoria.model';
     }
 
     obtenerCategoriaPorNombre(nombreCategoria:string): Observable<Categoria>{
-      return this.http.get<Categoria>(`${this.apiUrl}/categorias/consultar/${nombreCategoria}`)
+      // Obtener el token y el rol del local storage
+      const token = localStorage.getItem('token');
+      const rol = localStorage.getItem('rol');
+
+      // Crear el encabezado con el token y el rol
+      const headers = {
+        'token': token || '',
+        'rol': rol || ''
+      };
+      return this.http.get<Categoria>(`${this.apiUrl}/categorias/consultar/${nombreCategoria}`, {headers})
     }
 
     crearCategoria(data : FormData): Observable<Object>{

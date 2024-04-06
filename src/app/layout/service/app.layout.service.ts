@@ -231,6 +231,14 @@ export class LayoutService {
         return carrito ? JSON.parse(carrito) : [];
     }
 
+    limpiarCarrritoLocal(): void {
+        localStorage.removeItem(this.claveCarritoProductos);
+
+        this.productosCarrito = [];
+
+        this._products.next(this.productosCarrito);
+    }
+
     actualizarCarritoAlIniciarSesion(correo:string) {
         let tipoCliente: string;
         this.obtenerDatosClientePorCorreo(correo).subscribe(

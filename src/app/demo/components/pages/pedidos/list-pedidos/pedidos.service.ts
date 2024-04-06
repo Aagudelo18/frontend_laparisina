@@ -37,28 +37,82 @@ export class PedidosService {
   }
 
   getPedidoDetalle(id: string): Observable<any> {
-    return this.http.get<Pedido[]>(this.apiUrl + `pedidos/${id}` );
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Pedido[]>(this.apiUrl + `pedidos/${id}`, {headers} );
   }
 
 
   updatePedido(id: string, pedido: Pedido): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}pedidos/${id}`, pedido);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<any>(`${this.apiUrl}pedidos/${id}`, pedido, {headers});
   }
 
   getPedidosPendientes(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosPendientes`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosPendientes`, {headers});
   }
 
   getPedidosTerminados(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosTerminados`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosTerminados`, {headers});
   }
 
   getPedidosAnulados(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosAnulados`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosAnulados`, {headers});
   }
 
   getPedidosEnviados(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`);
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`, {headers});
   }
 
   getDomiciliarios(): Observable<any[]> {

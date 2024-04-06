@@ -18,7 +18,16 @@ import { Observable } from 'rxjs';
   // }
 
   public createPedido(pedidos: any): Observable<any>{
-    return this.http.post(this.apiUrl + '/pedidos', pedidos)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.post(this.apiUrl + '/pedidos-cliente', pedidos, {headers})
   }
 
 // Método para obtener los datos del cliente por su ID

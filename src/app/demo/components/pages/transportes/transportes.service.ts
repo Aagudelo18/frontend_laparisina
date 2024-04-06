@@ -14,7 +14,16 @@ export class TransportesService {
   constructor(private http: HttpClient) { }
 
   getListTransportes(): Observable<Transportes[]>{
-    return this.http.get<Transportes[]>(this.apiUrl)       
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.get<Transportes[]>(this.apiUrl, {headers})       
   }
 
   getTransportes(id:string): Observable<Transportes>{
@@ -22,15 +31,42 @@ export class TransportesService {
   }
 
   postTransportes(Transportes : Transportes):Observable<void>{
-    return this.http.post<void>(this.apiUrl,Transportes)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.post<void>(this.apiUrl,Transportes, {headers})
   }
 
   putTransportes(id:string, Transportes:Transportes):Observable<void>{
-    return this.http.put<void>(`${this.apiUrl}/${id}`,Transportes)
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl}/${id}`,Transportes, {headers})
   }
 
   actualizarEstadoTransportes(id:string): Observable<void>{
-    return this.http.put<void>(`${this.apiUrl2}/transporte_estado/${id}`,{})
+    // Obtener el token y el rol del local storage
+    const token = localStorage.getItem('token');
+    const rol = localStorage.getItem('rol');
+
+    // Crear el encabezado con el token y el rol
+    const headers = {
+      'token': token || '',
+      'rol': rol || ''
+    };
+    return this.http.put<void>(`${this.apiUrl2}/transporte_estado/${id}`,{}, {headers})
   }
  
   
