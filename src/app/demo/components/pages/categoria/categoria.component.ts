@@ -78,7 +78,7 @@ export class CategoriaComponent implements OnInit {
         this.categoriaService.getListCategorias().subscribe((data) =>{      
           this.listCategorias = data.map(categoria => ({
             ...categoria,
-            imagen_categoria_producto: `http://localhost:3000/uploads/${categoria.imagen_categoria_producto}`
+            imagen_categoria_producto: `https://api-parisina-2tpy.onrender.com/uploads/${categoria.imagen_categoria_producto}`
           }))
         })        
     }
@@ -93,7 +93,7 @@ export class CategoriaComponent implements OnInit {
           descripcion_categoria_producto: data.descripcion_categoria_producto,
           image: data.imagen_categoria_producto,
         })
-        this.imagen_categoria = 'http://localhost:3000/uploads/' + data.imagen_categoria_producto
+        this.imagen_categoria = 'https://api-parisina-2tpy.onrender.com/uploads/' + data.imagen_categoria_producto
       })
     }
 

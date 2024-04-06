@@ -18,7 +18,7 @@ import { timer } from 'rxjs';
     templateUrl: './new-pedidos.component.html',
     styleUrls: ['./new-pedidos.component.scss'],
     providers: [MessageService],
-    
+
 })
 export class NewPedidosComponent implements OnInit {
     precio_total_venta: number;
@@ -228,6 +228,7 @@ export class NewPedidosComponent implements OnInit {
     }
 
     crearPedido() {
+
         // Verificar si la fecha de entrega está vacía
         if (!this.pedido.get('fecha_entrega_pedido').value) {
             this.messageService.add({
@@ -235,9 +236,9 @@ export class NewPedidosComponent implements OnInit {
                 summary: 'La fecha de entrega es requerida',
                 life: 3000,
             });
-            
+
         }
-    
+
         // Verificar la validación de los campos antes de continuar
         const camposRequeridos = [
             'ciudad_cliente',
@@ -248,7 +249,7 @@ export class NewPedidosComponent implements OnInit {
             'estado_pago',
             'tipo_cliente'
         ];
-    
+
         for (const campo of camposRequeridos) {
             if (this.pedido.get(campo).invalid) {
                 this.messageService.add({
@@ -259,17 +260,21 @@ export class NewPedidosComponent implements OnInit {
                 return; // Salir del método si hay campos inválidos
             }
         }
-    
+
         // Formatear la fecha de entrega en formato YY/MM/DD
         const fechaEntrega = this.pedido
             .get('fecha_entrega_pedido')
             .value.toISOString()
             .substring(0, 10);
+
+   
+
+        
         this.pedido.get('fecha_entrega_pedido').setValue(fechaEntrega);
-    
+
         const subTotal = this.calcularSubtotal();
         this.aumento_empresa = subTotal * 0.08;
-    
+
         // Agregar mensajes de validación para otros campos aquí...
         if (this.pedido.get('tipo_cliente').value === 'Persona natural') {
             if (this.pedido.get('quien_recibe').invalid) {
@@ -281,12 +286,12 @@ export class NewPedidosComponent implements OnInit {
                 return;
             }
         }
-    
+
         // Asegúrate de que la propiedad 'detalle_pedido' esté definida como un array
         this.pedido
             .get('detalle_pedido')
             ?.patchValue(this.productsFormArray.value || []);
-    
+
         this.newpedidosService
             .createPedido(this.pedido.getRawValue())
             .subscribe(
@@ -296,7 +301,7 @@ export class NewPedidosComponent implements OnInit {
                         summary: 'Pedido creado con Éxito',
                         life: 3000,
                     });
-    
+
                     // Agregar un pequeño retraso antes de navegar a la página de listado de pedidos
                     timer(1000).subscribe(() => {
                         this.router.navigate(['/list-pedidos']);
@@ -320,7 +325,7 @@ export class NewPedidosComponent implements OnInit {
                 }
             );
     }
-    
+
     agregarProductoExistente() {
         const existingProductIndex = this.productsFormArray.controls.findIndex(
             (control) =>
@@ -348,7 +353,7 @@ export class NewPedidosComponent implements OnInit {
                 this.cantidad_producto *
                 this.productoSeleccionado['precio_por_mayor_ico'];
         }
-        console.log(this.cantidad_producto);
+        
         const productGroup = this.createProductGroup();
         productGroup.patchValue({
             nombre_producto: this.productoSeleccionado['nombre_producto'],
@@ -389,7 +394,7 @@ export class NewPedidosComponent implements OnInit {
         this.calcularPrecioTotalVenta(); // Calcula los totales después de la actualización
     }
 
-   
+
 
     // Método para calcular el subtotal de todos los productos
     calcularSubtotal() {
@@ -413,7 +418,7 @@ export class NewPedidosComponent implements OnInit {
         }
 
 
-        
+
         if (this.pedido.get('tipo_cliente')?.value == 'Persona jurídica') {
             this.pedido
                 .get('precio_total_venta')
@@ -429,19 +434,19 @@ export class NewPedidosComponent implements OnInit {
 
     eliminarCerosIzquierda(event: any) {
         let valor = event.target.value;
-        
+
         // Si el valor es '0', no permitir eliminarlo
         if (valor === '0') {
             return;
         }
-    
+
         valor = valor.replace(/^0+(?=[1-9])/, ''); // Eliminar ceros a la izquierda
-    
+
         // Si después de eliminar los ceros a la izquierda el valor es vacío, establecerlo nuevamente como '0'
         if (valor === '') {
             valor = '0';
         }
-    
+
         event.target.value = valor; // Establecer el nuevo valor en el input
         valor = parseFloat(valor); // Convertir el valor a un número
         this.pedido.get('valor_domicilio').setValue(valor); // Establecer el valor en el formulario
@@ -456,25 +461,25 @@ export class NewPedidosComponent implements OnInit {
     }
 
     limpiarCampos() {
-        this.productosCategoria = null; 
-        this.categoriaSeleccionada = null; 
+        this.productosCategoria = null;
+        this.categoriaSeleccionada = null;
         this.cantidad_producto = null;
     }
 
     seleccionTipoEntrega() {
         const tipoEntrega = this.pedido.get('tipo_entrega').value;
-    
+
         if (tipoEntrega === 'Recoger en tienda') {
             // Si el tipo de entrega cambia a 'Recoger en tienda', establecer el valor del domicilio en cero
             this.pedido.get('valor_domicilio').setValue(0);
         }
-    
+
         // Recalcular el precio total después de modificar el valor del domicilio
         this.calcularPrecioTotalVenta();
     }
-    
-    
-      
+
+
+
     obtenerTransportesActivos(){
         this.newpedidosService.obtenerTransporteActivos().subscribe(
             (data) => {
@@ -482,19 +487,19 @@ export class NewPedidosComponent implements OnInit {
                 this.ciudades=data;
             });
     }
-    
+
     seleccionCiudad(){
-      
+
         if(this.pedido.get('tipo_entrega').value == 'Domicilio'){
             let ciudad = this.ciudades.find(ciudad => ciudad.ciudad_cliente == this.pedido.get('ciudad_cliente').value);
             console.log('domicilio', ciudad.precio_transporte)
             this.pedido.get('valor_domicilio')?.setValue(ciudad.precio_transporte);
         }else {
-            this.pedido.get('valor_domicilio')?.setValue(0); 
+            this.pedido.get('valor_domicilio')?.setValue(0);
         }
-       
+
        this.calcularPrecioTotalVenta();
 }
 
-    
+
 }

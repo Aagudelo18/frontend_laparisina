@@ -8,8 +8,8 @@ import { tap  , catchError} from 'rxjs/operators';
 })
 export class NewEmpleadosService {
 
-  private apiUrl = 'http://localhost:3000/api/';
-  private apiUrl1 = 'http://localhost:3000/api/obtenerEmpleadoPorIdentificacion/';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/';
+  private apiUrl1 = 'https://api-parisina-2tpy.onrender.com/api/obtenerEmpleadoPorIdentificacion/';
 
   constructor(private http: HttpClient) { }
 

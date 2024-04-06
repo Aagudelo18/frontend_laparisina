@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class PedidosService {
 
-  private apiUrl = 'http://localhost:3000/api/';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api/';
 
   constructor(private http: HttpClient) { }
 
@@ -114,6 +114,10 @@ export class PedidosService {
     };
     return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEnviados`, {headers});
   }
+  getPedidosEntregadosConPagoPendiente(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}pedidosEntregado`);
+  }
+
 
   getDomiciliarios(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/domiciliarios`);

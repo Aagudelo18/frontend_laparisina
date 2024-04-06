@@ -17,7 +17,7 @@ import { ConfirmationService } from 'primeng/api';
 export class ListPedidosComponent implements OnInit {
 
 
-
+    bloquearGuardar: boolean = true;
     confirmacionEditarEstadoPago: boolean = false;
     editarEstadoPagoDialog: boolean = false;
     formEditarEstadoPago: FormGroup;
@@ -40,6 +40,7 @@ export class ListPedidosComponent implements OnInit {
     pedidosTerminados: Pedido[] = [];
     pedidosAnulados: Pedido[] = [];
     pedidosEnviados: Pedido[] = [];
+    pedidosEntregados: Pedido[] = [];
     pestanaSeleccionada: number = 0; // 0 para pedidos pendientes, 1 para pedidos terminados
     cambiarEstadoPDialog: boolean;
     estado_pedido: string;
@@ -47,6 +48,7 @@ export class ListPedidosComponent implements OnInit {
     realizarCambioEstado: boolean;
     resolverPromesa: (value: boolean | PromiseLike<boolean>) => void;
     cambiarEstadoPDialogAnular: boolean;
+    cambiarEstadoPDialogEstadoPago:boolean;
     asignarDomiciliarioDialog: boolean = false;
     domiciliarioSeleccionado: any = '0'; // Puedes ajustar este tipo según tus necesidades
     domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
@@ -99,6 +101,7 @@ export class ListPedidosComponent implements OnInit {
         this.cargarPedidosTerminados();
         this.cargarPedidosAnulados();
         this.cargarPedidosEnviados();
+        this.cargarPedidosEntregados();
     }
 
     //cargar el componet automatico
@@ -148,6 +151,17 @@ export class ListPedidosComponent implements OnInit {
             console.log(this.pedidosEnviados); // Agrega esta línea
         });
     }
+
+    
+    cargarPedidosEntregados() {
+        this.pedidosService
+            .getPedidosEntregadosConPagoPendiente()
+            .subscribe((data: Pedido[]) => {
+                this.pedidosEntregados = data;
+                console.log(this.pedidosEntregados);
+            });
+    }
+
 
     openNewPedidos() {
         this.router.navigate(['/new-pedidos']);
@@ -273,6 +287,7 @@ export class ListPedidosComponent implements OnInit {
             pedido.estado_pedido = 'Enviado';
         }
 
+
         // Pasa el pedido al método updatePedido()
         this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
             (response) => {
@@ -282,6 +297,7 @@ export class ListPedidosComponent implements OnInit {
                 } else if (estado_pedido == 'Tomado') {
                     successMessage = 'El pedido se envió a Orden de Producción con éxito';
                 }
+
     
                 this.messageService.add({
                     severity: 'success',
@@ -314,6 +330,70 @@ export class ListPedidosComponent implements OnInit {
         );
         this.cambiarEstadoPDialog = false;
     }
+
+    
+
+    // Añade la lógica para abrir el diálogo
+    async cambiarEstadoPago(id: string) {
+        const pedido = this.pedidos.find((pedido) => pedido._id === id);
+    
+        // Verifica si el estado del pedido es "Pendiente" antes de abrir el diálogo de anulación
+        if (pedido.estado_pago === 'Pendiente') {
+            this.cambiarEstadoPDialogEstadoPago = true;
+            const respuesta = await this.esperarRespuesta();
+            if (respuesta) {
+                // Cambia el estado del pedido a "Anulado"
+                pedido.estado_pago = 'Pagado';
+                // Actualiza el pedido en el backend
+                this.pedidosService.updatePedido(pedido._id, pedido).subscribe(
+                    (response) => {
+                        // Muestra un mensaje de éxito
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Cambio de Estado a Pagado exitosamente',
+                            life: 5000,
+                        });
+    
+                        // Actualiza la lista de pedidos pendientes
+                        this.cargarPedidosEntregados();
+                    },
+                    (error) => {
+                        // Muestra un mensaje de error si hay algún problema al actualizar el pedido
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error al Cambiar el estado del Pago',
+                            detail: 'Ocurrió un error al cambiar el esatdo del pago. Por favor, inténtalo de nuevo.',
+                            life: 5000,
+                        });
+                        console.error('Error al anular el pedido:', error);
+                    }
+                );
+            } else {
+                // Lógica si la respuesta es "No"
+            }
+        } else {
+            // Si el estado no es "Pendiente", muestra un mensaje de error
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error al cambiar el estado de pago',
+                detail: 'El estado de pago solo se puede cambiar si esta en "Pendiente".',
+                life: 5000,
+            });
+        }
+    }
+    
+        // Actualiza el método para manejar el botón "Sí"
+        onYesButtonClickEstadoPago() {
+            this.resolverPromesa(true); 
+            this.cambiarEstadoPDialogEstadoPago = false; 
+        }
+
+        // Actualiza el método para manejar el botón "No"
+        onNoButtonClickEstadoPago() {
+            this.resolverPromesa(false); 
+            this.cambiarEstadoPDialogEstadoPago = false; 
+        }
+    
 
     // Añade la lógica para abrir el diálogo
     async abrirModalAnular(id: string) {
@@ -425,6 +505,12 @@ export class ListPedidosComponent implements OnInit {
         return pedido.estado_pedido === 'Pendiente';
     }
     
+    
+    esPedidoEstadoPago(pedido: any): boolean {
+        return pedido.estado_pedido === 'Entregado' && pedido.estado_pago === 'Pendiente';
+      }
+      
+
     async abrirModalDomicilio(id: string, estado_pedido: string) {
         this.idPedidoSeleccionado = id; // Guarda el ID del pedido seleccionado
         this.asignarDomiciliarioDialog = true;
@@ -586,6 +672,7 @@ export class ListPedidosComponent implements OnInit {
             estado_pago: this.pedidoSeleccionado.estado_pago,
         });
     }
+
 // Método para actualizar el pedido
 async actualizarPedido() {
     try {
@@ -599,12 +686,45 @@ async actualizarPedido() {
                 estado_pago: estadoPago,
             };
 
+            // Verificar si se han realizado cambios
+            const cambiosEstadoPedido = estadoPedido !== this.pedidoSeleccionado.estado_pedido;
+            const cambiosEstadoPago = estadoPago !== this.pedidoSeleccionado.estado_pago;
+
+            if (!cambiosEstadoPedido && !cambiosEstadoPago) {
+                // Si no se han realizado cambios, mostrar mensaje de error y salir
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Sin Cambios',
+                    detail: 'No se han realizado cambios.',
+                    life: 5000,
+                });
+                return;
+            }
+
             // Actualizamos el pedido
             await this.pedidosService.updatePedido(this.pedidoSeleccionado._id, pedidoActualizado).toPromise();
 
-           
-            this.cargarPedidosTerminados()
-        
+            // Determinar el mensaje de éxito según los cambios realizados
+            let successMessage = '';
+            if (cambiosEstadoPedido && cambiosEstadoPago) {
+                successMessage = 'Estado y Método de Pago Actualizados Exitosamente';
+            } else if (cambiosEstadoPedido) {
+                successMessage = 'Estado del Pedido Actualizado Exitosamente';
+            } else if (cambiosEstadoPago) {
+                successMessage = 'Estado de Pago Actualizado Exitosamente';
+            }
+
+            // Mostrar mensaje de éxito si se realizó algún cambio
+            if (successMessage) {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Cambio de Estado con Éxito',
+                    detail: successMessage,
+                    life: 5000,
+                });
+                this.bloquearGuardar = true;
+                this.cargarPedidosTerminados();
+            }
         } else {
             console.error('El pedido seleccionado no está definido.');
         }
@@ -616,17 +736,18 @@ async actualizarPedido() {
             life: 5000,
         });
         console.error('Error al guardar los cambios:', error);
-    }
+    } 
 }
+
 
 // Método para cerrar el modal de edición
 cerrarModalEditarEstadoYPago() {
     this.editarEstadoPagoDialog = false;
-  
 }
 
 // Método para mostrar el modal de confirmación
 confirmarEdicionPedido() {
+   
     // Si confirma la edición, muestra el modal de confirmación
     this.confirmacionEditarEstadoPago = true;
 }
@@ -637,18 +758,20 @@ confirmarCambiosEstado() {
     this.actualizarPedido(); // Llama a la función para actualizar el pedido
     this.confirmacionEditarEstadoPago = false; // Cierra el modal de confirmación
     this.editarEstadoPagoDialog = false; // Cierra el modal de edición
-    // Mostramos el mensaje de éxito
-    this.messageService.add({
-        severity: 'success',
-        summary: 'Estado y Método de Pago Actualizados',
-        life: 5000,
-    });
-    
+    // Mostramos el mensaje de éxitof
 }
+
 
 // Método para manejar el botón "No" del modal de confirmación
 cancelarCambiosEstado() {
     this.confirmacionEditarEstadoPago = false; // Cierra el modal de confirmación sin realizar cambios
+}
+
+bloquearEditarEstado() {
+    const estadoPedidoDirty = this.pedidoSeleccionado.estado_pedido !== this.formPedidos.get('estado_pedido').value;
+    const estadoPagoDirty = this.pedidoSeleccionado.estado_pago !== this.formPedidos.get('estado_pago').value;
+    this.bloquearGuardar = !(estadoPedidoDirty || estadoPagoDirty);
+    
 }
 
 }

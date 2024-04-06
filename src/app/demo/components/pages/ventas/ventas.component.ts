@@ -26,6 +26,7 @@ export class VentasComponent implements OnInit {
   formVentas: FormGroup;
   roleDialog: boolean = false; // Esto controla la visibilidad del p-dialog
   estadoSiguiente: string;
+  domiciliarios: any; // Puedes cargar los domiciliarios desde tu servicio
 
 
   constructor(
@@ -55,8 +56,9 @@ export class VentasComponent implements OnInit {
       nit_empresa_cliente: [''],
       nombre_juridico: [''],
       aumento_empresa: [''],
-      detalle_pedido: ['']
-
+      detalle_pedido: [''],
+      domiciliario: [''],
+      tipo_entrega: [''],
     });
   }
 
@@ -90,10 +92,7 @@ export class VentasComponent implements OnInit {
         // Manejo de error: mostrar un mensaje, notificar al usuario, etc.
       }
     );
-  }
-
-  enviarListPedido() {
-    this.router.navigate(['/list-pedidos']);
+    this.cargarDomiciliarios();
   }
 
   verDetalleVenta(id: string) {
@@ -105,7 +104,11 @@ export class VentasComponent implements OnInit {
 
   getVentaDetalle(id: string) {
     this.ventasService.getVentaDetalle(id).subscribe((data) => {
-      let aumento = data.subtotal_venta * 0.08;
+      // Formatear los valores numéricos como moneda colombiana
+      let aumento = this.formatCurrency(data.subtotal_venta * 0.08);
+      let precioTotalVenta = this.formatCurrency(data.precio_total_venta);
+      let subtotalVenta = this.formatCurrency(data.subtotal_venta);
+      let valorDomicilio = this.formatCurrency(data.valor_domicilio);
       this.formVentas.setValue({
         documento_cliente: data.documento_cliente,
         tipo_cliente: data.tipo_cliente,
@@ -118,17 +121,34 @@ export class VentasComponent implements OnInit {
         fecha_pedido_tomado: data.fecha_pedido_tomado,
         ciudad_cliente: data.ciudad_cliente,
         estado_pedido: data.estado_pedido,
-        precio_total_venta: data.precio_total_venta,
-        subtotal_venta: data.subtotal_venta,
+        precio_total_venta: precioTotalVenta,
+        subtotal_venta: subtotalVenta,
         metodo_pago: data.metodo_pago,
         estado_pago: data.estado_pago,
-        valor_domicilio: data.valor_domicilio,
+        tipo_entrega: data.tipo_entrega,
+        valor_domicilio: valorDomicilio,
         aumento_empresa: aumento || '',
         nit_empresa_cliente: data.nit_empresa_cliente || '',
         nombre_juridico: data.nombre_juridico || '',
-        detalle_pedido: data.detalle_pedido || []
-      })
+        detalle_pedido: data.detalle_pedido || [],
+        domiciliario: [],
+      });
+      this.getDomiciliario(data.empleado_id);
     })
+  }
+
+  getDomiciliario(id) {
+    this.ventasService.getDomiciliariosXId(id).subscribe((data) => {
+      this.formVentas.controls['domiciliario'].setValue(
+        data.nombre_empleado
+      );
+    });
+  }
+
+  cargarDomiciliarios() {
+    this.ventasService.getDomiciliarios().subscribe((data: any[]) => {
+      this.domiciliarios = data;
+    });
   }
 
   esPersonaNatural() {
@@ -149,6 +169,11 @@ export class VentasComponent implements OnInit {
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  // Método para formatear un valor numérico como moneda colombiana
+  formatCurrency(value: number): string {
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
   }
 
   // async descargarExcel() {

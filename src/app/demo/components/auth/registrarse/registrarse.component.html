@@ -157,13 +157,12 @@
           <div class="formgrid grid mt-4">
             <div class="field col form-field">
               <div style="display: flex; flex-direction: column;">
-                <p-dropdown formControlName="ciudad_cliente"
-                  [options]="['Caldas','La Estrella','Sabaneta','Envigado','Itagüí','Medellín', 'Bello','Copacabana','Girardota','Barbosa']"
-                  placeholder="Selecciona ciudad" name="ciudad_cliente"></p-dropdown>
+                <p-dropdown formControlName="ciudad_cliente" [options]="transportes" placeholder="Municipio"
+                  name="ciudad_cliente"></p-dropdown>
                 <span
                   *ngIf="formCliente.get('ciudad_cliente')?.hasError('required') && formCliente.get('ciudad_cliente')?.touched"
                   style="color: red; display: block;">
-                  La Ciudad es requerida
+                  El municipio es requerido
                 </span>
                 <span
                   *ngIf="formCliente.get('ciudad_cliente')?.hasError('pattern') && formCliente.get('ciudad_cliente')?.touched"

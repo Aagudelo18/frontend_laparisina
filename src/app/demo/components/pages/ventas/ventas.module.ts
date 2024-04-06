@@ -18,6 +18,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { VentasComponent } from './ventas.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TabViewModule } from 'primeng/tabview';
 
 
 
@@ -43,6 +44,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     DialogModule,
     TooltipModule,
     ReactiveFormsModule,
+    TabViewModule,
   ],
   declarations: [VentasComponent]
 })

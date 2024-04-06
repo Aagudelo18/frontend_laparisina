@@ -31,8 +31,9 @@
 		</button>
 	</ng-template>
 </p-toolbar>
+
 <p-table #dt [value]="ventas" [rows]="10" [globalFilterFields]="['nombre_contacto']" [paginator]="true"
-	[rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+	[rowsPerPageOptions]="[5, 10, 15, 20]" [showCurrentPageReport]="true"
 	currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [(selection)]="selectedVentas"
 	selectionMode="multiple" dataKey="_id">
 	<ng-template pTemplate="caption">
@@ -55,7 +56,8 @@
 			<th pSortableColumn="nombre_contacto">Nombre Cliente <p-sortIcon field="nombre_contacto"></p-sortIcon></th>
 			<th pSortableColumn="tipo_cliente">Tipo Cliente<p-sortIcon field="tipo_cliente"></p-sortIcon></th>
 			<th pSortableColumn="name">Dirección</th>
-			<th pSortableColumn="fecha_entrega_pedido">Fecha Entrega<p-sortIcon field="fecha_entrega_pedido"></p-sortIcon>
+			<th pSortableColumn="fecha_entrega_pedido">Fecha Entrega<p-sortIcon
+					field="fecha_entrega_pedido"></p-sortIcon>
 			</th>
 			<th pSortableColumn="estado_pedido">Estado<p-sortIcon field="estado_pedido"></p-sortIcon></th>
 			<th pSortableColumn="precio_total_venta">Valor Total<p-sortIcon field="precio_total_venta"></p-sortIcon>
@@ -81,13 +83,14 @@
 			<td style="width: 10%; min-width: 5rem">
 				{{ venta.estado_pedido }}
 			</td>
-			<td style="width: 15%; min-width: 10rem">
-				{{ venta.precio_total_venta }}
+			<td style="width: 15%; min-width: 8rem">
+				{{ venta.precio_total_venta | currency:'':'symbol':'1.0-0' }}
 			</td>
 			<td>
 				<div class="flex">
-					<button type="button" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-primary mr-2"
-						(click)="verDetalleVenta(venta._id)" pTooltip="Ver detalle" tooltipPosition="left"></button>
+					<button type="button" pButton pRipple icon="pi pi-eye"
+						class="p-button-rounded p-button-primary mr-2" (click)="verDetalleVenta(venta._id)"
+						pTooltip="Ver detalle" tooltipPosition="left"></button>
 				</div>
 			</td>
 		</tr>
@@ -247,6 +250,31 @@
 					<label for="estado_pago">Estado de Pago</label>
 				</span>
 			</div>
+
+			<div class="field col-2 textInput">
+				<span class="p-float-label">
+					<input [readonly]="true" style="
+					pointer-events: none;
+					background-color: #f4f4f4;
+					caret-color: transparent;
+				" formControlName="tipo_entrega" id="tipo_entrega" type="text" pInputText />
+					<label for="tipo_entrega">Tipo de Entrega</label>
+				</span>
+			</div>
+
+			<div class="field col-2 textInput" *ngIf="
+                    formVentas.get('tipo_entrega').value == 'Domicilio'
+                ">
+				<span class="p-float-label">
+					<input [readonly]="true" style="
+                            pointer-events: none;
+                            background-color: #f4f4f4;
+                            caret-color: transparent;
+                        " formControlName="domiciliario" id="domiciliario" type="text" pInputText />
+					<label for="domiciliario">Domiciliario</label>
+				</span>
+			</div>
+
 		</div>
 
 		<!-- Detalle del Producto -->
@@ -267,11 +295,11 @@
 						<td>
 							{{
 							formVentas.tipo_cliente == "Persona jurídica"
-							? detalle.precio_por_mayor_ico
-							: detalle.precio_ico
+							? (detalle.precio_por_mayor_ico | currency:'':'symbol':'1.0-0')
+							: (detalle.precio_ico | currency:'':'symbol':'1.0-0')
 							}}
 						</td>
-						<td>{{ detalle.precio_total_producto }}</td>
+						<td>{{ detalle.precio_total_producto | currency:'':'symbol':'1.0-0' }}</td>
 					</tr>
 				</tbody>
 			</table>

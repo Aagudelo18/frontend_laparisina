@@ -10,7 +10,7 @@ export class PedidoListService {
   private carritoProductos = 'carritoProductosParisina';
   private datosCliente = 'currentUser'
 
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'https://api-parisina-2tpy.onrender.com/api';
 
   constructor(private http: HttpClient) { }
 
