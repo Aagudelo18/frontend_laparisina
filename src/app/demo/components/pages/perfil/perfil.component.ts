@@ -11,6 +11,8 @@ import { Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { TransportesService } from '../transportes/transportes.service';
+import { RolesService } from '../roles/roles.service';
+import { Roles } from '../roles/roles.model';
 
 @Component({
     selector: 'app-profile',
@@ -28,11 +30,14 @@ export class PerfilComponent implements OnInit {
     usuarioEncontrado: Usuario;
     editarClienteaDialog: boolean = false;
     transportes:string [] = [];
+    clienteRoleId: any;
+    listRoles: Roles[] = []
 
     constructor(
         private fb: FormBuilder,
         private clienteService: ClienteService,
         private usuarioService: UsuarioService,
+        private rolesService:RolesService,
         private messageService: MessageService,
         private transportesService: TransportesService,
         private dialogService: DialogService,
@@ -62,6 +67,7 @@ export class PerfilComponent implements OnInit {
         this.getListUsuarios(); // Obtener la lista de usuarios
         this.verificarCorreo();
         this.getListTransportes(); 
+        this.getListRoles ();     
     }
 
     getCurrentUser() {
@@ -77,6 +83,18 @@ export class PerfilComponent implements OnInit {
             this.verificarCorreo();
         });
     }
+
+    getListRoles() {
+      this.rolesService.getListRoles().subscribe((data) => {
+          this.listRoles = data;
+          const clienteRole = this.listRoles.find(role => role.nombre_rol === 'Cliente');
+          if (clienteRole) {
+              this.clienteRoleId = clienteRole._id;
+          } else {
+              console.log('No se encontró el rol Cliente en la lista.');
+          }
+      });
+  }
 
     getListUsuarios() {
         this.usuarioService.getUsuarios().subscribe((data: any) => {
@@ -107,7 +125,7 @@ export class PerfilComponent implements OnInit {
     verificarCorreo() {
         console.log("Tipo de lista de usuarios:", typeof this.usuarios); // Verifica el tipo de this.listUsuarios
         console.log("Lista de usuarios en verificarCorreo():", this.usuarios);
-        if (this.currentUser && this.currentUser.rol_usuario === "654a96ebdbe2126f5a74161e") {
+        if (this.currentUser && this.currentUser.rol_usuario === this.clienteRoleId) {
             // Si el usuario tiene el rol específico, se procede a buscar el cliente en la lista
             const correo = this.currentUser.correo_electronico; // Obtener el correo electrónico del usuario actual
             this.clienteEncontrado = this.listClientes.find(cliente => cliente.correo_cliente === correo); // Buscar el cliente con el mismo correo

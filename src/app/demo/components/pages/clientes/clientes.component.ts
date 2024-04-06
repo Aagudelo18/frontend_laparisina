@@ -11,6 +11,8 @@ import { Validators } from '@angular/forms';
 import { switchMap,catchError } from 'rxjs/operators';
 import { Subject,Observable, throwError   } from 'rxjs';
 import { TransportesService } from '../transportes/transportes.service';
+import { RolesService } from '../roles/roles.service';
+import { Roles } from '../roles/roles.model';
  
 @Component({
     templateUrl: './clientes.component.html', 
@@ -27,9 +29,11 @@ export class clientesComponent implements OnInit {
       private confirmacionUsuarioSubject = new Subject<boolean>();
       mostrarConfirmacionUsuario = false; 
       listClientes: Clientes[] = []
+      listRoles: Roles[] = []
       clientes: Clientes = {}
       formCliente:FormGroup;
       id: string = '';
+      clienteRoleId: any;
       
   
       estado:SelectItem[] = [
@@ -45,6 +49,7 @@ export class clientesComponent implements OnInit {
         private clienteService: ClienteService,
         private transportesService: TransportesService,
         private usuarioService :UsuarioService,
+        private rolesService:RolesService,
         private messageService: MessageService,
         private router:Router,
         private aRouter:ActivatedRoute){
@@ -68,7 +73,7 @@ export class clientesComponent implements OnInit {
             this.id = params['id']; // Obtén el valor del parámetro 'id' de la URL y actualiza id
           });
          }
-        
+         
          async descargarExcel() {
           try {
             const blob = await this.clienteService.descargarClientesExcel().toPromise();
@@ -105,7 +110,8 @@ export class clientesComponent implements OnInit {
       ngOnInit():void {        
           this.getListClientes();
           console.log('clientes:', this.clientes);   
-          this.getListTransportes();               
+          this.getListTransportes();   
+          this.getListRoles ();         
       }
   
       getListClientes(){     
@@ -113,6 +119,18 @@ export class clientesComponent implements OnInit {
             this.listClientes = data;        
           })        
       } 
+
+      getListRoles() {
+        this.rolesService.getListRoles().subscribe((data) => {
+            this.listRoles = data;
+            const clienteRole = this.listRoles.find(role => role.nombre_rol === 'Cliente');
+            if (clienteRole) {
+                this.clienteRoleId = clienteRole._id;
+            } else {
+                console.log('No se encontró el rol Cliente en la lista.');
+            }
+        });
+    }
   
       getClientes(id:string){      
         this.clienteService.getClientes(id).subscribe((data:Clientes) => {
@@ -238,7 +256,7 @@ export class clientesComponent implements OnInit {
           correo_electronico: this.formCliente.value.correo_cliente,
           contrasena_usuario: this.formCliente.value.contrasena_usuario,
           confirmar_contrasena: this.formCliente.value.confirmar_contrasena,
-          rol_usuario:'654a96ebdbe2126f5a74161e',
+          rol_usuario:this.clienteRoleId,
       };
 
       // Verifica la igualdad de contraseñas antes de enviar la solicitud para crear el usuario

@@ -1,5 +1,5 @@
 
-    <ng-container *ngIf="currentUser && currentUser.rol_usuario === '654a96ebdbe2126f5a74161e'">
+    <ng-container *ngIf="currentUser && currentUser.rol_usuario === this.clienteRoleId">
         <p-toolbar [style]="{ width: '850px', margin: '0 auto' }" header="Detalle del Cliente" class="p-fluid">
           <form [formGroup]="formCliente" style="padding: 20px; display: flex;">
             <div style="display: flex;">
@@ -76,7 +76,7 @@
         </p-toolbar>
       </ng-container>      
       
-      <ng-container *ngIf="currentUser && currentUser.rol_usuario !== '654a96ebdbe2126f5a74161e'">
+      <ng-container *ngIf="currentUser && currentUser.rol_usuario !== this.clienteRoleId">
         <p-toolbar [style]="{ width: '850px', margin: '0 auto' }" header="Detalle del Cliente" class="p-fluid">
             <form [formGroup]="formCliente" style="padding: 20px; display: flex;">
                 <!-- Aquí va tu formulario para el usuario -->

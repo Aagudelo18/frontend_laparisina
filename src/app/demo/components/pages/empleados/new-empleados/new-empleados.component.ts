@@ -10,6 +10,8 @@ import { UsuarioService } from '../new-empleados/usuarios.service'
 import { CategoriaService } from '../../categoria/categoria.service';
 import { differenceInYears, isBefore, addYears } from 'date-fns';
 import { ChangeDetectorRef } from '@angular/core';
+import { RolesService } from '../../roles/roles.service';
+import { Roles } from '../../roles/roles.model';
 
 import {  FormControl } from '@angular/forms';
 
@@ -34,6 +36,8 @@ export class NewEmpleadosComponent implements OnInit {
   confirmacionUsuarioSubject = new Subject<boolean>();
   identificacionEmpleado: string = '';
   empleadoExistente: boolean = false;
+  empleadoRoleId: any;
+  listRoles: Roles[] = []
 
   epsOptions = [
     'COOSALUD EPS-S',
@@ -109,6 +113,7 @@ cuenta_bancaria_empleado: '',
     constructor(
       private usuarioService :UsuarioService,
         private newempleadosService: NewEmpleadosService,
+        private rolesService:RolesService,
         private router: Router,
         private formBuilder: FormBuilder,
         private messageService: MessageService,
@@ -244,12 +249,24 @@ cuenta_bancaria_empleado: '',
 
     ngOnInit() {
       this.getListAreas();
+      this.getListRoles();
       
         // Agrega otros controles aquí según tus necesidades
       };
     
     
-    
+    getListRoles() {
+        this.rolesService.getListRoles().subscribe((data) => {
+            this.listRoles = data;
+            const empleadoRole = this.listRoles.find(role => role.nombre_rol === 'Empleado');
+            if (empleadoRole) {
+                this.empleadoRoleId = empleadoRole._id;
+                console.log('rol emp', this.empleadoRoleId)
+            } else {
+                console.log('No se encontró el rol Empleado en la lista.');
+            }
+        });
+    }
     
     
 
@@ -295,7 +312,7 @@ cuenta_bancaria_empleado: '',
       // }
       
         // Establecer directamente el rol de empleado
-        this.empleado.rol_usuario = '654aefc54524da3db0bc3a18'; 
+        this.empleado.rol_usuario = this.empleadoRoleId; 
       
         const nuevoUsuario = {
           
